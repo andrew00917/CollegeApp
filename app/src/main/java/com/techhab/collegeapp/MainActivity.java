@@ -25,6 +25,8 @@ public class MainActivity extends Activity
     // ONLY SHOW UP IN DEV BRANCH
     // IF NOT BLAME GRIFFIN
 
+    //SUP LOSERS!!!! -GRIFFIN
+
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
