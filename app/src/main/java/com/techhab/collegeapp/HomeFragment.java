@@ -1,110 +1,150 @@
 package com.techhab.collegeapp;
 
-import android.app.Activity;
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.Toast;
 
-
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link HomeFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- *
- */
 public class HomeFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    // Store the Application (as you can't always get to it when you can't access the Activity - e.g. during rotations)
+    private CollegeApplication application;
 
-    private OnFragmentInteractionListener mListener;
+    // FrameLayout of the progressContainer
+    private FrameLayout progressContainer;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-    public HomeFragment() {
-        // Required empty public constructor
-    }
+    // Views
+    private View v;
+    private ImageView main00;
+    private ImageView main01;
+    private ImageView main10;
+    private ImageView main11;
+    private ImageView main20;
+    private ImageView main21;
+
+    // View id
+    private static final int MAIN_00_ID = R.id.main_menu_00;
+    private static final int MAIN_01_ID = R.id.main_menu_01;
+    private static final int MAIN_10_ID = R.id.main_menu_10;
+    private static final int MAIN_11_ID = R.id.main_menu_11;
+    private static final int MAIN_20_ID = R.id.main_menu_20;
+    private static final int MAIN_21_ID = R.id.main_menu_21;
+
+    // SharedPreferences
+    private String spKey;
+    private SharedPreferences prefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        setRetainInstance(true);
+
+        application = (CollegeApplication) getActivity().getApplication();
+        spKey = application.getLoggedInKey();
+        application.load();
+    }
+
+    @SuppressWarnings("unused")
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        v = inflater.inflate(R.layout.fragment_home, parent, false);
+
+
+        progressContainer = (FrameLayout)v.findViewById(R.id.progress_container);
+        // Hide the progressContainer
+        progressContainer.setVisibility(View.INVISIBLE);
+
+        View.OnTouchListener listener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                switch(view.getId()) {
+                    case MAIN_00_ID:
+                        Toast.makeText(getActivity(), "Main Menu 00 clicked", Toast.LENGTH_SHORT).show();
+                        break;
+                    case MAIN_01_ID:
+                        Toast.makeText(getActivity(), "Main Menu 01 clicked", Toast.LENGTH_SHORT).show();
+                        break;
+                    case MAIN_10_ID:
+                        Toast.makeText(getActivity(), "Main Menu 10 clicked", Toast.LENGTH_SHORT).show();
+                        break;
+                    case MAIN_11_ID:
+                        Toast.makeText(getActivity(), "Main Menu 11 clicked", Toast.LENGTH_SHORT).show();
+                        break;
+                    case MAIN_20_ID:
+                        Toast.makeText(getActivity(), "Main Menu 20 clicked", Toast.LENGTH_SHORT).show();
+                        break;
+                    case MAIN_21_ID:
+                        Toast.makeText(getActivity(), "Main Menu 21 clicked", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return false;
+            }
+        };
+
+        main00 = (ImageView) v.findViewById(R.id.main_menu_00);
+        main00.setOnTouchListener(listener);
+        main01 = (ImageView) v.findViewById(R.id.main_menu_01);
+        main01.setOnTouchListener(listener);
+        main10 = (ImageView) v.findViewById(R.id.main_menu_10);
+        main10.setOnTouchListener(listener);
+        main11 = (ImageView) v.findViewById(R.id.main_menu_11);
+        main11.setOnTouchListener(listener);
+        main20 = (ImageView) v.findViewById(R.id.main_menu_20);
+        main20.setOnTouchListener(listener);
+        main21 = (ImageView) v.findViewById(R.id.main_menu_21);
+        main21.setOnTouchListener(listener);
+
+        // Restore the state
+        restoreState(savedInstanceState);
+
+        return v;
+    }
+
+    // Restores the state during onCreateView
+    private void restoreState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            // TODO
+            //pendingPost = savedInstanceState.getBoolean(PENDING_POST_KEY, false);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    public void onPause() {
+        super.onPause();
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onDestroy() {
+        super.onDestroy();
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+    @Override
+    public void onStart() {
+        super.onStart();
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // TODO
+        //outState.putBoolean(PENDING_POST_KEY, pendingPost);
+    }
+
 
 }

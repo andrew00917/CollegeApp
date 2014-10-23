@@ -24,9 +24,13 @@ public class User {
     }
 
     public User(String id, String password) {
-        setUserId(id);
-        setPassword(password);
-        isValid();
+        if (isValid()) {
+            setUserId(id);
+            setPassword(password);
+        }
+        else {
+            // throw an error
+        }
     }
 
     public String getUserId() {
