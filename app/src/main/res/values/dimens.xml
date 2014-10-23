@@ -6,4 +6,12 @@
     <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html -->
     <dimen name="navigation_drawer_width">240dp</dimen>
+
+    <!-- Icon margins -->
+    <dimen name="icon_horizontal_margin">8dp</dimen>
+    <dimen name="icon_vertical_margin">8dp</dimen>
+
+    <!-- Login width -->
+    <dimen name="login_width">96dp</dimen>
+    <dimen name="login_height">32dp</dimen>
 </resources>

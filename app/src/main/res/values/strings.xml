@@ -47,5 +47,19 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="content_description">Content Description</string>
+
+    <!-- Main Menu -->
+    <string name="main_menu_00">Main Menu 00</string>
+    <string name="main_menu_01">Main Menu 01</string>
+    <string name="main_menu_10">Main Menu 10</string>
+    <string name="main_menu_11">Main Menu 11</string>
+    <string name="main_menu_20">Main Menu 20</string>
+    <string name="main_menu_21">Main Menu 21</string>
+
+    <!-- Login fragment -->
+    <string name="username">Username: </string>
+    <string name="password">Password: </string>
+    <string name="login">Login</string>
 
 </resources>

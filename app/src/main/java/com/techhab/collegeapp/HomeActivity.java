@@ -1,6 +1,7 @@
 package com.techhab.collegeapp;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -22,7 +24,7 @@ public class HomeActivity extends FragmentActivity {
     // Tag used when logging messages
     private static final String TAG = HomeActivity.class.getSimpleName();
 
-    private CollegeApplication application = (CollegeApplication) getApplication();
+    private CollegeApplication application;
 
     // Uri used in handleError() below
     private static final Uri M_COLLEGE_URL = Uri.parse("http://kzoo.edu");
@@ -30,7 +32,9 @@ public class HomeActivity extends FragmentActivity {
     // Fragment attributes
     private static final int LOGGED_OUT_HOME = 0;
     private static final int HOME = 1;
-    private static final int FRAGMENT_COUNT = HOME +1;
+    private static final int LOGGED_OUT_DRAWER = 2;
+    private static final int DRAWER = 3;
+    private static final int FRAGMENT_COUNT = DRAWER +1;
     private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
 
     // Boolean recording whether the activity has been resumed so that
@@ -48,12 +52,15 @@ public class HomeActivity extends FragmentActivity {
 
         setContentView(R.layout.activity_home);
 
+        application = (CollegeApplication) getApplication();
+
         FragmentManager fm = getSupportFragmentManager();
         fragments[LOGGED_OUT_HOME] = fm.findFragmentById(R.id.loggedOutHomeFragment);
         fragments[HOME] = fm.findFragmentById(R.id.homeFragment);
 
         FragmentTransaction transaction = fm.beginTransaction();
-        for(int i = 0; i < fragments.length; i++) {
+        // TODO change i limit to i < fragments.length
+        for(int i = 0; i < 2; i++) {
             transaction.hide(fragments[i]);
         }
         transaction.commit();
@@ -87,15 +94,23 @@ public class HomeActivity extends FragmentActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // after authenticating the user's id, we get here
     }
 
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
-        if ( ! application.IS_SOCIAL) {
+        if ( ! (application.isSocial() || application.isLoggedIn())
+                && fragments[LOGGED_OUT_HOME] != null) {
+            showFragment(LOGGED_OUT_HOME, false);
+        }
+        else if (application.isLoggedIn() && ! application.isSocial()
+                && fragments[HOME] != null) {
             showFragment(HOME, false);
         }
         else {
+            // TODO showing home for now
+            showFragment(LOGGED_OUT_HOME, false);
             //Session session = SpellCheckerService.Session.getActiveSession();
             //if (session != null && session.isOpened() && application.getCurrentUser() != null) {
             //    showFragment(HOME, false);
@@ -137,13 +152,15 @@ public class HomeActivity extends FragmentActivity {
         super.onDestroy();
     }
 
-    private void showFragment(int fragmentIndex, boolean addToBackStack) {
+    public void showFragment(int fragmentIndex, boolean addToBackStack) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        for (int i = 0; i < fragments.length; i++) {
+        // TODO change i limit to i < fragments.length
+        for (int i = 0; i < 2; i++) {
             if (i == fragmentIndex) {
                 transaction.show(fragments[i]);
-            } else {
+            }
+            else {
                 transaction.hide(fragments[i]);
             }
         }
@@ -156,8 +173,8 @@ public class HomeActivity extends FragmentActivity {
         if (application.IS_SOCIAL) {
             switch (fragmentIndex) {
                 case LOGGED_OUT_HOME:
-                    // Hide the progressContainer in FBLoggedOutHomeFragment
-                    if (fragments[LOGGED_OUT_HOME] != null && ((LoggedOutHomeFragment)fragments[LOGGED_OUT_HOME]) != null) {
+                    // Hide the progressContainer in LoggedOutHomeFragment
+                    if (fragments[LOGGED_OUT_HOME] != null) {
                         ((LoggedOutHomeFragment)fragments[LOGGED_OUT_HOME]).progressContainer.setVisibility(View.INVISIBLE);
                     }
                     // Set the loggedIn attribute
@@ -166,6 +183,10 @@ public class HomeActivity extends FragmentActivity {
                 case HOME:
                     // Set the loggedIn attribute
                     application.setLoggedIn(true);
+                    break;
+                case LOGGED_OUT_DRAWER:
+                    break;
+                case DRAWER:
                     break;
             }
         }
@@ -176,6 +197,8 @@ public class HomeActivity extends FragmentActivity {
     // Call back on HomeActivity when the session state changes to update the view accordingly
     private void updateView() {
         if (isResumed) {
+            // TODO
+            Toast.makeText(this, "update view", Toast.LENGTH_SHORT).show();
             //Session session = Session.getActiveSession();
             //if (session.isOpened() && ! application.isLoggedIn() && fragments[HOME] != null) {
                 // Not logged in, but should be, so fetch the user information and log in (load the HomeFragment)
@@ -192,8 +215,10 @@ public class HomeActivity extends FragmentActivity {
 
     // Loads the inventory portion of the HomeFragment.
     private void loadIInformationFragment() {
-        Log.d(TAG, "Loading inventory fragment");
+        Log.d(TAG, "Loading information fragment");
         if (isResumed) {
+            // TODO
+            Toast.makeText(this, "Loading information fragment", Toast.LENGTH_SHORT).show();
             //((HomeFragment)fragments[HOME]).loadInformation();
         }
         else {
@@ -286,6 +311,7 @@ public class HomeActivity extends FragmentActivity {
     }
 
     private void logout() {
+        // TODO
         // Close the session, which will cause a callback to show the logout screen
         //Session.getActiveSession().closeAndClearTokenInformation();
 
