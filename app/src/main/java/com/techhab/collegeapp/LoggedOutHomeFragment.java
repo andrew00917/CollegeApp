@@ -28,6 +28,8 @@ public class LoggedOutHomeFragment extends Fragment {
         setRetainInstance(true);
 
         application = (CollegeApplication) getActivity().getApplication();
+
+        getActivity().getActionBar().hide();
     }
 
     @Override
