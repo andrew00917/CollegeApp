@@ -29,7 +29,9 @@ public class LoggedOutHomeFragment extends Fragment {
 
         application = (CollegeApplication) getActivity().getApplication();
 
-        getActivity().getActionBar().hide();
+        if (getActivity().getActionBar() != null && getActivity().getActionBar().isShowing()) {
+            getActivity().getActionBar().hide();
+        }
     }
 
     @Override
