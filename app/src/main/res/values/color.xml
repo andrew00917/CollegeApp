@@ -2,11 +2,8 @@
 <resources>
     <color name="shadow">#8A8A8A</color>
     <color name="stroke">#404040</color>
-<<<<<<< HEAD
-=======
     <color name="drawerBackground">#272727</color>
     <color name="drawerDivider">#1A1A1A</color>
->>>>>>> 77f2e7efd9d4943dbc2467809f673eb5852bc224
     <color name="trans">#80FFFFFF</color>
     <color name="theGray">#999999</color>
 

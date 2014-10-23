@@ -45,6 +45,10 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
+        if ( getActivity().getActionBar() != null && ! getActivity().getActionBar().isShowing()) {
+            getActivity().getActionBar().show();
+        }
+
         application = (CollegeApplication) getActivity().getApplication();
         spKey = application.getLoggedInKey();
         application.load();
