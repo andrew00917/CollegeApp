@@ -58,11 +58,9 @@ public class LoggedOutHomeFragment extends Fragment {
 
         try {
             User newUser = new User(u, p);
+            application.setCurrentUser(newUser);
+            application.load();
             if (newUser.isValid()) {
-                application.setCurrentUser(newUser);
-                application.setIsSocial(true);
-                application.setLoggedIn(true);
-                application.save();
                 ((HomeActivity) getActivity()).showFragment(HOME_FRAGMENT, false);
             }
             else {

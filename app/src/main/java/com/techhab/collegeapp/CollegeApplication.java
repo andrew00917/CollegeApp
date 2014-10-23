@@ -141,6 +141,7 @@ public class CollegeApplication extends Application {
             // Could be a new user or not.
             // Either way, treat them same.
             setLoggedIn(true);
+            setIsSocial(true);
 
             // check for user checking remember me box
             if (getRememberLogin()) {
@@ -150,6 +151,8 @@ public class CollegeApplication extends Application {
         }
         else if (getCurrentUser() != null && getCurrentUser().getUserName().equals("guest")) {
             // guest load
+            setLoggedIn(true);
+            setIsSocial(false);
         }
         else {
             // error
