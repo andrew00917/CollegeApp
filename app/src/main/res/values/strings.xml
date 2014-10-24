@@ -57,6 +57,50 @@
     <string name="main_menu_20">Main Menu 20</string>
     <string name="main_menu_21">Main Menu 21</string>
 
+    <!-- Sub Menu List -->
+    <string-array name="sub_menu_00">
+        <item>Sub menu 00 1</item>
+        <item>Sub menu 00 2</item>
+        <item>Sub menu 00 3</item>
+        <item>Sub menu 00 4</item>
+        <item>Sub menu 00 5</item>
+    </string-array>
+    <string-array name="sub_menu_01">
+        <item>Sub menu 01 1</item>
+        <item>Sub menu 01 2</item>
+        <item>Sub menu 01 3</item>
+        <item>Sub menu 01 4</item>
+        <item>Sub menu 01 5</item>
+    </string-array>
+    <string-array name="sub_menu_10">
+        <item>Sub menu 10 1</item>
+        <item>Sub menu 10 2</item>
+        <item>Sub menu 10 3</item>
+        <item>Sub menu 10 4</item>
+        <item>Sub menu 10 5</item>
+    </string-array>
+    <string-array name="sub_menu_11">
+        <item>Sub menu 11 1</item>
+        <item>Sub menu 11 2</item>
+        <item>Sub menu 11 3</item>
+        <item>Sub menu 11 4</item>
+        <item>Sub menu 11 5</item>
+    </string-array>
+    <string-array name="sub_menu_20">
+        <item>Sub menu 20 1</item>
+        <item>Sub menu 20 2</item>
+        <item>Sub menu 20 3</item>
+        <item>Sub menu 20 4</item>
+        <item>Sub menu 20 5</item>
+    </string-array>
+    <string-array name="sub_menu_21">
+        <item>Sub menu 21 1</item>
+        <item>Sub menu 21 2</item>
+        <item>Sub menu 21 3</item>
+        <item>Sub menu 21 4</item>
+        <item>Sub menu 21 5</item>
+    </string-array>
+
     <!-- Login fragment -->
     <string name="username">Username: </string>
     <string name="password">Password: </string>

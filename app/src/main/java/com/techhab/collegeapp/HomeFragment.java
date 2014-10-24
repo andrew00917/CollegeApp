@@ -1,5 +1,11 @@
 package com.techhab.collegeapp;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.Keyframe;
+import android.animation.LayoutTransition;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,9 +13,15 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
@@ -36,9 +48,16 @@ public class HomeFragment extends Fragment {
     private static final int MAIN_20_ID = R.id.main_menu_20;
     private static final int MAIN_21_ID = R.id.main_menu_21;
 
+    // Sub menu showing check
+    private boolean isSubmenuShowing = false;
+
     // SharedPreferences
     private String spKey;
     private SharedPreferences prefs;
+
+    // Animation attributes
+    private LayoutTransition mTransitioner;
+    private ViewGroup container;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +71,12 @@ public class HomeFragment extends Fragment {
         application = (CollegeApplication) getActivity().getApplication();
         spKey = application.getLoggedInKey();
         application.load();
+
+        container = new LinearLayout(getActivity());
+        container.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+
+        resetTransition();
     }
 
     @SuppressWarnings("unused")
@@ -67,24 +92,44 @@ public class HomeFragment extends Fragment {
         View.OnTouchListener listener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
-                switch(view.getId()) {
-                    case MAIN_00_ID:
-                        Toast.makeText(getActivity(), "Main Menu 00 clicked", Toast.LENGTH_SHORT).show();
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        switch (view.getId()) {
+                            case MAIN_00_ID:
+                                break;
+                            case MAIN_01_ID:
+                                break;
+                            case MAIN_10_ID:
+                                break;
+                            case MAIN_11_ID:
+                                break;
+                            case MAIN_20_ID:
+                                break;
+                            case MAIN_21_ID:
+                                break;
+                        }
                         break;
-                    case MAIN_01_ID:
-                        Toast.makeText(getActivity(), "Main Menu 01 clicked", Toast.LENGTH_SHORT).show();
-                        break;
-                    case MAIN_10_ID:
-                        Toast.makeText(getActivity(), "Main Menu 10 clicked", Toast.LENGTH_SHORT).show();
-                        break;
-                    case MAIN_11_ID:
-                        Toast.makeText(getActivity(), "Main Menu 11 clicked", Toast.LENGTH_SHORT).show();
-                        break;
-                    case MAIN_20_ID:
-                        Toast.makeText(getActivity(), "Main Menu 20 clicked", Toast.LENGTH_SHORT).show();
-                        break;
-                    case MAIN_21_ID:
-                        Toast.makeText(getActivity(), "Main Menu 21 clicked", Toast.LENGTH_SHORT).show();
+                    case MotionEvent.ACTION_UP:
+                        switch (view.getId()) {
+                            case MAIN_00_ID:
+                                toggleMenu(view);
+                                break;
+                            case MAIN_01_ID:
+                                toggleMenu(view);
+                                break;
+                            case MAIN_10_ID:
+                                toggleMenu(view);
+                                break;
+                            case MAIN_11_ID:
+                                toggleMenu(view);
+                                break;
+                            case MAIN_20_ID:
+                                toggleMenu(view);
+                                break;
+                            case MAIN_21_ID:
+                                toggleMenu(view);
+                                break;
+                        }
                         break;
                 }
                 return false;
@@ -104,6 +149,13 @@ public class HomeFragment extends Fragment {
         main21 = (ImageView) v.findViewById(R.id.main_menu_21);
         main21.setOnTouchListener(listener);
 
+        ImageView submenuToggle = (ImageView) v.findViewById(R.id.main_menu_holder);
+        submenuToggle.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 toggle();
+             }
+        });
         // Restore the state
         restoreState(savedInstanceState);
 
@@ -150,5 +202,175 @@ public class HomeFragment extends Fragment {
         //outState.putBoolean(PENDING_POST_KEY, pendingPost);
     }
 
+    /**
+     * Toggle back to main menus
+     */
+    public void toggle() {
+        LinearLayout submenuContainer = (LinearLayout) v.findViewById(R.id.sub_menu_container);
+        if (submenuContainer.getVisibility() == LinearLayout.VISIBLE && isSubmenuShowing) {
+            submenuContainer.setVisibility(LinearLayout.INVISIBLE);
+            isSubmenuShowing = false;
+        }
+    }
 
+    /**
+     * Toggle up and down animation button for sub menu
+     */
+    public void toggleMenu(View view) {
+        long duration;
+        mTransitioner.setStagger(LayoutTransition.CHANGE_APPEARING, 30);
+        mTransitioner.setStagger(LayoutTransition.CHANGE_DISAPPEARING, 30);
+        setupCustomAnimations();
+        duration = 500;
+        mTransitioner.setDuration(duration);
+
+        LinearLayout submenuContainer = (LinearLayout) v.findViewById(R.id.sub_menu_container);
+        if (submenuContainer.getVisibility() == LinearLayout.VISIBLE && isSubmenuShowing) {
+            submenuContainer.setVisibility(LinearLayout.INVISIBLE);
+            isSubmenuShowing = false;
+        }
+        else {
+            submenuContainer.setVisibility(LinearLayout.VISIBLE);
+            isSubmenuShowing = true;
+            ImageView mainmenuHolder = (ImageView) v.findViewById(R.id.main_menu_holder);
+            ListView submenu = (ListView) v.findViewById(R.id.sub_menu_list);
+            ImageView buttonClicked = (ImageView) v.findViewById(view.getId());
+
+            // set up main menu holder
+            mainmenuHolder.setImageDrawable(buttonClicked.getDrawable());
+
+            // set up submenu list view
+            String[] values;
+            switch (view.getId()) {
+                case MAIN_00_ID:
+                    values = getResources().getStringArray(R.array.sub_menu_00);
+                    break;
+                case MAIN_01_ID:
+                    values = getResources().getStringArray(R.array.sub_menu_01);
+                    break;
+                case MAIN_10_ID:
+                    values = getResources().getStringArray(R.array.sub_menu_10);
+                    break;
+                case MAIN_11_ID:
+                    values = getResources().getStringArray(R.array.sub_menu_11);
+                    break;
+                case MAIN_20_ID:
+                    values = getResources().getStringArray(R.array.sub_menu_20);
+                    break;
+                case MAIN_21_ID:
+                    values = getResources().getStringArray(R.array.sub_menu_21);
+                    break;
+                default:
+                    values = new String[]{};
+                    break;
+            }
+
+            //final ArrayList<String> list = new ArrayList<String>();
+            //for (int i = 0; i < values.length; ++i) {
+            //    list.add(values[i]);
+            //}
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity()
+                    , android.R.layout.simple_list_item_1, android.R.id.text1, values);
+            submenu.setAdapter(adapter);
+
+            submenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, final View view,
+                                        int position, long id) {
+                    final String item = (String) parent.getItemAtPosition(position);
+                    //view.animate().setDuration(2000).alpha(0).withEndAction(new Runnable() {
+                    //            @Override
+                    //            public void run() {
+                    //                submenu.remove(item);
+                    //                adapter.notifyDataSetChanged();
+                    //                view.setAlpha(1);
+                    //            }
+                    //        });
+                }
+            });
+
+        }
+    }
+
+
+    /**************************************
+     * Animation methods
+     **************************************/
+    private void resetTransition() {
+        mTransitioner = new LayoutTransition();
+        container.setLayoutTransition(mTransitioner);
+    }
+
+    private void setupCustomAnimations() {
+        // Changing while Adding
+        PropertyValuesHolder pvhLeft = PropertyValuesHolder.ofInt("left", 0, 1);
+        PropertyValuesHolder pvhTop = PropertyValuesHolder.ofInt("top", 0, 1);
+        PropertyValuesHolder pvhRight = PropertyValuesHolder.ofInt("right", 0, 1);
+        PropertyValuesHolder pvhBottom = PropertyValuesHolder.ofInt("bottom", 0, 1);
+        PropertyValuesHolder pvhScaleX = PropertyValuesHolder.ofFloat("scaleX", 1f, 0f, 1f);
+        PropertyValuesHolder pvhScaleY = PropertyValuesHolder.ofFloat("scaleY", 1f, 0f, 1f);
+
+        final ObjectAnimator changeIn =
+                ObjectAnimator.
+                        ofPropertyValuesHolder(this, pvhLeft, pvhTop, pvhRight, pvhBottom, pvhScaleX, pvhScaleY).
+                        setDuration(mTransitioner.getDuration(LayoutTransition.CHANGE_APPEARING));
+
+        mTransitioner.setAnimator(LayoutTransition.CHANGE_APPEARING, changeIn);
+
+        changeIn.addListener(new AnimatorListenerAdapter() {
+            public void onAnimationEnd(Animator anim) {
+                View view = (View) ((ObjectAnimator) anim).getTarget();
+                view.setScaleX(1f);
+                view.setScaleY(1f);
+            }
+        });
+
+        // Changing while Removing
+        Keyframe kf0 = Keyframe.ofFloat(0f, 0f);
+        Keyframe kf1 = Keyframe.ofFloat(.9999f, 360f);
+        Keyframe kf2 = Keyframe.ofFloat(1f, 0f);
+        PropertyValuesHolder pvhRotation = PropertyValuesHolder.ofKeyframe("rotation", kf0, kf1, kf2);
+        final ObjectAnimator changeOut =
+                ObjectAnimator.
+                        ofPropertyValuesHolder(this, pvhLeft, pvhTop, pvhRight, pvhBottom, pvhRotation).
+                        setDuration(mTransitioner.getDuration(LayoutTransition.CHANGE_DISAPPEARING));
+
+        mTransitioner.setAnimator(LayoutTransition.CHANGE_DISAPPEARING, changeOut);
+
+        changeOut.addListener(new AnimatorListenerAdapter() {
+            public void onAnimationEnd(Animator anim) {
+                View view = (View) ((ObjectAnimator) anim).getTarget();
+                view.setRotation(0f);
+            }
+        });
+
+        // Adding
+        ObjectAnimator animIn = ObjectAnimator.
+                ofFloat(null, "rotationY", 90f, 0f).
+                setDuration(mTransitioner.getDuration(LayoutTransition.APPEARING));
+
+        mTransitioner.setAnimator(LayoutTransition.APPEARING, animIn);
+
+        animIn.addListener(new AnimatorListenerAdapter() {
+            public void onAnimationEnd(Animator anim) {
+                View view = (View) ((ObjectAnimator) anim).getTarget();
+                view.setRotationY(0f);
+            }
+        });
+
+        // Removing
+        ObjectAnimator animOut = ObjectAnimator.
+                ofFloat(null, "rotationX", 0f, 90f).
+                setDuration(mTransitioner.getDuration(LayoutTransition.DISAPPEARING));
+
+        mTransitioner.setAnimator(LayoutTransition.DISAPPEARING, animOut);
+
+        animOut.addListener(new AnimatorListenerAdapter() {
+            public void onAnimationEnd(Animator anim) {
+                View view = (View) ((ObjectAnimator) anim).getTarget();
+                view.setRotationX(0f);
+            }
+        });
+    }
 }
