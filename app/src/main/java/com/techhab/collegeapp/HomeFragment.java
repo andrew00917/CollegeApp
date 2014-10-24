@@ -97,37 +97,49 @@ public class HomeFragment extends Fragment {
                     case MotionEvent.ACTION_DOWN:
                         switch (view.getId()) {
                             case MAIN_00_ID:
+                                main00.setImageDrawable(getResources().getDrawable(R.drawable.money_pressed));
                                 break;
                             case MAIN_01_ID:
+                                main01.setImageDrawable(getResources().getDrawable(R.drawable.graph_pressed));
                                 break;
                             case MAIN_10_ID:
+                                main10.setImageDrawable(getResources().getDrawable(R.drawable.docs_pressed));
                                 break;
                             case MAIN_11_ID:
+                                main11.setImageDrawable(getResources().getDrawable(R.drawable.location_pressed));
                                 break;
                             case MAIN_20_ID:
+                                main20.setImageDrawable(getResources().getDrawable(R.drawable.payments_pressed));
                                 break;
                             case MAIN_21_ID:
+                                main21.setImageDrawable(getResources().getDrawable(R.drawable.dots_pressed));
                                 break;
                         }
                         break;
                     case MotionEvent.ACTION_UP:
                         switch (view.getId()) {
                             case MAIN_00_ID:
+                                main00.setImageDrawable(getResources().getDrawable(R.drawable.money));
                                 toggleMenu(view);
                                 break;
                             case MAIN_01_ID:
+                                main01.setImageDrawable(getResources().getDrawable(R.drawable.graph));
                                 toggleMenu(view);
                                 break;
                             case MAIN_10_ID:
+                                main10.setImageDrawable(getResources().getDrawable(R.drawable.docs));
                                 toggleMenu(view);
                                 break;
                             case MAIN_11_ID:
+                                main11.setImageDrawable(getResources().getDrawable(R.drawable.location));
                                 toggleMenu(view);
                                 break;
                             case MAIN_20_ID:
+                                main20.setImageDrawable(getResources().getDrawable(R.drawable.payments));
                                 toggleMenu(view);
                                 break;
                             case MAIN_21_ID:
+                                main21.setImageDrawable(getResources().getDrawable(R.drawable.dots));
                                 toggleMenu(view);
                                 break;
                         }
