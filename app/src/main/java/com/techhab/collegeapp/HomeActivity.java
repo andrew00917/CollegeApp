@@ -75,8 +75,8 @@ public class HomeActivity extends FragmentActivity
         FragmentManager fm = getSupportFragmentManager();
         fragments[LOGGED_OUT_HOME] = fm.findFragmentById(R.id.loggedOutHomeFragment);
         fragments[HOME] = fm.findFragmentById(R.id.homeFragment);
-        fragments[LOGGED_OUT_DRAWER] = fm.findFragmentById(R.id.logged_out_navigation_drawer);
-        fragments[DRAWER] = fm.findFragmentById(R.id.home_navigation_drawer);
+        fragments[LOGGED_OUT_DRAWER] = (NavigationDrawerFragment) fm.findFragmentById(R.id.logged_out_navigation_drawer);
+        fragments[DRAWER] = (NavigationDrawerFragment) fm.findFragmentById(R.id.home_navigation_drawer);
 
         FragmentTransaction transaction = fm.beginTransaction();
         for(int i = 0; i < fragments.length; i++) {
@@ -115,8 +115,8 @@ public class HomeActivity extends FragmentActivity
         mTitle = getTitle();*/
 
         // Set up the drawer.
-        /*mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
+        /*fragments[DRAWER].setUp(
+                R.id.home_navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));*/
     }
 
@@ -132,10 +132,12 @@ public class HomeActivity extends FragmentActivity
         if ( ! (application.isSocial() || application.isLoggedIn())
                 && fragments[LOGGED_OUT_HOME] != null) {
             showFragment(LOGGED_OUT_HOME, false);
+            showFragment(LOGGED_OUT_DRAWER, false);
         }
         else if (application.isLoggedIn() && ! application.isSocial()
                 && fragments[HOME] != null) {
             showFragment(HOME, false);
+            showFragment(DRAWER, false);
         }
         else {
             // TODO showing home for now
@@ -373,9 +375,9 @@ public class HomeActivity extends FragmentActivity
 
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
-        //actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        //actionBar.setDisplayShowTitleEnabled(true);
-        //actionBar.setTitle(mTitle);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(mTitle);
     }
 
 
@@ -407,17 +409,18 @@ public class HomeActivity extends FragmentActivity
     /**
      * A placeholder fragment containing a simple view.
      */
-    /*public static class PlaceholderFragment extends android.app.Fragment {
-        *//**
+    public static class PlaceholderFragment extends android.app.Fragment {
+        /*
          * The fragment argument representing the section number for this
          * fragment.
-         *//*
+         * */
+
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        *//**
+        /*
          * Returns a new instance of this fragment for the given section
          * number.
-         *//*
+         */
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
@@ -442,5 +445,5 @@ public class HomeActivity extends FragmentActivity
             ((HomeActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
-    }*/
+    }
 }
