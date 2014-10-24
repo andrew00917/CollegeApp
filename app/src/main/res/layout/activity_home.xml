@@ -15,4 +15,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!--Home Navigation Drawer-->
+    <fragment android:id="@+id/home_navigation_drawer"
+        android:layout_width="@dimen/navigation_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:name="com.techhab.collegeapp.NavigationDrawerFragment" />
+
+    <!--Logged Out Navigation Drawer-->
+    <fragment android:id="@+id/logged_out_navigation_drawer"
+        android:layout_width="@dimen/navigation_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:name="com.techhab.collegeapp.NavigationDrawerFragment" />
+
+    <fragment android:id="@+id/navigation_drawer"
+        android:layout_width="@dimen/navigation_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:name="com.techhab.collegeapp.NavigationDrawerFragment" />
+
 </LinearLayout>

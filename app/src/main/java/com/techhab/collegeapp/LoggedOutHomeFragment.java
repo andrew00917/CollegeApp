@@ -29,15 +29,17 @@ public class LoggedOutHomeFragment extends Fragment {
 
         application = (CollegeApplication) getActivity().getApplication();
 
-        if (getActivity().getActionBar() != null && getActivity().getActionBar().isShowing()) {
-            getActivity().getActionBar().hide();
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+
         v = inflater.inflate(R.layout.fragment_logged_out_home, parent, false);
 
+        if (getActivity().getActionBar() != null && getActivity().getActionBar().isShowing()) {
+            getActivity().getActionBar().hide();
+        }
         progressContainer = v.findViewById(R.id.progressContainer);
         progressContainer.setVisibility(View.INVISIBLE);
 

@@ -45,9 +45,7 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        if ( getActivity().getActionBar() != null && ! getActivity().getActionBar().isShowing()) {
-            getActivity().getActionBar().show();
-        }
+
 
         application = (CollegeApplication) getActivity().getApplication();
         spKey = application.getLoggedInKey();
@@ -59,6 +57,9 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_home, parent, false);
 
+        if ( getActivity().getActionBar() != null && ! getActivity().getActionBar().isShowing()) {
+            getActivity().getActionBar().show();
+        }
 
         progressContainer = (FrameLayout)v.findViewById(R.id.progress_container);
         // Hide the progressContainer
