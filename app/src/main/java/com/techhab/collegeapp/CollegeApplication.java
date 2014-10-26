@@ -155,9 +155,8 @@ public class CollegeApplication extends Application {
             setIsSocial(false);
         }
         else {
-            // error
-            // check code, should not get here
-            Log.e(TAG, "Error: loading. User is not null and also not a guest.");
+            setLoggedIn(false);
+            setIsSocial(false);
         }
     }
 

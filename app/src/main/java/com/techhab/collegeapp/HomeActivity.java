@@ -70,8 +70,8 @@ public class HomeActivity extends FragmentActivity
         FragmentManager fm = getSupportFragmentManager();
         fragments[LOGGED_OUT_HOME] = fm.findFragmentById(R.id.loggedOutHomeFragment);
         fragments[HOME] = fm.findFragmentById(R.id.homeFragment);
-        fragments[LOGGED_OUT_DRAWER] = (NavigationDrawerFragment) fm.findFragmentById(R.id.logged_out_navigation_drawer);
-        fragments[DRAWER] = (NavigationDrawerFragment) fm.findFragmentById(R.id.home_navigation_drawer);
+        fragments[LOGGED_OUT_DRAWER] = fm.findFragmentById(R.id.logged_out_navigation_drawer);
+        fragments[DRAWER] = fm.findFragmentById(R.id.home_navigation_drawer);
 
         FragmentTransaction transaction = fm.beginTransaction();
         for(int i = 0; i < fragments.length; i++) {
@@ -126,17 +126,26 @@ public class HomeActivity extends FragmentActivity
         super.onResumeFragments();
         if ( ! (application.isSocial() || application.isLoggedIn())
                 && fragments[LOGGED_OUT_HOME] != null) {
+            // not logged in and also not guest
             showFragment(LOGGED_OUT_HOME, false);
             showFragment(LOGGED_OUT_DRAWER, false);
         }
         else if (application.isLoggedIn() && ! application.isSocial()
                 && fragments[HOME] != null) {
+            // logged in as guest
+            showFragment(HOME, false);
+            showFragment(DRAWER, false);
+        }
+        else if (application.isLoggedIn() && application.isSocial()
+                && fragments[HOME] != null) {
+            // logged in
             showFragment(HOME, false);
             showFragment(DRAWER, false);
         }
         else {
-            // TODO showing home for now
+            // TODO showing logged out home for now
             showFragment(LOGGED_OUT_HOME, false);
+            showFragment(LOGGED_OUT_DRAWER, false);
             //Session session = SpellCheckerService.Session.getActiveSession();
             //if (session != null && session.isOpened() && application.getCurrentUser() != null) {
             //    showFragment(HOME, false);
@@ -166,7 +175,7 @@ public class HomeActivity extends FragmentActivity
         // Save the logged-in state
         outState.putBoolean(application.getLoggedInKey(), application.isLoggedIn());
 
-        // Save the currentFBUser
+        // Save the currentUser
         if (application.getCurrentUser() != null) {
             outState.putString(application.getCurrentUserKey(), application.getCurrentUser().getUserId());
             outState.putString(application.getCurrentUserPasswordKey(), application.getCurrentUser().getPassword());
@@ -198,6 +207,7 @@ public class HomeActivity extends FragmentActivity
         if (application.IS_SOCIAL) {
             switch (fragmentIndex) {
                 case LOGGED_OUT_HOME:
+                case LOGGED_OUT_DRAWER:
                     // Hide the progressContainer in LoggedOutHomeFragment
                     if (fragments[LOGGED_OUT_HOME] != null) {
                         ((LoggedOutHomeFragment)fragments[LOGGED_OUT_HOME]).progressContainer.setVisibility(View.INVISIBLE);
@@ -206,12 +216,9 @@ public class HomeActivity extends FragmentActivity
                     application.setLoggedIn(false);
                     break;
                 case HOME:
+                case DRAWER:
                     // Set the loggedIn attribute
                     application.setLoggedIn(true);
-                    break;
-                case LOGGED_OUT_DRAWER:
-                    break;
-                case DRAWER:
                     break;
             }
         }
@@ -370,9 +377,11 @@ public class HomeActivity extends FragmentActivity
 
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+        if (actionBar != null) {
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle(mTitle);
+        }
     }
 
 
@@ -427,12 +436,12 @@ public class HomeActivity extends FragmentActivity
         public PlaceholderFragment() {
         }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
+        //@Override
+        //public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        //                         Bundle savedInstanceState) {
+        //    View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        //    return rootView;
+        //}
 
         @Override
         public void onAttach(Activity activity) {
