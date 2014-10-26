@@ -72,8 +72,8 @@ public class HomeActivity extends FragmentActivity
         FragmentManager fm = getSupportFragmentManager();
         fragments[LOGGED_OUT_HOME] = fm.findFragmentById(R.id.loggedOutHomeFragment);
         fragments[HOME] = fm.findFragmentById(R.id.homeFragment);
-        fragments[LOGGED_OUT_DRAWER] = (NavigationDrawerFragment) fm.findFragmentById(R.id.logged_out_navigation_drawer);
-        fragments[DRAWER] = (NavigationDrawerFragment) fm.findFragmentById(R.id.home_navigation_drawer);
+        fragments[LOGGED_OUT_DRAWER] = fm.findFragmentById(R.id.logged_out_navigation_drawer);
+        fragments[DRAWER] = fm.findFragmentById(R.id.home_navigation_drawer);
 
         FragmentTransaction transaction = fm.beginTransaction();
         for(int i = 0; i < fragments.length; i++) {
