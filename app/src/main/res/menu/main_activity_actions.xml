@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Search Action -->
+    <item android:id="@+id/action_search"
+        android:icon="@drawable/ic_action_search"
+        android:title="@string/action_search"
+        android:showAsAction="ifRoom" />
+    <!-- Overflow -->
+    <item
+        android:id="@+id/action_overflow"
+        android:icon="@drawable/ic_action_overflow"
+        android:showAsAction="always"
+        android:title="@string/action_overflow">
+        <menu>
+
+            <!-- Refresh -->
+            <item
+                android:id="@+id/action_refresh"
+                android:icon="@drawable/ic_action_refresh"
+                android:showAsAction="never"
+                android:title="@string/action_refresh"/>
+
+            <!-- Send -->
+            <item
+                android:id="@+id/action_send"
+                android:icon="@drawable/ic_action_refresh"
+                android:showAsAction="never"
+                android:title="@string/action_send"/>
+
+        </menu>
+    </item>
+</menu>
