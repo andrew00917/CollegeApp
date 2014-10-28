@@ -15,7 +15,8 @@
     <fragment android:name="com.techhab.collegeapp.LoggedOutHomeFragment"
         android:id="@+id/loggedOutHomeFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_logged_out_home" />
 
     <fragment android:name="com.techhab.collegeapp.HomeFragment"
         android:id="@+id/homeFragment"

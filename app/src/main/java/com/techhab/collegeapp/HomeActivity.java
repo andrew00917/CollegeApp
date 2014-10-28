@@ -13,6 +13,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,8 +72,8 @@ public class HomeActivity extends FragmentActivity
         FragmentManager fm = getSupportFragmentManager();
         fragments[LOGGED_OUT_HOME] = fm.findFragmentById(R.id.loggedOutHomeFragment);
         fragments[HOME] = fm.findFragmentById(R.id.homeFragment);
-        fragments[LOGGED_OUT_DRAWER] = (NavigationDrawerFragment) fm.findFragmentById(R.id.logged_out_navigation_drawer);
-        fragments[DRAWER] = (NavigationDrawerFragment) fm.findFragmentById(R.id.home_navigation_drawer);
+        fragments[LOGGED_OUT_DRAWER] = fm.findFragmentById(R.id.logged_out_navigation_drawer);
+        fragments[DRAWER] = fm.findFragmentById(R.id.home_navigation_drawer);
 
         FragmentTransaction transaction = fm.beginTransaction();
         for(int i = 0; i < fragments.length; i++) {
@@ -127,12 +129,10 @@ public class HomeActivity extends FragmentActivity
         if ( ! (application.isSocial() || application.isLoggedIn())
                 && fragments[LOGGED_OUT_HOME] != null) {
             showFragment(LOGGED_OUT_HOME, false);
-            showFragment(LOGGED_OUT_DRAWER, false);
         }
         else if (application.isLoggedIn() && ! application.isSocial()
                 && fragments[HOME] != null) {
             showFragment(HOME, false);
-            showFragment(DRAWER, false);
         }
         else {
             // TODO showing home for now
@@ -376,18 +376,21 @@ public class HomeActivity extends FragmentActivity
     }
 
 
-    /*@Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.main, menu);
-            restoreActionBar();
-            return true;
-        }
+//        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+//            // Only show items in the action bar relevant to this screen
+//            // if the drawer is not showing. Otherwise, let the drawer
+//            // decide what to show in the action bar.
+//            getMenuInflater().inflate(R.menu.main, menu);
+//            restoreActionBar();
+//            return true;
+//        }
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_activity_actions, menu);
         return super.onCreateOptionsMenu(menu);
-    }*/
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -395,10 +398,18 @@ public class HomeActivity extends FragmentActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                //openSearch();
+                return true;
+            case R.id.action_refresh:
+                //refresh();
+                return true;
+            case R.id.action_overflow:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     /**

@@ -29,7 +29,6 @@ public class LoggedOutHomeFragment extends Fragment {
 
         application = (CollegeApplication) getActivity().getApplication();
 
-
     }
 
     @Override
