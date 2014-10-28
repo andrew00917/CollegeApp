@@ -129,12 +129,10 @@ public class HomeActivity extends FragmentActivity
         if ( ! (application.isSocial() || application.isLoggedIn())
                 && fragments[LOGGED_OUT_HOME] != null) {
             showFragment(LOGGED_OUT_HOME, false);
-            showFragment(LOGGED_OUT_DRAWER, false);
         }
         else if (application.isLoggedIn() && ! application.isSocial()
                 && fragments[HOME] != null) {
             showFragment(HOME, false);
-            showFragment(DRAWER, false);
         }
         else {
             // TODO showing home for now
