@@ -144,6 +144,15 @@ public class HomeActivity extends FragmentActivity
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
+        // T0. GRIFFIN:
+
+        // I commented out showFragment for drawers because they were
+        // causing trouble for the fragments showing.
+        // if you uncomment them, you will notice the first page you will
+        // see when you launch the app will be blank.
+        // You can delete this comment once you see them.
+
+        // FROM. Andrew
         if ( ! (application.isSocial() || application.isLoggedIn())
                 && fragments[LOGGED_OUT_HOME] != null) {
             // not logged in and also not guest
