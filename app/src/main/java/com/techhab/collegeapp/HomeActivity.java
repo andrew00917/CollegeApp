@@ -196,8 +196,8 @@ public class HomeActivity extends FragmentActivity
         // Save the logged-in state
         outState.putBoolean(application.getLoggedInKey(), application.isLoggedIn());
 
-        // Save the currentUser
-        if (application.getCurrentUser() != null) {
+        if (application.isLoggedIn() && application.isSocial()) {
+            // Save the currentUser
             outState.putString(application.getCurrentUserKey(), application.getCurrentUser().getUserId());
             outState.putString(application.getCurrentUserPasswordKey(), application.getCurrentUser().getPassword());
         }
