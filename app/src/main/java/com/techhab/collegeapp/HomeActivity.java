@@ -148,24 +148,24 @@ public class HomeActivity extends FragmentActivity
                 && fragments[LOGGED_OUT_HOME] != null) {
             // not logged in and also not guest
             showFragment(LOGGED_OUT_HOME, false);
-            showFragment(LOGGED_OUT_DRAWER, false);
+            //showFragment(LOGGED_OUT_DRAWER, false);
         }
         else if (application.isLoggedIn() && ! application.isSocial()
                 && fragments[HOME] != null) {
             // logged in as guest
             showFragment(HOME, false);
-            showFragment(DRAWER, false);
+            //showFragment(DRAWER, false);
         }
         else if (application.isLoggedIn() && application.isSocial()
                 && fragments[HOME] != null) {
             // logged in
             showFragment(HOME, false);
-            showFragment(DRAWER, false);
+            //showFragment(DRAWER, false);
         }
         else {
             // TODO showing logged out home for now
             showFragment(LOGGED_OUT_HOME, false);
-            showFragment(LOGGED_OUT_DRAWER, false);
+            //showFragment(LOGGED_OUT_DRAWER, false);
 
             //Session session = SpellCheckerService.Session.getActiveSession();
             //if (session != null && session.isOpened() && application.getCurrentUser() != null) {
