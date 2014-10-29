@@ -34,6 +34,10 @@ public class CollegeApplication extends Application {
 
     /* College App attributes getters and setters */
 
+    public String getTag() {
+        return TAG;
+    }
+
     public boolean isSocial() {
         return IS_SOCIAL;
     }
@@ -120,11 +124,9 @@ public class CollegeApplication extends Application {
             editor.putLong("lastLoggedInTime", System.currentTimeMillis());
         }
         else if (getCurrentUser() != null && ! isSocial()) {
-            // currently using app as guest
-            // prompt the user with Not Authorized dialog
-            // but if the user gets the prompt, something wrong with our guest authentication
-            // double check the code accordingly.
-
+            // guest user.
+            // store last logged in time and nothing else
+            editor.putLong("lastLoggedInTime", System.currentTimeMillis());
         }
         else {
             // not logged in, not guest
@@ -187,5 +189,14 @@ public class CollegeApplication extends Application {
                 // DO NOTHING HERE.
             }
         }
+        else {
+            if (isSocial()) {
+                // not logged in but suppose to
+                // set logged in and social attribute to both false
+                setIsSocial(false);
+                setLoggedIn(false);
+            }
+        }
+        load();
     }
 }

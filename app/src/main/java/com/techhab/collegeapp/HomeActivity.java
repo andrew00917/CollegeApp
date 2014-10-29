@@ -84,7 +84,7 @@ public class HomeActivity extends FragmentActivity
         // Restore the logged-in user's information if it has been saved and the existing data in the application
         // has been destroyed (i.e. the app hasn't been used for a while and memory on the device is low)
         // - only do this if the session is open for the social version only
-        if (application.IS_SOCIAL) {
+        if (application.isSocial()) {
             // loggedIn
             if (savedInstanceState != null) {
                 boolean loggedInState = savedInstanceState.getBoolean(application.getLoggedInKey(), false);
@@ -95,14 +95,32 @@ public class HomeActivity extends FragmentActivity
                         // currentUser
                         String currentUserString = savedInstanceState.getString(application.getCurrentUserKey());
                         String currentUserPassword = savedInstanceState.getString(application.getCurrentUserPasswordKey());
-                        if (currentUserString != null) {
+                        if (currentUserString.equals("guest")){
+                            // Logged in but as guest
+                            // set is social attribute
+                            application.setIsSocial(false);
+                        }
+                        else {
                             User currentUser = new User(currentUserString, currentUserPassword);
-                            application.setCurrentUser(currentUser);
+                            if ( ! currentUser.getUserName().equals("guest")) {
+                                application.setCurrentUser(currentUser);
+                                application.setIsSocial(true);
+                            }
+                            else {
+                                application.setIsSocial(false);
+                            }
                         }
                     } catch (Exception e) {
-                        Log.e(application.TAG, e.toString());
+                        Log.e(application.getTag(), e.toString());
                     }
                 }
+                else {
+                    application.setIsSocial(false);
+                }
+            }
+            else {
+                application.setIsSocial(false);
+                application.setLoggedIn(false);
             }
         }
 
@@ -130,24 +148,25 @@ public class HomeActivity extends FragmentActivity
                 && fragments[LOGGED_OUT_HOME] != null) {
             // not logged in and also not guest
             showFragment(LOGGED_OUT_HOME, false);
-            showFragment(LOGGED_OUT_DRAWER, false);
+            //showFragment(LOGGED_OUT_DRAWER, false);
         }
         else if (application.isLoggedIn() && ! application.isSocial()
                 && fragments[HOME] != null) {
             // logged in as guest
             showFragment(HOME, false);
-            showFragment(DRAWER, false);
+            //showFragment(DRAWER, false);
         }
         else if (application.isLoggedIn() && application.isSocial()
                 && fragments[HOME] != null) {
             // logged in
             showFragment(HOME, false);
-            showFragment(DRAWER, false);
+            //showFragment(DRAWER, false);
         }
         else {
             // TODO showing logged out home for now
             showFragment(LOGGED_OUT_HOME, false);
-            showFragment(LOGGED_OUT_DRAWER, false);
+            //showFragment(LOGGED_OUT_DRAWER, false);
+
             //Session session = SpellCheckerService.Session.getActiveSession();
             //if (session != null && session.isOpened() && application.getCurrentUser() != null) {
             //    showFragment(HOME, false);
@@ -206,10 +225,9 @@ public class HomeActivity extends FragmentActivity
         transaction.commit();
 
         // Do other changes depending on the fragment that is now showing
-        if (application.IS_SOCIAL) {
+        if (application.isSocial()) {
             switch (fragmentIndex) {
                 case LOGGED_OUT_HOME:
-                case LOGGED_OUT_DRAWER:
                     // Hide the progressContainer in LoggedOutHomeFragment
                     if (fragments[LOGGED_OUT_HOME] != null) {
                         ((LoggedOutHomeFragment)fragments[LOGGED_OUT_HOME]).progressContainer.setVisibility(View.INVISIBLE);
@@ -218,7 +236,6 @@ public class HomeActivity extends FragmentActivity
                     application.setLoggedIn(false);
                     break;
                 case HOME:
-                case DRAWER:
                     // Set the loggedIn attribute
                     application.setLoggedIn(true);
                     break;

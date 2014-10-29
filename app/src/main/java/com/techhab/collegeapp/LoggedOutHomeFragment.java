@@ -13,6 +13,7 @@ public class LoggedOutHomeFragment extends Fragment {
 
     private CollegeApplication application;
 
+    private static final int LOGGED_OUT_HOME_FRAGMENT = 0;
     private static final int HOME_FRAGMENT = 1;
 
     View progressContainer;
@@ -63,14 +64,19 @@ public class LoggedOutHomeFragment extends Fragment {
 
         try {
             User newUser = new User(u, p);
+            if (u.equals("guest")) {
+                application.setIsSocial(false);
+            }
             application.setCurrentUser(newUser);
             application.load();
-            if (newUser.isValid()) {
+            if (application.isLoggedIn()) {
                 ((HomeActivity) getActivity()).showFragment(HOME_FRAGMENT, false);
             }
             else {
                 // exception
+                ((HomeActivity) getActivity()).showFragment(LOGGED_OUT_HOME_FRAGMENT, false);
             }
+            application.save();
         } catch (Exception e) {
             e.printStackTrace();
             // alert user for an error
