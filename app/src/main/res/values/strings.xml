@@ -78,12 +78,13 @@
         <item>Sub menu 10 4</item>
         <item>Sub menu 10 5</item>
     </string-array>
-    <string-array name="sub_menu_11">
-        <item>Sub menu 11 1</item>
-        <item>Sub menu 11 2</item>
-        <item>Sub menu 11 3</item>
-        <item>Sub menu 11 4</item>
-        <item>Sub menu 11 5</item>
+    <string-array name="campus_info">
+        <item>Facilities</item>
+        <item>Cafeteria</item>
+        <item>Academic Calender</item>
+        <item>Security</item>
+        <item>Grocery Info</item>
+        <item>Campus Map</item>
     </string-array>
     <string-array name="sub_menu_20">
         <item>Sub menu 20 1</item>
@@ -106,9 +107,11 @@
     <string name="login">Login</string>
 
     <!-- Action Bar -->
-    <string name = "action_search">Search</string>
-    <string name = "action_refresh">Refresh</string>
+    <string name="action_search">Search</string>
+    <string name="action_refresh">Refresh</string>
     <string name="action_settings">Settings</string>
     <string name="action_overflow">More</string>
     <string name="action_send">Send</string>
+    <string name="title_activity_info">InfoActivity</string>
+
 </resources>
