@@ -84,7 +84,7 @@ public class HomeActivity extends FragmentActivity
         // Restore the logged-in user's information if it has been saved and the existing data in the application
         // has been destroyed (i.e. the app hasn't been used for a while and memory on the device is low)
         // - only do this if the session is open for the social version only
-        if (application.IS_SOCIAL) {
+        if (application.isSocial()) {
             // loggedIn
             if (savedInstanceState != null) {
                 boolean loggedInState = savedInstanceState.getBoolean(application.getLoggedInKey(), false);
@@ -95,14 +95,32 @@ public class HomeActivity extends FragmentActivity
                         // currentUser
                         String currentUserString = savedInstanceState.getString(application.getCurrentUserKey());
                         String currentUserPassword = savedInstanceState.getString(application.getCurrentUserPasswordKey());
-                        if (currentUserString != null) {
+                        if (currentUserString.equals("guest")){
+                            // Logged in but as guest
+                            // set is social attribute
+                            application.setIsSocial(false);
+                        }
+                        else {
                             User currentUser = new User(currentUserString, currentUserPassword);
-                            application.setCurrentUser(currentUser);
+                            if ( ! currentUser.getUserName().equals("guest")) {
+                                application.setCurrentUser(currentUser);
+                                application.setIsSocial(true);
+                            }
+                            else {
+                                application.setIsSocial(false);
+                            }
                         }
                     } catch (Exception e) {
-                        Log.e(application.TAG, e.toString());
+                        Log.e(application.getTag(), e.toString());
                     }
                 }
+                else {
+                    application.setIsSocial(false);
+                }
+            }
+            else {
+                application.setIsSocial(false);
+                application.setLoggedIn(false);
             }
         }
 
@@ -126,17 +144,38 @@ public class HomeActivity extends FragmentActivity
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
+        // T0. GRIFFIN:
+
+        // I commented out showFragment for drawers because they were
+        // causing trouble for the fragments showing.
+        // if you uncomment them, you will notice the first page you will
+        // see when you launch the app will be blank.
+        // You can delete this comment once you see them.
+
+        // FROM. Andrew
         if ( ! (application.isSocial() || application.isLoggedIn())
                 && fragments[LOGGED_OUT_HOME] != null) {
+            // not logged in and also not guest
             showFragment(LOGGED_OUT_HOME, false);
+            //showFragment(LOGGED_OUT_DRAWER, false);
         }
         else if (application.isLoggedIn() && ! application.isSocial()
                 && fragments[HOME] != null) {
+            // logged in as guest
             showFragment(HOME, false);
+            //showFragment(DRAWER, false);
+        }
+        else if (application.isLoggedIn() && application.isSocial()
+                && fragments[HOME] != null) {
+            // logged in
+            showFragment(HOME, false);
+            //showFragment(DRAWER, false);
         }
         else {
-            // TODO showing home for now
+            // TODO showing logged out home for now
             showFragment(LOGGED_OUT_HOME, false);
+            //showFragment(LOGGED_OUT_DRAWER, false);
+
             //Session session = SpellCheckerService.Session.getActiveSession();
             //if (session != null && session.isOpened() && application.getCurrentUser() != null) {
             //    showFragment(HOME, false);
@@ -166,8 +205,8 @@ public class HomeActivity extends FragmentActivity
         // Save the logged-in state
         outState.putBoolean(application.getLoggedInKey(), application.isLoggedIn());
 
-        // Save the currentFBUser
-        if (application.getCurrentUser() != null) {
+        if (application.isLoggedIn() && application.isSocial()) {
+            // Save the currentUser
             outState.putString(application.getCurrentUserKey(), application.getCurrentUser().getUserId());
             outState.putString(application.getCurrentUserPasswordKey(), application.getCurrentUser().getPassword());
         }
@@ -195,7 +234,7 @@ public class HomeActivity extends FragmentActivity
         transaction.commit();
 
         // Do other changes depending on the fragment that is now showing
-        if (application.IS_SOCIAL) {
+        if (application.isSocial()) {
             switch (fragmentIndex) {
                 case LOGGED_OUT_HOME:
                     // Hide the progressContainer in LoggedOutHomeFragment
@@ -208,10 +247,6 @@ public class HomeActivity extends FragmentActivity
                 case HOME:
                     // Set the loggedIn attribute
                     application.setLoggedIn(true);
-                    break;
-                case LOGGED_OUT_DRAWER:
-                    break;
-                case DRAWER:
                     break;
             }
         }
@@ -370,9 +405,11 @@ public class HomeActivity extends FragmentActivity
 
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+        if (actionBar != null) {
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle(mTitle);
+        }
     }
 
 
@@ -438,12 +475,12 @@ public class HomeActivity extends FragmentActivity
         public PlaceholderFragment() {
         }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
+        //@Override
+        //public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        //                         Bundle savedInstanceState) {
+        //    View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        //    return rootView;
+        //}
 
         @Override
         public void onAttach(Activity activity) {

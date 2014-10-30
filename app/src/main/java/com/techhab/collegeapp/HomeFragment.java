@@ -6,6 +6,8 @@ import android.animation.Keyframe;
 import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -48,7 +50,8 @@ public class HomeFragment extends Fragment {
     private static final int MAIN_20_ID = R.id.main_menu_20;
     private static final int MAIN_21_ID = R.id.main_menu_21;
 
-    // Sub menu showing check
+    // Display check
+    private boolean isLongPressed = false;
     private boolean isSubmenuShowing = false;
 
     // SharedPreferences
@@ -63,8 +66,6 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
-
 
         application = (CollegeApplication) getActivity().getApplication();
         spKey = application.getLoggedInKey();
@@ -90,9 +91,11 @@ public class HomeFragment extends Fragment {
         // Hide the progressContainer
         progressContainer.setVisibility(View.INVISIBLE);
 
-        View.OnTouchListener listener = new View.OnTouchListener() {
+        View.OnTouchListener touchListener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
+                boolean defaultResult = view.onTouchEvent(event);
+
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         switch (view.getId()) {
@@ -116,51 +119,110 @@ public class HomeFragment extends Fragment {
                                 break;
                         }
                         break;
+                    case MotionEvent.ACTION_CANCEL:
+                    case MotionEvent.ACTION_OUTSIDE:
+                        switch (view.getId()) {
+                            case MAIN_00_ID:
+                                main00.setImageDrawable(getResources().getDrawable(R.drawable.money));
+                                break;
+                            case MAIN_01_ID:
+                                main01.setImageDrawable(getResources().getDrawable(R.drawable.graph));
+                                break;
+                            case MAIN_10_ID:
+                                main10.setImageDrawable(getResources().getDrawable(R.drawable.docs));
+                                break;
+                            case MAIN_11_ID:
+                                main11.setImageDrawable(getResources().getDrawable(R.drawable.location));
+                                break;
+                            case MAIN_20_ID:
+                                main20.setImageDrawable(getResources().getDrawable(R.drawable.payments));
+                                break;
+                            case MAIN_21_ID:
+                                main21.setImageDrawable(getResources().getDrawable(R.drawable.dots));
+                                break;
+                        }
+                        return false;
                     case MotionEvent.ACTION_UP:
                         switch (view.getId()) {
                             case MAIN_00_ID:
                                 main00.setImageDrawable(getResources().getDrawable(R.drawable.money));
-                                toggleMenu(view);
                                 break;
                             case MAIN_01_ID:
                                 main01.setImageDrawable(getResources().getDrawable(R.drawable.graph));
-                                toggleMenu(view);
                                 break;
                             case MAIN_10_ID:
                                 main10.setImageDrawable(getResources().getDrawable(R.drawable.docs));
-                                toggleMenu(view);
                                 break;
                             case MAIN_11_ID:
                                 main11.setImageDrawable(getResources().getDrawable(R.drawable.location));
-                                toggleMenu(view);
                                 break;
                             case MAIN_20_ID:
                                 main20.setImageDrawable(getResources().getDrawable(R.drawable.payments));
-                                toggleMenu(view);
                                 break;
                             case MAIN_21_ID:
                                 main21.setImageDrawable(getResources().getDrawable(R.drawable.dots));
-                                toggleMenu(view);
                                 break;
                         }
+                        if ( ! isLongPressed) {
+                            toggleMenu(view);
+                        }
+                        break;
+                    default:
+                        return defaultResult;
+                }
+                return true;
+            }
+        };
+
+        View.OnLongClickListener longClickInfoListener = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                isLongPressed = true;
+
+                Intent intent = new Intent(getActivity(), InfoActivity.class);
+                switch (view.getId()) {
+                    case MAIN_00_ID:
+                        break;
+                    case MAIN_01_ID:
+                        break;
+                    case MAIN_10_ID:
+                        break;
+                    case MAIN_11_ID:
+                        intent.putExtra("position", "");
+                        break;
+                    case MAIN_20_ID:
+                        break;
+                    case MAIN_21_ID:
                         break;
                 }
-                return false;
+                getActivity().startActivity(intent);
+                return true;
             }
         };
 
         main00 = (ImageView) v.findViewById(R.id.main_menu_00);
-        main00.setOnTouchListener(listener);
+        main00.setOnTouchListener(touchListener);
+        //main00.setOnLongClickListener(longClickListener);
+
         main01 = (ImageView) v.findViewById(R.id.main_menu_01);
-        main01.setOnTouchListener(listener);
+        main01.setOnTouchListener(touchListener);
+        //main01.setOnLongClickListener(longClickListener);
+
         main10 = (ImageView) v.findViewById(R.id.main_menu_10);
-        main10.setOnTouchListener(listener);
+        main10.setOnTouchListener(touchListener);
+        //main10.setOnLongClickListener(longClickListener);
+
         main11 = (ImageView) v.findViewById(R.id.main_menu_11);
-        main11.setOnTouchListener(listener);
+        main11.setOnTouchListener(touchListener);
+        main11.setOnLongClickListener(longClickInfoListener);
+
         main20 = (ImageView) v.findViewById(R.id.main_menu_20);
-        main20.setOnTouchListener(listener);
+        main20.setOnTouchListener(touchListener);
+        //main20.setOnLongClickListener(longClickListener);
+
         main21 = (ImageView) v.findViewById(R.id.main_menu_21);
-        main21.setOnTouchListener(listener);
+        main21.setOnTouchListener(touchListener);
+        //main21.setOnLongClickListener(longClickListener);
 
         ImageView submenuToggle = (ImageView) v.findViewById(R.id.main_menu_holder);
         submenuToggle.setOnClickListener(new View.OnClickListener() {
@@ -191,6 +253,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        isLongPressed = false;
     }
 
     @Override
@@ -253,7 +316,10 @@ public class HomeFragment extends Fragment {
             mainmenuHolder.setImageDrawable(buttonClicked.getDrawable());
 
             // set up submenu list view
-            String[] values;
+            final String[] values;
+            // TODO
+            // change array id if id of array is changed in string resource file
+            // otherwise do nothing in this method
             switch (view.getId()) {
                 case MAIN_00_ID:
                     values = getResources().getStringArray(R.array.sub_menu_00);
@@ -265,7 +331,7 @@ public class HomeFragment extends Fragment {
                     values = getResources().getStringArray(R.array.sub_menu_10);
                     break;
                 case MAIN_11_ID:
-                    values = getResources().getStringArray(R.array.sub_menu_11);
+                    values = getResources().getStringArray(R.array.campus_info);
                     break;
                 case MAIN_20_ID:
                     values = getResources().getStringArray(R.array.sub_menu_20);
@@ -278,28 +344,26 @@ public class HomeFragment extends Fragment {
                     break;
             }
 
-            //final ArrayList<String> list = new ArrayList<String>();
-            //for (int i = 0; i < values.length; ++i) {
-            //    list.add(values[i]);
-            //}
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity()
                     , android.R.layout.simple_list_item_1, android.R.id.text1, values);
             submenu.setAdapter(adapter);
 
+            final Intent subIntent = new Intent(getActivity(), InfoActivity.class);
             submenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> parent, final View view,
                                         int position, long id) {
                     final String item = (String) parent.getItemAtPosition(position);
-                    //view.animate().setDuration(2000).alpha(0).withEndAction(new Runnable() {
-                    //            @Override
-                    //            public void run() {
-                    //                submenu.remove(item);
-                    //                adapter.notifyDataSetChanged();
-                    //                view.setAlpha(1);
-                    //            }
-                    //        });
+                    // default key is ""
+                    String key = "";
+                    for (int i = 0; i < values.length; i++) {
+                        if (item.equals(values[i])) {
+                            key = values[i].toLowerCase();
+                        }
+                    }
+                    subIntent.putExtra("position", key);
+                    startActivity(subIntent);
                 }
             });
 

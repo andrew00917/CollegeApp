@@ -3,7 +3,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="com.techhab.collegeapp.HomeActivity" >
+    tools:context="com.techhab.collegeapp.InfoActivity" >
 
     <!-- The main content view -->
     <FrameLayout
@@ -11,16 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <fragment android:name="com.techhab.collegeapp.LoggedOutHomeFragment"
-        android:id="@+id/loggedOutHomeFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/fragment_logged_out_home" />
-
-    <fragment android:name="com.techhab.collegeapp.HomeFragment"
-        android:id="@+id/homeFragment"
+    <!-- fragments -->
+    <fragment android:name="com.techhab.collegeapp.InfoFragment"
+        android:id="@+id/infoFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <fragment android:name="com.techhab.collegeapp.FacilitiesFragment"
+        android:id="@+id/facilitiesFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <!-- TODO -->
+    <!-- add more fragments here follow the format above -->
 
     <!--Home Navigation Drawer-->
     <fragment android:id="@+id/home_navigation_drawer"
@@ -29,12 +30,4 @@
         android:layout_gravity="start"
         android:name="com.techhab.collegeapp.NavigationDrawerFragment" />
 
-    <!--Logged Out Navigation Drawer-->
-    <fragment android:id="@+id/logged_out_navigation_drawer"
-        android:layout_width="@dimen/navigation_drawer_width"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:name="com.techhab.collegeapp.NavigationDrawerFragment" />
-
- </android.support.v4.widget.DrawerLayout>
-
+</android.support.v4.widget.DrawerLayout>

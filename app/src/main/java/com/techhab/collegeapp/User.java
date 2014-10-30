@@ -24,12 +24,15 @@ public class User {
     }
 
     public User(String id, String password) {
+        setUserId(id);
+        setPassword(password);
         if (isValid()) {
-            setUserId(id);
-            setPassword(password);
+            return;
         }
         else {
-            // throw an error
+            // TODO throw an error
+            setUserId("guest");
+            setPassword(null);
         }
     }
 
