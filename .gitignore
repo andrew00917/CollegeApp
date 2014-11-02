@@ -34,3 +34,4 @@ build/
 .gradle/
 app/build.gradle
 app/app.iml
+CollegeApp.iml
