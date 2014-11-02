@@ -20,6 +20,10 @@
         android:id="@+id/facilitiesFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <fragment android:name="com.techhab.collegeapp.CalenderFragment"
+        android:id="@+id/calenderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     <!-- TODO -->
     <!-- add more fragments here follow the format above -->
 

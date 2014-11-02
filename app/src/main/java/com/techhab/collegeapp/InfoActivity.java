@@ -22,11 +22,16 @@ public class InfoActivity extends FragmentActivity
     // Fragment attributes
     private static final int INFO_HOME = 0;
     private static final int FACILITIES = 1;
+    //private static final int CAFETERIA = 2;
+    private static final int CALENDER = 2;
+    //private static final int SECURITY = 4;
+    //private static final int GROCERY = 5;
+    //private static final int MAP = 6;
     // TODO
     // PLEASE READ THIS COMMENT BEFORE ADDING FRAGMENTS
-    // Make sure to add fragments above this comment
+    // Make sure to uncomment fragments above this comment
     // Then change the DRAWER int below accordingly
-    private static final int DRAWER = 2;
+    private static final int DRAWER = 3;
     private static final int FRAGMENT_COUNT = DRAWER +1;
     private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
 
@@ -51,8 +56,12 @@ public class InfoActivity extends FragmentActivity
         FragmentManager fm = getSupportFragmentManager();
         fragments[INFO_HOME] = fm.findFragmentById(R.id.infoFragment);
         fragments[FACILITIES] = fm.findFragmentById(R.id.facilitiesFragment);
+        //fragments[CAFETERIA] = fm.findFragmentById(R.id.cafeteriaFragment);
+        fragments[CALENDER] = fm.findFragmentById(R.id.calenderFragment);
+        //fragments[SECURITY] = fm.findFragmentById(R.id.securityFragment);
+        //fragments[GROCERY] = fm.findFragmentById(R.id.groceryFragment);
+        //fragments[MAP] = fm.findFragmentById(R.id.mapFragment);
         // TODO
-        // More fragments go here
         fragments[DRAWER] = fm.findFragmentById(R.id.home_navigation_drawer);
 
         FragmentTransaction transaction = fm.beginTransaction();
@@ -77,9 +86,14 @@ public class InfoActivity extends FragmentActivity
         if (position.equals("facilities")) {
             showFragment(FACILITIES, false);
         }
-        else if (position.equals("")) {
-            // default behavior
-            showFragment(INFO_HOME, false);
+        else if (position.equals("cafeteria")) {
+
+        }
+        else if (position.equals("academic calender")) {
+            showFragment(CALENDER, false);
+        }
+        else if (position.equals("campus map")) {
+
         }
         else {
             // default behavior
