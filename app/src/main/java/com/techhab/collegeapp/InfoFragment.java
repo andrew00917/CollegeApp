@@ -20,8 +20,8 @@ public class InfoFragment extends Fragment {
     private Context context;
 
     private static final int FACILITIES = 1;
-    //private static final int CAFETERIA = 2;
-    private static final int CALENDER = 2;
+    private static final int CAFETERIA = 2;
+    private static final int CALENDER = 3;
     //private static final int SECURITY = 4;
     //private static final int GROCERY = 5;
     //private static final int MAP = 6;
@@ -70,7 +70,7 @@ public class InfoFragment extends Fragment {
                     ((InfoActivity) getActivity()).showFragment(FACILITIES, false);
                 }
                 else if (item.equals("Cafeteria")) {
-
+                    ((InfoActivity) getActivity()).showFragment(CAFETERIA, false);
                 }
                 else if (item.equals("Academic Calender")) {
                     ((InfoActivity) getActivity()).showFragment(CALENDER, false);

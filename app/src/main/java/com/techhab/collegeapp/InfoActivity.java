@@ -22,8 +22,8 @@ public class InfoActivity extends FragmentActivity
     // Fragment attributes
     private static final int INFO_HOME = 0;
     private static final int FACILITIES = 1;
-    //private static final int CAFETERIA = 2;
-    private static final int CALENDER = 2;
+    private static final int CAFETERIA = 2;
+    private static final int CALENDER = 3;
     //private static final int SECURITY = 4;
     //private static final int GROCERY = 5;
     //private static final int MAP = 6;
@@ -31,7 +31,7 @@ public class InfoActivity extends FragmentActivity
     // PLEASE READ THIS COMMENT BEFORE ADDING FRAGMENTS
     // Make sure to uncomment fragments above this comment
     // Then change the DRAWER int below accordingly
-    private static final int DRAWER = 3;
+    private static final int DRAWER = 4;
     private static final int FRAGMENT_COUNT = DRAWER +1;
     private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
 
@@ -56,7 +56,7 @@ public class InfoActivity extends FragmentActivity
         FragmentManager fm = getSupportFragmentManager();
         fragments[INFO_HOME] = fm.findFragmentById(R.id.infoFragment);
         fragments[FACILITIES] = fm.findFragmentById(R.id.facilitiesFragment);
-        //fragments[CAFETERIA] = fm.findFragmentById(R.id.cafeteriaFragment);
+        fragments[CAFETERIA] = fm.findFragmentById(R.id.cafeteriaFragment);
         fragments[CALENDER] = fm.findFragmentById(R.id.calenderFragment);
         //fragments[SECURITY] = fm.findFragmentById(R.id.securityFragment);
         //fragments[GROCERY] = fm.findFragmentById(R.id.groceryFragment);
@@ -87,7 +87,7 @@ public class InfoActivity extends FragmentActivity
             showFragment(FACILITIES, false);
         }
         else if (position.equals("cafeteria")) {
-
+            showFragment(CAFETERIA, false);
         }
         else if (position.equals("academic calender")) {
             showFragment(CALENDER, false);
