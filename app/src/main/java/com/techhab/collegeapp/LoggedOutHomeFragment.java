@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.support.v4.widget.DrawerLayout;
 
 
 public class LoggedOutHomeFragment extends Fragment {
@@ -71,6 +72,7 @@ public class LoggedOutHomeFragment extends Fragment {
             application.load();
             if (application.isLoggedIn()) {
                 ((HomeActivity) getActivity()).showFragment(HOME_FRAGMENT, false);
+                ((HomeActivity) getActivity()).mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             }
             else {
                 // exception

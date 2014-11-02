@@ -11,13 +11,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 
@@ -33,7 +32,7 @@ public class HomeActivity extends FragmentActivity
     private static final Uri M_COLLEGE_URL = Uri.parse("http://kzoo.edu");
 
     // Fragment attributes
-    private static final int LOGGED_OUT_HOME = 0;
+    private static final int LOG_IN_HOME = 0;
     private static final int HOME = 1;
     private static final int LOGGED_OUT_DRAWER = 2;
     private static final int DRAWER = 3;
@@ -49,7 +48,7 @@ public class HomeActivity extends FragmentActivity
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
-    //private NavigationDrawerFragment mNavigationDrawerFragment;
+    public DrawerLayout mDrawerLayout;
 
     /**
      * Used to store the last screen title.
@@ -69,8 +68,10 @@ public class HomeActivity extends FragmentActivity
 
         application = (CollegeApplication) getApplication();
 
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         FragmentManager fm = getSupportFragmentManager();
-        fragments[LOGGED_OUT_HOME] = fm.findFragmentById(R.id.loggedOutHomeFragment);
+        fragments[LOG_IN_HOME] = fm.findFragmentById(R.id.loggedOutHomeFragment);
         fragments[HOME] = fm.findFragmentById(R.id.homeFragment);
         fragments[LOGGED_OUT_DRAWER] = fm.findFragmentById(R.id.logged_out_navigation_drawer);
         fragments[DRAWER] = fm.findFragmentById(R.id.home_navigation_drawer);
@@ -154,10 +155,11 @@ public class HomeActivity extends FragmentActivity
 
         // FROM. Andrew
         if ( ! (application.isSocial() || application.isLoggedIn())
-                && fragments[LOGGED_OUT_HOME] != null) {
+                && fragments[LOG_IN_HOME] != null) {
             // not logged in and also not guest
-            showFragment(LOGGED_OUT_HOME, false);
+            showFragment(LOG_IN_HOME, false);
             //showFragment(LOGGED_OUT_DRAWER, false);
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
         else if (application.isLoggedIn() && ! application.isSocial()
                 && fragments[HOME] != null) {
@@ -173,7 +175,7 @@ public class HomeActivity extends FragmentActivity
         }
         else {
             // TODO showing logged out home for now
-            showFragment(LOGGED_OUT_HOME, false);
+            showFragment(LOG_IN_HOME, false);
             //showFragment(LOGGED_OUT_DRAWER, false);
 
             //Session session = SpellCheckerService.Session.getActiveSession();
@@ -181,7 +183,7 @@ public class HomeActivity extends FragmentActivity
             //    showFragment(HOME, false);
             //}
             //else {
-            //    showFragment(LOGGED_OUT_HOME, false);
+            //    showFragment(LOG_IN_HOME, false);
             //}
         }
     }
@@ -236,10 +238,10 @@ public class HomeActivity extends FragmentActivity
         // Do other changes depending on the fragment that is now showing
         if (application.isSocial()) {
             switch (fragmentIndex) {
-                case LOGGED_OUT_HOME:
+                case LOG_IN_HOME:
                     // Hide the progressContainer in LoggedOutHomeFragment
-                    if (fragments[LOGGED_OUT_HOME] != null) {
-                        ((LoggedOutHomeFragment)fragments[LOGGED_OUT_HOME]).progressContainer.setVisibility(View.INVISIBLE);
+                    if (fragments[LOG_IN_HOME] != null) {
+                        ((LoggedOutHomeFragment)fragments[LOG_IN_HOME]).progressContainer.setVisibility(View.INVISIBLE);
                     }
                     // Set the loggedIn attribute
                     application.setLoggedIn(false);
@@ -263,9 +265,9 @@ public class HomeActivity extends FragmentActivity
             //if (session.isOpened() && ! application.isLoggedIn() && fragments[HOME] != null) {
                 // Not logged in, but should be, so fetch the user information and log in (load the HomeFragment)
             //    fetchUserInformationAndLogin();
-            //} else if (session.isClosed() && application.isLoggedIn() && fragments[LOGGED_OUT_HOME] != null) {
+            //} else if (session.isClosed() && application.isLoggedIn() && fragments[LOG_IN_HOME] != null) {
                 // Logged in, but shouldn't be, so load the FBLoggedOutHomeFragment
-            //    showFragment(LOGGED_OUT_HOME, false);
+            //    showFragment(LOG_IN_HOME, false);
             //}
 
             // Note that error checking for failed logins is done as within an ErrorListener attached to the
