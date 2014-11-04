@@ -45,10 +45,10 @@ public class HomeActivity extends FragmentActivity
 
     /*  Navigation Drawer Stuff */
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
+    // Drawer layout itself
     public DrawerLayout mDrawerLayout;
+
+    private NavigationDrawerFragment mNavigationDrawerFragment;
 
     /**
      * Used to store the last screen title.
@@ -73,7 +73,7 @@ public class HomeActivity extends FragmentActivity
         FragmentManager fm = getSupportFragmentManager();
         fragments[LOG_IN_HOME] = fm.findFragmentById(R.id.loggedOutHomeFragment);
         fragments[HOME] = fm.findFragmentById(R.id.homeFragment);
-        fragments[LOGGED_OUT_DRAWER] = fm.findFragmentById(R.id.logged_out_navigation_drawer);
+        fragments[LOGGED_OUT_DRAWER] = fm.findFragmentById(R.id.guest_navigation_drawer);
         fragments[DRAWER] = fm.findFragmentById(R.id.home_navigation_drawer);
 
         FragmentTransaction transaction = fm.beginTransaction();
@@ -126,14 +126,14 @@ public class HomeActivity extends FragmentActivity
         }
 
         /* Navigation Drawer onCreate stuff */
-       /* mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();*/
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.home_navigation_drawer);
+        mTitle = getTitle();
 
         // Set up the drawer.
-        /*fragments[DRAWER].setUp(
+        mNavigationDrawerFragment.setUp(
                 R.id.home_navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));*/
+                (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
     @Override

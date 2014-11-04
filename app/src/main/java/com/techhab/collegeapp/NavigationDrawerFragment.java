@@ -3,6 +3,7 @@ package com.techhab.collegeapp;
 
 import android.app.Activity;
 import android.app.ActionBar;
+import android.content.Context;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -19,7 +20,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -58,6 +62,8 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
+    private NavAdapter mNavAdapter;
+
     public NavigationDrawerFragment() {
     }
 
@@ -94,18 +100,23 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //TODO: Point nav drawer items to actual fragments/activities
+                ((HomeActivity) getActivity()).showFragment(position, false);
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
+        mNavAdapter = new NavAdapter(getActivity());
+        mDrawerListView.setAdapter(mNavAdapter);
+
+        /*mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));
+                        getString(R.string.drawer_item1),
+                        getString(R.string.drawer_item2),
+                        getString(R.string.drawer_item3),
+                }));*/
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
@@ -278,5 +289,57 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
+    }
+
+
+    /**
+     * Custom ListView adapter for the nav drawer
+     */
+    class NavAdapter extends BaseAdapter {
+
+        private Context context;
+
+        String[] nav_drawer_items;
+
+        // Array of drawables. MUST BE IN THE SAME ORDER AS THE nav_drawer_items STRING ARRAY!
+        int[] images = { R.drawable.account, R.drawable.phone, R.drawable.cog };
+
+        public NavAdapter(Context context) {
+            this.context = context;
+            nav_drawer_items = context.getResources().getStringArray(R.array.nav_drawer_items);
+        }
+
+        @Override
+        public int getCount() {
+            return nav_drawer_items.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return nav_drawer_items[position];
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View row = null;
+            if (convertView == null) {
+                LayoutInflater inflater =
+                        (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                row = inflater.inflate(R.layout.custom_row, parent, false);
+            } else {
+                row = convertView;
+            }
+            TextView titleTextView = (TextView) row.findViewById(R.id.textView);
+            ImageView titleImageView = (ImageView) row.findViewById(R.id.imageView);
+
+            titleTextView.setText(nav_drawer_items[position]);
+            titleImageView.setImageResource(images[position]);
+            return row;
+        }
     }
 }

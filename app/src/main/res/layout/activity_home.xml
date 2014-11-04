@@ -30,7 +30,7 @@
         android:name="com.techhab.collegeapp.NavigationDrawerFragment" />
 
     <!--Logged Out Navigation Drawer-->
-    <fragment android:id="@+id/logged_out_navigation_drawer"
+    <fragment android:id="@+id/guest_navigation_drawer"
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
