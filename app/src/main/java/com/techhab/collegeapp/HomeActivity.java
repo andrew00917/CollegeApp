@@ -34,9 +34,8 @@ public class HomeActivity extends FragmentActivity
     // Fragment attributes
     private static final int LOG_IN_HOME = 0;
     private static final int HOME = 1;
-    private static final int LOGGED_OUT_DRAWER = 2;
-    private static final int DRAWER = 3;
-    private static final int FRAGMENT_COUNT = DRAWER +1;
+    private static final int DRAWER = 2;
+    private static final int FRAGMENT_COUNT = DRAWER + 1;
     private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
 
     // Boolean recording whether the activity has been resumed so that
@@ -73,7 +72,6 @@ public class HomeActivity extends FragmentActivity
         FragmentManager fm = getSupportFragmentManager();
         fragments[LOG_IN_HOME] = fm.findFragmentById(R.id.loggedOutHomeFragment);
         fragments[HOME] = fm.findFragmentById(R.id.homeFragment);
-        fragments[LOGGED_OUT_DRAWER] = fm.findFragmentById(R.id.guest_navigation_drawer);
         fragments[DRAWER] = fm.findFragmentById(R.id.home_navigation_drawer);
 
         FragmentTransaction transaction = fm.beginTransaction();
@@ -145,38 +143,25 @@ public class HomeActivity extends FragmentActivity
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
-        // T0. GRIFFIN:
-
-        // I commented out showFragment for drawers because they were
-        // causing trouble for the fragments showing.
-        // if you uncomment them, you will notice the first page you will
-        // see when you launch the app will be blank.
-        // You can delete this comment once you see them.
-
-        // FROM. Andrew
         if ( ! (application.isSocial() || application.isLoggedIn())
                 && fragments[LOG_IN_HOME] != null) {
             // not logged in and also not guest
             showFragment(LOG_IN_HOME, false);
-            //showFragment(LOGGED_OUT_DRAWER, false);
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
         else if (application.isLoggedIn() && ! application.isSocial()
                 && fragments[HOME] != null) {
             // logged in as guest
             showFragment(HOME, false);
-            //showFragment(DRAWER, false);
         }
         else if (application.isLoggedIn() && application.isSocial()
                 && fragments[HOME] != null) {
             // logged in
             showFragment(HOME, false);
-            //showFragment(DRAWER, false);
         }
         else {
             // TODO showing logged out home for now
             showFragment(LOG_IN_HOME, false);
-            //showFragment(LOGGED_OUT_DRAWER, false);
 
             //Session session = SpellCheckerService.Session.getActiveSession();
             //if (session != null && session.isOpened() && application.getCurrentUser() != null) {

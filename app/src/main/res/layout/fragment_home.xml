@@ -7,11 +7,26 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/banner"
+        android:layout_gravity="top"
+        android:id="@+id/bannerImage" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:orientation="vertical" >
+
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -136,6 +151,8 @@
             android:layout_height="0dp"
             android:layout_weight="2"
             android:background="@color/white" />
+
+    </LinearLayout>
 
     </LinearLayout>
 
