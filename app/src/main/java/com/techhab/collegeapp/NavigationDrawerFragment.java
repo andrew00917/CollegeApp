@@ -92,11 +92,21 @@ public class NavigationDrawerFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    private ImageView mDrawerImage;
+    private TextView mDrawerText;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);
+
+        // inflate the parent view (the entire layout)
+        View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        mDrawerListView = (ListView) view.findViewById(R.id.drawer_list);
+        mDrawerImage = (ImageView) view.findViewById(R.id.nav_image);
+        mDrawerText = (TextView) view.findViewById(R.id.nav_text);
+
+//        mDrawerListView = (ListView) inflater.inflate(
+//                R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -118,7 +128,7 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.drawer_item3),
                 }));*/
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
+        return view;
     }
 
     public boolean isDrawerOpen() {
