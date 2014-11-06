@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -93,7 +94,8 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     private ImageView mDrawerImage;
-    private TextView mDrawerText;
+    private TextView mDrawerText, mDrawerUserName;
+    private LinearLayout mProfileLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,7 +106,11 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView = (ListView) view.findViewById(R.id.drawer_list);
         mDrawerImage = (ImageView) view.findViewById(R.id.nav_image);
         mDrawerText = (TextView) view.findViewById(R.id.nav_text);
+        mDrawerUserName = (TextView) view.findViewById(R.id.user_name);
+        mProfileLayout = (LinearLayout) view.findViewById(R.id.profile_layout);
 
+        //TODO set actual onClickListener (should take user to profile page)
+        mProfileLayout.setOnClickListener(null);
 //        mDrawerListView = (ListView) inflater.inflate(
 //                R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -312,7 +318,7 @@ public class NavigationDrawerFragment extends Fragment {
         String[] nav_drawer_items;
 
         // Array of drawables. MUST BE IN THE SAME ORDER AS THE nav_drawer_items STRING ARRAY!
-        int[] images = { R.drawable.account, R.drawable.phone, R.drawable.cog };
+        int[] images = { R.drawable.phone, R.drawable.cog };
 
         public NavAdapter(Context context) {
             this.context = context;

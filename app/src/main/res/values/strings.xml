@@ -61,7 +61,6 @@
 
     <!-- Navigation Drawer -->
     <string-array name="nav_drawer_items">
-        <item>PROFILE</item>
         <item>EMERGENCY CALL</item>
         <item>SETTINGS</item>
     </string-array>

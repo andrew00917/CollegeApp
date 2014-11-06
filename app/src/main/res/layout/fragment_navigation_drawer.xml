@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:background="@color/drawerBackground"
+        android:id="@+id/profile_layout"
         android:orientation="horizontal">
 
         <!-- your image, you can set it later (see NavDrawerFrag) -->
@@ -18,25 +20,42 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="15dp"
-            android:src="@android:drawable/ic_menu_myplaces"/>
+            android:src="@drawable/account"/>
 
         <!-- a bit of test or a title to go with it -->
-        <TextView
-            android:id="@+id/nav_text"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="Default text"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/nav_text"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="0dp"
+                android:textColor="@color/theGray"
+                android:gravity="center_vertical"
+                android:text="Logged in as"/>
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/theGray"
+                android:gravity="center_vertical"
+                android:text="GRIFFIN SMALLEY"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <!-- some divider thing -->
+    <!-- divider -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:padding="20dp"
-        android:background="#000000"/>
+        android:background="@color/drawerDivider"/>
 
     <ListView
         android:layout_width="match_parent"
