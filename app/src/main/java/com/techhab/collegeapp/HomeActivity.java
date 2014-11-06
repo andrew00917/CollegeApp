@@ -226,7 +226,7 @@ public class HomeActivity extends FragmentActivity
                 case LOG_IN_HOME:
                     // Hide the progressContainer in LoggedOutHomeFragment
                     if (fragments[LOG_IN_HOME] != null) {
-                        ((LoggedOutHomeFragment)fragments[LOG_IN_HOME]).progressContainer.setVisibility(View.INVISIBLE);
+                        ((LogInFragment)fragments[LOG_IN_HOME]).progressContainer.setVisibility(View.INVISIBLE);
                     }
                     // Set the loggedIn attribute
                     application.setLoggedIn(false);
