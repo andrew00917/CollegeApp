@@ -205,6 +205,18 @@ public class HomeActivity extends FragmentActivity
         super.onDestroy();
     }
 
+    @Override
+    public void onBackPressed() {
+        final HomeFragment fragment = (HomeFragment) fragments[HOME];
+
+        if (fragment.allowBackPressed()) { // and then you define a method allowBackPressed with the logic to allow back pressed or not
+            super.onBackPressed();
+        }
+        else {
+            fragment.toggle();
+        }
+    }
+
     public void showFragment(int fragmentIndex, boolean addToBackStack) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
