@@ -154,11 +154,6 @@ public class InfoActivity extends FragmentActivity
             case R.id.action_search:
                 //openSearch();
                 return true;
-            case R.id.action_refresh:
-                //refresh();
-                return true;
-            case R.id.action_overflow:
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

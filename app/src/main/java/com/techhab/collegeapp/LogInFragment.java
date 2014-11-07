@@ -72,6 +72,7 @@ public class LogInFragment extends Fragment {
             application.load();
             if (application.isLoggedIn()) {
                 ((HomeActivity) getActivity()).showFragment(HOME_FRAGMENT, false);
+                getActivity().getActionBar().show();
                 ((HomeActivity) getActivity()).mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             }
             else {
