@@ -8,5 +8,11 @@
 .idea/
 .idea
 app/app.iml
-CollegeApp.iml
-gradlew
+/CollegeApp.iml
+/gradlew
+/build.gradle
+/settings.gradle
+/gradlew
+/gradlew.bat
+/gradle.properties
+/gen/
