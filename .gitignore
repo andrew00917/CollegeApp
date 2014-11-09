@@ -16,3 +16,4 @@ app/app.iml
 /gradlew.bat
 /gradle.properties
 /gen/
+app/build
