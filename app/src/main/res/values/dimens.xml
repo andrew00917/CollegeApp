@@ -14,4 +14,11 @@
     <!-- Login width -->
     <dimen name="login_width">96dp</dimen>
     <dimen name="login_height">32dp</dimen>
+
+    <!-- Nav Drawer -->
+    <dimen name="nav_drawer_icon_width">52dp</dimen>
+    <dimen name="nav_drawer_icon_height">52dp</dimen>
+    <dimen name="nav_row_height">52dp</dimen>
+
+
 </resources>
