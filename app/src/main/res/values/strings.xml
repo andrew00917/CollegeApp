@@ -142,4 +142,9 @@
             <string name="winter_term_2016_17_dates">1/3\n\n1/5\n1/6</string>
             <string name="spring_term_2016_17_dates">3/27\n\n3/29\n3/31</string>
 
+    <!-- Maps -->
+    <string name="title_activity_maps">MapsActivity</string>
+
+
+
 </resources>

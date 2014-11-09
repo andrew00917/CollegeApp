@@ -13,7 +13,7 @@ import android.view.MenuItem;
 
 public class InfoActivity extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-
+    public static FragmentManager fm;
     // Tag used when logging messages
     private static final String TAG = InfoActivity.class.getSimpleName();
 
@@ -22,11 +22,10 @@ public class InfoActivity extends FragmentActivity
     // Fragment attributes
     private static final int INFO_HOME = 0;
     private static final int FACILITIES = 1;
-    //private static final int CAFETERIA = 2;
     private static final int CALENDER = 2;
     //private static final int SECURITY = 4;
     //private static final int GROCERY = 5;
-    //private static final int MAP = 6;
+    //private static final int MAP = 3;
     // TODO
     // PLEASE READ THIS COMMENT BEFORE ADDING FRAGMENTS
     // Make sure to uncomment fragments above this comment
@@ -53,14 +52,14 @@ public class InfoActivity extends FragmentActivity
 
         application = (CollegeApplication) getApplication();
 
-        FragmentManager fm = getSupportFragmentManager();
+        fm = getSupportFragmentManager();
         fragments[INFO_HOME] = fm.findFragmentById(R.id.infoFragment);
         fragments[FACILITIES] = fm.findFragmentById(R.id.facilitiesFragment);
         //fragments[CAFETERIA] = fm.findFragmentById(R.id.cafeteriaFragment);
         fragments[CALENDER] = fm.findFragmentById(R.id.calenderFragment);
         //fragments[SECURITY] = fm.findFragmentById(R.id.securityFragment);
         //fragments[GROCERY] = fm.findFragmentById(R.id.groceryFragment);
-        //fragments[MAP] = fm.findFragmentById(R.id.mapFragment);
+//        fragments[MAP] = fm.findFragmentById(R.id.mapFragment);
         // TODO
         fragments[DRAWER] = fm.findFragmentById(R.id.home_navigation_drawer);
 
@@ -86,15 +85,12 @@ public class InfoActivity extends FragmentActivity
         if (position.equals("facilities")) {
             showFragment(FACILITIES, false);
         }
-        else if (position.equals("cafeteria")) {
-
-        }
         else if (position.equals("academic calender")) {
             showFragment(CALENDER, false);
         }
-        else if (position.equals("campus map")) {
-
-        }
+//        else if (position.equals("campus map")) {
+//            showFragment(MAP, false);
+//        }
         else {
             // default behavior
             showFragment(INFO_HOME, false);
