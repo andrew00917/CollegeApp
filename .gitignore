@@ -4,10 +4,10 @@
 /.idea/workspace.xml
 /.idea/libraries
 .DS_Store
-/build
+build/
 .idea/
 .idea
-app/app.iml
+/app/app.iml
 /CollegeApp.iml
 /gradlew
 /build.gradle
@@ -16,4 +16,5 @@ app/app.iml
 /gradlew.bat
 /gradle.properties
 /gen/
-app/build
+/app/build
+/app/proguard-rules.pro
