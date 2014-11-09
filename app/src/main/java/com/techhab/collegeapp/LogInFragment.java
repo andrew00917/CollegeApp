@@ -7,9 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.support.v4.widget.DrawerLayout;
 
 
-public class LoggedOutHomeFragment extends Fragment {
+public class LogInFragment extends Fragment {
 
     private CollegeApplication application;
 
@@ -35,7 +36,7 @@ public class LoggedOutHomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
 
-        v = inflater.inflate(R.layout.fragment_logged_out_home, parent, false);
+        v = inflater.inflate(R.layout.fragment_log_in, parent, false);
 
         if (getActivity().getActionBar() != null && getActivity().getActionBar().isShowing()) {
             getActivity().getActionBar().hide();
@@ -71,6 +72,7 @@ public class LoggedOutHomeFragment extends Fragment {
             application.load();
             if (application.isLoggedIn()) {
                 ((HomeActivity) getActivity()).showFragment(HOME_FRAGMENT, false);
+                ((HomeActivity) getActivity()).mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             }
             else {
                 // exception

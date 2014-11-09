@@ -264,6 +264,10 @@ public class HomeFragment extends Fragment {
         //outState.putBoolean(PENDING_POST_KEY, pendingPost);
     }
 
+    public boolean allowBackPressed() {
+        return ! isSubmenuShowing;
+    }
+
     /**
      * Toggle back to main menus
      */
@@ -272,6 +276,9 @@ public class HomeFragment extends Fragment {
         if (submenuContainer.getVisibility() == LinearLayout.VISIBLE && isSubmenuShowing) {
             submenuContainer.setVisibility(LinearLayout.INVISIBLE);
             isSubmenuShowing = false;
+        }
+        else if (submenuContainer.getVisibility() == LinearLayout.VISIBLE) {
+            isSubmenuShowing = true;
         }
     }
 
@@ -282,9 +289,9 @@ public class HomeFragment extends Fragment {
         long duration;
         mTransitioner.setStagger(LayoutTransition.CHANGE_APPEARING, 30);
         mTransitioner.setStagger(LayoutTransition.CHANGE_DISAPPEARING, 30);
-        setupCustomAnimations();
-        duration = 500;
+        duration = 30;
         mTransitioner.setDuration(duration);
+        setupCustomAnimations();
 
         LinearLayout submenuContainer = (LinearLayout) v.findViewById(R.id.sub_menu_container);
         if (submenuContainer.getVisibility() == LinearLayout.VISIBLE && isSubmenuShowing) {
@@ -358,7 +365,6 @@ public class HomeFragment extends Fragment {
                     }
                 }
             });
-
         }
     }
 
