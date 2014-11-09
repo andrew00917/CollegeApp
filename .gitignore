@@ -40,3 +40,8 @@ Thumbs.db
 .idea/tasks.xml
 .idea/datasources.xml
 .idea/dataSources.idsapp/proguard-rules.pro
+.idea/
+
+# iml files
+CollegeApp.iml
+app/app.iml
