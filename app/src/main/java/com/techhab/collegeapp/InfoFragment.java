@@ -21,11 +21,6 @@ public class InfoFragment extends Fragment {
     private Context context;
 
     private static final int FACILITIES = 1;
-    private static final int CAFETERIA = 2;
-    private static final int CALENDER = 3;
-    //private static final int SECURITY = 4;
-    //private static final int GROCERY = 5;
-//    private static final int MAP = 3;
 
     View v;
 
@@ -70,22 +65,9 @@ public class InfoFragment extends Fragment {
                 if (item.equals("Facilities")) {
                     ((InfoActivity) getActivity()).showFragment(FACILITIES, false);
                 }
-                else if (item.equals("Cafeteria")) {
-                    ((InfoActivity) getActivity()).showFragment(CAFETERIA, false);
-                }
-                else if (item.equals("Academic Calender")) {
-                    ((InfoActivity) getActivity()).showFragment(CALENDER, false);
-                }
-                else if (item.equals("Security")) {
 
-                }
-                else if (item.equals("Grocery Info")) {
+                Toast.makeText(context, "" + item.toString(), Toast.LENGTH_SHORT).show();
 
-                }
-                else if (item.equals("Campus Map")) {
-                    Intent intent = new Intent(getActivity(), MapsActivity.class);
-                    getActivity().startActivity(intent);
-                }
             }
         });
 
