@@ -11,12 +11,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 
@@ -32,10 +33,11 @@ public class HomeActivity extends FragmentActivity
     private static final Uri M_COLLEGE_URL = Uri.parse("http://kzoo.edu");
 
     // Fragment attributes
-    private static final int LOG_IN_HOME = 0;
+    private static final int LOGGED_OUT_HOME = 0;
     private static final int HOME = 1;
-    private static final int DRAWER = 2;
-    private static final int FRAGMENT_COUNT = DRAWER + 1;
+    private static final int LOGGED_OUT_DRAWER = 2;
+    private static final int DRAWER = 3;
+    private static final int FRAGMENT_COUNT = DRAWER +1;
     private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
 
     // Boolean recording whether the activity has been resumed so that
@@ -44,10 +46,10 @@ public class HomeActivity extends FragmentActivity
 
     /*  Navigation Drawer Stuff */
 
-    // Drawer layout itself
-    public DrawerLayout mDrawerLayout;
-
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+    /**
+     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
+     */
+    //private NavigationDrawerFragment mNavigationDrawerFragment;
 
     /**
      * Used to store the last screen title.
@@ -67,11 +69,10 @@ public class HomeActivity extends FragmentActivity
 
         application = (CollegeApplication) getApplication();
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         FragmentManager fm = getSupportFragmentManager();
-        fragments[LOG_IN_HOME] = fm.findFragmentById(R.id.loggedOutHomeFragment);
+        fragments[LOGGED_OUT_HOME] = fm.findFragmentById(R.id.loggedOutHomeFragment);
         fragments[HOME] = fm.findFragmentById(R.id.homeFragment);
+        fragments[LOGGED_OUT_DRAWER] = fm.findFragmentById(R.id.logged_out_navigation_drawer);
         fragments[DRAWER] = fm.findFragmentById(R.id.home_navigation_drawer);
 
         FragmentTransaction transaction = fm.beginTransaction();
@@ -124,14 +125,14 @@ public class HomeActivity extends FragmentActivity
         }
 
         /* Navigation Drawer onCreate stuff */
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.home_navigation_drawer);
-        mTitle = getTitle();
+       /* mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mTitle = getTitle();*/
 
         // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
+        /*fragments[DRAWER].setUp(
                 R.id.home_navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+                (DrawerLayout) findViewById(R.id.drawer_layout));*/
     }
 
     @Override
@@ -143,32 +144,44 @@ public class HomeActivity extends FragmentActivity
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
+        // T0. GRIFFIN:
+
+        // I commented out showFragment for drawers because they were
+        // causing trouble for the fragments showing.
+        // if you uncomment them, you will notice the first page you will
+        // see when you launch the app will be blank.
+        // You can delete this comment once you see them.
+
+        // FROM. Andrew
         if ( ! (application.isSocial() || application.isLoggedIn())
-                && fragments[LOG_IN_HOME] != null) {
+                && fragments[LOGGED_OUT_HOME] != null) {
             // not logged in and also not guest
-            showFragment(LOG_IN_HOME, false);
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            showFragment(LOGGED_OUT_HOME, false);
+            //showFragment(LOGGED_OUT_DRAWER, false);
         }
         else if (application.isLoggedIn() && ! application.isSocial()
                 && fragments[HOME] != null) {
             // logged in as guest
             showFragment(HOME, false);
+            //showFragment(DRAWER, false);
         }
         else if (application.isLoggedIn() && application.isSocial()
                 && fragments[HOME] != null) {
             // logged in
             showFragment(HOME, false);
+            //showFragment(DRAWER, false);
         }
         else {
             // TODO showing logged out home for now
-            showFragment(LOG_IN_HOME, false);
+            showFragment(LOGGED_OUT_HOME, false);
+            //showFragment(LOGGED_OUT_DRAWER, false);
 
             //Session session = SpellCheckerService.Session.getActiveSession();
             //if (session != null && session.isOpened() && application.getCurrentUser() != null) {
             //    showFragment(HOME, false);
             //}
             //else {
-            //    showFragment(LOG_IN_HOME, false);
+            //    showFragment(LOGGED_OUT_HOME, false);
             //}
         }
     }
@@ -204,18 +217,6 @@ public class HomeActivity extends FragmentActivity
         super.onDestroy();
     }
 
-    @Override
-    public void onBackPressed() {
-        final HomeFragment fragment = (HomeFragment) fragments[HOME];
-
-        if (fragment.allowBackPressed()) { // and then you define a method allowBackPressed with the logic to allow back pressed or not
-            super.onBackPressed();
-        }
-        else {
-            fragment.toggle();
-        }
-    }
-
     public void showFragment(int fragmentIndex, boolean addToBackStack) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -235,10 +236,10 @@ public class HomeActivity extends FragmentActivity
         // Do other changes depending on the fragment that is now showing
         if (application.isSocial()) {
             switch (fragmentIndex) {
-                case LOG_IN_HOME:
+                case LOGGED_OUT_HOME:
                     // Hide the progressContainer in LoggedOutHomeFragment
-                    if (fragments[LOG_IN_HOME] != null) {
-                        ((LogInFragment)fragments[LOG_IN_HOME]).progressContainer.setVisibility(View.INVISIBLE);
+                    if (fragments[LOGGED_OUT_HOME] != null) {
+                        ((LoggedOutHomeFragment)fragments[LOGGED_OUT_HOME]).progressContainer.setVisibility(View.INVISIBLE);
                     }
                     // Set the loggedIn attribute
                     application.setLoggedIn(false);
@@ -262,9 +263,9 @@ public class HomeActivity extends FragmentActivity
             //if (session.isOpened() && ! application.isLoggedIn() && fragments[HOME] != null) {
                 // Not logged in, but should be, so fetch the user information and log in (load the HomeFragment)
             //    fetchUserInformationAndLogin();
-            //} else if (session.isClosed() && application.isLoggedIn() && fragments[LOG_IN_HOME] != null) {
+            //} else if (session.isClosed() && application.isLoggedIn() && fragments[LOGGED_OUT_HOME] != null) {
                 // Logged in, but shouldn't be, so load the FBLoggedOutHomeFragment
-            //    showFragment(LOG_IN_HOME, false);
+            //    showFragment(LOGGED_OUT_HOME, false);
             //}
 
             // Note that error checking for failed logins is done as within an ErrorListener attached to the

@@ -11,19 +11,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <fragment android:name="com.techhab.collegeapp.LogInFragment"
+    <fragment android:name="com.techhab.collegeapp.LoggedOutHomeFragment"
         android:id="@+id/loggedOutHomeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_log_in" />
+        tools:layout="@layout/fragment_logged_out_home" />
 
     <fragment android:name="com.techhab.collegeapp.HomeFragment"
         android:id="@+id/homeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!--Navigation Drawer-->
+    <!--Home Navigation Drawer-->
     <fragment android:id="@+id/home_navigation_drawer"
+        android:layout_width="@dimen/navigation_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:name="com.techhab.collegeapp.NavigationDrawerFragment" />
+
+    <!--Logged Out Navigation Drawer-->
+    <fragment android:id="@+id/logged_out_navigation_drawer"
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"

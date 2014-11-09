@@ -3,7 +3,6 @@ package com.techhab.collegeapp;
 
 import android.app.Activity;
 import android.app.ActionBar;
-import android.content.Context;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -20,11 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -63,8 +58,6 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
-    private NavAdapter mNavAdapter;
-
     public NavigationDrawerFragment() {
     }
 
@@ -93,48 +86,28 @@ public class NavigationDrawerFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    private ImageView mDrawerImage;
-    private TextView mDrawerText, mDrawerUserName;
-    private LinearLayout mProfileLayout;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-
-        // inflate the parent view (the entire layout)
-        View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
-        mDrawerListView = (ListView) view.findViewById(R.id.drawer_list);
-        mDrawerImage = (ImageView) view.findViewById(R.id.nav_image);
-        mDrawerText = (TextView) view.findViewById(R.id.nav_text);
-        mDrawerUserName = (TextView) view.findViewById(R.id.user_name);
-        mProfileLayout = (LinearLayout) view.findViewById(R.id.profile_layout);
-
-        //TODO set actual onClickListener (should take user to profile page)
-        mProfileLayout.setOnClickListener(null);
-//        mDrawerListView = (ListView) inflater.inflate(
-//                R.layout.fragment_navigation_drawer, container, false);
+        mDrawerListView = (ListView) inflater.inflate(
+                R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO: Point nav drawer items to actual fragments/activities
-                ((HomeActivity) getActivity()).showFragment(position, false);
                 selectItem(position);
             }
         });
-        mNavAdapter = new NavAdapter(getActivity());
-        mDrawerListView.setAdapter(mNavAdapter);
-
-        /*mDrawerListView.setAdapter(new ArrayAdapter<String>(
+        mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 new String[]{
-                        getString(R.string.drawer_item1),
-                        getString(R.string.drawer_item2),
-                        getString(R.string.drawer_item3),
-                }));*/
+                        getString(R.string.title_section1),
+                        getString(R.string.title_section2),
+                        getString(R.string.title_section3),
+                }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return view;
+        return mDrawerListView;
     }
 
     public boolean isDrawerOpen() {
@@ -305,57 +278,5 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
-    }
-
-
-    /**
-     * Custom ListView adapter for the nav drawer
-     */
-    class NavAdapter extends BaseAdapter {
-
-        private Context context;
-
-        String[] nav_drawer_items;
-
-        // Array of drawables. MUST BE IN THE SAME ORDER AS THE nav_drawer_items STRING ARRAY!
-        int[] images = { R.drawable.phone, R.drawable.cog };
-
-        public NavAdapter(Context context) {
-            this.context = context;
-            nav_drawer_items = context.getResources().getStringArray(R.array.nav_drawer_items);
-        }
-
-        @Override
-        public int getCount() {
-            return nav_drawer_items.length;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return nav_drawer_items[position];
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View row = null;
-            if (convertView == null) {
-                LayoutInflater inflater =
-                        (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                row = inflater.inflate(R.layout.custom_row, parent, false);
-            } else {
-                row = convertView;
-            }
-            TextView titleTextView = (TextView) row.findViewById(R.id.textView);
-            ImageView titleImageView = (ImageView) row.findViewById(R.id.imageView);
-
-            titleTextView.setText(nav_drawer_items[position]);
-            titleImageView.setImageResource(images[position]);
-            return row;
-        }
     }
 }
