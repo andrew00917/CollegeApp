@@ -6,6 +6,7 @@
     <color name="drawerDivider">#404040</color>
     <color name="trans">#80FFFFFF</color>
     <color name="theGray">#999999</color>
+    <color name="navDrawerIcon">#999999</color>
 
     <color name="white">#FFFFFF</color>
     <color name="yellow">#FFFF00</color>
