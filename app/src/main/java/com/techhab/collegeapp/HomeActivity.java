@@ -147,6 +147,7 @@ public class HomeActivity extends FragmentActivity
                 && fragments[LOG_IN_HOME] != null) {
             // not logged in and also not guest
             showFragment(LOG_IN_HOME, false);
+            getActionBar().hide();
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
         else if (application.isLoggedIn() && ! application.isSocial()
@@ -405,7 +406,7 @@ public class HomeActivity extends FragmentActivity
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
-            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            //actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
             actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setTitle(mTitle);
         }
@@ -437,11 +438,6 @@ public class HomeActivity extends FragmentActivity
         switch (item.getItemId()) {
             case R.id.action_search:
                 //openSearch();
-                return true;
-            case R.id.action_refresh:
-                //refresh();
-                return true;
-            case R.id.action_overflow:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

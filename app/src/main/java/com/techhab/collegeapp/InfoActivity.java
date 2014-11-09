@@ -13,7 +13,7 @@ import android.view.MenuItem;
 
 public class InfoActivity extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-
+    public static FragmentManager fm;
     // Tag used when logging messages
     private static final String TAG = InfoActivity.class.getSimpleName();
 
@@ -25,7 +25,7 @@ public class InfoActivity extends FragmentActivity
     private static final int CALENDER = 2;
     //private static final int SECURITY = 4;
     //private static final int GROCERY = 5;
-    //private static final int MAP = 6;
+    //private static final int MAP = 3;
     // TODO
     // PLEASE READ THIS COMMENT BEFORE ADDING FRAGMENTS
     // Make sure to add fragments above this comment
@@ -52,13 +52,13 @@ public class InfoActivity extends FragmentActivity
 
         application = (CollegeApplication) getApplication();
 
-        FragmentManager fm = getSupportFragmentManager();
+        fm = getSupportFragmentManager();
         fragments[INFO_HOME] = fm.findFragmentById(R.id.infoFragment);
         fragments[FACILITIES] = fm.findFragmentById(R.id.facilitiesFragment);
         fragments[CALENDER] = fm.findFragmentById(R.id.calenderFragment);
         //fragments[SECURITY] = fm.findFragmentById(R.id.securityFragment);
         //fragments[GROCERY] = fm.findFragmentById(R.id.groceryFragment);
-        //fragments[MAP] = fm.findFragmentById(R.id.mapFragment);
+//        fragments[MAP] = fm.findFragmentById(R.id.mapFragment);
         // TODO
         // More fragments go here
         fragments[DRAWER] = fm.findFragmentById(R.id.home_navigation_drawer);
@@ -90,8 +90,6 @@ public class InfoActivity extends FragmentActivity
         }
         else if (position.equals("academic calender")) {
             showFragment(CALENDER, false);
-        }
-        else if (position.equals("campus map")) {
         }
         else {
             // default behavior
@@ -165,11 +163,6 @@ public class InfoActivity extends FragmentActivity
         switch (id) {
             case R.id.action_search:
                 //openSearch();
-                return true;
-            case R.id.action_refresh:
-                //refresh();
-                return true;
-            case R.id.action_overflow:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
