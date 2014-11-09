@@ -1,0 +1,125 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/WhiteSmoke"
+    tools:context="com.techhab.collegeapp.CafeteriaFragment">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/panel_side_cafeteria"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:showDividers="middle"
+            android:divider="?android:dividerHorizontal">
+
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/logoside"/>
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:text="@string/label_cafeteria_top"/>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_whitebackground"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/tv01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/label_cafeteria_richardson"
+                        android:textSize="14dp"
+                        android:layout_alignParentTop="true"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv01"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/label_cafeteria_hours"
+                        android:textSize="12dp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_whitebackground"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/tv02"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/label_cafeteria_bookClub"
+                        android:textSize="14dp"
+                        android:layout_alignParentTop="true"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv02"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/label_cafeteria_bookClubHours"
+                        android:textSize="12dp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_whitebackground"
+                    android:padding="10dp">
+                    <ImageView
+                        android:id="@+id/img01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/phone"
+                        android:layout_alignParentLeft="true"/>
+                    <TextView
+                        android:id="@+id/tv03"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/label_cafeteria_contact"
+                        android:textSize="12dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/img01"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv03"
+                        android:text="@string/label_cafeteria_phone"
+                        android:layout_toRightOf="@+id/img01"
+                        android:layout_marginRight="5dp"
+                        android:textSize="14dp"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+</FrameLayout>
