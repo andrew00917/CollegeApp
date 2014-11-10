@@ -180,21 +180,7 @@ public class HomeFragment extends Fragment {
                 isLongPressed = true;
 
                 Intent intent = new Intent(getActivity(), InfoActivity.class);
-                switch (view.getId()) {
-                    case MAIN_00_ID:
-                        break;
-                    case MAIN_01_ID:
-                        break;
-                    case MAIN_10_ID:
-                        break;
-                    case MAIN_11_ID:
-                        intent.putExtra("position", "");
-                        break;
-                    case MAIN_20_ID:
-                        break;
-                    case MAIN_21_ID:
-                        break;
-                }
+                intent.putExtra("position", "");
                 getActivity().startActivity(intent);
                 return true;
             }
@@ -369,8 +355,14 @@ public class HomeFragment extends Fragment {
                             key = values[i].toLowerCase();
                         }
                     }
-                    subIntent.putExtra("position", key);
-                    startActivity(subIntent);
+                    if (key.equals("campus map")) {
+                        Intent intent = new Intent(getActivity(), MapsActivity.class);
+                        getActivity().startActivity(intent);
+                    }
+                    else {
+                        subIntent.putExtra("position", key);
+                        startActivity(subIntent);
+                    }
                 }
             });
         }
