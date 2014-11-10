@@ -4,60 +4,68 @@
     android:layout_height="match_parent"
     tools:context="com.techhab.collegeapp.LogInFragment">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center"
-        android:orientation="vertical" >
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/k_login_header"
-            android:layout_gravity="center_horizontal"/>
+        android:layout_height="fill_parent" >
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical" >
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/username" />
+                android:src="@drawable/k_login_header"
+                android:layout_gravity="center_horizontal"/>
 
-            <EditText
-                android:id="@+id/username_input"
-                android:layout_width="@dimen/login_width"
-                android:layout_height="@dimen/login_height" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/username" />
+
+                <EditText
+                    android:id="@+id/username_input"
+                    android:layout_width="@dimen/login_width"
+                    android:layout_height="@dimen/login_height" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/password"/>
+
+                <EditText
+                    android:id="@+id/password_input"
+                    android:layout_width="@dimen/login_width"
+                    android:layout_height="@dimen/login_height"
+                    android:layout_gravity="center" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/password"/>
-
-            <EditText
-                android:id="@+id/password_input"
-                android:layout_width="@dimen/login_width"
-                android:layout_height="@dimen/login_height"
-                android:layout_gravity="center" />
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/login" />
-
-    </LinearLayout>
+    </ScrollView>
 
     <FrameLayout android:id="@+id/progressContainer"
         android:background="@color/white"

@@ -6,6 +6,7 @@ import android.animation.Keyframe;
 import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -62,6 +63,9 @@ public class HomeFragment extends Fragment {
     private LayoutTransition mTransitioner;
     private ViewGroup container;
 
+    // Action Bar
+    private ActionBar actionBar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,13 +87,14 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_home, parent, false);
 
-        if ( getActivity().getActionBar() != null && ! getActivity().getActionBar().isShowing()) {
-            getActivity().getActionBar().show();
-        }
-
         progressContainer = (FrameLayout)v.findViewById(R.id.progress_container);
         // Hide the progressContainer
         progressContainer.setVisibility(View.INVISIBLE);
+
+        actionBar = getActivity().getActionBar();
+        if ( actionBar != null && ! actionBar.isShowing()) {
+            actionBar.show();
+        }
 
         View.OnTouchListener touchListener = new View.OnTouchListener() {
             @Override
