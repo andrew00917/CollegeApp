@@ -5,23 +5,27 @@
     android:background="@color/WhiteSmoke"
     tools:context="com.techhab.collegeapp.CafeteriaFragment">
 
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <LinearLayout
             android:orientation="vertical"
             android:id="@+id/panel_side_cafeteria"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:showDividers="middle"
             android:divider="?android:dividerHorizontal">
 
 
-
+<!--
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/logoside"/>
 
-
+-->
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -36,12 +40,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="20dp"
+                        android:textSize="20sp"
                         android:text="@string/label_cafeteria_top"/>
 
                 </LinearLayout>
 
                 <RelativeLayout
+                    android:id="@+id/btn_cafeteria_richardson"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/btn_whitebackground"
@@ -52,6 +57,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
+                        android:layout_marginEnd="5dp"
                         android:text="@string/label_cafeteria_richardson"
                         android:textSize="14dp"
                         android:layout_alignParentTop="true"/>
@@ -60,6 +66,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv01"
                         android:layout_marginRight="5dp"
+                        android:layout_marginEnd="5dp"
                         android:text="@string/label_cafeteria_hours"
                         android:textSize="12dp"/>
                 </RelativeLayout>
@@ -89,6 +96,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/btn_cafeteria_phone"
                     android:layout_marginTop="5dp"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -121,5 +129,7 @@
 
             </LinearLayout>
         </LinearLayout>
+    </ScrollView>
+
 
 </FrameLayout>

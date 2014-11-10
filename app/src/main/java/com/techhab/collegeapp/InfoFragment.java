@@ -3,6 +3,7 @@ package com.techhab.collegeapp;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,7 +25,7 @@ public class InfoFragment extends Fragment {
     private static final int CALENDER = 3;
     //private static final int SECURITY = 4;
     //private static final int GROCERY = 5;
-    //private static final int MAP = 6;
+//    private static final int MAP = 3;
 
     View v;
 
@@ -82,7 +83,8 @@ public class InfoFragment extends Fragment {
 
                 }
                 else if (item.equals("Campus Map")) {
-
+                    Intent intent = new Intent(getActivity(), MapsActivity.class);
+                    getActivity().startActivity(intent);
                 }
             }
         });

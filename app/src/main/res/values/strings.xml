@@ -126,41 +126,49 @@
     <string name="action_overflow">More</string>
     <string name="action_send">Send</string>
 
-
     <!-- Campus Info -->
     <string name="title_activity_info">InfoActivity</string>
-        <!-- Cafeteria -->
-        <string name="label_cafeteria_top">Welcome to College Dining Services</string>
-        <string name="label_cafeteria_contact">Contact Us:</string>
-        <string name="label_cafeteria_phone">(773) 702-8181</string>
-        <string name="label_cafeteria_richardson">Richardson Cafe Hours of Operation:</string>
-        <string name="label_cafeteria_hours">Monday-Friday: 10:00am-12:00am\nSaturday: 10:00am-6:00pm\nSunday: 6:00pm-12am</string>
-        <string name="label_cafeteria_bookClub"> The Book Cafe Hours of Operation:</string>
-        <string name="label_cafeteria_bookClubHours">Monday-Thursday: 7:45am-12:30am\nFriday: 7:45am-6pm\nSaturday: 9:30am-6:00pm\nSunday: 11:30pm-12:30am</string>
-        <!-- Academic year -->
-        <string name="academic_year_2014_15">2014-15</string>
-        <string name="academic_year_2015_16">2015-16</string>
-        <string name="academic_year_2016_17">2016-17</string>
-        <!-- Terms -->
-        <string name="calender_term_fall">Fall Term</string>
-        <string name="calender_term_winter">Winter Term</string>
-        <string name="calender_term_spring">Spring Term</string>
-        <!-- Contents -->
-        <string name="fall_term_content">Labor Day\nInt\'l Orientation\nOrientation</string>
-        <string name="winter_term_content">Classes Begin\nDrop/Add w/o\n    signature ends\nDrop/Add ends</string>
-        <string name="spring_term_content">Classes Begin\nDrop/Add w/o\n    signature ends\nDrop/Add ends</string>
-        <!-- Dates -->
-            <!-- 2014-15 -->
-            <string name="fall_term_2014_15_dates">9/1\n9/4-9/9\n9/10-9/14</string>
-            <string name="winter_term_2014_15_dates">1/5\n\n1/7\n1/9</string>
-            <string name="spring_term_2014_15_dates">3/30\n\n4/1\n4/3</string>
-            <!-- 2015-16 -->
-            <string name="fall_term_2015_16_dates">9/7\n9/3-9/8\n9/9-9/13</string>
-            <string name="winter_term_2015_16_dates">1/4\n\n1/6\n1/8</string>
-            <string name="spring_term_2015_16_dates">3/28\n\n3/30\n4/1</string>
-            <!-- 2016-17 -->
-            <string name="fall_term_2016_17_dates">9/5\n9/2-9/6\n9/7-9/11</string>
-            <string name="winter_term_2016_17_dates">1/3\n\n1/5\n1/6</string>
-            <string name="spring_term_2016_17_dates">3/27\n\n3/29\n3/31</string>
+    <!-- Cafeteria -->
+    <string name="label_cafeteria_top">Welcome to College Dining Services</string>
+    <string name="label_cafeteria_contact">Contact Us:</string>
+    <string name="label_cafeteria_phone">(517) 763-1377</string>
+    <string name="label_cafeteria_richardson">Richardson Cafe Hours of Operation:</string>
+    <string name="label_cafeteria_hours">Monday-Friday: 10:00am-12:00am\nSaturday: 10:00am-6:00pm\nSunday: 6:00pm-12am</string>
+    <string name="label_cafeteria_bookClub"> The Book Cafe Hours of Operation:</string>
+    <string name="label_cafeteria_bookClubHours">Monday-Thursday: 7:45am-12:30am\nFriday: 7:45am-6pm\nSaturday: 9:30am-6:00pm\nSunday: 11:30pm-12:30am</string>
+    <string name="label_cafeteria_breakfast">BreakFast</string>
+    <string name="label_cafeteria_lunch">Lunch</string>
+    <string name="label_cafeteria_dinner">Dinner</string>
+    <!-- Academic year -->
+    <string name="academic_year_2014_15">2014-15</string>
+    <string name="academic_year_2015_16">2015-16</string>
+    <string name="academic_year_2016_17">2016-17</string>
+    <!-- Terms -->
+    <string name="calender_term_fall">Fall Term</string>
+    <string name="calender_term_winter">Winter Term</string>
+    <string name="calender_term_spring">Spring Term</string>
+    <!-- Contents -->
+    <string name="fall_term_content">Labor Day\nInt\'l Orientation\nOrientation</string>
+    <string name="winter_term_content">Classes Begin\nDrop/Add w/o\n    signature ends\nDrop/Add ends</string>
+    <string name="spring_term_content">Classes Begin\nDrop/Add w/o\n    signature ends\nDrop/Add ends</string>
+    <!-- Dates -->
+    <!-- 2014-15 -->
+    <string name="fall_term_2014_15_dates">9/1\n9/4-9/9\n9/10-9/14</string>
+    <string name="winter_term_2014_15_dates">1/5\n\n1/7\n1/9</string>
+    <string name="spring_term_2014_15_dates">3/30\n\n4/1\n4/3</string>
+    <!-- 2015-16 -->
+    <string name="fall_term_2015_16_dates">9/7\n9/3-9/8\n9/9-9/13</string>
+    <string name="winter_term_2015_16_dates">1/4\n\n1/6\n1/8</string>
+    <string name="spring_term_2015_16_dates">3/28\n\n3/30\n4/1</string>
+    <!-- 2016-17 -->
+    <string name="fall_term_2016_17_dates">9/5\n9/2-9/6\n9/7-9/11</string>
+    <string name="winter_term_2016_17_dates">1/3\n\n1/5\n1/6</string>
+    <string name="spring_term_2016_17_dates">3/27\n\n3/29\n3/31</string>
+    <string name="title_activity_cafeteria">CafeteriaActivity</string>
+
+    <!-- Maps -->
+    <string name="title_activity_maps">MapsActivity</string>
+
+
 
 </resources>
