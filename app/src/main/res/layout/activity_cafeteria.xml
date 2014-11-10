@@ -1,0 +1,34 @@
+<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        tools:context="com.techhab.collegeapp.CafeteriaActivity" >
+
+        <!--
+        <fragment android:name="com.techhab.collegeapp.RichardsonMenuFragment"
+            android:id="@+id/richardsonBreakfastFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <fragment android:name="com.techhab.collegeapp.RichardsonMenuLunch"
+            android:id="@+id/richardsonLunchFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <fragment android:name="com.techhab.collegeapp.RichardsonMenuDinner"
+            android:id="@+id/richardsonDinnerFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+            -->
+
+        <!--Home Navigation Drawer-->
+        <fragment android:id="@+id/home_navigation_drawer"
+            android:layout_width="@dimen/navigation_drawer_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:name="com.techhab.collegeapp.NavigationDrawerFragment" />
+    </android.support.v4.widget.DrawerLayout>
+</android.support.v4.view.ViewPager>
