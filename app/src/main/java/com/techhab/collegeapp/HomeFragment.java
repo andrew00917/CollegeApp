@@ -348,6 +348,7 @@ public class HomeFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, final View view,
                                         int position, long id) {
                     final String item = (String) parent.getItemAtPosition(position);
+
                     // default key is ""
                     String key = "";
                     for (int i = 0; i < values.length; i++) {
