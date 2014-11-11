@@ -9,6 +9,7 @@
 
     <style name="KZooActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@drawable/blur_actionbar</item>
+        <item name="android:icon">@drawable/k_logo</item>
     </style>
 
     <style name="Widget.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
@@ -17,6 +18,7 @@
 
     <style name="Widget.ActionBar.Transparent">
         <item name="android:background">@android:color/transparent</item>
+        <item name="android:icon">@drawable/k_logo</item>
     </style>
 
 </resources>

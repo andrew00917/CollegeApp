@@ -18,24 +18,27 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/icon_vertical_margin"
                 android:src="@drawable/k_login_header"
                 android:layout_gravity="center_horizontal"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:orientation="horizontal" >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
                     android:text="@string/username" />
 
                 <EditText
                     android:id="@+id/username_input"
                     android:layout_width="@dimen/login_width"
-                    android:layout_height="@dimen/login_height" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:inputType="textNoSuggestions" />
 
             </LinearLayout>
 
@@ -47,13 +50,32 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
                     android:text="@string/password"/>
 
                 <EditText
                     android:id="@+id/password_input"
                     android:layout_width="@dimen/login_width"
-                    android:layout_height="@dimen/login_height"
-                    android:layout_gravity="center" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:inputType="textWebPassword" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <CheckBox
+                    android:id="@+id/remember_me_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/remember_me" />
 
             </LinearLayout>
 
@@ -61,7 +83,9 @@
                 android:id="@+id/login_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login" />
+                android:background="@android:color/transparent"
+                android:text="@string/guest_in"
+                android:textColor="@color/kzooOrange" />
 
         </LinearLayout>
 

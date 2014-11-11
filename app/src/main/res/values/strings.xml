@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyDashes">
 
-    <string name="app_name">CollegeApp</string>
+    <string name="app_name">KCollege</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
@@ -117,7 +117,9 @@
     <!-- Login fragment -->
     <string name="username">Username: </string>
     <string name="password">Password: </string>
-    <string name="login">Login</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="guest_in">guest ></string>
+    <string name="login">login</string>
 
     <!-- Action Bar -->
     <string name="action_search">Search</string>
@@ -127,7 +129,7 @@
     <string name="action_send">Send</string>
 
     <!-- Campus Info -->
-    <string name="title_activity_info">InfoActivity</string>
+    <string name="title_activity_info">Campus Information</string>
     <!-- Cafeteria -->
     <string name="label_cafeteria_top">Welcome to College Dining Services</string>
     <string name="label_cafeteria_contact">Contact Us:</string>
@@ -167,7 +169,7 @@
     <string name="title_activity_cafeteria">CafeteriaActivity</string>
 
     <!-- Maps -->
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_maps">Campus Map</string>
 
 
 

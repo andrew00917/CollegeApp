@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 
@@ -66,11 +67,13 @@ public class HomeActivity extends FragmentActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        this.getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         actionBar = getActionBar();
         if (actionBar != null && actionBar.isShowing()) {
             actionBar.hide();
         }
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         setContentView(R.layout.activity_home);
 

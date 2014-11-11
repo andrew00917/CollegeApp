@@ -5,15 +5,16 @@
     tools:context="com.techhab.collegeapp.HomeFragment">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical" >
 
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/content_description"
             android:background="@drawable/banner"
-            android:layout_gravity="top"
+            android:gravity="top"
             android:id="@+id/bannerImage" />
 
         <FrameLayout

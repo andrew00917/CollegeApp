@@ -7,11 +7,11 @@ import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.app.ActionBar;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,9 +22,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
@@ -95,6 +92,9 @@ public class HomeFragment extends Fragment {
         if ( actionBar != null && ! actionBar.isShowing()) {
             actionBar.show();
         }
+
+        // Set banner image according to current time in timezone
+        setBanner(v);
 
         View.OnTouchListener touchListener = new View.OnTouchListener() {
             @Override
@@ -273,6 +273,29 @@ public class HomeFragment extends Fragment {
         return ! isSubmenuShowing;
     }
 
+    /**
+     * Set Banner according to current time
+     *
+     * @param view Fragment view
+     */
+    private void setBanner(View view) {
+        Time time = new Time(Time.getCurrentTimezone());
+        time.setToNow();
+        ImageView banner = (ImageView) view.findViewById(R.id.bannerImage);
+        int currentTime = Integer.parseInt(time.format("%k"));
+        if (currentTime >= 6 && currentTime < 11) {
+            banner.setBackgroundResource(R.drawable.k_banner_day);
+        }
+        else if (currentTime >= 11 && currentTime < 16) {
+            banner.setBackgroundResource(R.drawable.k_banner_flags);
+        }
+        else if (currentTime >= 16 && currentTime < 21) {
+            banner.setBackgroundResource(R.drawable.k_banner_fab);
+        }
+        else {
+            banner.setBackgroundResource(R.drawable.k_banner_night);
+        }
+    }
     /**
      * Toggle back to main menus
      */
