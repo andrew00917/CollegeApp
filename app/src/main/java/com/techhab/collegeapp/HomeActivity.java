@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ListView;
 import android.widget.Toast;
 
 
@@ -43,6 +44,9 @@ public class HomeActivity extends FragmentActivity
     // Boolean recording whether the activity has been resumed so that
     // the logic in onSessionStateChange is only executed if this is the case
     private boolean isResumed = false;
+
+    /* Sub menu animation */
+    private ListView sub;
 
     /* Action Bar */
     private ActionBar actionBar;
@@ -225,8 +229,16 @@ public class HomeActivity extends FragmentActivity
             super.onBackPressed();
         }
         else {
-            fragment.toggle();
+            fragment.toggle(getListView());
         }
+    }
+
+    public void setListView(ListView sub) {
+        this.sub = sub;
+    }
+
+    public ListView getListView() {
+        return sub;
     }
 
     public void showFragment(int fragmentIndex, boolean addToBackStack) {

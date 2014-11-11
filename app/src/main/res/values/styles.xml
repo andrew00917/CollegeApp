@@ -8,6 +8,7 @@
     </style>
 
     <style name="KZooActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:title">@string/college</item>
         <item name="android:background">@drawable/blur_actionbar</item>
         <item name="android:icon">@drawable/k_logo</item>
     </style>
