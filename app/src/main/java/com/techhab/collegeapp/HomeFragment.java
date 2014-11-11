@@ -282,7 +282,7 @@ public class HomeFragment extends Fragment {
         Time time = new Time(Time.getCurrentTimezone());
         time.setToNow();
         ImageView banner = (ImageView) view.findViewById(R.id.bannerImage);
-        int currentTime = Integer.parseInt(time.format("%k"));
+        int currentTime = Integer.parseInt(time.format("%H"));
         if (currentTime >= 6 && currentTime < 11) {
             banner.setBackgroundResource(R.drawable.k_banner_day);
         }
