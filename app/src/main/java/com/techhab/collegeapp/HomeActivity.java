@@ -17,6 +17,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ListView;
 import android.widget.Toast;
 
 
@@ -42,6 +45,12 @@ public class HomeActivity extends FragmentActivity
     // the logic in onSessionStateChange is only executed if this is the case
     private boolean isResumed = false;
 
+    /* Sub menu animation */
+    private ListView sub;
+
+    /* Action Bar */
+    private ActionBar actionBar;
+
     /*  Navigation Drawer Stuff */
 
     // Drawer layout itself
@@ -62,6 +71,13 @@ public class HomeActivity extends FragmentActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        actionBar = getActionBar();
+        if (actionBar != null && actionBar.isShowing()) {
+            actionBar.hide();
+        }
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         setContentView(R.layout.activity_home);
 
@@ -147,7 +163,6 @@ public class HomeActivity extends FragmentActivity
                 && fragments[LOG_IN_HOME] != null) {
             // not logged in and also not guest
             showFragment(LOG_IN_HOME, false);
-            getActionBar().hide();
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
         else if (application.isLoggedIn() && ! application.isSocial()
@@ -163,6 +178,7 @@ public class HomeActivity extends FragmentActivity
         else {
             // TODO showing logged out home for now
             showFragment(LOG_IN_HOME, false);
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
             //Session session = SpellCheckerService.Session.getActiveSession();
             //if (session != null && session.isOpened() && application.getCurrentUser() != null) {
@@ -213,8 +229,16 @@ public class HomeActivity extends FragmentActivity
             super.onBackPressed();
         }
         else {
-            fragment.toggle();
+            fragment.toggle(getListView());
         }
+    }
+
+    public void setListView(ListView sub) {
+        this.sub = sub;
+    }
+
+    public ListView getListView() {
+        return sub;
     }
 
     public void showFragment(int fragmentIndex, boolean addToBackStack) {
@@ -241,13 +265,27 @@ public class HomeActivity extends FragmentActivity
                     if (fragments[LOG_IN_HOME] != null) {
                         ((LogInFragment)fragments[LOG_IN_HOME]).progressContainer.setVisibility(View.INVISIBLE);
                     }
+
+                    if (actionBar != null) {
+                        actionBar.hide();
+                    }
                     // Set the loggedIn attribute
                     application.setLoggedIn(false);
                     break;
                 case HOME:
+                    if (actionBar != null && ! actionBar.isShowing()) {
+                        actionBar.show();
+                    }
                     // Set the loggedIn attribute
                     application.setLoggedIn(true);
                     break;
+            }
+        }
+        else {
+            if (fragmentIndex == LOG_IN_HOME) {
+                if (actionBar != null) {
+                    actionBar.hide();
+                }
             }
         }
     }
