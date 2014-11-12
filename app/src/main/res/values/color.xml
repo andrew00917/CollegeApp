@@ -8,6 +8,15 @@
     <color name="theGray">#999999</color>
     <color name="navDrawerIcon">#999999</color>
 
+    <!-- Kzoo College colors -->
+    <color name="kzooOrange">#E27226</color>
+    <color name="main00">#E27226</color>
+    <color name="main01">#E26526</color>
+    <color name="main10">#E25826</color>
+    <color name="main11">#E24B26</color>
+    <color name="main20">#E23E26</color>
+    <color name="main21">#E23126</color>
+
     <color name="white">#FFFFFF</color>
     <color name="yellow">#FFFF00</color>
     <color name="fuchsia">#FF00FF</color>

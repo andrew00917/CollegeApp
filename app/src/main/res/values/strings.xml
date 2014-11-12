@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyDashes">
 
-    <string name="app_name">CollegeApp</string>
+    <string name="app_name">KCollege</string>
+    <string name="college">College</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
@@ -91,13 +92,12 @@
         <item>Sub menu 10 4</item>
         <item>Sub menu 10 5</item>
     </string-array>
-    <string-array name="campus_info">
-        <item>Facilities</item>
-        <item>Cafeteria</item>
-        <item>Academic Calender</item>
-        <item>Security</item>
-        <item>Grocery Info</item>
-        <item>Campus Map</item>
+    <string-array name="sub_menu_11">
+        <item>Sub menu 11 1</item>
+        <item>Sub menu 11 2</item>
+        <item>Sub menu 11 3</item>
+        <item>Sub menu 11 4</item>
+        <item>Sub menu 11 5</item>
     </string-array>
     <string-array name="sub_menu_20">
         <item>Sub menu 20 1</item>
@@ -113,11 +113,21 @@
         <item>Sub menu 21 4</item>
         <item>Sub menu 21 5</item>
     </string-array>
+    <string-array name="campus_info">
+        <item>Facilities</item>
+        <item>Cafeteria</item>
+        <item>Academic Calender</item>
+        <item>Security</item>
+        <item>Grocery Info</item>
+        <item>Campus Map</item>
+    </string-array>
 
     <!-- Login fragment -->
     <string name="username">Username: </string>
     <string name="password">Password: </string>
-    <string name="login">Login</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="guest_in">guest ></string>
+    <string name="login">login</string>
 
     <!-- Action Bar -->
     <string name="action_search">Search</string>
@@ -127,7 +137,7 @@
     <string name="action_send">Send</string>
 
     <!-- Campus Info -->
-    <string name="title_activity_info">InfoActivity</string>
+    <string name="title_activity_info">Campus Information</string>
     <!-- Cafeteria -->
     <string name="label_cafeteria_top">Welcome to College Dining Services</string>
     <string name="label_cafeteria_contact">Contact Us:</string>
@@ -164,9 +174,9 @@
     <string name="fall_term_2016_17_dates">9/5\n9/2-9/6\n9/7-9/11</string>
     <string name="winter_term_2016_17_dates">1/3\n\n1/5\n1/6</string>
     <string name="spring_term_2016_17_dates">3/27\n\n3/29\n3/31</string>
-    <string name="title_activity_cafeteria">CafeteriaActivity</string>
+    <string name="title_activity_cafeteria">Dining Information</string>
 
     <!-- Maps -->
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_maps">Campus Map</string>
 
 </resources>

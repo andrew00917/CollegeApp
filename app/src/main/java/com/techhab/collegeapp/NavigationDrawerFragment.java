@@ -173,6 +173,9 @@ public class NavigationDrawerFragment extends Fragment {
                 if (!isAdded()) {
                     return;
                 }
+                if ( ! getActionBar().isShowing()) {
+                    getActionBar().show();
+                }
 
                 getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
@@ -182,6 +185,9 @@ public class NavigationDrawerFragment extends Fragment {
                 super.onDrawerOpened(drawerView);
                 if (!isAdded()) {
                     return;
+                }
+                if (getActionBar().isShowing()) {
+                    getActionBar().hide();
                 }
 
                 if (!mUserLearnedDrawer) {
@@ -289,7 +295,7 @@ public class NavigationDrawerFragment extends Fragment {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setTitle(R.string.app_name);
+        //actionBar.setTitle(R.string.app_name);
     }
 
     private ActionBar getActionBar() {

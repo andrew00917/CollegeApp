@@ -22,7 +22,7 @@
 
         <activity
             android:name=".HomeActivity"
-            android:label="@string/app_name">
+            android:label="@string/college">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,6 +46,8 @@
             android:label="@string/title_activity_cafeteria" >
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.INTERNET"/>
