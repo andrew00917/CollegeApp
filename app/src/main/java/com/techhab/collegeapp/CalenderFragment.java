@@ -57,7 +57,7 @@ public class CalenderFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        application = (CollegeApplication) getActivity().getApplication();
+                application = (CollegeApplication) getActivity().getApplication();
 
         context = getActivity();
     }
