@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -174,6 +173,9 @@ public class NavigationDrawerFragment extends Fragment {
                 if (!isAdded()) {
                     return;
                 }
+                if ( ! getActionBar().isShowing()) {
+                    getActionBar().show();
+                }
 
                 getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
@@ -183,6 +185,9 @@ public class NavigationDrawerFragment extends Fragment {
                 super.onDrawerOpened(drawerView);
                 if (!isAdded()) {
                     return;
+                }
+                if (getActionBar().isShowing()) {
+                    getActionBar().hide();
                 }
 
                 if (!mUserLearnedDrawer) {
@@ -290,7 +295,7 @@ public class NavigationDrawerFragment extends Fragment {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setTitle(R.string.app_name);
+        //actionBar.setTitle(R.string.app_name);
     }
 
     private ActionBar getActionBar() {
@@ -318,7 +323,8 @@ public class NavigationDrawerFragment extends Fragment {
         String[] nav_drawer_items;
 
         // Array of drawables. MUST BE IN THE SAME ORDER AS THE nav_drawer_items STRING ARRAY!
-        int[] images = { R.drawable.phone, R.drawable.cog };
+        int[] images = { R.drawable.phone, R.drawable.information, R.drawable.cog,
+                R.drawable.email, R.drawable.bookmark  };
 
         public NavAdapter(Context context) {
             this.context = context;
@@ -346,7 +352,7 @@ public class NavigationDrawerFragment extends Fragment {
             if (convertView == null) {
                 LayoutInflater inflater =
                         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                row = inflater.inflate(R.layout.custom_row, parent, false);
+                row = inflater.inflate(R.layout.nav_row, parent, false);
             } else {
                 row = convertView;
             }

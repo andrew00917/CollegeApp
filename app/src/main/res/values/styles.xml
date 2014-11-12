@@ -4,11 +4,22 @@
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="android:actionBarStyle">@style/KZooActionBar</item>
+        <item name="android:windowActionBarOverlay">true</item>
     </style>
 
     <style name="KZooActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">#f27800</item>
+        <item name="android:title">@string/college</item>
+        <item name="android:background">@drawable/blur_actionbar</item>
+        <item name="android:icon">@drawable/k_logo</item>
+    </style>
 
+    <style name="Widget.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">#f27800</item>
+    </style>
+
+    <style name="Widget.ActionBar.Transparent">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:icon">@drawable/k_logo</item>
     </style>
 
 </resources>

@@ -9,7 +9,7 @@
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
 
     <!-- fragments -->
     <fragment android:name="com.techhab.collegeapp.InfoFragment"
@@ -20,14 +20,16 @@
         android:id="@+id/facilitiesFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <fragment android:name="com.techhab.collegeapp.CafeteriaFragment"
-        android:id="@+id/cafeteriaFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
     <fragment android:name="com.techhab.collegeapp.CalenderFragment"
         android:id="@+id/calenderFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <!--
+    <fragment android:name="com.google.android.gms.maps.MapFragment"
+        android:id="@+id/mapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+        -->
     <!-- TODO -->
     <!-- add more fragments here follow the format above -->
 
@@ -37,5 +39,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:name="com.techhab.collegeapp.NavigationDrawerFragment" />
+
+    </FrameLayout>
 
 </android.support.v4.widget.DrawerLayout>
