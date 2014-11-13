@@ -1,10 +1,10 @@
-<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/button_material_dark"
-    tools:context="com.techhab.collegeapp.HomeActivity">-->
+    tools:context="com.techhab.collegeapp.HomeActivity">
 
     <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,25 +12,6 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:minHeight="@dimen/abc_action_bar_default_height_material"
-                android:background="@color/red"
-                />
-
-        </LinearLayout>
-
-
 
 
             <!-- The main content view -->
@@ -63,6 +44,13 @@
      </android.support.v4.widget.DrawerLayout>
 
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:minHeight="@dimen/abc_action_bar_default_height_material"
+            android:background="@color/red"
+            />
 
-<!--
-</FrameLayout>-->
+</FrameLayout>
