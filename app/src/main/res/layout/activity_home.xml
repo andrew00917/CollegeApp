@@ -1,33 +1,68 @@
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.techhab.collegeapp.HomeActivity" >
+    android:background="@color/button_material_dark"
+    tools:context="com.techhab.collegeapp.HomeActivity">-->
 
-    <!-- The main content view -->
-    <FrameLayout
-        android:id="@+id/content_frame"
+    <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
 
-    <fragment android:name="com.techhab.collegeapp.LogInFragment"
-        android:id="@+id/loggedOutHomeFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/fragment_log_in" />
 
-    <fragment android:name="com.techhab.collegeapp.HomeFragment"
-        android:id="@+id/homeFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <!--Navigation Drawer-->
-    <fragment android:id="@+id/home_navigation_drawer"
-        android:layout_width="@dimen/navigation_drawer_width"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:name="com.techhab.collegeapp.NavigationDrawerFragment" />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:minHeight="@dimen/abc_action_bar_default_height_material"
+                android:background="@color/red"
+                />
 
- </android.support.v4.widget.DrawerLayout>
+        </LinearLayout>
 
+
+
+
+            <!-- The main content view -->
+            <FrameLayout
+                android:id="@+id/content_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <fragment android:name="com.techhab.collegeapp.HomeFragment"
+                android:id="@+id/homeFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <fragment android:name="com.techhab.collegeapp.LogInFragment"
+                android:id="@+id/loggedOutHomeFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout="@layout/fragment_log_in" />
+
+
+
+
+            <!--Navigation Drawer-->
+            <fragment android:id="@+id/home_navigation_drawer"
+                android:layout_width="@dimen/navigation_drawer_width"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:name="com.techhab.collegeapp.NavigationDrawerFragment" />
+
+     </android.support.v4.widget.DrawerLayout>
+
+
+
+<!--
+</FrameLayout>-->
