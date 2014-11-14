@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,9 +24,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
-public class HomeActivity extends FragmentActivity
+public class HomeActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-x
+
     // Tag used when logging messages
     private static final String TAG = HomeActivity.class.getSimpleName();
 
