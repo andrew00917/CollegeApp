@@ -17,7 +17,6 @@
                 android:layout_height="@dimen/expanded_toolbar"
                 android:minHeight="@dimen/abc_action_bar_default_height_material"
                 android:background="@drawable/k_banner_day"
-                android:elevation="4dp"
                 app:theme="@style/Toolbar"
                 app:popupTheme="@style/Theme.AppCompat.Light"
                 />
