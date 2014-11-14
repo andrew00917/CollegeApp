@@ -72,11 +72,6 @@ public class HomeActivity extends ActionBarActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        actionBar = getActionBar();
-        if (actionBar != null && actionBar.isShowing()) {
-            actionBar.hide();
-        }
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
