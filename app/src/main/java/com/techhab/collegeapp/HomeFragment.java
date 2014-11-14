@@ -86,7 +86,7 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
         progressContainer.setVisibility(View.INVISIBLE);
 
         // Set banner image according to current time in timezone
-        setBanner(v);
+//        setBanner(v);
 
         main00 = (ImageView) v.findViewById(R.id.main_menu_00);
         main01 = (ImageView) v.findViewById(R.id.main_menu_01);
@@ -196,7 +196,7 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
      *
      * @param view Fragment view
      */
-    private void setBanner(View view) {
+    /*private void setBanner(View view) {
         Time time = new Time(Time.getCurrentTimezone());
         time.setToNow();
         ImageView banner = (ImageView) view.findViewById(R.id.bannerImage);
@@ -213,7 +213,7 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
         else {
             banner.setBackgroundResource(R.drawable.k_banner_night);
         }
-    }
+    }*/
 
     /**
      * Button pressed method

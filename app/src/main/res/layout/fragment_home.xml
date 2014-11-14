@@ -9,14 +9,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/content_description"
-            android:background="@drawable/banner"
-            android:gravity="top"
-            android:id="@+id/bannerImage" />
-
         <ScrollView
             android:id="@+id/container"
             android:layout_width="fill_parent"

@@ -13,6 +13,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -79,7 +81,9 @@ public class HomeActivity extends ActionBarActivity
 
         application = (CollegeApplication) getApplication();
 
+        initViews();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.kzooOrange));
 
         FragmentManager fm = getSupportFragmentManager();
         fragments[LOG_IN_HOME] = fm.findFragmentById(R.id.loggedOutHomeFragment);
@@ -141,9 +145,45 @@ public class HomeActivity extends ActionBarActivity
         mTitle = getTitle();
 
         // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.home_navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+//        mNavigationDrawerFragment.setUp(
+//                R.id.home_navigation_drawer,
+//                (DrawerLayout) findViewById(R.id.drawer_layout));
+    }
+
+    private void initViews(){
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        setSupportActionBar(toolbar);
+
+        // Disable app name in toolbar
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,toolbar ,  R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                syncState();
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                syncState();
+            }
+        };
+
+        mDrawerToggle.syncState();
+
+        // Set the drawer toggle as the DrawerListener
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true);
+
     }
 
     @Override
@@ -160,6 +200,7 @@ public class HomeActivity extends ActionBarActivity
             // not logged in and also not guest
             showFragment(LOG_IN_HOME, false);
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            getSupportActionBar().hide();
         }
         else if (application.isLoggedIn() && ! application.isSocial()
                 && fragments[HOME] != null) {
