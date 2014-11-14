@@ -69,7 +69,6 @@
         <item>ABOUT</item>
     </string-array>
 
-
     <!-- Sub Menu List -->
     <string-array name="sub_menu_00">
         <item>Sub menu 00 1</item>
@@ -178,7 +177,11 @@
 
     <!-- Maps -->
     <string name="title_activity_maps">Campus Map</string>
-
-
+    <string name="title_activity_academic">AcademicActivity</string>
+    <string name="title_activity_campus">CampusActivity</string>
+    <string name="title_activity_food">FoodActivity</string>
+    <string name="title_activity_athletic">AthleticActivity</string>
+    <string name="title_activity_events">EventsActivity</string>
+    <string name="title_activity_news">NewsActivity</string>
 
 </resources>

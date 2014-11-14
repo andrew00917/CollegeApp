@@ -48,12 +48,6 @@
 
                 </LinearLayout>
 
-                <ListView
-                    android:id="@+id/sub_menu_0"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
-
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="0dp"
@@ -82,12 +76,6 @@
 
                 </LinearLayout>
 
-                <ListView
-                    android:id="@+id/sub_menu_1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
-
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="0dp"
@@ -115,12 +103,6 @@
                         android:background="@color/main21" />
 
                 </LinearLayout>
-
-                <ListView
-                    android:id="@+id/sub_menu_2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
 
             </LinearLayout>
         </ScrollView>

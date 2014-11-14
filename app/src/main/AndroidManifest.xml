@@ -2,8 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.techhab.collegeapp" >
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--
+         The following two permissions are not required to use
+         Google Maps Android API v2, but are recommended.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
-        android:name=".CollegeApplication"
+        android:name="com.techhab.collegeapp.CollegeApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -19,8 +31,8 @@
             android:value="AIzaSyBdvZxaqcYoM-jhRO3OACQtLVBJy1-XJCc" />
 
         <activity
-            android:name=".HomeActivity"
-            android:label="@string/college">
+            android:name="com.techhab.collegeapp.HomeActivity"
+            android:label="@string/college" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,32 +40,41 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
-        </activity>
-        <activity
-            android:name=".InfoActivity"
+            android:name="com.techhab.collegeapp.InfoActivity"
             android:label="@string/title_activity_info" >
         </activity>
         <activity
-            android:name=".MapsActivity"
+            android:name="com.techhab.collegeapp.MapsActivity"
             android:label="@string/title_activity_maps" >
         </activity>
         <activity
-            android:name=".CafeteriaActivity"
+            android:name="com.techhab.collegeapp.CafeteriaActivity"
             android:label="@string/title_activity_cafeteria" >
         </activity>
+        <activity
+            android:name="com.techhab.collegeapp.AcademicActivity"
+            android:label="@string/title_activity_academic" >
+        </activity>
+        <activity
+            android:name="com.techhab.collegeapp.CampusActivity"
+            android:label="@string/title_activity_campus" >
+        </activity>
+        <activity
+            android:name="com.techhab.collegeapp.FoodActivity"
+            android:label="@string/title_activity_food" >
+        </activity>
+        <activity
+            android:name="com.techhab.collegeapp.AthleticActivity"
+            android:label="@string/title_activity_athletic" >
+        </activity>
+        <activity
+            android:name="com.techhab.collegeapp.EventsActivity"
+            android:label="@string/title_activity_events" >
+        </activity>
+        <activity
+            android:name="com.techhab.collegeapp.NewsActivity"
+            android:label="@string/title_activity_news" >
+        </activity>
     </application>
-
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <!-- The following two permissions are not required to use
-         Google Maps Android API v2, but are recommended. -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
 </manifest>

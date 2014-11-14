@@ -52,9 +52,6 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
     private static final int MAIN_20_ID = R.id.main_menu_20;
     private static final int MAIN_21_ID = R.id.main_menu_21;
 
-    // Display check
-    private boolean isSubmenuShowing = false;
-
     // SharedPreferences (for settings)
     private String spKey;
     private SharedPreferences prefs;
@@ -62,9 +59,6 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
     // Animation attributes
     private LayoutTransition mTransitioner;
     private ViewGroup container;
-
-    // Action Bar
-    private ActionBar actionBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,11 +85,6 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
         // Hide the progressContainer
         progressContainer.setVisibility(View.INVISIBLE);
 
-        actionBar = getActivity().getActionBar();
-        if ( actionBar != null && ! actionBar.isShowing()) {
-            actionBar.show();
-        }
-
         // Set banner image according to current time in timezone
 //        setBanner(v);
 
@@ -113,13 +102,6 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
         main20.setOnTouchListener(this);
         main21.setOnTouchListener(this);
 
-//        ImageView submenuToggle = (ImageView) v.findViewById(R.id.main_menu_holder);
-//        submenuToggle.setOnClickListener(new View.OnClickListener() {
-//             @Override
-//             public void onClick(View view) {
-//                 toggle();
-//             }
-//        });
         // Restore the state
         restoreState(savedInstanceState);
 
@@ -146,32 +128,28 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
                 break;
             case MotionEvent.ACTION_UP:
                 buttonReleased(view);
-                ListView sub = (ListView) v.findViewById(R.id.sub_menu_0);
+                Intent intent = null;
                 switch (view.getId()) {
                     case MAIN_00_ID:
+                        intent = new Intent(getActivity(), AcademicActivity.class);
+                        break;
                     case MAIN_01_ID:
+                        intent = new Intent(getActivity(), CampusActivity.class);
                         break;
                     case MAIN_10_ID:
+                        intent = new Intent(getActivity(), FoodActivity.class);
+                        break;
                     case MAIN_11_ID:
-                        sub = (ListView) v.findViewById(R.id.sub_menu_1);
+                        intent = new Intent(getActivity(), AthleticActivity.class);
                         break;
                     case MAIN_20_ID:
+                        intent = new Intent(getActivity(), EventsActivity.class);
+                        break;
                     case MAIN_21_ID:
-                        sub = (ListView) v.findViewById(R.id.sub_menu_2);
+                        intent = new Intent(getActivity(), NewsActivity.class);
                         break;
                 }
-                if (((HomeActivity) getActivity()).getListView() == null) {
-                    ((HomeActivity) getActivity()).setListView(sub);
-                    toggleMenu(view, sub);
-                }
-                else if (((HomeActivity) getActivity()).getListView() != sub) {
-                    toggle(((HomeActivity) getActivity()).getListView());
-                    ((HomeActivity) getActivity()).setListView(sub);
-                    toggleMenu(view, sub);
-                }
-                else {
-                    toggleMenu(view, sub);
-                }
+                getActivity().startActivity(intent);
                 break;
         }
         return true;
@@ -209,9 +187,9 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
         //outState.putBoolean(PENDING_POST_KEY, pendingPost);
     }
 
-    public boolean allowBackPressed() {
-        return ! isSubmenuShowing;
-    }
+//    public boolean allowBackPressed() {
+//        return ! isSubmenuShowing;
+//    }
 
     /**
      * Set Banner according to current time
@@ -298,82 +276,82 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
     /**
      * Toggle back to main menus
      */
-    public void toggle(ListView submenu) {
-        if (submenu.getVisibility() == ListView.VISIBLE && isSubmenuShowing) {
-            submenu.setVisibility(ListView.GONE);
-            isSubmenuShowing = false;
-        }
-        else if (submenu.getVisibility() == ListView.VISIBLE) {
-            isSubmenuShowing = true;
-        }
-    }
+//    public void toggle(ListView submenu) {
+//        if (submenu.getVisibility() == ListView.VISIBLE && isSubmenuShowing) {
+//            submenu.setVisibility(ListView.GONE);
+//            isSubmenuShowing = false;
+//        }
+//        else if (submenu.getVisibility() == ListView.VISIBLE) {
+//            isSubmenuShowing = true;
+//        }
+//    }
 
     /**
      * Toggle up and down animation button for sub menu
      */
-    public void toggleMenu(View view, ListView submenu) {
-        isSubmenuShowing = true;
-
-        // set up submenu list view
-        final String[] values;
-        // TODO
-        // change array id if id of array is changed in string resource file
-        // otherwise do nothing in this method
-        switch (view.getId()) {
-            case MAIN_00_ID:
-                values = getResources().getStringArray(R.array.sub_menu_00);
-                break;
-            case MAIN_01_ID:
-                values = getResources().getStringArray(R.array.campus_info);
-                break;
-            case MAIN_10_ID:
-                values = getResources().getStringArray(R.array.sub_menu_10);
-                break;
-            case MAIN_11_ID:
-                values = getResources().getStringArray(R.array.sub_menu_11);
-                break;
-            case MAIN_20_ID:
-                values = getResources().getStringArray(R.array.sub_menu_20);
-                break;
-            case MAIN_21_ID:
-                values = getResources().getStringArray(R.array.sub_menu_21);
-                break;
-            default:
-                values = new String[]{};
-                break;
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity()
-                , android.R.layout.simple_list_item_1, android.R.id.text1, values);
-        submenu.setAdapter(adapter);
-
-        final Intent subIntent = new Intent(getActivity(), InfoActivity.class);
-        submenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view,
-                                    int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-
-                // default key is ""
-                String key = "";
-                for (int i = 0; i < values.length; i++) {
-                    if (item.equals(values[i])) {
-                        key = values[i].toLowerCase();
-                    }
-                }
-                if (key.equals("campus map")) {
-                    Intent intent = new Intent(getActivity(), MapsActivity.class);
-                    getActivity().startActivity(intent);
-                }
-                else {
-                    subIntent.putExtra("position", key);
-                    startActivity(subIntent);
-                }
-            }
-        });
-        submenu.setVisibility(ListView.VISIBLE);
-    }
+//    public void toggleMenu(View view, ListView submenu) {
+//        isSubmenuShowing = true;
+//
+//        // set up submenu list view
+//        final String[] values;
+//        // TODO
+//        // change array id if id of array is changed in string resource file
+//        // otherwise do nothing in this method
+//        switch (view.getId()) {
+//            case MAIN_00_ID:
+//                values = getResources().getStringArray(R.array.sub_menu_00);
+//                break;
+//            case MAIN_01_ID:
+//                values = getResources().getStringArray(R.array.campus_info);
+//                break;
+//            case MAIN_10_ID:
+//                values = getResources().getStringArray(R.array.sub_menu_10);
+//                break;
+//            case MAIN_11_ID:
+//                values = getResources().getStringArray(R.array.sub_menu_11);
+//                break;
+//            case MAIN_20_ID:
+//                values = getResources().getStringArray(R.array.sub_menu_20);
+//                break;
+//            case MAIN_21_ID:
+//                values = getResources().getStringArray(R.array.sub_menu_21);
+//                break;
+//            default:
+//                values = new String[]{};
+//                break;
+//        }
+//
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity()
+//                , android.R.layout.simple_list_item_1, android.R.id.text1, values);
+//        submenu.setAdapter(adapter);
+//
+//        final Intent subIntent = new Intent(getActivity(), InfoActivity.class);
+//        submenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, final View view,
+//                                    int position, long id) {
+//                final String item = (String) parent.getItemAtPosition(position);
+//
+//                // default key is ""
+//                String key = "";
+//                for (int i = 0; i < values.length; i++) {
+//                    if (item.equals(values[i])) {
+//                        key = values[i].toLowerCase();
+//                    }
+//                }
+//                if (key.equals("campus map")) {
+//                    Intent intent = new Intent(getActivity(), MapsActivity.class);
+//                    getActivity().startActivity(intent);
+//                }
+//                else {
+//                    subIntent.putExtra("position", key);
+//                    startActivity(subIntent);
+//                }
+//            }
+//        });
+//        submenu.setVisibility(ListView.VISIBLE);
+//    }
 
 
     /**************************************

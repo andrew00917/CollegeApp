@@ -266,14 +266,7 @@ public class HomeActivity extends ActionBarActivity
 
     @Override
     public void onBackPressed() {
-        final HomeFragment fragment = (HomeFragment) fragments[HOME];
-
-        if (fragment.allowBackPressed()) { // and then you define a method allowBackPressed with the logic to allow back pressed or not
-            super.onBackPressed();
-        }
-        else {
-            fragment.toggle(getListView());
-        }
+        super.onBackPressed();
     }
 
     public void setListView(ListView sub) {
