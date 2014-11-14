@@ -24,7 +24,7 @@
         android:id="@+id/cafeteriaFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <fragment android:name="com.techhab.collegeapp.CalenderFragment"
+    <fragment android:name="com.techhab.collegeapp.CalendarFragment"
         android:id="@+id/calenderFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -51,9 +51,6 @@ public class HomeActivity extends ActionBarActivity
     /* Sub menu animation */
     private ListView sub;
 
-    /* Action Bar */
-    private ActionBar actionBar;
-
     /*  Navigation Drawer Stuff */
 
     // Drawer layout itself
@@ -295,27 +292,13 @@ public class HomeActivity extends ActionBarActivity
                     if (fragments[LOG_IN_HOME] != null) {
                         ((LogInFragment)fragments[LOG_IN_HOME]).progressContainer.setVisibility(View.INVISIBLE);
                     }
-
-                    if (actionBar != null) {
-                        actionBar.hide();
-                    }
                     // Set the loggedIn attribute
                     application.setLoggedIn(false);
                     break;
                 case HOME:
-                    if (actionBar != null && ! actionBar.isShowing()) {
-                        actionBar.show();
-                    }
                     // Set the loggedIn attribute
                     application.setLoggedIn(true);
                     break;
-            }
-        }
-        else {
-            if (fragmentIndex == LOG_IN_HOME) {
-                if (actionBar != null) {
-                    actionBar.hide();
-                }
             }
         }
     }
