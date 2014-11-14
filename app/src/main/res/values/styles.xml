@@ -22,40 +22,52 @@
         <item name="android:icon">@drawable/k_logo</item>
     </style>
 
-    <style name="Theme.Test" parent="Theme.AppCompat.Light">
+    <style name="Theme.KZOO" parent="Theme.AppCompat.Light">
 
         <!-- customize the color palette -->
         <item name="colorPrimary">@color/DarkOrange</item>
         <item name="colorPrimaryDark">@color/Orange</item>
         <item name="colorAccent">@color/LightSalmon</item>
         <item name="windowActionBar">false</item>
-        <item name="windowActionBarOverlay">true</item>
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="drawerArrowStyle">@style/Theme.Test.DrawerArrowStyle</item>
-
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="drawerArrowStyle">@style/Theme.KZOO.DrawerArrowStyle</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
 
-    <style name="CustomActionBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:windowActionBarOverlay">true</item>
-        <!-- Support library compatibility -->
-        <item name="windowActionBarOverlay">true</item>
-    </style>
-
-    <style name="Theme.Test.DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+    <style name="Theme.KZOO.DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@android:color/white</item>
     </style>
 
-    <style name="Transparent" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!--<item name="android:windowTranslucentStatus">true</item>-->
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:windowActionModeOverlay">true</item>
-        <!--<item name="android:windowContentOverlay">@null</item>-->
-        <!--<item name="colorPrimary">@android:color/transparent</item>-->
+    <style name="Toolbar" parent="Theme.AppCompat">
+
+        <!-- android:textColorSecondary is the color of the menu
+                 overflow icon (three vertical dots) -->
+        <item name="android:textColorSecondary">@color/white</item>
+
+
     </style>
 
+    <!-- android:textColorPrimary is the  color of the title text
+             in the Toolbar, in the Theme.AppCompat theme:  -->
+    <!--<item name="android:textColorPrimary">@color/abc_primary_text_material_light</item>-->
+
+    <!-- android:textColorPrimaryInverse is the  color of the title
+         text in the Toolbar, in the Theme.AppCompat.Light theme:  -->
+    <!-- <item name="android:textColorPrimaryInverse">@color/abc_primary_text_material_light</item> -->
+
+    <!-- android:actionMenuTextColor is the color of the text of
+          action (menu) items in the Toolbar, at least in the
+          Theme.AppCompat theme.
+          For some reason, they already get the textColorPrimary
+          when running on API 21, but not on older versions of
+          Android, so this is only necessary to support older
+          Android versions.-->
+    <!--<item name="actionMenuTextColor">@color/abc_primary_text_material_light</item>-->
 
 
+
+    <!-- This would set the toolbar's background color,
+          but setting this also changes the popup menu's background,
+          even if we define popupTheme for our <Toolbar> -->
+    <!-- <item name="android:background">@color/color_primary</item> -->
 </resources>

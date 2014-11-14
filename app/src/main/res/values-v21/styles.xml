@@ -3,7 +3,7 @@
     <style name="AppTheme" parent="android:Theme.Material.Light">
     </style>
 
-    <style name="Theme.Test" parent="@style/Theme.AppCompat.Light">
+    <style name="Theme.KZOO" parent="@style/Theme.AppCompat.Light">
 
         <!-- customize the color palette -->
         <item name="colorPrimary">#F00000</item>
@@ -11,6 +11,8 @@
         <item name="colorAccent">#F80000</item>
         <item name="windowActionBar">false</item>
         <item name="drawerArrowStyle">@style/Theme.Test.DrawerArrowStyle</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="Theme.Test.DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">

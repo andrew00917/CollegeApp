@@ -23,5 +23,8 @@
     <!-- Action Bar -->
     <dimen name="actionbar_height">?android:attr/actionBarSize</dimen>
 
+    <!-- Tool Bar -->
+    <dimen name="expanded_toolbar">128dp</dimen>
+
 
 </resources>
