@@ -117,6 +117,7 @@ public class LogInFragment extends Fragment {
                 closeKeyboard(getActivity(), password.getWindowToken());
                 ((HomeActivity) getActivity()).showFragment(HOME_FRAGMENT, false);
                 ((HomeActivity) getActivity()).mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                ((HomeActivity) getActivity()).getSupportActionBar().show();
             }
             else {
                 // exception

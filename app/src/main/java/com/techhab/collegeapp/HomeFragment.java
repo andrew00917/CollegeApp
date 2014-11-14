@@ -37,20 +37,20 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
 
     // Views
     private View v;
-    private ImageButton main00;
-    private ImageButton main01;
-    private ImageButton main10;
-    private ImageButton main11;
-    private ImageButton main20;
-    private ImageButton main21;
+    private ImageView main00;
+    private ImageView main01;
+    private ImageView main02;
+    private ImageView main10;
+    private ImageView main11;
+    private ImageView main12;
 
     // View id
     private static final int MAIN_00_ID = R.id.main_menu_00;
     private static final int MAIN_01_ID = R.id.main_menu_01;
+    private static final int MAIN_02_ID = R.id.main_menu_02;
     private static final int MAIN_10_ID = R.id.main_menu_10;
     private static final int MAIN_11_ID = R.id.main_menu_11;
-    private static final int MAIN_20_ID = R.id.main_menu_20;
-    private static final int MAIN_21_ID = R.id.main_menu_21;
+    private static final int MAIN_12_ID = R.id.main_menu_12;
 
     // SharedPreferences (for settings)
     private String spKey;
@@ -86,21 +86,21 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
         progressContainer.setVisibility(View.INVISIBLE);
 
         // Set banner image according to current time in timezone
-        setBanner(v);
+//        setBanner(v);
 
-        main00 = (ImageButton) v.findViewById(R.id.main_menu_00);
-        main01 = (ImageButton) v.findViewById(R.id.main_menu_01);
-        main10 = (ImageButton) v.findViewById(R.id.main_menu_10);
-        main11 = (ImageButton) v.findViewById(R.id.main_menu_11);
-        main20 = (ImageButton) v.findViewById(R.id.main_menu_20);
-        main21 = (ImageButton) v.findViewById(R.id.main_menu_21);
+        main00 = (ImageView) v.findViewById(R.id.main_menu_00);
+        main01 = (ImageView) v.findViewById(R.id.main_menu_01);
+        main02 = (ImageView) v.findViewById(R.id.main_menu_02);
+        main10 = (ImageView) v.findViewById(R.id.main_menu_10);
+        main11 = (ImageView) v.findViewById(R.id.main_menu_11);
+        main12 = (ImageView) v.findViewById(R.id.main_menu_12);
 
         main00.setOnTouchListener(this);
         main01.setOnTouchListener(this);
+        main02.setOnTouchListener(this);
         main10.setOnTouchListener(this);
         main11.setOnTouchListener(this);
-        main20.setOnTouchListener(this);
-        main21.setOnTouchListener(this);
+        main12.setOnTouchListener(this);
 
         // Restore the state
         restoreState(savedInstanceState);
@@ -136,16 +136,16 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
                     case MAIN_01_ID:
                         intent = new Intent(getActivity(), CampusActivity.class);
                         break;
-                    case MAIN_10_ID:
+                    case MAIN_02_ID:
                         intent = new Intent(getActivity(), FoodActivity.class);
                         break;
-                    case MAIN_11_ID:
+                    case MAIN_10_ID:
                         intent = new Intent(getActivity(), AthleticActivity.class);
                         break;
-                    case MAIN_20_ID:
+                    case MAIN_11_ID:
                         intent = new Intent(getActivity(), EventsActivity.class);
                         break;
-                    case MAIN_21_ID:
+                    case MAIN_12_ID:
                         intent = new Intent(getActivity(), NewsActivity.class);
                         break;
                 }
@@ -196,7 +196,7 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
      *
      * @param view Fragment view
      */
-    private void setBanner(View view) {
+    /*private void setBanner(View view) {
         Time time = new Time(Time.getCurrentTimezone());
         time.setToNow();
         ImageView banner = (ImageView) view.findViewById(R.id.bannerImage);
@@ -213,7 +213,7 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
         else {
             banner.setBackgroundResource(R.drawable.k_banner_night);
         }
-    }
+    }*/
 
     /**
      * Button pressed method
@@ -229,17 +229,17 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
             case MAIN_01_ID:
                 main01.startAnimation(animation);
                 break;
+            case MAIN_02_ID:
+                main02.startAnimation(animation);
+                break;
             case MAIN_10_ID:
                 main10.startAnimation(animation);
                 break;
             case MAIN_11_ID:
                 main11.startAnimation(animation);
                 break;
-            case MAIN_20_ID:
-                main20.startAnimation(animation);
-                break;
-            case MAIN_21_ID:
-                main21.startAnimation(animation);
+            case MAIN_12_ID:
+                main12.startAnimation(animation);
                 break;
         }
     }
@@ -258,17 +258,17 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
             case MAIN_01_ID:
                 main01.startAnimation(animation);
                 break;
+            case MAIN_02_ID:
+                main02.startAnimation(animation);
+                break;
             case MAIN_10_ID:
                 main10.startAnimation(animation);
                 break;
             case MAIN_11_ID:
                 main11.startAnimation(animation);
                 break;
-            case MAIN_20_ID:
-                main20.startAnimation(animation);
-                break;
-            case MAIN_21_ID:
-                main21.startAnimation(animation);
+            case MAIN_12_ID:
+                main12.startAnimation(animation);
                 break;
         }
     }
