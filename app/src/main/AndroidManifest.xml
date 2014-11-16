@@ -66,6 +66,9 @@
         <activity
             android:name="com.techhab.collegeapp.AthleticActivity"
             android:label="@string/title_activity_athletic" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
         <activity
             android:name="com.techhab.collegeapp.EventsActivity"
