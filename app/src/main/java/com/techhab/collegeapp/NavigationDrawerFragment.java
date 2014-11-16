@@ -104,14 +104,12 @@ public class NavigationDrawerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView = (ListView) view.findViewById(R.id.drawer_list);
         mDrawerImage = (ImageView) view.findViewById(R.id.nav_image);
-        mDrawerText = (TextView) view.findViewById(R.id.nav_text);
-        mDrawerUserName = (TextView) view.findViewById(R.id.user_name);
+        mDrawerText = (TextView) view.findViewById(R.id.nav_user_name);
+        mDrawerUserName = (TextView) view.findViewById(R.id.user_email);
         mProfileLayout = (LinearLayout) view.findViewById(R.id.profile_layout);
 
         //TODO set actual onClickListener (should take user to profile page)
         mProfileLayout.setOnClickListener(null);
-//        mDrawerListView = (ListView) inflater.inflate(
-//                R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -123,15 +121,6 @@ public class NavigationDrawerFragment extends Fragment {
         mNavAdapter = new NavAdapter(getActivity());
         mDrawerListView.setAdapter(mNavAdapter);
 
-        /*mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.drawer_item1),
-                        getString(R.string.drawer_item2),
-                        getString(R.string.drawer_item3),
-                }));*/
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return view;
     }
