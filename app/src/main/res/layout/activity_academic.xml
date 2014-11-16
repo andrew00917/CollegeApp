@@ -11,42 +11,34 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/expanded_toolbar"
-            android:minHeight="@dimen/abc_action_bar_default_height_material"
-            android:background="@drawable/k_banner_fab"
-            app:theme="@style/Toolbar"
-            app:popupTheme="@style/Theme.AppCompat.Light" >
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
-                <android.support.v7.widget.SlidingTabLayout
-                    android:id="@+id/sliding_tabs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom" />
+            <include layout="@layout/toolbar"/>
 
-        </android.support.v7.widget.Toolbar>
+            <com.techhab.collegeapp.PagerSlidingTabStrip
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="bottom"
+                android:background="@android:color/transparent"
+                app:pstsPaddingMiddle="true" />
 
+            <!--<com.techhab.collegeapp.PagerSlidingTabStrip
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:pstsPaddingMiddle="true" />-->
 
-        <!-- The main content view -->
+        </FrameLayout>
+
         <android.support.v4.view.ViewPager
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <fragment android:name="com.techhab.collegeapp.CoursesFragment"
-                android:id="@+id/coursesFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <fragment android:name="com.techhab.collegeapp.CalendarFragment"
-                android:id="@+id/calendarFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </android.support.v4.view.ViewPager>
+            android:layout_height="fill_parent"
+            tools:context=".AcademicActivity"/>
 
     </LinearLayout>
 
