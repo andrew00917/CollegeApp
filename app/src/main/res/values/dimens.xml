@@ -5,7 +5,7 @@
 
     <!-- Per the Material design guidelines, navigation drawers should be (screen width - action bar height) wide:
          http://www.google.com/design/spec/patterns/navigation-drawer.html -->
-    <dimen name="navigation_drawer_width">320dp</dimen>
+    <dimen name="navigation_drawer_width">240dp</dimen>
 
     <!-- Icon margins -->
     <dimen name="icon_horizontal_margin">8dp</dimen>
