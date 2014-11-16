@@ -88,7 +88,7 @@ public class AcademicActivity extends ActionBarActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.putInt("currentColor", currentColor);
+//        outState.putInt("currentFragment", currentColor);
     }
 
     @Override
