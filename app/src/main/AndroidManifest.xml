@@ -30,6 +30,7 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBdvZxaqcYoM-jhRO3OACQtLVBJy1-XJCc" />
 
+        <!-- Home Activity -->
         <activity
             android:name="com.techhab.collegeapp.HomeActivity"
             android:label="@string/college" >
@@ -39,6 +40,52 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Main Menu Activities -->
+        <activity
+            android:name="com.techhab.collegeapp.AcademicActivity"
+            android:label="@string/title_activity_academic" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techhab.collegeapp.HomeActivity" />
+        </activity>
+        <activity
+            android:name="com.techhab.collegeapp.CampusActivity"
+            android:label="@string/title_activity_campus" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techhab.collegeapp.HomeActivity" />
+        </activity>
+        <activity
+            android:name="com.techhab.collegeapp.FoodActivity"
+            android:label="@string/title_activity_food" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techhab.collegeapp.HomeActivity" />
+        </activity>
+        <activity
+            android:name="com.techhab.collegeapp.AthleticActivity"
+            android:label="@string/title_activity_athletic" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techhab.collegeapp.HomeActivity" />
+        </activity>
+        <activity
+            android:name="com.techhab.collegeapp.EventsActivity"
+            android:label="@string/title_activity_events" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techhab.collegeapp.HomeActivity" />
+        </activity>
+        <activity
+            android:name="com.techhab.collegeapp.NewsActivity"
+            android:label="@string/title_activity_news" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techhab.collegeapp.HomeActivity" />
+        </activity>
+
+
         <activity
             android:name="com.techhab.collegeapp.InfoActivity"
             android:label="@string/title_activity_info" >
@@ -51,33 +98,8 @@
             android:name="com.techhab.collegeapp.CafeteriaActivity"
             android:label="@string/title_activity_cafeteria" >
         </activity>
-        <activity
-            android:name="com.techhab.collegeapp.AcademicActivity"
-            android:label="@string/title_activity_academic" >
-        </activity>
-        <activity
-            android:name="com.techhab.collegeapp.CampusActivity"
-            android:label="@string/title_activity_campus" >
-        </activity>
-        <activity
-            android:name="com.techhab.collegeapp.FoodActivity"
-            android:label="@string/title_activity_food" >
-        </activity>
-        <activity
-            android:name="com.techhab.collegeapp.AthleticActivity"
-            android:label="@string/title_activity_athletic" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techhab.collegeapp.HomeActivity" />
-        </activity>
-        <activity
-            android:name="com.techhab.collegeapp.EventsActivity"
-            android:label="@string/title_activity_events" >
-        </activity>
-        <activity
-            android:name="com.techhab.collegeapp.NewsActivity"
-            android:label="@string/title_activity_news" >
-        </activity>
+
+
     </application>
 
 </manifest>

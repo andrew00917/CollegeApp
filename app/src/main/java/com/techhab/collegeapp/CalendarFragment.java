@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class CalenderFragment extends Fragment {
+public class CalendarFragment extends Fragment {
 
     private CollegeApplication application;
 
@@ -48,7 +48,7 @@ public class CalenderFragment extends Fragment {
     private boolean isLeft = true;
     private boolean isRight = false;
 
-    public CalenderFragment() {
+    public CalendarFragment() {
         // Required empty public constructor
     }
 
