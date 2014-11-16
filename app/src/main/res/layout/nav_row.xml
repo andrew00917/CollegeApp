@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="48dp"
     android:orientation="horizontal"
     android:weightSum="1">
 
 
     <ImageView
-        android:layout_width="@dimen/nav_drawer_icon_width"
-        android:layout_height="@dimen/nav_drawer_icon_height"
+        android:layout_width="@dimen/nav_drawer_icon"
+        android:layout_height="@dimen/nav_drawer_icon"
+        android:layout_gravity="center_vertical"
         android:id="@+id/imageView"
-        android:padding="12dp" />
+        android:layout_marginLeft="16dp" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/nav_row_height"
-        android:gravity="center|start"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
         android:textColor="@color/theGray"
+        android:textSize="14sp"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/textView"
-        android:layout_marginLeft="30dp" />
+        android:layout_marginLeft="32dp" />
 </LinearLayout>
