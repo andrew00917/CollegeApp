@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 public class CourseSearchFragment extends Fragment {
 
+    public static final String ARG_OBJECT = "object";
 
     public CourseSearchFragment() {
         // Required empty public constructor

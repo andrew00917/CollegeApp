@@ -26,6 +26,8 @@ public class AcademicActivity extends ActionBarActivity
 
     private MyPagerAdapter adapter;
 
+    private int currentPosition;
+
     public AcademicActivity() {
         super();
     }
@@ -41,6 +43,7 @@ public class AcademicActivity extends ActionBarActivity
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
 
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
@@ -103,7 +106,7 @@ public class AcademicActivity extends ActionBarActivity
      */
     public class MyPagerAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = {"Search Courses", "Calendar"};
+        private final String[] TITLES = {"Search Courses", "Calendar", "Empty"};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -121,14 +124,26 @@ public class AcademicActivity extends ActionBarActivity
 
         @Override
         public Fragment getItem(int position) {
+            Fragment fragment;
+            Bundle args = new Bundle();
             switch (position) {
                 case 0:
-                    return new CourseSearchFragment();
+                    fragment = new CourseSearchFragment();
+                    args.putInt(CourseSearchFragment.ARG_OBJECT, position + 1);
+                    fragment.setArguments(args);
+                    break;
                 case 1:
-                    return new CalendarFragment();
+                    fragment = new CalendarFragment();
+                    args.putInt(CalendarFragment.ARG_OBJECT, position + 1);
+                    fragment.setArguments(args);
+                    break;
                 default:
-                    return new CourseSearchFragment();
+                    fragment = new CourseSearchFragment();
+                    args.putInt(CourseSearchFragment.ARG_OBJECT, position + 1);
+                    fragment.setArguments(args);
+                    break;
             }
+            return fragment;
         }
     }
 }

@@ -22,15 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="bottom"
-                android:background="@android:color/transparent"
+                android:background="@color/trans"
                 app:pstsPaddingMiddle="true" />
-
-            <!--<com.techhab.collegeapp.PagerSlidingTabStrip
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:pstsPaddingMiddle="true" />-->
 
         </FrameLayout>
 
