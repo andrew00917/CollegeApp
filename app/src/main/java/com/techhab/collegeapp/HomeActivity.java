@@ -145,9 +145,9 @@ public class HomeActivity extends ActionBarActivity
         mTitle = getTitle();
 
         // Set up the drawer.
-//        mNavigationDrawerFragment.setUp(
-//                R.id.home_navigation_drawer,
-//                (DrawerLayout) findViewById(R.id.drawer_layout));
+        mNavigationDrawerFragment.setUp(
+                R.id.home_navigation_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
     private void initViews(){
