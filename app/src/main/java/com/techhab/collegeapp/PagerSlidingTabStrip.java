@@ -1,6 +1,7 @@
 package com.techhab.collegeapp;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -213,10 +214,10 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         tabCount = pager.getAdapter().getCount();
         View tabView;
         for (int i = 0; i < tabCount; i++) {
-
             if (pager.getAdapter() instanceof CustomTabProvider) {
                 tabView = ((CustomTabProvider) pager.getAdapter()).getCustomTabView(this, i);
-            } else {
+            }
+            else {
                 tabView = LayoutInflater.from(getContext()).inflate(R.layout.tab, this, false);
             }
 
@@ -232,7 +233,6 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
             @SuppressLint("NewApi")
             @Override
             public void onGlobalLayout() {
-
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                     getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
