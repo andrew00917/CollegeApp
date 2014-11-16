@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 public class CalendarFragment extends Fragment {
 
+    public static final String ARG_OBJECT = "object";
+
     private CollegeApplication application;
 
     private Context context;

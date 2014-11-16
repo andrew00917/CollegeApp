@@ -43,7 +43,6 @@
                  overflow icon (three vertical dots) -->
         <item name="android:textColorSecondary">@color/white</item>
 
-
     </style>
 
     <!-- android:textColorPrimary is the  color of the title text
