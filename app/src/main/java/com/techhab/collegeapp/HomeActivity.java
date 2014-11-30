@@ -228,6 +228,8 @@ public class HomeActivity extends ActionBarActivity
     public void onResume() {
         super.onResume();
         isResumed = true;
+
+        onResumeFragments();
     }
 
     @Override
@@ -247,6 +249,16 @@ public class HomeActivity extends ActionBarActivity
             // Save the currentUser
             outState.putString(application.getCurrentUserKey(), application.getCurrentUser().getUserId());
             outState.putString(application.getCurrentUserPasswordKey(), application.getCurrentUser().getPassword());
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        application.setLoggedIn(savedInstanceState.getBoolean(application.getLoggedInKey()));
+
+        if (application.isLoggedIn()) {
+            this.showFragment(HOME, false);
         }
     }
 
