@@ -18,8 +18,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +27,6 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -116,12 +115,14 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
     public PagerSlidingTabStrip(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        setFillViewport(true);
-        setWillNotDraw(false);
+//        setFillViewport(true);
+        this.setWillNotDraw(false);
         tabsContainer = new LinearLayout(context);
         tabsContainer.setOrientation(LinearLayout.HORIZONTAL);
-        tabsContainer.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        addView(tabsContainer);
+        tabsContainer.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+        tabsContainer.setHorizontalGravity(Gravity.LEFT);
+        tabsContainer.setClipToPadding(false);
+        this.addView(tabsContainer);
 
         //Default color will be 'textColorPrimary'
         int colorPrimary = context.getResources().getColor(android.R.color.primary_text_dark);
@@ -275,7 +276,6 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
             }
         });
 
-//        tabView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
         tabView.setPadding(tabPadding, 0, tabPadding, 0);
         tabsContainer.addView(tabView, position, shouldExpand ? expandedTabLayoutParams : defaultTabLayoutParams);
     }
@@ -320,7 +320,6 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
                 }
             }
         }
-
     }
 
     private void updateSelection(int position) {
@@ -407,7 +406,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
             //The user choose the tabs to start in the middle of the view width (padding)
             paddingLeft = paddingRight = getWidth() / 2 - (tabsContainer.getChildAt(0).getWidth() / 2);
             //Clipping padding to false to see the tabs while we pass them swiping
-            setClipToPadding(false);
+//            setClipToPadding(false);
         }
         else {
             //The default offset will be the middle of the view width (no padding)

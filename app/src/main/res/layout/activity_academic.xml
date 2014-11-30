@@ -24,6 +24,7 @@
                 android:layout_gravity="bottom"
                 android:scrollbars="none"
                 android:fillViewport="true"
+                android:clipToPadding="false"
                 app:pstsPaddingMiddle="true" />
 
         </FrameLayout>
