@@ -106,7 +106,7 @@ public class AcademicActivity extends ActionBarActivity
      */
     public class MyPagerAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = {"Search Courses", "Calendar", "Empty"};
+        private final String[] TITLES = {"Search Courses", "Calendar", "Empty", "Test1", "Test2", "Test3"};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);

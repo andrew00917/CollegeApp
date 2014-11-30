@@ -18,6 +18,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,8 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.Locale;
 
 public class PagerSlidingTabStrip extends HorizontalScrollView {
@@ -212,6 +215,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     public void notifyDataSetChanged() {
         tabsContainer.removeAllViews();
         tabCount = pager.getAdapter().getCount();
+
         View tabView;
         for (int i = 0; i < tabCount; i++) {
             if (pager.getAdapter() instanceof CustomTabProvider) {
@@ -271,6 +275,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
             }
         });
 
+//        tabView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
         tabView.setPadding(tabPadding, 0, tabPadding, 0);
         tabsContainer.addView(tabView, position, shouldExpand ? expandedTabLayoutParams : defaultTabLayoutParams);
     }
@@ -338,7 +343,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
             //- Or tabs start at the begging (no padding) scrolling when indicator gets
             //  to the middle of the view width
             newScrollX -= scrollOffset;
-            if (!isPaddingMiddle) {
+            if ( ! isPaddingMiddle) {
                 Pair<Float, Float> lines = getIndicatorCoordinates();
                 newScrollX += ((lines.second - lines.first) / 2);
             }
@@ -355,6 +360,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         View currentTab = tabsContainer.getChildAt(currentPosition);
         float lineLeft = currentTab.getLeft();
         float lineRight = currentTab.getRight();
+        Log.i("Coordinates for current tab: ", "" + lineLeft + ", " + lineRight);
 
         // if there is an offset, start interpolating left and right coordinates between current and next tab
         if (currentPositionOffset > 0f && currentPosition < tabCount - 1) {
@@ -364,6 +370,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
             lineLeft = (currentPositionOffset * nextTabLeft + (1f - currentPositionOffset) * lineLeft);
             lineRight = (currentPositionOffset * nextTabRight + (1f - currentPositionOffset) * lineRight);
+            Log.i("Coordinates with offset: ", "" + lineLeft + ", " + lineRight);
         }
         return new Pair<Float, Float>(lineLeft, lineRight);
     }
