@@ -3,6 +3,7 @@ package com.techhab.collegeapp;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,36 +13,16 @@ import android.view.ViewGroup;
 
 public class RichardsonMenuLunch extends Fragment {
 
-    View v;
 
-    public RichardsonMenuLunch() {
-        // Required empty public constructor
+
+        public static Fragment createNewInstace() {
+            return new RichardsonMenuLunch();
+        }
+
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            return super.onCreateView(inflater, container, savedInstanceState);
+        }
+
     }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_richardson_menu_lunch, parent, false);
-
-        // TODO: show the tab menu here
-
-        // Then set up the view.
-
-        return v;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        // TODO: hide the tab menu here
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        // TODO: hide the tab menu here
-    }
-}
-
