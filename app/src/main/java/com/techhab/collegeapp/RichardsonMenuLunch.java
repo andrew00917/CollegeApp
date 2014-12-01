@@ -12,9 +12,7 @@ import android.view.ViewGroup;
 
 
 public class RichardsonMenuLunch extends Fragment {
-
-
-
+        public static final String ARG_OBJECT = "object";
         public static Fragment createNewInstace() {
             return new RichardsonMenuLunch();
         }

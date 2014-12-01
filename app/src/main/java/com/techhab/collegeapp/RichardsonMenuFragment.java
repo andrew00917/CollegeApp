@@ -10,9 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class RichardsonMenuFragment extends Fragment {
-
-
+    public class RichardsonMenuFragment extends Fragment {
+        public static final String ARG_OBJECT = "object";
         public static Fragment createNewInstace() {
             return new RichardsonMenuFragment();
         }
@@ -23,4 +22,4 @@ public class RichardsonMenuFragment extends Fragment {
             return super.onCreateView(inflater, container, savedInstanceState);
         }
 
-}
+    }

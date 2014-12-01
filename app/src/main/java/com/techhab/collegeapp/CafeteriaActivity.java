@@ -1,156 +1,63 @@
 package com.techhab.collegeapp;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
+public class CafeteriaActivity extends ActionBarActivity
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-public class CafeteriaActivity extends FragmentActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ActionBar.TabListener {
-    ViewPager viewPager;
-    ActionBar actionBar;
+    private final Handler handler = new Handler();
 
-    // Tag used when logging messages
-    private static final String TAG = CafeteriaActivity.class.getSimpleName();
+    Toolbar toolbar;
+    PagerSlidingTabStrip tabs;
+    ViewPager pager;
 
-    private CollegeApplication application;
+    private MyPagerAdapter adapter;
 
-    // Fragment attributes
-    private static final int CAFETERIA = 0;
-    private static final int RICHARDSON = 1;
-    private static final int DRAWER = 2;
-    private static final int FRAGMENT_COUNT = DRAWER +1;
-    private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
+    private int currentPosition;
 
-    // Boolean recording whether the activity has been resumed so that
-    // the logic in onSessionStateChange is only executed if this is the case
-    private boolean isResumed = false;
+    public CafeteriaActivity() {
+        super();
+    }
 
-    /**
-     * Used to store the last screen title.
-     */
-    private CharSequence mTitle;
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cafeteria);
-        viewPager=(ViewPager)findViewById(R.id.pager);
-        viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                                              @Override
-                                              public void onPageScrolled(int i, float v, int i2) {
-                                                  Log.d("VIVZ", "onPageScrolled at"+"position"+i+"from"+v+"with number of pixels"+i2);
-                                              }
 
-                                              @Override
-                                              public void onPageSelected(int i) {
-                                                  actionBar.setSelectedNavigationItem(i);
-                                                  //Log.d("VIVZ", "onPageSelected at"+"position"+i);
-                                              }
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        pager = (ViewPager) findViewById(R.id.pager);
+        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-                                              @Override
-                                              public void onPageScrollStateChanged(int i) {
-                                                if (i==ViewPager.SCROLL_STATE_IDLE)
-                                                {
-                                                    Log.d("VIVZ", "onPageScrollStateChanged IDLE");
-                                                }
-                                                if(i==ViewPager.SCROLL_STATE_DRAGGING)
-                                                {
-                                                    Log.d("VIVZ", "onPageScrollStateChanged Dragging");
-                                                }
-                                                  if(i==ViewPager.SCROLL_STATE_SETTLING)
-                                                  {
-                                                      Log.d("VIVZ", "onPageScrollStateChanged Settling");
-                                                  }
-                                                }
-                                              });
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
 
-//action bar
+        adapter = new MyPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(adapter);
+        tabs.setViewPager(pager);
 
-        actionBar= getActionBar();
-        if (actionBar != null) {
-            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            ActionBar.Tab tab1 = actionBar.newTab();
-            tab1.setText("Breakfast");
-            tab1.setTabListener(this);
-
-            ActionBar.Tab tab2 = actionBar.newTab();
-            tab2.setText("Lunch");
-            tab2.setTabListener(this);
-
-            ActionBar.Tab tab3 = actionBar.newTab();
-            tab3.setText("Dinner");
-            tab3.setTabListener(this);
-
-            actionBar.addTab(tab1);
-            actionBar.addTab(tab2);
-            actionBar.addTab(tab3);
-        }
-
-        application = (CollegeApplication) getApplication();
+        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
+                .getDisplayMetrics());
+        pager.setPageMargin(pageMargin);
     }
-
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-        // TODO
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        isResumed = true;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        isResumed = false;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        // Save the logged-in state
-        outState.putBoolean(application.getLoggedInKey(), application.isLoggedIn());
-
-        if (application.isLoggedIn() && application.isSocial()) {
-            // Save the currentUser
-            outState.putString(application.getCurrentUserKey(), application.getCurrentUser().getUserId());
-            outState.putString(application.getCurrentUserPasswordKey(), application.getCurrentUser().getPassword());
-        }
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_activity_actions, menu);
-        return super.onCreateOptionsMenu(menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_food, menu);
+        return true;
     }
 
     @Override
@@ -158,19 +65,20 @@ public class CafeteriaActivity extends FragmentActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//        switch (id) {
-//            case R.id.action_search:
-//                //openSearch();
-//                return true;
-//            case R.id.action_refresh:
-//                //refresh();
-//                return true;
-//            case R.id.action_overflow:
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
+        int id = item.getItemId();
+
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -179,61 +87,62 @@ public class CafeteriaActivity extends FragmentActivity
 
     }
 
-    public void onSectionAttached(int number) {
-        switch (number) {
-            case 1:
-                mTitle = getString(R.string.title_section1);
-                break;
-            case 2:
-                mTitle = getString(R.string.title_section2);
-                break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        outState.putInt("currentColor", currentColor);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+//        currentColor = savedInstanceState.getInt("currentColor");
+//        changeColor(currentColor);
+    }
+
+    /**
+     * MyPagerAdapter
+     */
+    public class MyPagerAdapter extends FragmentPagerAdapter {
+
+        private final String[] TITLES = {"Breakfast", "Lunch", "Dinner"};
+
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return TITLES[position];
+        }
+
+        @Override
+        public int getCount() {
+            return TITLES.length;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment;
+            Bundle args = new Bundle();
+            switch (position) {
+                case 0:
+                    fragment = new RichardsonMenuFragment();
+                    args.putInt(RichardsonMenuFragment.ARG_OBJECT, position + 1);
+                    fragment.setArguments(args);
+                    break;
+                case 1:
+                    fragment = new RichardsonMenuLunch();
+                    args.putInt(RichardsonMenuLunch.ARG_OBJECT, position + 1);
+                    fragment.setArguments(args);
+                    break;
+                default:
+                    fragment = new RichardsonMenuDinner();
+                    args.putInt(RichardsonMenuDinner.ARG_OBJECT, position + 1);
+                    fragment.setArguments(args);
+                    break;
+            }
+            return fragment;
         }
     }
-
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
-            //Log.d("VIVZ", "onTabSelected at"+"position"+tab.getPosition()+"name"+tab.getText());
-        viewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
-           // Log.d("VIVZ", "onTabUnselected at"+"position"+tab.getPosition()+"name"+tab.getText());
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
-           // Log.d("VIVZ", "onTabReselected at"+"position"+tab.getPosition()+"name"+tab.getText());
-    }
-}
-
-//making adapter for navigation tab
-class MyAdapter extends FragmentPagerAdapter {
-    public MyAdapter(FragmentManager fm) {
-        super(fm);
-
-    }
-
-    @Override
-    public Fragment getItem(int arg0) {
-        Fragment fragment = null;
-        if (arg0 == 0) {
-            fragment = new RichardsonMenuFragment();
-        }
-        if (arg0 == 1) {
-            fragment = new RichardsonMenuLunch();
-        }
-        if (arg0 == 2) {
-            fragment = new RichardsonMenuDinner();
-        }
-        return fragment;
-    }
-    @Override
-    public int getCount () {
-        return 3;
-    }
-
 }

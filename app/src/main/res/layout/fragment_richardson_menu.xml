@@ -1,18 +1,16 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFCC00"
-    tools:context="com.techhab.collegeapp.RichardsonMenuFragment">
-
-    <TextView
-        android:layout_margin="50dp"
+    android:background="@color/drawerBackground"
+    android:orientation="vertical"
+    tools:context=".RichardsonMenuFragment">
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_world"/>
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
+        android:divider="@null"
+        android:background="@color/WhiteSmoke"
+        android:id="@+id/drawer_list" />
 
-
-
-
-
-</FrameLayout>
+</LinearLayout>
