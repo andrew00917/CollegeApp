@@ -1,10 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.techhab.collegeapp.CourseSearchFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <Spinner
+        android:id="@+id/spinner_term"
+        android:layout_width="wrap_content"
+        android:layout_height="?android:attr/actionBarSize"
+        android:entries="@array/term_array"
+        android:prompt="@string/term_prompt" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?android:attr/actionBarSize"
+        android:layout_marginBottom="?android:attr/actionBarSize"
+        android:fillViewport="true" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+                <Spinner
+                    android:id="@+id/spinner_subject_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/subject_array"
+                    android:prompt="@string/subject_prompt" />
+                <Spinner
+                    android:id="@+id/spinner_subject_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/subject_array"
+                    android:prompt="@string/subject_prompt" />
+                <Spinner
+                    android:id="@+id/spinner_subject_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/subject_array"
+                    android:prompt="@string/subject_prompt" />
+                <Spinner
+                    android:id="@+id/spinner_subject_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/subject_array"
+                    android:prompt="@string/subject_prompt" />
+                <Spinner
+                    android:id="@+id/spinner_subject_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/subject_array"
+                    android:prompt="@string/subject_prompt" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+                <Spinner
+                    android:id="@+id/spinner_course_level_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/course_level_array"
+                    android:prompt="@string/course_level_prompt" />
+                <Spinner
+                    android:id="@+id/spinner_course_level_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/course_level_array"
+                    android:prompt="@string/course_level_prompt" />
+                <Spinner
+                    android:id="@+id/spinner_course_level_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/course_level_array"
+                    android:prompt="@string/course_level_prompt" />
+                <Spinner
+                    android:id="@+id/spinner_course_level_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/course_level_array"
+                    android:prompt="@string/course_level_prompt" />
+                <Spinner
+                    android:id="@+id/spinner_course_level_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/course_level_array"
+                    android:prompt="@string/course_level_prompt" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/search_button"
+        android:layout_width="fill_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:layout_gravity="bottom"
+        android:background="@drawable/blur_actionbar"
+        android:text="@string/action_search"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 
 </FrameLayout>

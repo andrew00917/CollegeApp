@@ -1,8 +1,9 @@
-package com.techhab.collegeapp;
+package com.techhab.collegeapp.application;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.util.Log;
+
+import com.techhab.collegeapp.User;
 
 /**
  * Created by jhchoe on 10/16/14.
