@@ -1,4 +1,6 @@
-package com.techhab.collegeapp;
+package com.techhab.collegeapp.application;
+
+import com.techhab.collegeapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

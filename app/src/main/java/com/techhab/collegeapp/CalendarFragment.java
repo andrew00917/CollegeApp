@@ -3,20 +3,35 @@ package com.techhab.collegeapp;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
+import android.support.v7.internal.widget.AdapterViewCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.techhab.collegeapp.application.CollegeApplication;
+import com.techhab.collegeapp.rss.RssAdapter;
+import com.techhab.collegeapp.rss.RssItem;
+import com.techhab.collegeapp.rss.RssService;
+
+import java.util.List;
+
 
 public class CalendarFragment extends Fragment {
+                //implements AdapterView.OnItemClickListener {
 
     public static final String ARG_OBJECT = "object";
 
@@ -26,6 +41,12 @@ public class CalendarFragment extends Fragment {
 
     View v;
 
+    /* RSS example */
+//    private ListView listView;
+//    private ProgressBar progressBar;
+
+
+    /* Previous work */
     private ImageView container;
 
     private TextView year;
@@ -59,7 +80,7 @@ public class CalendarFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-                application = (CollegeApplication) getActivity().getApplication();
+        application = (CollegeApplication) getActivity().getApplication();
 
         context = getActivity();
     }
@@ -67,6 +88,21 @@ public class CalendarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
+        /* RSS */
+//        if (view == null) {
+//            view = inflater.inflate(R.layout.fragment_calender, parent, false);
+//            progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+//            listView = (ListView) view.findViewById(R.id.listView);
+//            listView.setOnItemClickListener(this);
+//            startService();
+//        } else {
+//            // If we are returning from a configuration change:
+//            // "view" is still attached to the previous view hierarchy
+//            // so we need to remove it and re-attach it to the current one
+//            ViewGroup container = (ViewGroup) view.getParent();
+//            container.removeView(view);
+//        }
+
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_calender, parent, false);
 
@@ -128,6 +164,50 @@ public class CalendarFragment extends Fragment {
         return v;
     }
 
+    /**
+     * RSS feed
+     */
+//    private void startService() {
+//        Intent intent = new Intent(getActivity(), RssService.class);
+//        intent.putExtra(RssService.RECEIVER, resultReceiver);
+//        getActivity().startService(intent);
+//    }
+
+    /**
+     * Once the {@link RssService} finishes its task, the result is sent to this ResultReceiver.
+     */
+//    private final ResultReceiver resultReceiver = new ResultReceiver(new Handler()) {
+//        @SuppressWarnings("unchecked")
+//        @Override
+//        protected void onReceiveResult(int resultCode, Bundle resultData) {
+//            List<RssItem> items = (List<RssItem>) resultData.getSerializable(RssService.ITEMS);
+//            if (items != null) {
+//                RssAdapter adapter = new RssAdapter(getActivity(), items);
+//                listView.setAdapter(adapter);
+//            }
+//            else {
+//                Toast.makeText(getActivity(), "An error occured while downloading the rss feed.",
+//                        Toast.LENGTH_LONG).show();
+//            }
+//            progressBar.setVisibility(View.GONE);
+//            listView.setVisibility(View.VISIBLE);
+//        };
+//    };
+//
+//    @Override
+//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//        RssAdapter adapter = (RssAdapter) parent.getAdapter();
+//        RssItem item = (RssItem) adapter.getItem(position);
+//        Uri uri = Uri.parse(item.getLink());
+//        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//        startActivity(intent);
+//    }
+
+
+
+    /**
+     *  Previous content
+     */
     private void showContentUp() {
         isSwipe = true;
         if ( ! isTop) {

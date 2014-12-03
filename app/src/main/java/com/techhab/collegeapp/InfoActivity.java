@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.techhab.collegeapp.application.CollegeApplication;
+
 
 public class InfoActivity extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
