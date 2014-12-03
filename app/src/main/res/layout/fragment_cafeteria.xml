@@ -23,20 +23,6 @@
                 android:layout_height="fill_parent"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:text="@string/label_cafeteria_top"/>
-
-                </LinearLayout>
-
                 <RelativeLayout
                     android:id="@+id/btn_cafeteria_richardson"
                     android:layout_width="fill_parent"
@@ -51,16 +37,28 @@
                         android:layout_marginRight="5dp"
                         android:layout_marginEnd="5dp"
                         android:text="@string/label_cafeteria_richardson"
-                        android:textSize="14dp"
+                        android:textSize="18dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
                         android:layout_alignParentTop="true"/>
-                    <TextView
+                    <TextView android:id="@+id/tvRichardsonCafe"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv01"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:text="@string/label_cafeteria_hours"
-                        android:textSize="12dp"/>
+                        android:paddingTop="3dp"
+                        android:text="8:00am - 10:00pm"/>
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Open"
+                        android:textColor="@color/blue"
+                        android:textSize="18dp"
+                        android:drawableRight="@drawable/bt_next_blue"
+                        android:drawablePadding="3dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/tvRichardsonCafeStatus"/>
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -76,15 +74,31 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
                         android:text="@string/label_cafeteria_bookClub"
-                        android:textSize="14dp"
+                        android:textSize="18dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
                         android:layout_alignParentTop="true"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv02"
                         android:layout_marginRight="5dp"
-                        android:text="@string/label_cafeteria_bookClubHours"
-                        android:textSize="12dp"/>
+                        android:paddingTop="3dp"
+                        android:text="8:00am - 10:00pm"
+                        />
+
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Open"
+                        android:textColor="@color/blue"
+                        android:textSize="18dp"
+                        android:drawableRight="@drawable/bt_next_blue"
+                        android:drawablePadding="3dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/tvBookCafeStatus"/>
+
                 </RelativeLayout>
 
                 <RelativeLayout

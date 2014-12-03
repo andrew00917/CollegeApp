@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import java.util.Calendar;
 
 
 public class DetailCafeteriaFragment extends Fragment implements View.OnClickListener {
@@ -40,8 +43,35 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
         btn_cafeteria_richardson.setOnClickListener(this);
         // Example of getting Button view:
         // Button b = (Button) v.findViewById(R.id.BUTTON_ID);
+        TextView richardsonStoreStatus = (TextView) v.findViewById(R.id.tvRichardsonCafeStatus);
+        TextView bookCafeStatus = (TextView) v.findViewById(R.id.tvBookCafeStatus);
+        if (!isOpened())
+        {
+            richardsonStoreStatus.setText("Closed");
+            bookCafeStatus.setText("Closed");
+            richardsonStoreStatus.setTextColor(getResources().getColor(R.color.red));
+            bookCafeStatus.setTextColor(getResources().getColor(R.color.red));
+        }
 
         return v;
+    }
+
+    private boolean isOpened()
+    {
+        Long currentTime = System.currentTimeMillis();
+        Calendar openCalendar = Calendar.getInstance();
+        openCalendar.set(Calendar.HOUR_OF_DAY,8);
+        openCalendar.set(Calendar.MINUTE,0);
+        openCalendar.set(Calendar.SECOND, 0);
+        long openTime = openCalendar.getTimeInMillis();
+        Calendar closeCalendar = Calendar.getInstance();
+        closeCalendar.set(Calendar.HOUR_OF_DAY, 22);
+        closeCalendar.set(Calendar.MINUTE, 0);
+        closeCalendar.set(Calendar.SECOND, 0);
+        long closedTIme = closeCalendar.getTimeInMillis();
+        if (currentTime >= openTime && currentTime <= closedTIme)
+            return true;
+        return false;
     }
 
     @Override

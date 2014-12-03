@@ -1,5 +1,8 @@
 package com.techhab.collegeapp;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -8,15 +11,23 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class CafeteriaActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    private static final int DATE_PICKER_ID = 999;
     private final Handler handler = new Handler();
 
     Toolbar toolbar;
@@ -39,11 +50,8 @@ public class CafeteriaActivity extends ActionBarActivity
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         pager = (ViewPager) findViewById(R.id.pager);
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("");
-
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         tabs.setViewPager(pager);
@@ -56,8 +64,8 @@ public class CafeteriaActivity extends ActionBarActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_food, menu);
-        return true;
+        getMenuInflater().inflate(R.menu.menu_calendar, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -75,12 +83,34 @@ public class CafeteriaActivity extends ActionBarActivity
         }
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_calendar) {
+            showDialog(DATE_PICKER_ID);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_PICKER_ID:
+                Calendar currentCalendar = Calendar.getInstance();
+                return new DatePickerDialog(this, pickerListener, currentCalendar.get(Calendar.YEAR), currentCalendar.get(Calendar.MONTH) ,
+                        currentCalendar.get(Calendar.DAY_OF_MONTH));
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener pickerListener = new DatePickerDialog.OnDateSetListener() {
+
+        // when dialog box is closed, below method will be called.
+        @Override
+        public void onDateSet(DatePicker view, int selectedYear,
+                              int selectedMonth, int selectedDay) {
+            //todo: get value here
+        }
+    };
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
