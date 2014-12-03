@@ -1,4 +1,4 @@
-package com.techhab.collegeapp;
+package com.techhab.collegeapp.application;
 
 /**
  * Created by jhchoe on 10/16/14.

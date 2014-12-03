@@ -52,6 +52,16 @@ public class AcademicActivity extends ActionBarActivity
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
                 .getDisplayMetrics());
         pager.setPageMargin(pageMargin);
+
+        /*
+            check to see if the user is accessing the this activity for the first time
+            if so, then ignore.
+            otherwise, change the fragment displaying according to the saved state.
+         */
+        if (savedInstanceState != null) {
+            currentPosition = savedInstanceState.getInt("currentFragment");
+            // change fragment displaying according to the saved currentPosition
+        }
     }
 
     @Override
@@ -91,14 +101,14 @@ public class AcademicActivity extends ActionBarActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.putInt("currentFragment", currentColor);
+        outState.putInt("currentFragment", currentPosition);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-//        currentColor = savedInstanceState.getInt("currentColor");
-//        changeColor(currentColor);
+        currentPosition = savedInstanceState.getInt("currentFragment");
+        // change fragment displaying according to the saved currentPosition
     }
 
     /**
@@ -106,7 +116,7 @@ public class AcademicActivity extends ActionBarActivity
      */
     public class MyPagerAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = {"Search Courses", "Calendar", "Test1", "Test2"};
+        private final String[] TITLES = {"Search Courses", "Calendar"};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);

@@ -151,35 +151,114 @@
     <string name="label_cafeteria_breakfast">BreakFast</string>
     <string name="label_cafeteria_lunch">Lunch</string>
     <string name="label_cafeteria_dinner">Dinner</string>
-    <!-- Academic year -->
-    <string name="academic_year_2014_15">2014-15</string>
-    <string name="academic_year_2015_16">2015-16</string>
-    <string name="academic_year_2016_17">2016-17</string>
-    <!-- Terms -->
-    <string name="calender_term_fall">Fall Term</string>
-    <string name="calender_term_winter">Winter Term</string>
-    <string name="calender_term_spring">Spring Term</string>
-    <!-- Contents -->
-    <string name="fall_term_content">Labor Day\nInt\'l Orientation\nOrientation</string>
-    <string name="winter_term_content">Classes Begin\nDrop/Add w/o\n    signature ends\nDrop/Add ends</string>
-    <string name="spring_term_content">Classes Begin\nDrop/Add w/o\n    signature ends\nDrop/Add ends</string>
-    <!-- Dates -->
-    <!-- 2014-15 -->
-    <string name="fall_term_2014_15_dates">9/1\n9/4-9/9\n9/10-9/14</string>
-    <string name="winter_term_2014_15_dates">1/5\n\n1/7\n1/9</string>
-    <string name="spring_term_2014_15_dates">3/30\n\n4/1\n4/3</string>
-    <!-- 2015-16 -->
-    <string name="fall_term_2015_16_dates">9/7\n9/3-9/8\n9/9-9/13</string>
-    <string name="winter_term_2015_16_dates">1/4\n\n1/6\n1/8</string>
-    <string name="spring_term_2015_16_dates">3/28\n\n3/30\n4/1</string>
-    <!-- 2016-17 -->
-    <string name="fall_term_2016_17_dates">9/5\n9/2-9/6\n9/7-9/11</string>
-    <string name="winter_term_2016_17_dates">1/3\n\n1/5\n1/6</string>
-    <string name="spring_term_2016_17_dates">3/27\n\n3/29\n3/31</string>
-    <string name="title_activity_cafeteria">Dining Information</string>
+
+    <!-- Academic Activity -->
+        <!-- Search Courses -->
+        <string name="term_prompt">Term</string>
+        <string-array name="term_array">
+            <item>Winter 2015</item>
+            <item>Fall 2014</item>
+            <item>Spring 2014</item>
+        </string-array>
+
+        <string name="subject_prompt">Subject</string>
+        <string-array name="subject_array">
+            <item>African Studies</item>
+            <item>American Studies</item>
+            <item>Anthropology/Sociology</item>
+            <item>Art</item>
+            <item>Biology</item>
+            <item>Community &amp; Global Health</item>
+            <item>Chemistry</item>
+            <item>Chinese</item>
+            <item>Classics</item>
+            <item>Computer Science</item>
+            <item>Critical Theory &amp; Soc Justice</item>
+            <item>Economics &amp; Business</item>
+            <item>Education</item>
+            <item>English</item>
+            <item>Environmental Studies</item>
+            <item>French</item>
+            <item>German</item>
+            <item>Greek</item>
+            <item>Human Dev. &amp; Social Rel.</item>
+            <item>Hebrew Language</item>
+            <item>History</item>
+            <item>Health Sciences</item>
+            <item>Intn\'l &amp; Area Studies</item>
+            <item>Interdisciplinary</item>
+            <item>Japanese</item>
+            <item>Language</item>
+            <item>Latin</item>
+            <item>Mathematics</item>
+            <item>Music</item>
+            <item>Physical Education</item>
+            <item>Philosophy</item>
+            <item>Physics</item>
+            <item>Political Science</item>
+            <item>Psychology</item>
+            <item>Religion</item>
+            <item>Shared Passages Seminars</item>
+            <item>Senior Individualized Project</item>
+            <item>Spanish</item>
+            <item>Theatre Arts</item>
+            <item>Women, Gender and Sexuality</item>
+            <item>Women\'s Studies</item>
+        </string-array>
+
+        <string name="course_level_prompt">Course Level</string>
+        <string-array name="course_level_array">
+            <item>First Year Friendly</item>
+            <item>Introductory Level</item>
+            <item>Intermediate SO Level</item>
+            <item>Intermediate JR Level</item>
+            <item>Advanced SR Level</item>
+            <item>First-Year Seminar</item>
+            <item>Sophomore Seminar</item>
+            <item>Senior Seminar</item>
+            <item>PE Activity</item>
+            <item>Partial Credit Course</item>
+            <item>Music Ensemble</item>
+            <item>Music Applied</item>
+            <item>SIP/SIP Seminars</item>
+            <item>Off-campus not on Web</item>
+            <item>External course</item>
+            <item>Pre-approved ext. course</item>
+            <item>Service Learning</item>
+            <item>Tuition Payment Plan</item>
+        </string-array>
+
+        <!-- Academic year -->
+        <string name="academic_year_2014_15">2014-15</string>
+        <string name="academic_year_2015_16">2015-16</string>
+        <string name="academic_year_2016_17">2016-17</string>
+        <!-- Terms -->
+        <string name="calender_term_fall">Fall Term</string>
+        <string name="calender_term_winter">Winter Term</string>
+        <string name="calender_term_spring">Spring Term</string>
+        <!-- Contents -->
+        <string name="fall_term_content">Labor Day\nInt\'l Orientation\nOrientation</string>
+        <string name="winter_term_content">Classes Begin\nDrop/Add w/o\n    signature ends\nDrop/Add ends</string>
+        <string name="spring_term_content">Classes Begin\nDrop/Add w/o\n    signature ends\nDrop/Add ends</string>
+        <!-- Dates -->
+        <!-- 2014-15 -->
+        <string name="fall_term_2014_15_dates">9/1\n9/4-9/9\n9/10-9/14</string>
+        <string name="winter_term_2014_15_dates">1/5\n\n1/7\n1/9</string>
+        <string name="spring_term_2014_15_dates">3/30\n\n4/1\n4/3</string>
+        <!-- 2015-16 -->
+        <string name="fall_term_2015_16_dates">9/7\n9/3-9/8\n9/9-9/13</string>
+        <string name="winter_term_2015_16_dates">1/4\n\n1/6\n1/8</string>
+        <string name="spring_term_2015_16_dates">3/28\n\n3/30\n4/1</string>
+        <!-- 2016-17 -->
+        <string name="fall_term_2016_17_dates">9/5\n9/2-9/6\n9/7-9/11</string>
+        <string name="winter_term_2016_17_dates">1/3\n\n1/5\n1/6</string>
+        <string name="spring_term_2016_17_dates">3/27\n\n3/29\n3/31</string>
+        <string name="title_activity_cafeteria">Dining Information</string>
 
     <!-- Maps -->
     <string name="title_activity_maps">Campus Map</string>
+
+
     <string name="title_activity_academic">AcademicActivity</string>
     <string name="title_activity_campus">CampusActivity</string>
     <string name="title_activity_food">FoodActivity</string>

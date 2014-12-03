@@ -6,7 +6,6 @@ import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.support.v4.widget.DrawerLayout;
+
+import com.techhab.collegeapp.application.CollegeApplication;
 
 
 public class LogInFragment extends Fragment {
