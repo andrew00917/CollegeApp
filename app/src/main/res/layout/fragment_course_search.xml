@@ -22,82 +22,82 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <Spinner
+                android:id="@+id/spinner_subject_1"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical" >
-                <Spinner
-                    android:id="@+id/spinner_subject_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/subject_array"
-                    android:prompt="@string/subject_prompt" />
-                <Spinner
-                    android:id="@+id/spinner_subject_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/subject_array"
-                    android:prompt="@string/subject_prompt" />
-                <Spinner
-                    android:id="@+id/spinner_subject_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/subject_array"
-                    android:prompt="@string/subject_prompt" />
-                <Spinner
-                    android:id="@+id/spinner_subject_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/subject_array"
-                    android:prompt="@string/subject_prompt" />
-                <Spinner
-                    android:id="@+id/spinner_subject_5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/subject_array"
-                    android:prompt="@string/subject_prompt" />
-            </LinearLayout>
+                android:layout_marginTop="@dimen/icon_vertical_margin"
+                android:entries="@array/subject_array"
+                android:prompt="@string/subject_prompt" />
+            <Spinner
+                android:id="@+id/spinner_course_level_1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/icon_vertical_margin"
+                android:entries="@array/course_level_array"
+                android:prompt="@string/course_level_prompt" />
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <Spinner
+                android:id="@+id/spinner_subject_2"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical" >
-                <Spinner
-                    android:id="@+id/spinner_course_level_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/course_level_array"
-                    android:prompt="@string/course_level_prompt" />
-                <Spinner
-                    android:id="@+id/spinner_course_level_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/course_level_array"
-                    android:prompt="@string/course_level_prompt" />
-                <Spinner
-                    android:id="@+id/spinner_course_level_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/course_level_array"
-                    android:prompt="@string/course_level_prompt" />
-                <Spinner
-                    android:id="@+id/spinner_course_level_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/course_level_array"
-                    android:prompt="@string/course_level_prompt" />
-                <Spinner
-                    android:id="@+id/spinner_course_level_5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/course_level_array"
-                    android:prompt="@string/course_level_prompt" />
-            </LinearLayout>
+                android:layout_marginTop="@dimen/icon_vertical_margin"
+                android:entries="@array/subject_array"
+                android:prompt="@string/subject_prompt" />
+            <Spinner
+                android:id="@+id/spinner_course_level_2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/icon_vertical_margin"
+                android:entries="@array/course_level_array"
+                android:prompt="@string/course_level_prompt" />
+
+            <Spinner
+                android:id="@+id/spinner_subject_3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/icon_vertical_margin"
+                android:entries="@array/subject_array"
+                android:prompt="@string/subject_prompt" />
+            <Spinner
+                android:id="@+id/spinner_course_level_3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/icon_vertical_margin"
+                android:entries="@array/course_level_array"
+                android:prompt="@string/course_level_prompt" />
+
+            <Spinner
+                android:id="@+id/spinner_subject_4"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/icon_vertical_margin"
+                android:entries="@array/subject_array"
+                android:prompt="@string/subject_prompt" />
+            <Spinner
+                android:id="@+id/spinner_course_level_4"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/icon_vertical_margin"
+                android:entries="@array/course_level_array"
+                android:prompt="@string/course_level_prompt" />
+
+            <Spinner
+                android:id="@+id/spinner_subject_5"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/icon_vertical_margin"
+                android:entries="@array/subject_array"
+                android:prompt="@string/subject_prompt" />
+            <Spinner
+                android:id="@+id/spinner_course_level_5"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/icon_vertical_margin"
+                android:entries="@array/course_level_array"
+                android:prompt="@string/course_level_prompt" />
 
         </LinearLayout>
     </ScrollView>
