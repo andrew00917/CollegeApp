@@ -151,6 +151,9 @@
     <string name="label_cafeteria_breakfast">BreakFast</string>
     <string name="label_cafeteria_lunch">Lunch</string>
     <string name="label_cafeteria_dinner">Dinner</string>
+    <!-- Athletic Activity -->
+    <string name="men">MEN</string>
+    <string name="women">WOMEN</string>
     <!-- Academic year -->
     <string name="academic_year_2014_15">2014-15</string>
     <string name="academic_year_2015_16">2015-16</string>
