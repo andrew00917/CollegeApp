@@ -139,6 +139,7 @@
 
     <!-- Campus Info -->
     <string name="title_activity_info">Campus Information</string>
+    <string name="label_building_Hicks_Center">Hicks Center</string>
     <!-- Cafeteria -->
     <string name="label_cafeteria_top">Welcome to College Dining Services</string>
     <string name="label_cafeteria_contact">Contact Us:</string>
