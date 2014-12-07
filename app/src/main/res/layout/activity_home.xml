@@ -45,10 +45,9 @@
 
     <!--Navigation Drawer-->
     <fragment android:id="@+id/home_navigation_drawer"
-        android:layout_width="@dimen/navigation_drawer_width"
+        style="@style/NavDrawer"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:name="com.techhab.collegeapp.NavigationDrawerFragment" />
-
 
  </android.support.v4.widget.DrawerLayout>

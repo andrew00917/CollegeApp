@@ -4,7 +4,6 @@ package com.techhab.collegeapp;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.content.Context;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -25,6 +24,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+
+
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -55,7 +59,7 @@ public class NavigationDrawerFragment extends Fragment {
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerListView;
+    private ListView mDrawerListView, mDrawerListViewSettingsSupport;
     private View mFragmentContainerView;
 
     private int mCurrentSelectedPosition = 0;
@@ -63,6 +67,7 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mUserLearnedDrawer;
 
     private NavAdapter mNavAdapter;
+    private SettingsSupportNavAdapter mNavAdapterSettingsSupport;
 
     public NavigationDrawerFragment() {
     }
@@ -103,6 +108,7 @@ public class NavigationDrawerFragment extends Fragment {
         // inflate the parent view (the entire layout)
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView = (ListView) view.findViewById(R.id.drawer_list);
+        mDrawerListViewSettingsSupport = (ListView) view.findViewById(R.id.settings_support);
         mDrawerImage = (ImageView) view.findViewById(R.id.nav_image);
         mDrawerText = (TextView) view.findViewById(R.id.nav_user_name);
         mDrawerUserName = (TextView) view.findViewById(R.id.user_email);
@@ -118,8 +124,18 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
+        mDrawerListViewSettingsSupport.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //TODO: Point nav drawer items to actual fragments/activities
+                ((HomeActivity) getActivity()).showFragment(position, false);
+                selectItem(position);
+            }
+        });
         mNavAdapter = new NavAdapter(getActivity());
         mDrawerListView.setAdapter(mNavAdapter);
+        mNavAdapterSettingsSupport = new SettingsSupportNavAdapter(getActivity());
+        mDrawerListViewSettingsSupport.setAdapter(mNavAdapterSettingsSupport);
 
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return view;
@@ -135,62 +151,12 @@ public class NavigationDrawerFragment extends Fragment {
      * @param fragmentId   The android:id of this fragment in its activity's layout.
      * @param drawerLayout The DrawerLayout containing this fragment's UI.
      */
-    public void setUp(int fragmentId, DrawerLayout drawerLayout) {
+    public void setUp(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        // set up the drawer's list view with items and click listener
-
-//        ActionBar actionBar = getActionBar();
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-//        actionBar.setHomeButtonEnabled(true);
-
-        // ActionBarDrawerToggle ties together the the proper interactions
-        // between the navigation drawer and the action bar app icon.
-        /*mDrawerToggle = new ActionBarDrawerToggle(
-                getActivity(),                    *//* host Activity *//*
-                mDrawerLayout,                    *//* DrawerLayout object *//*
-                R.drawable.ic_drawer,             *//* nav drawer image to replace 'Up' caret *//*
-                R.string.navigation_drawer_open,  *//* "open drawer" description for accessibility *//*
-                R.string.navigation_drawer_close  *//* "close drawer" description for accessibility *//*
-        ) {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                if (!isAdded()) {
-                    return;
-                }
-                if ( ! getActionBar().isShowing()) {
-                    getActionBar().show();
-                }
-
-                getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                if (!isAdded()) {
-                    return;
-                }
-                if (getActionBar().isShowing()) {
-                    getActionBar().hide();
-                }
-
-                if (!mUserLearnedDrawer) {
-                    // The user manually opened the drawer; store this flag to prevent auto-showing
-                    // the navigation drawer automatically in the future.
-                    mUserLearnedDrawer = true;
-                    SharedPreferences sp = PreferenceManager
-                            .getDefaultSharedPreferences(getActivity());
-                    sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
-                }
-
-                getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-            }
-        };*/
 
         // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
         // per the navigation drawer design guidelines.
@@ -205,9 +171,8 @@ public class NavigationDrawerFragment extends Fragment {
 //                mDrawerToggle.syncState();
 //            }
 //        });
-
-//        mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
+
 
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
@@ -255,23 +220,28 @@ public class NavigationDrawerFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // If the drawer is open, show the global app actions in the action bar. See also
         // showGlobalContextActionBar, which controls the top-left area of the action bar.
-        if (mDrawerLayout != null && isDrawerOpen()) {
-            inflater.inflate(R.menu.global, menu);
-        }
+//        if (mDrawerLayout != null && isDrawerOpen()) {
+//            inflater.inflate(R.menu.global, menu);
+//        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        if (item.getItemId() == R.id.action_example) {
+//        if (mDrawerToggle.onOptionsItemSelected(item)) {
+//            return true;
+//        }
+        /*if (item.getItemId() == R.id.action_example) {
             Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
             return true;
-        }
-
+        }*/
+        if ((item.getItemId() == android.R.id.home)) {
+                 if (isDrawerOpen()) {
+                        mDrawerLayout.closeDrawer(mFragmentContainerView);
+                     } else {
+                        mDrawerLayout.openDrawer(mFragmentContainerView);
+                     }
+             }
         return super.onOptionsItemSelected(item);
     }
 
@@ -296,12 +266,62 @@ public class NavigationDrawerFragment extends Fragment {
         String[] nav_drawer_items;
 
         // Array of drawables. MUST BE IN THE SAME ORDER AS THE nav_drawer_items STRING ARRAY!
-        int[] images = { R.drawable.phone, R.drawable.information, R.drawable.cog,
-                R.drawable.email, R.drawable.bookmark  };
+        int[] images = { R.drawable.phone, R.drawable.bookmark };
 
         public NavAdapter(Context context) {
             this.context = context;
             nav_drawer_items = context.getResources().getStringArray(R.array.nav_drawer_items);
+        }
+
+        @Override
+        public int getCount() {
+            return nav_drawer_items.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return nav_drawer_items[position];
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View row = null;
+            if (convertView == null) {
+                LayoutInflater inflater =
+                        (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                row = inflater.inflate(R.layout.nav_row, parent, false);
+            } else {
+                row = convertView;
+            }
+            TextView titleTextView = (TextView) row.findViewById(R.id.textView);
+            ImageView titleImageView = (ImageView) row.findViewById(R.id.imageView);
+
+            titleTextView.setText(nav_drawer_items[position]);
+            titleImageView.setImageResource(images[position]);
+            return row;
+        }
+    }
+
+    /**
+     * Custom ListView adapter for the Settings & Support section of the nav drawer
+     */
+    class SettingsSupportNavAdapter extends BaseAdapter {
+
+        private Context context;
+
+        String[] nav_drawer_items;
+
+        // Array of drawables. MUST BE IN THE SAME ORDER AS THE nav_drawer_items STRING ARRAY!
+        int[] images = { R.drawable.cog, R.drawable.help_circle };
+
+        public SettingsSupportNavAdapter(Context context) {
+            this.context = context;
+            nav_drawer_items = context.getResources().getStringArray(R.array.nav_drawer_settings_support);
         }
 
         @Override

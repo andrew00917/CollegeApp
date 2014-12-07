@@ -6,26 +6,29 @@
     android:orientation="vertical"
     tools:context=".NavigationDrawerFragment" >
 
+    <!-- Header profile part -->
     <ImageView
         android:id="@+id/nav_image"
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:padding="12dp"
+        android:layout_marginTop="24dp"
         android:src="@drawable/account"/>
 
     <LinearLayout
+        android:id="@+id/profile_layout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginLeft="16dp"
-        android:id="@+id/profile_layout"
-        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <!--<RelativeLayout
             android:id="@+id/text_view_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+            android:background="@color/blue"
+            android:gravity="center_vertical">-->
 
         <TextView
             android:id="@+id/nav_user_name"
@@ -34,8 +37,8 @@
             android:textSize="14sp"
             android:layout_alignParentTop="true"
             android:textColor="@color/theGray"
-            android:gravity="center_vertical"
             android:textStyle="bold"
+            android:paddingBottom="7dp"
             android:text="Griffin Smalley"/>
 
         <TextView
@@ -45,10 +48,9 @@
             android:textColor="@color/theGray"
             android:layout_below="@+id/nav_user_name"
             android:textSize="14sp"
-            android:gravity="center_vertical"
             android:text="k13gs03@kzoo.edu" />
 
-        </RelativeLayout>
+        <!--</RelativeLayout>-->
 
     </LinearLayout>
 
@@ -56,87 +58,33 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:padding="20dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:background="@color/drawerDivider"/>
 
+    <!-- Content ListView -->
     <ListView
+        android:id="@+id/drawer_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:choiceMode="singleChoice"
         android:divider="@null"
-        android:background="@color/drawerBackground"
-        android:id="@+id/drawer_list" />
+        android:background="@color/drawerBackground" />
 
-    <!-- Settings and support -->
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="bottom">
-
+    <!-- Settings and Support ListView -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:padding="20dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:background="@color/drawerDivider" />
 
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:orientation="horizontal" >
-
-
-        <ImageView
-            android:layout_width="@dimen/nav_drawer_icon"
-            android:layout_height="@dimen/nav_drawer_icon"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/settings_icon"
-            android:src="@drawable/cog"
-            android:layout_marginLeft="16dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:textColor="@color/theGray"
-            android:textSize="14sp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/settings_text"
-            android:text="@string/action_settings"
-            android:layout_marginLeft="32dp" />
-    </LinearLayout>
-
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:orientation="horizontal" >
-
-
-        <ImageView
-            android:layout_width="@dimen/nav_drawer_icon"
-            android:layout_height="@dimen/nav_drawer_icon"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/support_icon"
-            android:src="@drawable/help_circle"
-            android:layout_marginLeft="16dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:textColor="@color/theGray"
-            android:textSize="14sp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/support_text"
-            android:text="@string/support"
-            android:layout_marginLeft="32dp" />
-    </LinearLayout>
-
-    </LinearLayout>
-
-
+    <ListView
+        android:id="@+id/settings_support"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
+        android:divider="@null"
+        android:background="@color/drawerBackground" />
 
 </LinearLayout>
