@@ -54,8 +54,11 @@ public class TermActivity  extends ActionBarActivity
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         pager = (ViewPager) findViewById(R.id.pager);
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         tabs.setViewPager(pager);
@@ -63,6 +66,16 @@ public class TermActivity  extends ActionBarActivity
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
                 .getDisplayMetrics());
         pager.setPageMargin(pageMargin);
+
+        /*
+            check to see if the user is accessing the this activity for the first time
+            if so, then ignore.
+            otherwise, change the fragment displaying according to the saved state.
+         */
+        if (savedInstanceState != null) {
+            currentPosition = savedInstanceState.getInt("currentFragment");
+            // change fragment displaying according to the saved currentPosition
+        }
     }
 
     @Override
@@ -101,14 +114,11 @@ public class TermActivity  extends ActionBarActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.putInt("currentColor", currentColor);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-//        currentColor = savedInstanceState.getInt("currentColor");
-//        changeColor(currentColor);
     }
 
     /**

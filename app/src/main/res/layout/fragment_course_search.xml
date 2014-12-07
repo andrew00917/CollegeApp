@@ -107,7 +107,7 @@
         android:layout_width="fill_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:layout_gravity="bottom"
-        android:background="@color/kzooOrange"
+        android:background="@color/main21"
         android:text="@string/action_search"
         android:textSize="25sp"
         android:textColor="@color/white"

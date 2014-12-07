@@ -10,13 +10,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
-            <include
+            <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
-                layout="@layout/toolbar" />
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/medium_toolbar"
+                android:minHeight="@dimen/abc_action_bar_default_height_material"
+                android:background="@color/main21"
+                app:theme="@style/Toolbar"
+                app:popupTheme="@style/Theme.AppCompat.Light" />
 
             <com.techhab.collegeapp.PagerSlidingTabStrip
                 android:id="@+id/tabs"
@@ -25,7 +31,8 @@
                 android:layout_gravity="bottom"
                 android:scrollbars="none"
                 android:fillViewport="true"
-                app:pstsPaddingMiddle="false"/>
+                app:pstsPaddingMiddle="false"
+                app:pstsShouldExpand="true" />
 
         </FrameLayout>
 

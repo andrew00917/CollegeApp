@@ -2,6 +2,7 @@ package com.techhab.collegeapp;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -88,11 +89,9 @@ public class CalendarFragment extends Fragment {
 
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(
-                                mContext,
-                                "onItemClick - " + getPosition() + " - "
-                                        + mTextView.getText().toString() + " - "
-                                        + mDataset[getPosition()], Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(mContext, TermActivity.class);
+                        intent.putExtra("year", mTextView.getText().toString());
+                        startActivity(intent);
                     }
                 });
             }

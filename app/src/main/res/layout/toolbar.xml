@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/expanded_toolbar"
     android:minHeight="@dimen/abc_action_bar_default_height_material"
-    android:background="@drawable/k_banner_fab"
+    android:background="@color/main00"
     app:theme="@style/Toolbar"
     app:popupTheme="@style/Theme.AppCompat.Light" >
 

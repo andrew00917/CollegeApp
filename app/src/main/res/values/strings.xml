@@ -280,5 +280,6 @@
     <string name="title_activity_athletic">AthleticActivity</string>
     <string name="title_activity_events">EventsActivity</string>
     <string name="title_activity_news">NewsActivity</string>
+    <string name="title_activity_term">TermActivity</string>
 
 </resources>
