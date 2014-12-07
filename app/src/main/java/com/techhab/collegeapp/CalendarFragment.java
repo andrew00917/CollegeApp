@@ -1,27 +1,25 @@
 package com.techhab.collegeapp;
 
 
-import android.content.Intent;
-import android.net.Uri;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.Calendar;
-
-public class CalendarFragment extends Fragment implements View.OnClickListener{
+public class CalendarFragment extends Fragment {
     public static final String ARG_OBJECT = "object";
-    // Buttons Calendar
-    private RelativeLayout btn_calendar_2015;
-    private RelativeLayout btn_calendar_2016;
-    private RelativeLayout btn_calendar_2017;
+
     View v;
 
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     public static Fragment createNewIntace() {
         CalendarFragment fragment = new CalendarFragment();
@@ -30,49 +28,91 @@ public class CalendarFragment extends Fragment implements View.OnClickListener{
         return fragment;
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_calender, parent, false);
-        btn_calendar_2015 = (RelativeLayout) v.findViewById(R.id.btn_calendar_2015);
-        btn_calendar_2015.setOnClickListener(this);
-        btn_calendar_2016 = (RelativeLayout) v.findViewById(R.id.btn_calendar_2016);
-        btn_calendar_2016.setOnClickListener(this);
-        btn_calendar_2017 = (RelativeLayout) v.findViewById(R.id.btn_calendar_2017);
-        btn_calendar_2017.setOnClickListener(this);
-        // Example of getting Button view:
-        // Button b = (Button) v.findViewById(R.id.BUTTON_ID);
-    return v;
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        return v;
     }
 
-        @Override
-        public void onClick (View v){
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(
+                getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
 
-            //Intent intent = new Intent(getActivity(), );
+        String[] dataset = new String[3];
+        /*for (int i = 0; i < dataset.length; i++) {
+            dataset[i] = "item" + i;
+        }*/
+        dataset[0] = "2014-15";
+        dataset[1] = "2015-16";
+        dataset[2] = "2016-17";
 
-            switch (v.getId()) {
-                case R.id.btn_calendar_2015:
-                    Intent intent = new Intent(getActivity(), TermActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.btn_calendar_2016:
-                    Intent intent1 = new Intent(getActivity(), TermActivity.class);
-                    startActivity(intent1);
-                    break;
+        RecyclerAdapter mAdapter = new RecyclerAdapter(dataset, getActivity());
+        mRecyclerView.setAdapter(mAdapter);
+    }
 
-                case R.id.btn_calendar_2017:
-                    Intent intent2 = new Intent(getActivity(), TermActivity.class);
-                    startActivity(intent2);
-                    break;
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
 
+    public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+        private String[] mDataset;
+        private Context mContext;
 
+        public RecyclerAdapter(String[] dataset, Context context) {
+            mDataset = dataset;
+            mContext = context;
+        }
 
+        // Not use static
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
+            public TextView mTextView;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                mTextView = (TextView) itemView.findViewById(R.id.year);
+                itemView.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(
+                                mContext,
+                                "onItemClick - " + getPosition() + " - "
+                                        + mTextView.getText().toString() + " - "
+                                        + mDataset[getPosition()], Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
+        }
 
+        @Override
+        public int getItemCount() {
+            return mDataset.length;
+        }
 
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.mTextView.setText(mDataset[position]);
+        }
 
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.academic_calendar_recycle, parent, false);
+            return new ViewHolder(view);
+        }
     }
 }
