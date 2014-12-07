@@ -27,16 +27,11 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
-
-import com.techhab.collegeapp.application.CollegeApplication;
-
-
 import java.util.Calendar;
 
-public class CafeteriaActivity extends ActionBarActivity
+public class TermActivity  extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-    private static final int DATE_PICKER_ID = 999;
     private final Handler handler = new Handler();
 
     Toolbar toolbar;
@@ -47,13 +42,13 @@ public class CafeteriaActivity extends ActionBarActivity
 
     private int currentPosition;
 
-    public CafeteriaActivity() {
+    public TermActivity() {
         super();
     }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cafeteria);
+        setContentView(R.layout.activity_term);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -73,7 +68,7 @@ public class CafeteriaActivity extends ActionBarActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_calendar, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -91,35 +86,12 @@ public class CafeteriaActivity extends ActionBarActivity
                 return true;
         }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_calendar) {
-            showDialog(DATE_PICKER_ID);
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-            case DATE_PICKER_ID:
-                Calendar currentCalendar = Calendar.getInstance();
-                return new DatePickerDialog(this, pickerListener, currentCalendar.get(Calendar.YEAR), currentCalendar.get(Calendar.MONTH) ,
-                        currentCalendar.get(Calendar.DAY_OF_MONTH));
-        }
-        return null;
-    }
 
-    private DatePickerDialog.OnDateSetListener pickerListener = new DatePickerDialog.OnDateSetListener() {
 
-        // when dialog box is closed, below method will be called.
-        @Override
-        public void onDateSet(DatePicker view, int selectedYear,
-                              int selectedMonth, int selectedDay) {
-            //todo: get value here
-        }
-    };
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -144,7 +116,7 @@ public class CafeteriaActivity extends ActionBarActivity
      */
     public class MyPagerAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = {"Breakfast", "Lunch", "Dinner"};
+        private final String[] TITLES = {"Fall", "Winter", "Spring"};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -166,18 +138,18 @@ public class CafeteriaActivity extends ActionBarActivity
             Bundle args = new Bundle();
             switch (position) {
                 case 0:
-                    fragment = new RichardsonMenuFragment();
-                    args.putInt(RichardsonMenuFragment.ARG_OBJECT, position + 1);
+                    fragment = new FallTerm();
+                    args.putInt(FallTerm.ARG_OBJECT, position + 1);
                     fragment.setArguments(args);
                     break;
                 case 1:
-                    fragment = new RichardsonMenuLunch();
-                    args.putInt(RichardsonMenuLunch.ARG_OBJECT, position + 1);
+                    fragment = new FallTerm();
+                    args.putInt(FallTerm.ARG_OBJECT, position + 1);
                     fragment.setArguments(args);
                     break;
                 default:
-                    fragment = new RichardsonMenuDinner();
-                    args.putInt(RichardsonMenuDinner.ARG_OBJECT, position + 1);
+                    fragment = new FallTerm();
+                    args.putInt(FallTerm.ARG_OBJECT, position + 1);
                     fragment.setArguments(args);
                     break;
             }
@@ -185,3 +157,5 @@ public class CafeteriaActivity extends ActionBarActivity
         }
     }
 }
+
+
