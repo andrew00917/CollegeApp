@@ -25,7 +25,7 @@ public class RichardsonMenuFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.richardson_menu_breakfast, container, false);
+        View v = inflater.inflate(R.layout.fragment_richardson_menu_breakfast, container, false);
         ListView lvRichardsonMenuBreakFast = (ListView) v.findViewById(R.id.lvRichardson_menu_breakfast);
         lvRichardsonMenuBreakFast.setAdapter(new MenuAdapter(getActivity()));
         return v;

@@ -1,128 +1,146 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <ListView
-        android:visibility="gone"
-        android:id="@+id/listView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-    </ListView>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
-
-</RelativeLayout>-->
-
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/WhiteSmoke"
     tools:context="com.techhab.collegeapp.CalendarFragment">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/calender_academic_year"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="top|center_horizontal"
-            android:text="@string/academic_year_2014_15"
-            android:textSize="36sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/calender_term"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/icon_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:gravity="center_horizontal"
-            android:text="@string/calender_term_fall"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/panel_side_calendar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:showDividers="middle"
+            android:divider="?android:dividerHorizontal">
 
-            <TextView
-                android:id="@+id/calender_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/icon_horizontal_margin"
-                android:layout_marginStart="@dimen/icon_horizontal_margin"
-                android:text="@string/fall_term_content"
-                android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/calender_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/icon_horizontal_margin"
-                android:layout_marginStart="@dimen/icon_horizontal_margin"
-                android:text="@string/fall_term_2014_15_dates"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:id="@+id/btn_calendar_2015"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_whitebackground"
+                    android:padding="20dp">
 
+                    <TextView
+                        android:id="@+id/tv01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/academic_year"
+                        android:textSize="18dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_alignParentTop="true"/>
+                    <TextView
+                        android:id="@+id/tvCalender2015"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/tv01"
+                        android:textSize="18dp"
+                        android:textColor="@color/kzooOrange"
+                        android:textStyle="italic"
+                        android:text="@string/academic_year_2014_15"/>
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/blue"
+                        android:textSize="18dp"
+                        android:drawableRight="@drawable/bt_next_blue"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/btn_calendar_2016"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_whitebackground"
+                    android:layout_marginTop="1dp"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/tv02"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/academic_year"
+                        android:textSize="18dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_alignParentTop="true"/>
+                    <TextView
+                        android:id="@+id/tvCalender2016"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/tv02"
+                        android:textSize="18dp"
+                        android:textStyle="italic"
+                        android:textColor="@color/kzooOrange"
+                        android:text="@string/academic_year_2015_16"/>
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/blue"
+                        android:textSize="18dp"
+                        android:drawableRight="@drawable/bt_next_blue"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"/>
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/btn_calendar_2017"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_whitebackground"
+                    android:layout_marginTop="1dp"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/tv03"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/academic_year"
+                        android:textSize="18dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_alignParentTop="true"/>
+                    <TextView
+                        android:id="@+id/tvCalender2017"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/tv03"
+                        android:textSize="18dp"
+                        android:textColor="@color/kzooOrange"
+                        android:textStyle="italic"
+                        android:text="@string/academic_year_2016_17"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/blue"
+                        android:textSize="18dp"
+                        android:drawableRight="@drawable/bt_next_blue"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
         </LinearLayout>
+    </ScrollView>
 
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/up_arrow"
-        android:contentDescription="@string/content_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|top"
-        android:src="@drawable/ic_action_collapse"
-        android:visibility="invisible" />
-
-    <ImageView
-        android:id="@+id/bottom_arrow"
-        android:contentDescription="@string/content_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"
-        android:src="@drawable/ic_action_expand" />
-
-    <ImageView
-        android:id="@+id/left_arrow"
-        android:contentDescription="@string/content_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|start"
-        android:src="@drawable/ic_action_previous_item"
-        android:visibility="invisible" />
-
-    <ImageView
-        android:id="@+id/right_arrow"
-        android:contentDescription="@string/content_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|end"
-        android:src="@drawable/ic_action_next_item" />
-
-    <ImageView
-        android:id="@+id/calender_container"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
 
 </FrameLayout>

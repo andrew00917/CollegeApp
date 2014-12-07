@@ -100,7 +100,10 @@
             android:name="com.techhab.collegeapp.CafeteriaActivity"
             android:label="@string/title_activity_cafeteria" >
         </activity>
-
+        <activity
+            android:name="com.techhab.collegeapp.TermActivity"
+            android:label=" " >
+        </activity>
 
     </application>
 

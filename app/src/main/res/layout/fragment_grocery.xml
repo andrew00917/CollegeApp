@@ -1,0 +1,378 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/WhiteSmoke"
+    tools:context="com.techhab.collegeapp.GroceryFragment">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/panel_side_grocery"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:showDividers="middle"
+            android:divider="?android:dividerHorizontal">
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:id="@+id/btn_grocery_walgreens"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_whitebackground"
+                    android:padding="10dp">
+                    <ImageView
+                        android:id="@+id/img01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/email"
+                        android:layout_alignParentLeft="true"/>
+
+                    <TextView
+                        android:id="@+id/tv01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:text="@string/label_grocery_walgreens"
+                        android:textSize="18dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/img01"/>
+                    <TextView
+                        android:id="@+id/tvWalgreens"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_below="@+id/tv01"
+                        android:paddingTop="3dp"
+                        android:text="8:00am - 10:00pm"
+                        android:layout_toRightOf="@+id/img01"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Open"
+                        android:textColor="@color/blue"
+                        android:textSize="18dp"
+                        android:drawableRight="@drawable/bt_next_blue"
+                        android:drawablePadding="3dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/tvWalgreensStatus"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/btn_grocery_farmersMarket"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@drawable/btn_whitebackground"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/img02"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/email"
+                        android:layout_alignParentLeft="true"/>
+
+                    <TextView
+                        android:id="@+id/tv02"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:text="@string/label_grocery_farmersMarket"
+                        android:textSize="18dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/img02"/>
+                    <TextView
+                        android:id="@+id/tvFarmersMarket"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv02"
+                        android:paddingTop="3dp"
+                        android:text="8:00am - 10:00pm"
+                        android:layout_toRightOf="@+id/img02"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Open"
+                        android:textColor="@color/blue"
+                        android:textSize="18dp"
+                        android:drawableRight="@drawable/bt_next_blue"
+                        android:drawablePadding="3dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/tvFarmersMarketStatus"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/btn_grocery_meijers"
+                    android:layout_marginTop="1dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_whitebackground"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/img03"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/email"
+                        android:layout_alignParentLeft="true"/>
+
+                    <TextView
+                        android:id="@+id/tv03"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/label_grocery_meijers"
+                        android:textSize="18dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/img03"/>
+                    <TextView
+                        android:id="@+id/tvMeijers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv03"
+                        android:layout_marginRight="5dp"
+                        android:paddingTop="3dp"
+                        android:text="8:00am - 10:00pm"
+                        android:layout_toRightOf="@+id/img03"/>
+
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Open"
+                        android:textColor="@color/blue"
+                        android:textSize="18dp"
+                        android:drawableRight="@drawable/bt_next_blue"
+                        android:drawablePadding="3dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/tvMeijersStatus"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/btn_grocery_hardingsMarket"
+                    android:layout_marginTop="1dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_whitebackground"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/img04"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/email"
+                        android:layout_alignParentLeft="true"/>
+
+                    <TextView
+                        android:id="@+id/tv04"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/label_grocery_hardingsMarkets"
+                        android:textSize="18dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/img04"/>
+                    <TextView
+                        android:id="@+id/tvHardingsMarket"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv04"
+                        android:layout_marginRight="5dp"
+                        android:paddingTop="3dp"
+                        android:text="8:00am - 10:00pm"
+                        android:layout_toRightOf="@+id/img04"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Open"
+                        android:textColor="@color/blue"
+                        android:textSize="18dp"
+                        android:drawableRight="@drawable/bt_next_blue"
+                        android:drawablePadding="3dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/tvHardingsMarketStatus"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/btn_grocery_irvingMarket"
+                    android:layout_marginTop="1dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_whitebackground"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/img05"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/email"
+                        android:layout_alignParentLeft="true"/>
+
+                    <TextView
+                        android:id="@+id/tv05"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/label_grocery_irvingMarket"
+                        android:textSize="18dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/img05"/>
+                    <TextView
+                        android:id="@+id/tvIrvingMarket"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv05"
+                        android:layout_marginRight="5dp"
+                        android:paddingTop="3dp"
+                        android:text="8:00am - 10:00pm"
+                        android:layout_toRightOf="@+id/img05"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Open"
+                        android:textColor="@color/blue"
+                        android:textSize="18dp"
+                        android:drawableRight="@drawable/bt_next_blue"
+                        android:drawablePadding="3dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/tvIravingMarketStatus"/>
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/btn_grocery_laMexicanaMarket"
+                    android:layout_marginTop="1dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_whitebackground"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/img06"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/email"
+                        android:layout_alignParentLeft="true"/>
+
+                    <TextView
+                        android:id="@+id/tv06"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/label_grocery_laMexicanaMarket"
+                        android:textSize="18dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/img06"/>
+                    <TextView
+                        android:id="@+id/tvlaMexicanaMarket"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv06"
+                        android:layout_marginRight="5dp"
+                        android:paddingTop="3dp"
+                        android:text="8:00am - 10:00pm"
+                        android:layout_toRightOf="@+id/img06"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Open"
+                        android:textColor="@color/blue"
+                        android:textSize="18dp"
+                        android:drawableRight="@drawable/bt_next_blue"
+                        android:drawablePadding="3dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/tvLaMexicanaMarketStatus"/>
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/btn_grocery_pacificRimFoods"
+                    android:layout_marginTop="1dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_whitebackground"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/img07"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/email"
+                        android:layout_alignParentLeft="true"/>
+
+                    <TextView
+                        android:id="@+id/tv07"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/label_grocery_pacificRimFoods"
+                        android:textSize="18dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/img07"/>
+                    <TextView
+                        android:id="@+id/tvpacificRimFoodStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv07"
+                        android:layout_marginRight="5dp"
+                        android:paddingTop="3dp"
+                        android:text="8:00am - 10:00pm"
+                        android:layout_toRightOf="@+id/img07"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Open"
+                        android:textColor="@color/blue"
+                        android:textSize="18dp"
+                        android:drawableRight="@drawable/bt_next_blue"
+                        android:drawablePadding="3dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/tvPacificRimFoodStatus"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+</FrameLayout>

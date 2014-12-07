@@ -20,6 +20,7 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
     // Buttons Cafeteria
     private RelativeLayout btn_cafeteria_phone;
     private RelativeLayout btn_cafeteria_richardson;
+    private RelativeLayout btn_cafeteria_welles;
     View v;
 
     private static final int RICHARDSON = 1;
@@ -41,15 +42,20 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
         btn_cafeteria_phone.setOnClickListener(this);
         btn_cafeteria_richardson = (RelativeLayout) v.findViewById(R.id.btn_cafeteria_richardson);
         btn_cafeteria_richardson.setOnClickListener(this);
+        btn_cafeteria_welles = (RelativeLayout) v.findViewById(R.id.btn_cafeteria_welles);
+        btn_cafeteria_welles.setOnClickListener(this);
         // Example of getting Button view:
         // Button b = (Button) v.findViewById(R.id.BUTTON_ID);
         TextView richardsonStoreStatus = (TextView) v.findViewById(R.id.tvRichardsonCafeStatus);
+        TextView wellesStoreStatus = (TextView) v.findViewById(R.id.tvWellesCafeStatus);
         TextView bookCafeStatus = (TextView) v.findViewById(R.id.tvBookCafeStatus);
         if (!isOpened())
         {
             richardsonStoreStatus.setText("Closed");
+            wellesStoreStatus.setText("Closed");
             bookCafeStatus.setText("Closed");
             richardsonStoreStatus.setTextColor(getResources().getColor(R.color.red));
+            wellesStoreStatus.setTextColor(getResources().getColor(R.color.red));
             bookCafeStatus.setTextColor(getResources().getColor(R.color.red));
         }
 
@@ -85,10 +91,15 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
                 phoneNumber = getText(R.string.label_cafeteria_phone).toString();
                 PhoneCall(phoneNumber);
                 break;
-            case R.id.btn_cafeteria_richardson:
+            case R.id.btn_cafeteria_welles:
                 Intent intent = new Intent(getActivity(), CafeteriaActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.btn_cafeteria_richardson:
+                Intent intent1 = new Intent(getActivity(), CafeteriaActivity.class);
+                startActivity(intent1);
+                break;
+
 
         }
     }
