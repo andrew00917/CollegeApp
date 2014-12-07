@@ -63,13 +63,13 @@
     <!-- Navigation Drawer -->
     <string-array name="nav_drawer_items">
         <item>Emergency Call</item>
-        <item>Help</item>
-        <item>Settings</item>
-        <item>Send Feedback</item>
         <item>About</item>
     </string-array>
 
-    <string name="support">Support</string>
+    <string-array name="nav_drawer_settings_support">
+        <item>Settings</item>
+        <item>Help &amp; feedback</item>
+    </string-array>
 
     <!-- Sub Menu List -->
     <string-array name="sub_menu_00">
@@ -160,6 +160,9 @@
     <string name="label_grocery_laMexicanaMarket">La Mexicana Market</string>
     <string name="label_grocery_pacificRimFoods">Pacific Rim Foods</string>
 
+    <!-- Athletic Activity -->
+    <string name="men">MEN</string>
+    <string name="women">WOMEN</string>
     <!-- Academic Activity -->
         <!-- Search Courses -->
         <string name="term_prompt">Term</string>

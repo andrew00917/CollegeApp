@@ -19,6 +19,9 @@
     <dimen name="nav_drawer_icon">24dp</dimen>
     <dimen name="nav_row_height">52dp</dimen>
 
+    <!-- Match 56dp default ActionBar height on portrait orientation -->
+    <dimen name="nav_drawer_margin_offset">-8dp</dimen>
+
     <!-- Action Bar -->
     <dimen name="actionbar_height">?android:attr/actionBarSize</dimen>
 
