@@ -188,8 +188,8 @@ public class AthleticActivity extends ActionBarActivity
                     fragment.setArguments(args);
                     break;
                 default:
-                    fragment = new CourseSearchFragment();
-                    args.putInt(CourseSearchFragment.ARG_OBJECT, position + 1);
+                    fragment = new CalendarFragment();
+                    args.putInt(CalendarFragment.ARG_OBJECT, position + 1);
                     fragment.setArguments(args);
                     break;
             }
