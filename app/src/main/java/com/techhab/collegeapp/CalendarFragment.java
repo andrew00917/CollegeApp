@@ -22,7 +22,7 @@ public class CalendarFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public static Fragment createNewIntace() {
+    public static Fragment createNewInstance() {
         CalendarFragment fragment = new CalendarFragment();
         Bundle arg = new Bundle();
         fragment.setArguments(arg);
@@ -90,7 +90,8 @@ public class CalendarFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(mContext, TermActivity.class);
-                        intent.putExtra("year", mTextView.getText().toString());
+                        String[] year = mTextView.getText().toString().split("-");
+                        intent.putExtra("year", year[0]);
                         startActivity(intent);
                     }
                 });

@@ -18,7 +18,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/medium_toolbar"
+                android:layout_height="@dimen/expanded_toolbar"
                 android:minHeight="@dimen/abc_action_bar_default_height_material"
                 android:background="@color/main21"
                 app:theme="@style/Toolbar"
