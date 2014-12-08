@@ -22,6 +22,10 @@ public class CalendarFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    public CalendarFragment() {
+        // Required Empty Constructor
+    }
+
     public static Fragment createNewInstance() {
         CalendarFragment fragment = new CalendarFragment();
         Bundle arg = new Bundle();

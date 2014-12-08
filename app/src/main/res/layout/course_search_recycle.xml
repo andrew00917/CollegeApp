@@ -3,19 +3,18 @@
     android:id="@+id/card_view"
     android:layout_gravity="center"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:layout_marginTop="11dp"
-    android:layout_marginLeft="11dp"
-    android:layout_marginRight="11dp"
-    android:layout_marginBottom="3dp"
+    android:layout_height="60dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    android:layout_marginBottom="2dp"
     style="@style/CardView" >
 
     <TextView
-        android:id="@+id/year"
+        android:id="@+id/subject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/academic_year_2014_15"
         android:textSize="17sp"
         android:textStyle="bold"
         android:textColor="@color/main21" />
