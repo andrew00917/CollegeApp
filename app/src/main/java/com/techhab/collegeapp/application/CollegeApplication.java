@@ -34,6 +34,10 @@ public class CollegeApplication extends Application {
     // Gender
 
 
+    /* Sports Activity */
+    private static final String SPORTS_FIRST_TIME = "sports_first_time";
+    private boolean openForFirstTime;
+
 
     /* College App attributes getters and setters */
 
@@ -98,6 +102,20 @@ public class CollegeApplication extends Application {
 
     public String getCurrentUserPasswordKey() {
         return USER_PASSWORD_KEY;
+    }
+
+    /* Sports Activity getters and setters */
+    public boolean getOpenForFirstTime() {
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
+        boolean ret = prefs.getBoolean(SPORTS_FIRST_TIME, false);
+        return ret;
+    }
+
+    public void setOpenForFirstTime(boolean value) {
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(SPORTS_FIRST_TIME, value);
+        editor.apply();
     }
 
     public String getKey() {
