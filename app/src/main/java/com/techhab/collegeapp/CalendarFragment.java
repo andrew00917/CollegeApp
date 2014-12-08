@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -89,14 +90,27 @@ public class CalendarFragment extends Fragment {
             public ViewHolder(View itemView) {
                 super(itemView);
                 mTextView = (TextView) itemView.findViewById(R.id.year);
-                itemView.setOnClickListener(new View.OnClickListener() {
+                itemView.setOnTouchListener(new View.OnTouchListener(){
 
                     @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(mContext, TermActivity.class);
-                        String[] year = mTextView.getText().toString().split("-");
-                        intent.putExtra("year", year[0]);
-                        startActivity(intent);
+                    public boolean onTouch(View v, MotionEvent event) {
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                ((AcademicActivity) getActivity()).buttonPressed(v);
+                                break;
+                            case MotionEvent.ACTION_CANCEL:
+                            case MotionEvent.ACTION_OUTSIDE:
+                                ((AcademicActivity) getActivity()).buttonReleased(v);
+                                break;
+                            case MotionEvent.ACTION_UP:
+                                ((AcademicActivity) getActivity()).buttonReleased(v);
+                                Intent intent = new Intent(mContext, TermActivity.class);
+                                String[] year = mTextView.getText().toString().split("-");
+                                intent.putExtra("year", year[0]);
+                                startActivity(intent);
+                                break;
+                        }
+                        return true;
                     }
                 });
             }
