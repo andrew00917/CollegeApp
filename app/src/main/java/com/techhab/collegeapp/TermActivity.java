@@ -4,6 +4,7 @@ package com.techhab.collegeapp;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -32,6 +33,8 @@ import java.util.Calendar;
 public class TermActivity  extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    private static String year;
+
     private final Handler handler = new Handler();
 
     Toolbar toolbar;
@@ -50,12 +53,23 @@ public class TermActivity  extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term);
 
+        try {
+            Intent intent = getIntent();
+            year = intent.getStringExtra("year");
+        } catch (Exception e) {
+            e.printStackTrace();
+            year = "2014"; // default academic year
+        }
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         pager = (ViewPager) findViewById(R.id.pager);
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(year + "-" + (Integer.parseInt(year) + 1));
+
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         tabs.setViewPager(pager);
@@ -63,6 +77,16 @@ public class TermActivity  extends ActionBarActivity
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
                 .getDisplayMetrics());
         pager.setPageMargin(pageMargin);
+
+        /*
+            check to see if the user is accessing the this activity for the first time
+            if so, then ignore.
+            otherwise, change the fragment displaying according to the saved state.
+         */
+        if (savedInstanceState != null) {
+            currentPosition = savedInstanceState.getInt("currentFragment");
+            // change fragment displaying according to the saved currentPosition
+        }
     }
 
     @Override
@@ -101,14 +125,11 @@ public class TermActivity  extends ActionBarActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.putInt("currentColor", currentColor);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-//        currentColor = savedInstanceState.getInt("currentColor");
-//        changeColor(currentColor);
     }
 
     /**
@@ -134,25 +155,14 @@ public class TermActivity  extends ActionBarActivity
 
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment;
             Bundle args = new Bundle();
-            switch (position) {
-                case 0:
-                    fragment = new FallTerm();
-                    args.putInt(FallTerm.ARG_OBJECT, position + 1);
-                    fragment.setArguments(args);
-                    break;
-                case 1:
-                    fragment = new FallTerm();
-                    args.putInt(FallTerm.ARG_OBJECT, position + 1);
-                    fragment.setArguments(args);
-                    break;
-                default:
-                    fragment = new FallTerm();
-                    args.putInt(FallTerm.ARG_OBJECT, position + 1);
-                    fragment.setArguments(args);
-                    break;
-            }
+            args.putInt(AcademicTermFragment.ARG_OBJECT, position + 1);
+            args.putString(AcademicTermFragment.ARG_YEAR, year);
+            args.putInt(AcademicTermFragment.ARG_TERM, position);
+
+            Fragment fragment = new AcademicTermFragment();
+            fragment.setArguments(args);
+
             return fragment;
         }
     }

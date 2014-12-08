@@ -27,6 +27,6 @@
 
     <!-- Tool Bar -->
     <dimen name="expanded_toolbar">128dp</dimen>
-
+    <dimen name="medium_toolbar">112dp</dimen>
 
 </resources>

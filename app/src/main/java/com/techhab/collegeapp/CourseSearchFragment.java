@@ -2,13 +2,18 @@ package com.techhab.collegeapp;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.techhab.collegeapp.application.CollegeApplication;
 
@@ -23,19 +28,9 @@ public class CourseSearchFragment extends Fragment {
 
     View v;
 
-    private Spinner termSpinner;
-
-    private Spinner subjectSpinner1;
-    private Spinner subjectSpinner2;
-    private Spinner subjectSpinner3;
-    private Spinner subjectSpinner4;
-    private Spinner subjectSpinner5;
-
-    private Spinner levelSpinner1;
-    private Spinner levelSpinner2;
-    private Spinner levelSpinner3;
-    private Spinner levelSpinner4;
-    private Spinner levelSpinner5;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     public CourseSearchFragment() {
         // Required empty public constructor
@@ -57,90 +52,76 @@ public class CourseSearchFragment extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_course_search, parent, false);
 
-        ArrayAdapter<CharSequence> termAdapter = ArrayAdapter.createFromResource(
-                getActivity(), R.array.term_array, android.R.layout.simple_spinner_item);
-        termAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view);
 
-        ArrayAdapter<CharSequence> subjectAdapter = ArrayAdapter.createFromResource(
-                getActivity(), R.array.subject_array, android.R.layout.simple_spinner_item);
-        subjectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        ArrayAdapter<CharSequence> levelAdapter = ArrayAdapter.createFromResource(
-                getActivity(), R.array.course_level_array, android.R.layout.simple_spinner_item);
-        levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-
-        termSpinner = (Spinner) v.findViewById(R.id.spinner_term);
-        termSpinner.setAdapter(
-                new NothingSelectedSpinnerAdapter(
-                        termAdapter, R.layout.term_spinner_nothing_selected, getActivity()
-                )
-        );
-
-        subjectSpinner1 = (Spinner) v.findViewById(R.id.spinner_subject_1);
-        subjectSpinner1.setAdapter(
-                new NothingSelectedSpinnerAdapter(
-                        subjectAdapter, R.layout.subject_spinner_nothing_selected, getActivity()
-                )
-        );
-        subjectSpinner2 = (Spinner) v.findViewById(R.id.spinner_subject_2);
-        subjectSpinner2.setAdapter(
-                new NothingSelectedSpinnerAdapter(
-                        subjectAdapter, R.layout.subject_spinner_nothing_selected, getActivity()
-                )
-        );
-        subjectSpinner3 = (Spinner) v.findViewById(R.id.spinner_subject_3);
-        subjectSpinner3.setAdapter(
-                new NothingSelectedSpinnerAdapter(
-                        subjectAdapter, R.layout.subject_spinner_nothing_selected, getActivity()
-                )
-        );
-        subjectSpinner4 = (Spinner) v.findViewById(R.id.spinner_subject_4);
-        subjectSpinner4.setAdapter(
-                new NothingSelectedSpinnerAdapter(
-                        subjectAdapter, R.layout.subject_spinner_nothing_selected, getActivity()
-                )
-        );
-        subjectSpinner5 = (Spinner) v.findViewById(R.id.spinner_subject_5);
-        subjectSpinner5.setAdapter(
-                new NothingSelectedSpinnerAdapter(
-                        subjectAdapter, R.layout.subject_spinner_nothing_selected, getActivity()
-                )
-        );
-
-        levelSpinner1 = (Spinner) v.findViewById(R.id.spinner_course_level_1);
-        levelSpinner1.setAdapter(
-                new NothingSelectedSpinnerAdapter(
-                        levelAdapter, R.layout.course_level_spinner_nothing_selected, getActivity()
-                )
-        );
-        levelSpinner2 = (Spinner) v.findViewById(R.id.spinner_course_level_2);
-        levelSpinner2.setAdapter(
-                new NothingSelectedSpinnerAdapter(
-                        levelAdapter, R.layout.course_level_spinner_nothing_selected, getActivity()
-                )
-        );
-        levelSpinner3 = (Spinner) v.findViewById(R.id.spinner_course_level_3);
-        levelSpinner3.setAdapter(
-                new NothingSelectedSpinnerAdapter(
-                        levelAdapter, R.layout.course_level_spinner_nothing_selected, getActivity()
-                )
-        );
-        levelSpinner4 = (Spinner) v.findViewById(R.id.spinner_course_level_4);
-        levelSpinner4.setAdapter(
-                new NothingSelectedSpinnerAdapter(
-                        levelAdapter, R.layout.course_level_spinner_nothing_selected, getActivity()
-                )
-        );
-        levelSpinner5 = (Spinner) v.findViewById(R.id.spinner_course_level_5);
-        levelSpinner5.setAdapter(
-                new NothingSelectedSpinnerAdapter(
-                        levelAdapter, R.layout.course_level_spinner_nothing_selected, getActivity()
-                )
-        );
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
 
         return v;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(
+                getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
 
+        String[] dataset = getActivity().getResources().getStringArray(R.array.subject_array);
+
+        RecyclerAdapter mAdapter = new RecyclerAdapter(dataset, getActivity());
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+        private String[] mDataset;
+        private Context mContext;
+
+        public RecyclerAdapter(String[] dataset, Context context) {
+            mDataset = dataset;
+            mContext = context;
+        }
+
+        // Not use static
+        public class ViewHolder extends RecyclerView.ViewHolder {
+
+            public TextView mTextView;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                mTextView = (TextView) itemView.findViewById(R.id.subject);
+                itemView.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, mTextView.getText().toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return mDataset.length;
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.mTextView.setText(mDataset[position]);
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.course_search_recycle, parent, false);
+            return new ViewHolder(view);
+        }
+    }
 }

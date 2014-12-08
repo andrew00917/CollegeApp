@@ -245,30 +245,96 @@
         <string name="academic_year_2016_17">2016-17</string>
         <string name="academic_year">Academic Year</string>
 
-
-
-        <!-- Terms -->
-        <string name="calender_term_fall">Fall Term</string>
-        <string name="calender_term_winter">Winter Term</string>
-        <string name="calender_term_spring">Spring Term</string>
         <!-- Contents -->
-        <string name="fall_term_content">Labor Day\nInt\'l Orientation\nOrientation</string>
-        <string name="winter_term_content">Classes Begin\nDrop/Add w/o\n    signature ends\nDrop/Add ends</string>
-        <string name="spring_term_content">Classes Begin\nDrop/Add w/o\n    signature ends\nDrop/Add ends</string>
+        <string-array name="Fall">
+            <item>Labor Day</item>
+            <item>Int\'l Orientation</item>
+            <item>Orientation</item>
+            <item>Transfer Welcome</item>
+            <item>Classes Begin</item>
+            <item>Drop/Add w/o signature ends</item>
+            <item>Drop/Add ends</item>
+            <item>Course Withdrawal begins</item>
+            <item>Drop/Add activities* ends</item>
+            <item>Homecoming</item>
+            <item>Fall Break Day</item>
+            <item>Winter Registration</item>
+        </string-array>
+        <string-array name="Winter">
+            <item>Winter</item>
+            <item>Int\'l Orientation</item>
+            <item>Orientation</item>
+            <item>Transfer Welcome</item>
+            <item>Classes Begin</item>
+            <item>Drop/Add w/o signature ends</item>
+            <item>Drop/Add ends</item>
+            <item>Course Withdrawal begins</item>
+            <item>Drop/Add activities* ends</item>
+            <item>Homecoming</item>
+            <item>Fall Break Day</item>
+            <item>Winter Registration</item>
+        </string-array>
+        <string-array name="Spring">
+            <item>Spring</item>
+            <item>Int\'l Orientation</item>
+            <item>Orientation</item>
+            <item>Transfer Welcome</item>
+            <item>Classes Begin</item>
+            <item>Drop/Add w/o signature ends</item>
+            <item>Drop/Add ends</item>
+            <item>Course Withdrawal begins</item>
+            <item>Drop/Add activities* ends</item>
+            <item>Homecoming</item>
+            <item>Fall Break Day</item>
+            <item>Winter Registration</item>
+        </string-array>
+
         <!-- Dates -->
         <!-- 2014-15 -->
-        <string name="fall_term_2014_15_dates">9/1\n9/4-9/9\n9/10-9/14</string>
-        <string name="winter_term_2014_15_dates">1/5\n\n1/7\n1/9</string>
-        <string name="spring_term_2014_15_dates">3/30\n\n4/1\n4/3</string>
-        <!-- 2015-16 -->
-        <string name="fall_term_2015_16_dates">9/7\n9/3-9/8\n9/9-9/13</string>
-        <string name="winter_term_2015_16_dates">1/4\n\n1/6\n1/8</string>
-        <string name="spring_term_2015_16_dates">3/28\n\n3/30\n4/1</string>
-        <!-- 2016-17 -->
-        <string name="fall_term_2016_17_dates">9/5\n9/2-9/6\n9/7-9/11</string>
-        <string name="winter_term_2016_17_dates">1/3\n\n1/5\n1/6</string>
-        <string name="spring_term_2016_17_dates">3/27\n\n3/29\n3/31</string>
-        <string name="title_activity_cafeteria">Dining Information</string>
+        <string-array name="Fall_2014">
+            <item>9/1</item>
+            <item>9/4-9/9</item>
+            <item>9/10-9/14</item>
+            <item>9/12-9/13</item>
+            <item>9/15</item>
+            <item>9/17</item>
+            <item>9/19</item>
+            <item>9/22</item>
+            <item>9/26</item>
+            <item>10/18</item>
+            <item>10/24</item>
+            <item>10/27-11/7</item>
+        </string-array>
+        <string-array name="Winter_2014">
+            <item>Winter 2014</item>
+            <item>9/4-9/9</item>
+            <item>9/10-9/14</item>
+            <item>9/12-9/13</item>
+            <item>9/15</item>
+            <item>9/17</item>
+            <item>9/19</item>
+            <item>9/22</item>
+            <item>9/26</item>
+            <item>10/18</item>
+            <item>10/24</item>
+            <item>10/27-11/7</item>
+        </string-array>
+        <string-array name="Spring_2014">
+            <item>Spring 2014</item>
+            <item>9/4-9/9</item>
+            <item>9/10-9/14</item>
+            <item>9/12-9/13</item>
+            <item>9/15</item>
+            <item>9/17</item>
+            <item>9/19</item>
+            <item>9/22</item>
+            <item>9/26</item>
+            <item>10/18</item>
+            <item>10/24</item>
+            <item>10/27-11/7</item>
+        </string-array>
+
+    <string name="title_activity_cafeteria">Dining Information</string>
 
     <!-- Maps -->
     <string name="title_activity_maps">Campus Map</string>
@@ -280,5 +346,6 @@
     <string name="title_activity_athletic">AthleticActivity</string>
     <string name="title_activity_events">EventsActivity</string>
     <string name="title_activity_news">NewsActivity</string>
+    <string name="title_activity_term">TermActivity</string>
 
 </resources>

@@ -111,6 +111,11 @@ public class AcademicActivity extends ActionBarActivity
         // change fragment displaying according to the saved currentPosition
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     /**
      * MyPagerAdapter
      */
