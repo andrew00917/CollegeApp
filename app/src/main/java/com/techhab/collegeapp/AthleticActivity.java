@@ -1,5 +1,6 @@
 package com.techhab.collegeapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,11 @@ public class AthleticActivity extends ActionBarActivity
 
     private MyPagerAdapter adapter;
 
+    private SharedPreferences prefs;
+
+    // Has the user chosen between men's or women's sports
+//    private
+
     private int currentPosition;
 
     private String[] boysSports = {"Baseball", "Basketball", "Football", "Swim/Dive", "Tennis"};
@@ -50,7 +56,31 @@ public class AthleticActivity extends ActionBarActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
 
-        adapter = new MyPagerAdapter(getSupportFragmentManager());
+        // Handle Boys/Girls toggle switch
+        boyGirlSwitch = (Switch) findViewById(R.id.boys_girls_switch);
+        boyGirlSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    adapter = new MyPagerAdapter(getSupportFragmentManager(), boysSports);
+//                    finish();
+//                    startActivity(getIntent());
+                } else {
+                    adapter = new MyPagerAdapter(getSupportFragmentManager(), girlsSports);
+//                    finish();
+//                    startActivity(getIntent());
+                }
+            }
+        });
+
+
+
+        if ( boyGirlSwitch.isChecked() ) {
+            adapter = new MyPagerAdapter(getSupportFragmentManager(), girlsSports);
+        } else {
+            adapter = new MyPagerAdapter(getSupportFragmentManager(), boysSports);
+        }
+
+//        adapter = new MyPagerAdapter(getSupportFragmentManager(), boysSports);
         pager.setAdapter(adapter);
         tabs.setViewPager(pager);
 
@@ -58,21 +88,6 @@ public class AthleticActivity extends ActionBarActivity
                 .getDisplayMetrics());
         pager.setPageMargin(pageMargin);
 
-        // Handle Boys/Girls toggle switch
-        boyGirlSwitch = (Switch) findViewById(R.id.boys_girls_switch);
-        boyGirlSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    adapter.TITLES = boysSports;
-//                    finish();
-//                    startActivity(getIntent());
-                } else {
-                    adapter.TITLES = girlsSports;
-//                    finish();
-//                    startActivity(getIntent());
-                }
-            }
-        });
     }
 
     private void initViews(){
@@ -151,10 +166,11 @@ public class AthleticActivity extends ActionBarActivity
      */
     public class MyPagerAdapter extends FragmentPagerAdapter {
 
-        private String[] TITLES = {"Home Games", "Baseball", "Basketball", "Football", "Swim/Dive", "Tennis"};
+        private String[] TITLES;
 
-        public MyPagerAdapter(FragmentManager fm) {
+        public MyPagerAdapter(FragmentManager fm, String[] titles) {
             super(fm);
+            this.TITLES = titles;
         }
 
         @Override

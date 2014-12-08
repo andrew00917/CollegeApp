@@ -31,6 +31,8 @@ public class CollegeApplication extends Application {
     // CollegeAppRequestError to show when the GameFragment closes
     private CollegeAppRequestError gameFragmentFBRequestError = null;
 
+    // Gender
+
 
 
     /* College App attributes getters and setters */
