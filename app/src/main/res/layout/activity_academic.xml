@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/medium_toolbar"
                 android:minHeight="@dimen/abc_action_bar_default_height_material"
-                android:background="@color/main21"
+                android:background="@color/main00"
                 app:theme="@style/Toolbar"
                 app:popupTheme="@style/Theme.AppCompat.Light" />
 
