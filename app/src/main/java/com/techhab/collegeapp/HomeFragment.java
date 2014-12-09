@@ -217,26 +217,7 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
      */
     private void buttonPressed(View view) {
         Animation animation = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.button_pressed);
-        switch (view.getId()) {
-            case MAIN_00_ID:
-                main00.startAnimation(animation);
-                break;
-            case MAIN_01_ID:
-                main01.startAnimation(animation);
-                break;
-            case MAIN_02_ID:
-                main02.startAnimation(animation);
-                break;
-            case MAIN_10_ID:
-                main10.startAnimation(animation);
-                break;
-            case MAIN_11_ID:
-                main11.startAnimation(animation);
-                break;
-            case MAIN_12_ID:
-                main12.startAnimation(animation);
-                break;
-        }
+        view.startAnimation(animation);
     }
 
     /**
@@ -246,26 +227,7 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
      */
     private void buttonReleased(View view) {
         Animation animation = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.button_released);
-        switch (view.getId()) {
-            case MAIN_00_ID:
-                main00.startAnimation(animation);
-                break;
-            case MAIN_01_ID:
-                main01.startAnimation(animation);
-                break;
-            case MAIN_02_ID:
-                main02.startAnimation(animation);
-                break;
-            case MAIN_10_ID:
-                main10.startAnimation(animation);
-                break;
-            case MAIN_11_ID:
-                main11.startAnimation(animation);
-                break;
-            case MAIN_12_ID:
-                main12.startAnimation(animation);
-                break;
-        }
+        view.startAnimation(animation);
     }
 
     /**

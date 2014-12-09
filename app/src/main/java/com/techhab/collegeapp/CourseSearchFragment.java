@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -97,11 +98,24 @@ public class CourseSearchFragment extends Fragment {
             public ViewHolder(View itemView) {
                 super(itemView);
                 mTextView = (TextView) itemView.findViewById(R.id.subject);
-                itemView.setOnClickListener(new View.OnClickListener() {
+                itemView.setOnTouchListener(new View.OnTouchListener(){
 
                     @Override
-                    public void onClick(View v) {
-                        Toast.makeText(mContext, mTextView.getText().toString(), Toast.LENGTH_SHORT).show();
+                    public boolean onTouch(View v, MotionEvent event) {
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                ((AcademicActivity) getActivity()).buttonPressed(v);
+                                break;
+                            case MotionEvent.ACTION_CANCEL:
+                            case MotionEvent.ACTION_OUTSIDE:
+                                ((AcademicActivity) getActivity()).buttonReleased(v);
+                                break;
+                            case MotionEvent.ACTION_UP:
+                                ((AcademicActivity) getActivity()).buttonReleased(v);
+                                Toast.makeText(mContext, mTextView.getText().toString(), Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                        return true;
                     }
                 });
             }

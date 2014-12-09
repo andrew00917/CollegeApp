@@ -13,6 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 
 public class AcademicActivity extends ActionBarActivity
@@ -114,6 +117,26 @@ public class AcademicActivity extends ActionBarActivity
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    /**
+     * Button pressed method
+     *
+     * @param view button
+     */
+    public void buttonPressed(View view) {
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.button_pressed);
+        view.startAnimation(animation);
+    }
+
+    /**
+     * Button released method
+     *
+     * @param view button
+     */
+    public void buttonReleased(View view) {
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.button_released);
+        view.startAnimation(animation);
     }
 
     /**
