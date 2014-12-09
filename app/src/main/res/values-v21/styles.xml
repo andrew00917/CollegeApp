@@ -8,7 +8,7 @@
         <!-- customize the color palette -->
         <item name="colorPrimary">#F00000</item>
         <item name="colorPrimaryDark">#F00000</item>
-        <item name="colorAccent">#F80000</item>
+        <item name="colorAccent">@color/kzooOrange</item>
         <item name="windowActionBar">false</item>
         <item name="drawerArrowStyle">@style/Theme.Test.DrawerArrowStyle</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
