@@ -25,13 +25,16 @@ import android.view.MenuItem;
 
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.techhab.collegeapp.application.CollegeApplication;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class CafeteriaActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -42,6 +45,7 @@ public class CafeteriaActivity extends ActionBarActivity
     Toolbar toolbar;
     PagerSlidingTabStrip tabs;
     ViewPager pager;
+    TextView tvCurrentTime;
 
     private MyPagerAdapter adapter;
 
@@ -58,9 +62,13 @@ public class CafeteriaActivity extends ActionBarActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         pager = (ViewPager) findViewById(R.id.pager);
+        tvCurrentTime = (TextView) findViewById(R.id.tv_current_time);
+        SimpleDateFormat formatter = new SimpleDateFormat("mm/dd/yyyy");
+        tvCurrentTime.setText(formatter.format(new Date()));
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         tabs.setViewPager(pager);
@@ -87,7 +95,8 @@ public class CafeteriaActivity extends ActionBarActivity
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+//                NavUtils.navigateUpFromSameTask(this);
+                onBackPressed();
                 return true;
         }
 
@@ -105,8 +114,12 @@ public class CafeteriaActivity extends ActionBarActivity
         switch (id) {
             case DATE_PICKER_ID:
                 Calendar currentCalendar = Calendar.getInstance();
-                return new DatePickerDialog(this, pickerListener, currentCalendar.get(Calendar.YEAR), currentCalendar.get(Calendar.MONTH) ,
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this, pickerListener, currentCalendar.get(Calendar.YEAR), currentCalendar.get(Calendar.MONTH) ,
                         currentCalendar.get(Calendar.DAY_OF_MONTH));
+                Calendar maxDate =Calendar.getInstance();
+                maxDate.add(Calendar.DAY_OF_YEAR, 10);
+                datePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
+                return datePickerDialog;
         }
         return null;
     }

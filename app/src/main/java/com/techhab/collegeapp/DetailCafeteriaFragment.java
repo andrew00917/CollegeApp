@@ -49,30 +49,39 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
         TextView richardsonStoreStatus = (TextView) v.findViewById(R.id.tvRichardsonCafeStatus);
         TextView wellesStoreStatus = (TextView) v.findViewById(R.id.tvWellesCafeStatus);
         TextView bookCafeStatus = (TextView) v.findViewById(R.id.tvBookCafeStatus);
-        if (!isOpened())
+        if (!isOpened(8,0, 22,0))
         {
             richardsonStoreStatus.setText("Closed");
-            wellesStoreStatus.setText("Closed");
-            bookCafeStatus.setText("Closed");
             richardsonStoreStatus.setTextColor(getResources().getColor(R.color.red));
+        }
+
+        if (!isOpened(8, 0, 22, 0))
+        {
+            wellesStoreStatus.setText("Closed");
             wellesStoreStatus.setTextColor(getResources().getColor(R.color.red));
+        }
+
+        if (!isOpened(8, 0, 22, 0))
+        {
+            bookCafeStatus.setText("Closed");
             bookCafeStatus.setTextColor(getResources().getColor(R.color.red));
         }
+
 
         return v;
     }
 
-    private boolean isOpened()
+    private boolean isOpened(int openHour, int openMinute, int closeHour, int closeMinute)
     {
         Long currentTime = System.currentTimeMillis();
         Calendar openCalendar = Calendar.getInstance();
-        openCalendar.set(Calendar.HOUR_OF_DAY,8);
-        openCalendar.set(Calendar.MINUTE,0);
+        openCalendar.set(Calendar.HOUR_OF_DAY, openHour);
+        openCalendar.set(Calendar.MINUTE, openMinute);
         openCalendar.set(Calendar.SECOND, 0);
         long openTime = openCalendar.getTimeInMillis();
         Calendar closeCalendar = Calendar.getInstance();
-        closeCalendar.set(Calendar.HOUR_OF_DAY, 22);
-        closeCalendar.set(Calendar.MINUTE, 0);
+        closeCalendar.set(Calendar.HOUR_OF_DAY, closeHour);
+        closeCalendar.set(Calendar.MINUTE, closeMinute);
         closeCalendar.set(Calendar.SECOND, 0);
         long closedTIme = closeCalendar.getTimeInMillis();
         if (currentTime >= openTime && currentTime <= closedTIme)
