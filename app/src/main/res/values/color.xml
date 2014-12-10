@@ -17,6 +17,13 @@
     <color name="main20">#E23E26</color>
     <color name="main21">#E23126</color>
 
+    <!-- Material Button -->
+    <color name="blue_pressed">@android:color/holo_blue_dark</color>
+    <color name="blue_normal">@android:color/holo_blue_light</color>
+    <!-- A dark Holo shade of blue -->
+    <color name="holo_blue_dark">#ff0099cc</color>
+    <!-- A light Holo shade of blue -->
+    <color name="holo_blue_light">#ff33b5e5</color>
     <!-- Sliding Tab Strip -->
     <color name="background_tab_pressed">#6633B5E5</color>
 
