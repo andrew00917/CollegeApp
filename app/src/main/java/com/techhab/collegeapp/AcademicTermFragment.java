@@ -82,17 +82,25 @@ public class AcademicTermFragment extends Fragment {
         rowParam.setMargins(1, 1, 1, 1);
         rowParam.weight = 1;
 
+        TextView text;
         for (int i = 0; i < (content.length >= date.length ? content.length : date.length); i++) {
             TableRow row = new TableRow(getActivity());
 
             for (int j= 0; j < 2; j++) {
-                TextView text = new TextView(getActivity());
-                text.setGravity(Gravity.CENTER);
+                text = new TextView(getActivity());
+                text.setTextColor(getResources().getColor(R.color.black));
+                if (i % 2 == 1) {
+                    text.setBackgroundColor(getResources().getColor(R.color.Tan));
+                }
                 if (j == 0) {
+                    text.setPadding(3, 1, 0, 1);
+                    text.setGravity(Gravity.LEFT);
                     text.setTypeface(null, Typeface.BOLD);
                     text.setText(content[i]);
                 }
                 else {
+                    text.setPadding(0, 1, 0, 1);
+                    text.setGravity(Gravity.CENTER);
                     text.setText(date[i]);
                 }
                 row.addView(text, rowParam);

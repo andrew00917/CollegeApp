@@ -5,7 +5,7 @@
     android:fillEnabled="true" >
 
     <alpha
-        android:fromAlpha="0.75"
+        android:fromAlpha="0.50"
         android:toAlpha="1"
         android:duration="100" >
 

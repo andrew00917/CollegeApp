@@ -3,7 +3,7 @@
     android:id="@+id/card_view"
     android:layout_gravity="center"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="60dp"
     android:layout_marginTop="2dp"
     android:layout_marginLeft="3dp"
     android:layout_marginRight="3dp"
@@ -11,12 +11,11 @@
     style="@style/CardView" >
 
     <TextView
-        android:id="@+id/year"
+        android:id="@+id/subject"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center"
         android:background="@color/main00"
-        android:text="@string/academic_year_2014_15"
         android:textSize="17sp"
         android:textStyle="bold"
         android:textColor="@color/WhiteSmoke" />
