@@ -7,6 +7,10 @@
          http://www.google.com/design/spec/patterns/navigation-drawer.html -->
     <dimen name="navigation_drawer_width">240dp</dimen>
 
+    <!-- Material Button -->
+    <dimen name="corner_radius">4dp</dimen>
+    <dimen name="layer_padding">3dp</dimen>
+
     <!-- Icon margins -->
     <dimen name="icon_horizontal_margin">8dp</dimen>
     <dimen name="icon_vertical_margin">8dp</dimen>
