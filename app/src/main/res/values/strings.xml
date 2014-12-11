@@ -130,12 +130,13 @@
     <string name="guest_in">guest ></string>
     <string name="login">login</string>
 
-    <!-- Action Bar -->
+    <!-- Toolbar -->
     <string name="action_search">Search</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_settings">Settings</string>
     <string name="action_overflow">More</string>
     <string name="action_send">Send</string>
+    <string name="action_reset_shared_prefs">Reset shared prefs</string>
 
     <!-- Campus Info -->
     <string name="title_activity_info">Campus Information</string>

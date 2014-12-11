@@ -42,17 +42,6 @@ public class CollegeApplication extends Application {
 
     /* College App attributes getters and setters */
 
-    public void setSportsPreference(boolean sportsPreference) {
-        SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(SPORTS_PREFERENCE, sportsPreference);
-        editor.commit();
-    }
-    public boolean getSportsPreference() {
-        SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
-        return prefs.getBoolean(SPORTS_PREFERENCE, true);
-    }
-
     public String getTag() {
         return TAG;
     }
@@ -119,7 +108,7 @@ public class CollegeApplication extends Application {
     /* Sports Activity getters and setters */
     public boolean getSportsFirstTime() {
         SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
-        boolean ret = prefs.getBoolean(SPORTS_FIRST_TIME, sportsFirstTimeValue);
+        boolean ret = prefs.getBoolean(SPORTS_FIRST_TIME, true);
         return ret;
     }
 
@@ -128,6 +117,17 @@ public class CollegeApplication extends Application {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean(SPORTS_FIRST_TIME, value);
         editor.apply();
+    }
+
+    public void setSportsPreference(boolean sportsPreference) {
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(SPORTS_PREFERENCE, sportsPreference);
+        editor.commit();
+    }
+    public boolean getSportsPreference() {
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
+        return prefs.getBoolean(SPORTS_PREFERENCE, true);
     }
 
     public String getKey() {
