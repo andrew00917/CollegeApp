@@ -51,6 +51,7 @@ public class FoodActivity extends ActionBarActivity
             final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
                     .getDisplayMetrics());
             pager.setPageMargin(pageMargin);
+
         }
 
         @Override
@@ -105,7 +106,7 @@ public class FoodActivity extends ActionBarActivity
          */
         public class MyPagerAdapter extends FragmentPagerAdapter {
 
-            private final String[] TITLES = {"Cafeteria", "Grocery", "Discount"};
+            private final String[] TITLES = {"Cafeteria", "Stacks", "Book Club"};
 
             public MyPagerAdapter(FragmentManager fm) {
                 super(fm);
@@ -127,8 +128,8 @@ public class FoodActivity extends ActionBarActivity
                 Bundle args = new Bundle();
                 switch (position) {
                     case 0:
-                        fragment = new DetailCafeteriaFragment();
-                        args.putInt(DetailCafeteriaFragment.ARG_OBJECT, position + 1);
+                        fragment = new CafeteriaFragment();
+                        args.putInt(CafeteriaFragment.ARG_OBJECT, position + 1);
                         fragment.setArguments(args);
                         break;
                     case 1:
