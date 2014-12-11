@@ -41,6 +41,7 @@ public class EventsFragment extends Fragment {
     public static Intent mServiceIntent;
     public static MyResultReceiver receiver;
 
+    ViewGroup p;
     View v;
 
     private static List<RssItem> rssItemList;
@@ -62,6 +63,7 @@ public class EventsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
+        p = parent;
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_events, parent, false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view);
@@ -98,6 +100,12 @@ public class EventsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
     }
@@ -119,7 +127,6 @@ public class EventsFragment extends Fragment {
             this.notifyDataSetChanged();
             // Data should reset above.
             // below code should not be needed
-            mRecyclerView.invalidate();
         }
 
         // Not use static
@@ -217,7 +224,12 @@ public class EventsFragment extends Fragment {
             if (resultData != null) {
                 rssItemList.clear();
                 rssItemList.addAll((List<RssItem>) resultData.getSerializable(ITEMS));
-                ((RssAdapter) mAdapter).updateChange(rssItemList);
+                mRecyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((RssAdapter) mAdapter).updateChange(rssItemList);
+                    }
+                });
             }
         }
     }
