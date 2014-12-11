@@ -1,11 +1,17 @@
 package com.techhab.collegeapp;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -13,6 +19,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
+import com.techhab.collegeapp.rss.RssItem;
+import com.techhab.collegeapp.rss.RssService;
+
+import java.util.List;
 
 
 public class EventsActivity extends ActionBarActivity
@@ -68,7 +82,7 @@ public class EventsActivity extends ActionBarActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds rssItemList to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_events, menu);
         return true;
     }
@@ -116,7 +130,8 @@ public class EventsActivity extends ActionBarActivity
      */
     public class MyPagerAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = {"Upcoming Events", "Zoo After Dark", "Movie Night", "Etc"};
+        private final String[] TITLES = {"Upcoming Events", "Stress Free Zone", "Tuesdays With..."
+                ,"Wine Down Wednesday", "Trivia Night", "Zoo Flicks", "Zoo After Dark"};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);

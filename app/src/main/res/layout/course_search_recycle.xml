@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card_view"
-    android:layout_gravity="center"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:layout_marginTop="2dp"
-    android:layout_marginLeft="3dp"
-    android:layout_marginRight="3dp"
-    android:layout_marginBottom="2dp"
-    style="@style/CardView" >
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/subject"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center"
-        android:textSize="17sp"
+        android:layout_height="59dp"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:textSize="16sp"
         android:textStyle="bold"
-        android:textColor="@color/main00" />
+        android:textColor="@color/main00"
+        android:background="@color/WhiteSmoke" />
 
-</android.support.v7.widget.CardView>
+</FrameLayout>

@@ -1,5 +1,6 @@
 package com.techhab.collegeapp.rss;
 
+import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -10,7 +11,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PcWorldRssParser {
+/**
+ * Created by jhchoe on 12/10/14.
+ */
+public class EventsParser {
 
     // We don't use namespaces
     private final String ns = null;
@@ -23,13 +27,16 @@ public class PcWorldRssParser {
             parser.nextTag();
             return readFeed(parser);
         } finally {
-            inputStream.close();
+            if (inputStream != null) {
+                inputStream.close();
+            }
         }
     }
 
     private List<RssItem> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, null, "rss");
         String title = null;
+        String description = null;
         String link = null;
         List<RssItem> items = new ArrayList<RssItem>();
         while (parser.next() != XmlPullParser.END_DOCUMENT) {
@@ -37,19 +44,55 @@ public class PcWorldRssParser {
                 continue;
             }
             String name = parser.getName();
-            if (name.equals("title")) {
-                title = readTitle(parser);
-            } else if (name.equals("link")) {
-                link = readLink(parser);
+            if (name.equals("channel")) {
+                continue;
             }
-            if (title != null && link != null) {
-                RssItem item = new RssItem(title, link);
+            if ( ! name.equals("item")) {
+                skip(parser);
+            }
+            else {
+                String n = "";
+                while ( ! n.equals("item") && parser.next() != XmlPullParser.END_TAG) {
+                    if (parser.getEventType() != XmlPullParser.START_TAG) {
+                        continue;
+                    }
+                    n = parser.getName();
+
+                    if (n.equals("title")) {
+                        title = readTitle(parser);
+                    } else if (n.equals("description")) {
+                        description = readDescription(parser);
+                    } else if (n.equals("link")) {
+                        link = readLink(parser);
+                    }
+                }
+            }
+            if (title != null && description != null && link != null) {
+                RssItem item = new RssItem(title, description, link);
                 items.add(item);
                 title = null;
+                description = null;
                 link = null;
             }
         }
         return items;
+    }
+
+    private void skip(XmlPullParser parser) throws XmlPullParserException, IOException {
+        if (parser.getEventType() != XmlPullParser.START_TAG) {
+            throw new IllegalStateException();
+        }
+        int depth = 1;
+        while (depth != 0) {
+            switch (parser.next()) {
+                case XmlPullParser.END_TAG:
+                    depth--;
+                    break;
+                case XmlPullParser.START_TAG:
+                    depth++;
+                    break;
+            }
+        }
     }
 
     private String readLink(XmlPullParser parser) throws XmlPullParserException, IOException {
@@ -57,6 +100,13 @@ public class PcWorldRssParser {
         String link = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "link");
         return link;
+    }
+
+    private String readDescription(XmlPullParser parser) throws XmlPullParserException, IOException {
+        parser.require(XmlPullParser.START_TAG, ns, "description");
+        String description = readText(parser);
+        parser.require(XmlPullParser.END_TAG, ns, "description");
+        return description;
     }
 
     private String readTitle(XmlPullParser parser) throws XmlPullParserException, IOException {
@@ -75,5 +125,4 @@ public class PcWorldRssParser {
         }
         return result;
     }
-
 }
