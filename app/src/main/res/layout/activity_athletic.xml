@@ -42,10 +42,13 @@
                     android:textStyle="bold"
                     android:text="@string/men"/>
 
-                <Switch
+                <android.support.v7.widget.SwitchCompat
                     android:id="@+id/boys_girls_switch"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginLeft="3dp"
+                    app:showText="false"/>
 
                 <TextView
                     android:layout_width="wrap_content"

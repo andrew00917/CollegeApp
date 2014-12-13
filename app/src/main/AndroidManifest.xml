@@ -67,6 +67,7 @@
         </activity>
         <activity
             android:name="com.techhab.collegeapp.AthleticActivity"
+            android:theme="@style/Theme.NeutralSwitchStyle"
             android:label="@string/title_activity_athletic" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

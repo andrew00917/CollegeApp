@@ -1,5 +1,8 @@
 package com.techhab.collegeapp;
 
+import android.graphics.AvoidXfermode;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -10,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
@@ -33,7 +37,7 @@ public class AthleticActivity extends ActionBarActivity
     Toolbar toolbar;
     PagerSlidingTabStrip mPagerSlidingTabStrip;
     ViewPager mViewPager;
-    Switch genderSwitch;
+    SwitchCompat genderSwitch;
     LinearLayout genderSwitchLayout;
 
     private pagerAdapter mPagerAdapter;
@@ -65,7 +69,12 @@ public class AthleticActivity extends ActionBarActivity
         getSupportActionBar().setTitle("");
 
         // Handle Boys/Girls toggle switch
-        genderSwitch = (Switch) findViewById(R.id.boys_girls_switch);
+        genderSwitch = (SwitchCompat) findViewById(R.id.boys_girls_switch);
+        // Set a custom track drawable to keep it from "highlighting" upon selection
+        Drawable genderSwitchTrack = getResources().getDrawable(R.drawable.abc_switch_track_mtrl_alpha);
+        genderSwitchTrack.setColorFilter( 0xff9e501b, PorterDuff.Mode.MULTIPLY );
+        genderSwitch.setTrackDrawable(genderSwitchTrack);
+        genderSwitch.setThumbResource(R.drawable.abc_switch_thumb_material);
         genderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -211,8 +220,6 @@ public class AthleticActivity extends ActionBarActivity
 //        Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setHomeButtonEnabled(true);
 
     }
 
@@ -287,9 +294,7 @@ public class AthleticActivity extends ActionBarActivity
         public Fragment getItem(int position) {
             Fragment fragment;
             Bundle args = new Bundle();
-            Log.d("getItem", "I'm about to choose the cases");
             if (application.getSportsPreference()) {
-                Log.d("getItem", "I chose the men's sports");
                 switch (position) {
                     case 0:
                         fragment = new HomeGamesFragment();
@@ -314,7 +319,6 @@ public class AthleticActivity extends ActionBarActivity
                 }
                 return fragment;
             } else {
-                Log.d("getItem", "I chose the women's sports");
                 switch (position) {
                     default:
                         fragment = new BasketballFragment();
