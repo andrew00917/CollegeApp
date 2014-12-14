@@ -1,10 +1,7 @@
 package com.techhab.collegeapp;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -12,19 +9,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-
-import com.techhab.rss.EventsRssItem;
-import com.techhab.rss.EventsRssService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class EventsActivity extends ActionBarActivity
@@ -154,7 +144,7 @@ public class EventsActivity extends ActionBarActivity
     public class MyPagerAdapter extends FragmentPagerAdapter {
 
         private final String[] TITLES = {"Etc", "Upcoming Events", "Stress Free Zone"
-                , "Tuesdays With...","Wine Down Wednesday", "Trivia Night", "Zoo Flicks"
+                , "Tuesdays With...","Wind Down Wednesday", "Trivia Night", "Zoo Flicks"
                 , "Zoo After Dark"};
 
         public MyPagerAdapter(FragmentManager fm) {
@@ -197,8 +187,8 @@ public class EventsActivity extends ActionBarActivity
                     fragment.setArguments(args);
                     break;
                 case 4:
-                    fragment = new EventsWinedownFragment();
-                    args.putInt(EventsWinedownFragment.ARG_OBJECT, position + 1);
+                    fragment = new EventsWednesdayFragment();
+                    args.putInt(EventsWednesdayFragment.ARG_OBJECT, position + 1);
                     fragment.setArguments(args);
                     break;
                 case 5:

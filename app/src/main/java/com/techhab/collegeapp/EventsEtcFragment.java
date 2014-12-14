@@ -110,7 +110,7 @@ public class EventsEtcFragment extends Fragment {
         for (int i = 0; i < list.size(); i++) {
             item = list.get(i);
             event = item.getEvent();
-            if ( ! (event.contains("Stress") || event.contains("Tuesdays") || event.contains("Wine")
+            if ( ! (event.contains("Stress") || event.contains("Tuesdays") || event.contains("Wednesday")
                     || event.contains("Trivia") || event.contains("Flicks") || event.contains("After Dark"))) {
                 ret.add(item);
             }

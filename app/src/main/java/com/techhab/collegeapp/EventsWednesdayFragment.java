@@ -10,7 +10,6 @@ import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,7 +27,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EventsWinedownFragment extends Fragment {
+public class EventsWednesdayFragment extends Fragment {
 
     public static final String ARG_OBJECT = "object";
 
@@ -44,12 +43,12 @@ public class EventsWinedownFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RssAdapter mAdapter;
 
-    public EventsWinedownFragment() {
+    public EventsWednesdayFragment() {
         // Required Empty Constructor
     }
 
     public static Fragment createNewInstance() {
-        EventsWinedownFragment fragment = new EventsWinedownFragment();
+        EventsWednesdayFragment fragment = new EventsWednesdayFragment();
         Bundle arg = new Bundle();
         fragment.setArguments(arg);
         return fragment;
@@ -103,12 +102,12 @@ public class EventsWinedownFragment extends Fragment {
         super.onDetach();
     }
 
-    public List<EventsRssItem> getWinedownEvent(List<EventsRssItem> list) {
+    public List<EventsRssItem> getWednesdayEvent(List<EventsRssItem> list) {
         List<EventsRssItem> ret = new ArrayList<>();
         EventsRssItem item;
         for (int i = 0; i < list.size(); i++) {
             item = list.get(i);
-            if (item.getEvent().contains("Wine")) {
+            if (item.getEvent().contains("Wednesday")) {
                 ret.add(item);
             }
         }
@@ -206,7 +205,7 @@ public class EventsWinedownFragment extends Fragment {
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             rssItemList = (List<EventsRssItem>) resultData.getSerializable(ITEMS);
-            rssItemList = getWinedownEvent(rssItemList);
+            rssItemList = getWednesdayEvent(rssItemList);
             mAdapter.updateChange(rssItemList);
         }
     }
