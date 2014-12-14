@@ -1,4 +1,4 @@
-package com.techhab.collegeapp.rss;
+package com.techhab.rss;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-public class RssService extends IntentService {
+public class EventsRssService extends IntentService {
 
     public static final String TAG = "RssApp";
 
@@ -21,14 +21,14 @@ public class RssService extends IntentService {
     public static final String ITEMS = "rssItemList";
     public static final String RECEIVER = "receiver";
 
-    public RssService() {
+    public EventsRssService() {
         super("RssService");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(TAG, "Service started");
-        List<RssItem> rssItems = null;
+        List<EventsRssItem> rssItems = null;
         try {
             EventsParser parser = new EventsParser();
             rssItems = parser.parse(getInputStream(RSS_LINK));
@@ -44,8 +44,10 @@ public class RssService extends IntentService {
 
     public InputStream getInputStream(String link) {
         try {
+            System.setProperty(link, "false");
             URL url = new URL(link);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setUseCaches(false);
             conn.setReadTimeout(10000 /* milliseconds */);
             conn.setConnectTimeout(15000 /* milliseconds */);
             conn.setRequestMethod("GET");

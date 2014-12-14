@@ -1,8 +1,6 @@
 package com.techhab.collegeapp;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,12 +8,11 @@ import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,9 +20,10 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.techhab.collegeapp.rss.RssItem;
-import com.techhab.collegeapp.rss.RssService;
+import com.techhab.rss.EventsRssItem;
+import com.techhab.rss.EventsRssService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,9 +32,9 @@ public class EventsActivity extends ActionBarActivity
 
     private final Handler handler = new Handler();
 
-    Toolbar toolbar;
-    PagerSlidingTabStrip tabs;
-    ViewPager pager;
+    private Toolbar toolbar;
+    private PagerSlidingTabStrip tabs;
+    private ViewPager pager;
 
     private MyPagerAdapter adapter;
 
@@ -61,7 +59,11 @@ public class EventsActivity extends ActionBarActivity
         getSupportActionBar().setTitle("");
 
         adapter = new MyPagerAdapter(getSupportFragmentManager());
+
         pager.setAdapter(adapter);
+        currentPosition = 1;
+        pager.setCurrentItem(currentPosition);
+
         tabs.setViewPager(pager);
 
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
@@ -126,12 +128,34 @@ public class EventsActivity extends ActionBarActivity
     }
 
     /**
+     * Button pressed method
+     *
+     * @param view button
+     */
+    public void buttonPressed(View view) {
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.button_pressed);
+        view.startAnimation(animation);
+    }
+
+    /**
+     * Button released method
+     *
+     * @param view button
+     */
+    public void buttonReleased(View view) {
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.button_released);
+        view.startAnimation(animation);
+    }
+
+
+    /**
      * MyPagerAdapter
      */
     public class MyPagerAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = {"Upcoming Events", "Stress Free Zone", "Tuesdays With..."
-                ,"Wine Down Wednesday", "Trivia Night", "Zoo Flicks", "Zoo After Dark"};
+        private final String[] TITLES = {"Etc", "Upcoming Events", "Stress Free Zone"
+                , "Tuesdays With...","Wine Down Wednesday", "Trivia Night", "Zoo Flicks"
+                , "Zoo After Dark"};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -152,9 +176,14 @@ public class EventsActivity extends ActionBarActivity
             Fragment fragment;
             Bundle args = new Bundle();
             switch (position) {
-                case 0:
+                case 1:
                     fragment = new EventsFragment();
                     args.putInt(EventsFragment.ARG_OBJECT, position + 1);
+                    fragment.setArguments(args);
+                    break;
+                case 2:
+                    fragment = new EventsStressFragment();
+                    args.putInt(EventsStressFragment.ARG_OBJECT, position + 1);
                     fragment.setArguments(args);
                     break;
                 default:
@@ -166,4 +195,6 @@ public class EventsActivity extends ActionBarActivity
             return fragment;
         }
     }
+
+
 }

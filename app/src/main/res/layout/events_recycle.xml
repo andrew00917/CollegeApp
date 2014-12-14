@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:padding="16dp"
-            android:textSize="24sp"
+            android:textSize="16sp"
             android:textColor="@color/white" />
 
         <TextView
@@ -38,12 +38,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:padding="16dp"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textColor="@color/white" />
 
     </FrameLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="100dp"
         android:orientation="vertical"
@@ -54,21 +54,17 @@
             android:id="@+id/place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
             android:textSize="16sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:text="@string/label_building_Hicks_Center" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="4dp"
-            android:textSize="14sp"
-            android:textColor="@color/black"
-            android:text="8:00pm" />
+            android:layout_gravity="bottom"
+            android:textSize="16sp"
+            android:textColor="@color/gray" />
 
-    </LinearLayout>
+    </FrameLayout>
 
 </android.support.v7.widget.CardView>

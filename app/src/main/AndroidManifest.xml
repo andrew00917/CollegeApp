@@ -22,7 +22,7 @@
         android:theme="@style/Theme.KZOO" >
 
         <service
-            android:name="com.techhab.collegeapp.rss.RssService"
+            android:name="com.techhab.rss.EventsRssService"
             android:exported="false" />
 
         <meta-data

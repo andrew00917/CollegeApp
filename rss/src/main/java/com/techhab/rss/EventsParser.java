@@ -1,6 +1,5 @@
-package com.techhab.collegeapp.rss;
+package com.techhab.rss;
 
-import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -19,7 +18,7 @@ public class EventsParser {
     // We don't use namespaces
     private final String ns = null;
 
-    public List<RssItem> parse(InputStream inputStream) throws XmlPullParserException, IOException {
+    public List<EventsRssItem> parse(InputStream inputStream) throws XmlPullParserException, IOException {
         try {
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -33,12 +32,12 @@ public class EventsParser {
         }
     }
 
-    private List<RssItem> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
+    private List<EventsRssItem> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, null, "rss");
         String title = null;
         String description = null;
         String link = null;
-        List<RssItem> items = new ArrayList<RssItem>();
+        List<EventsRssItem> items = new ArrayList<EventsRssItem>();
         while (parser.next() != XmlPullParser.END_DOCUMENT) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
@@ -68,7 +67,10 @@ public class EventsParser {
                 }
             }
             if (title != null && description != null && link != null) {
-                RssItem item = new RssItem(title, description, link);
+                String[] dateAndEvent = title.split(" - ");
+                String[] placeAndTime = description.split(", ");
+                EventsRssItem item = new EventsRssItem(dateAndEvent[0], dateAndEvent[1]
+                        , placeAndTime[0], placeAndTime[1], link);
                 items.add(item);
                 title = null;
                 description = null;
