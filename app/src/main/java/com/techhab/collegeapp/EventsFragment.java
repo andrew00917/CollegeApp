@@ -56,11 +56,9 @@ public class EventsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_events, parent, false);
-        mRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
         /*
          * Creates a new Intent to start the RssService
@@ -69,6 +67,14 @@ public class EventsFragment extends Fragment {
         receiver = new MyResultReceiver(new Handler());
         rssItemList = new ArrayList<>();
         new DownloadXmlTask().execute();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        v = inflater.inflate(R.layout.fragment_events, parent, false);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view);
 
         return v;
     }

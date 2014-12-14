@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EventsStressFragment extends Fragment {
+public class EventsTriviaFragment extends Fragment {
 
     public static final String ARG_OBJECT = "object";
 
@@ -44,12 +44,12 @@ public class EventsStressFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RssAdapter mAdapter;
 
-    public EventsStressFragment() {
+    public EventsTriviaFragment() {
         // Required Empty Constructor
     }
 
     public static Fragment createNewInstance() {
-        EventsStressFragment fragment = new EventsStressFragment();
+        EventsTriviaFragment fragment = new EventsTriviaFragment();
         Bundle arg = new Bundle();
         fragment.setArguments(arg);
         return fragment;
@@ -103,12 +103,12 @@ public class EventsStressFragment extends Fragment {
         super.onDetach();
     }
 
-    public List<EventsRssItem> getStressEvent(List<EventsRssItem> list) {
+    public List<EventsRssItem> getTriviaEvent(List<EventsRssItem> list) {
         List<EventsRssItem> ret = new ArrayList<>();
         EventsRssItem item;
         for (int i = 0; i < list.size(); i++) {
             item = list.get(i);
-            if (item.getEvent().contains("Stress")) {
+            if (item.getEvent().contains("Trivia")) {
                 ret.add(item);
             }
         }
@@ -206,7 +206,7 @@ public class EventsStressFragment extends Fragment {
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             rssItemList = (List<EventsRssItem>) resultData.getSerializable(ITEMS);
-            rssItemList = getStressEvent(rssItemList);
+            rssItemList = getTriviaEvent(rssItemList);
             mAdapter.updateChange(rssItemList);
         }
     }
