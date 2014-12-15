@@ -1,6 +1,5 @@
 package com.techhab.collegeapp;
 
-import android.graphics.AvoidXfermode;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -22,7 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -34,11 +33,12 @@ public class AthleticActivity extends ActionBarActivity
 
     private final Handler handler = new Handler();
 
-    Toolbar toolbar;
-    PagerSlidingTabStrip mPagerSlidingTabStrip;
-    ViewPager mViewPager;
-    SwitchCompat genderSwitch;
-    LinearLayout genderSwitchLayout;
+    private Toolbar toolbar;
+    private PagerSlidingTabStrip mPagerSlidingTabStrip;
+    private ViewPager mViewPager;
+    private SwitchCompat genderSwitch;
+    private LinearLayout genderSwitchLayout;
+    private TextView menText, womenText;
 
     private pagerAdapter mPagerAdapter;
 
@@ -46,10 +46,10 @@ public class AthleticActivity extends ActionBarActivity
 
     private int currentPosition;
 
-    private String[] boysSports = {"Home Games", "Boys", "Baseball", "Basketball", "Football",
-            "Swim/Dive", "Tennis"};
-    private String[] girlsSports = {"Home Games", "Girls", "Basketball", "Softball", "Tennis",
-            "Swim/Dive"};
+    private String[] mensSports = {"Home Games", "Baseball", "Basketball", "Cross Country",
+            "Football", "Golf", "Soccer", "Swim/Dive", "Tennis", "Lacrosse"};
+    private String[] womensSports = {"Home Games", "Basketball", "Cross Country", "Golf",
+            "Soccer", "Softball", "Swim/Dive", "Tennis", "Volleyball", "Lacrosse"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,29 +58,54 @@ public class AthleticActivity extends ActionBarActivity
 
         application = (CollegeApplication) getApplication();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         mPagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         genderSwitchLayout = (LinearLayout) findViewById(R.id.genderSwitchLayout);
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        menText = (TextView) findViewById(R.id.men_text);
+        womenText = (TextView) findViewById(R.id.women_text);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
 
         // Handle Boys/Girls toggle switch
-        genderSwitch = (SwitchCompat) findViewById(R.id.boys_girls_switch);
+        genderSwitch = (SwitchCompat) findViewById(R.id.gender_switch);
         // Set a custom track drawable to keep it from "highlighting" upon selection
-        Drawable genderSwitchTrack = getResources().getDrawable(R.drawable.abc_switch_track_mtrl_alpha);
+        Drawable genderSwitchTrack = getResources().getDrawable(
+                R.drawable.abc_switch_track_mtrl_alpha);
         genderSwitchTrack.setColorFilter( 0xff9e501b, PorterDuff.Mode.MULTIPLY );
         genderSwitch.setTrackDrawable(genderSwitchTrack);
         genderSwitch.setThumbResource(R.drawable.abc_switch_thumb_material);
         genderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    changeGenderView(girlsSports);
+                    changeGenderView(womensSports);
+                    application.setSportPreference(mViewPager.getCurrentItem());
+
                 } else {
-                    changeGenderView(boysSports);
+                    changeGenderView(mensSports);
+                    application.setSportPreference(mViewPager.getCurrentItem());
+                }
+            }
+        });
+
+        // Set men/women text onClickListeners
+        menText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                if ( genderSwitch.isChecked() ) {
+                    genderSwitch.setChecked(false);
+                }
+            }
+        });
+        womenText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                if ( !genderSwitch.isChecked() ) {
+                    genderSwitch.setChecked(true);
                 }
             }
         });
@@ -91,6 +116,18 @@ public class AthleticActivity extends ActionBarActivity
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
                 getResources().getDisplayMetrics());
         mViewPager.setPageMargin(pageMargin);
+
+        /*mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override public void onPageScrollStateChanged(int state){
+            }
+            @Override public void onPageScrolled(int position,
+                float positionOffset, int positionOffsetPixels){
+            }
+            @Override
+            public  void onPageSelected(int position) {
+                application.setSportPreference(position);
+            }
+        });*/
 
         /* Check to see if this is the first time the user has opened
         AthleticActivity. If it is, show the dialog to choose
@@ -111,9 +148,9 @@ public class AthleticActivity extends ActionBarActivity
                                                 int which, CharSequence text) {
                             if (which == 0) {
                                 application.setSportsFirstTime(false);
-                                application.setSportsPreference(true);
+                                application.setSportsGenderPreference(true);
                                 Log.d("Sports Preferences", "I chose men");
-                                changeGenderView(boysSports);
+                                changeGenderView(mensSports);
                                 genderSwitch.setChecked(false);
                                 mPagerSlidingTabStrip.setVisibility(View.VISIBLE);
                                 mViewPager.setVisibility(View.VISIBLE);
@@ -121,10 +158,10 @@ public class AthleticActivity extends ActionBarActivity
                                 dialog.dismiss();
                             } else if (which == 1) {
                                 application.setSportsFirstTime(false);
-                                application.setSportsPreference(false);
+                                application.setSportsGenderPreference(false);
                                 Log.d("Sports Preferences", "I chose women");
                                 genderSwitch.setChecked(true);
-                                changeGenderView(girlsSports);
+                                changeGenderView(womensSports);
                                 mPagerSlidingTabStrip.setVisibility(View.VISIBLE);
                                 mViewPager.setVisibility(View.VISIBLE);
                                 genderSwitchLayout.setVisibility(View.VISIBLE);
@@ -156,14 +193,19 @@ public class AthleticActivity extends ActionBarActivity
                     .cancelable(false)
                     .show();
         } else {
-            if ( application.getSportsPreference() ) {
-                changeGenderView(boysSports);
+            if ( application.getSportsGenderPreference() ) {
+                changeGenderView(mensSports);
                 genderSwitch.setChecked(false);
             } else {
-                changeGenderView(girlsSports);
+                changeGenderView(womensSports);
                 genderSwitch.setChecked(true);
             }
         }
+
+        mViewPager.setCurrentItem(application.getSportPreference());
+        // Call notifyDataSetChanged() to get rid of a minor visual bug that keeps the
+        // colors from updating in the tab strip
+        mPagerSlidingTabStrip.notifyDataSetChanged();
     }
 
     /** Changes the activity from viewing men's sports to women's by modifying the
@@ -172,55 +214,69 @@ public class AthleticActivity extends ActionBarActivity
      * @param titleArray the men's or women's sports titles array
      */
     private void changeGenderView(String[] titleArray) {
-        if ( titleArray.equals(boysSports) ) {
-            application.setSportsPreference(true);
+
+        // Get the page index before it changes
+        int pageIndexPreSwitch = mViewPager.getCurrentItem();
+
+        if ( titleArray.equals(mensSports) ) {
+            application.setSportsGenderPreference(true);
         } else {
-            application.setSportsPreference(false);
+            application.setSportsGenderPreference(false);
         }
         mPagerAdapter.TITLES = titleArray;
         mPagerAdapter.notifyDataSetChanged();
         mPagerSlidingTabStrip.notifyDataSetChanged();
-//        For now, set the current page back to the beginning to keep the user from
-//        switching while on page that's too high of an index for the other gender.
-        // TODO: add code so that switching genders automatically takes the user to the
-        // appropriate page of the opposite gender.
-        mViewPager.setCurrentItem(0);
+
+        mViewPager.setCurrentItem(convertPage(pageIndexPreSwitch));
+        mPagerSlidingTabStrip.notifyDataSetChanged();
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        application.setSportPreference(mViewPager.getCurrentItem());
+    }
 
-    private void initViews(){
+    @Override
+    public void onPause() {
+        super.onPause();
+        application.setSportPreference(mViewPager.getCurrentItem());
+    }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        setSupportActionBar(toolbar);
-
-//        Disable app name in toolbar
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-                syncState();
+    /** Converts the previously viewed sport to a "matching" sport of the opposite
+     * gender.
+     *
+     * @param position - the current page index the user is coming from
+     * @return - the new page index the user is going to see
+     */
+    private int convertPage(int position) {
+        if ( !application.getSportsGenderPreference() ) {
+            switch (position) {
+                case 1: return 5;
+                case 2: return 1;
+                case 3: return 2;
+                case 4: return 0;
+                case 5: return 3;
+                case 6: return 4;
+                case 7: return 6;
+                case 8: return 7;
+                case 9: return 8;
             }
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-                syncState();
+        } else {
+            Log.d("position:", "Position: " + position);
+            switch (position) {
+                case 1: return 2;
+                case 2: return 3;
+                case 3: return 5;
+                case 4: return 6;
+                case 5: return 1;
+                case 6: return 7;
+                case 7: return 8;
+                case 8: return 0;
+                case 9: return 9;
             }
-        };
-
-        mDrawerToggle.syncState();
-
-//        Set the drawer toggle as the DrawerListener
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-
+        }
+        return 0;
     }
 
 
@@ -242,10 +298,11 @@ public class AthleticActivity extends ActionBarActivity
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
+                application.setSportPreference(mViewPager.getCurrentItem());
                 return true;
             case R.id.action_reset_shared_prefs:
                 application.setSportsFirstTime(true);
-                application.setSportsPreference(true);
+                application.setSportsGenderPreference(true);
                 finish();
                 return true;
         }
@@ -269,7 +326,7 @@ public class AthleticActivity extends ActionBarActivity
     public class pagerAdapter extends FragmentStatePagerAdapter {
 
         // Temporarily initiate the TITLES to be an array to avoid NullPointerExceptions
-        private String[] TITLES = boysSports;
+        private String[] TITLES = mensSports;
 
         public pagerAdapter(FragmentManager fm) {
             super(fm);
@@ -294,7 +351,7 @@ public class AthleticActivity extends ActionBarActivity
         public Fragment getItem(int position) {
             Fragment fragment;
             Bundle args = new Bundle();
-            if (application.getSportsPreference()) {
+            if (application.getSportsGenderPreference()) {
                 switch (position) {
                     case 0:
                         fragment = new HomeGamesFragment();

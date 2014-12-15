@@ -33,12 +33,12 @@ public class CollegeApplication extends Application {
 
     /* Sports Activity */
     private static final String SPORTS_FIRST_TIME = "sports_first_time";
-    private boolean sportsFirstTimeValue = true;
 
     // True = boys, false = girls. Sorry, ladies.
-    private static final String SPORTS_PREFERENCE = "sports_preference";
-    private boolean sportsPreference;
+    private static final String SPORTS_GENDER_PREFERENCE = "sports_gender_preference";
 
+    // Sports tab rememberer
+    private static final String SPORT_PREFERENCE = "sport_preference";
 
     /* College App attributes getters and setters */
 
@@ -119,15 +119,28 @@ public class CollegeApplication extends Application {
         editor.apply();
     }
 
-    public void setSportsPreference(boolean sportsPreference) {
+    public void setSportsGenderPreference(boolean sportsPreference) {
         SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(SPORTS_PREFERENCE, sportsPreference);
+        editor.putBoolean(SPORTS_GENDER_PREFERENCE, sportsPreference);
         editor.commit();
     }
-    public boolean getSportsPreference() {
+    public boolean getSportsGenderPreference() {
         SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
-        return prefs.getBoolean(SPORTS_PREFERENCE, true);
+        return prefs.getBoolean(SPORTS_GENDER_PREFERENCE, true);
+    }
+
+    public void setSportPreference(int sportNumber) {
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(SPORT_PREFERENCE, sportNumber);
+        editor.commit();
+    }
+
+    public int getSportPreference() {
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
+        int sportNumber = prefs.getInt(SPORT_PREFERENCE, 0);
+        return sportNumber;
     }
 
     public String getKey() {

@@ -2,6 +2,7 @@ package com.techhab.collegeapp;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Application;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -29,12 +30,16 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.techhab.collegeapp.application.CollegeApplication;
+
 import java.util.Locale;
 
 public class PagerSlidingTabStrip extends HorizontalScrollView {
 
     private static final float OPAQUE = 1.0f;
     private static final float HALF_TRANSP = 0.5f;
+
+    public CollegeApplication application;
 
     public interface CustomTabProvider {
         public View getCustomTabView(ViewGroup parent, int position);
