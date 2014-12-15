@@ -23,14 +23,30 @@
             android:layout_height="match_parent"
             android:background="@drawable/banner"/>
 
-        <TextView
-            android:id="@+id/date"
+        <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:padding="16dp"
-            android:textSize="16sp"
-            android:textColor="@color/white" />
+            android:padding="16dp" >
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:textSize="16sp"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="end"
+                android:gravity="center_vertical"
+                android:textSize="16sp"
+                android:textColor="@color/white" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/event"
@@ -56,14 +72,6 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="@color/main20" />
-
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:textSize="16sp"
-            android:textColor="@color/gray" />
 
     </FrameLayout>
 
