@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EventsFragment extends Fragment {
+public class EventsTriviaFragment extends Fragment {
 
     public static final String ARG_OBJECT = "object";
 
@@ -44,12 +44,12 @@ public class EventsFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RssAdapter mAdapter;
 
-    public EventsFragment() {
+    public EventsTriviaFragment() {
         // Required Empty Constructor
     }
 
     public static Fragment createNewInstance() {
-        EventsFragment fragment = new EventsFragment();
+        EventsTriviaFragment fragment = new EventsTriviaFragment();
         Bundle arg = new Bundle();
         fragment.setArguments(arg);
         return fragment;
@@ -101,6 +101,18 @@ public class EventsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    public List<EventsRssItem> getTriviaEvent(List<EventsRssItem> list) {
+        List<EventsRssItem> ret = new ArrayList<>();
+        EventsRssItem item;
+        for (int i = 0; i < list.size(); i++) {
+            item = list.get(i);
+            if (item.getEvent().contains("Trivia")) {
+                ret.add(item);
+            }
+        }
+        return ret;
     }
 
 
@@ -194,6 +206,7 @@ public class EventsFragment extends Fragment {
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             rssItemList = (List<EventsRssItem>) resultData.getSerializable(ITEMS);
+            rssItemList = getTriviaEvent(rssItemList);
             mAdapter.updateChange(rssItemList);
         }
     }

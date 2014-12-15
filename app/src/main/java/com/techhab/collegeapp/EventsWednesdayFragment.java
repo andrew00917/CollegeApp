@@ -10,7 +10,6 @@ import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,7 +27,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EventsFragment extends Fragment {
+public class EventsWednesdayFragment extends Fragment {
 
     public static final String ARG_OBJECT = "object";
 
@@ -44,12 +43,12 @@ public class EventsFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RssAdapter mAdapter;
 
-    public EventsFragment() {
+    public EventsWednesdayFragment() {
         // Required Empty Constructor
     }
 
     public static Fragment createNewInstance() {
-        EventsFragment fragment = new EventsFragment();
+        EventsWednesdayFragment fragment = new EventsWednesdayFragment();
         Bundle arg = new Bundle();
         fragment.setArguments(arg);
         return fragment;
@@ -101,6 +100,18 @@ public class EventsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    public List<EventsRssItem> getWednesdayEvent(List<EventsRssItem> list) {
+        List<EventsRssItem> ret = new ArrayList<>();
+        EventsRssItem item;
+        for (int i = 0; i < list.size(); i++) {
+            item = list.get(i);
+            if (item.getEvent().contains("Wednesday")) {
+                ret.add(item);
+            }
+        }
+        return ret;
     }
 
 
@@ -194,6 +205,7 @@ public class EventsFragment extends Fragment {
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             rssItemList = (List<EventsRssItem>) resultData.getSerializable(ITEMS);
+            rssItemList = getWednesdayEvent(rssItemList);
             mAdapter.updateChange(rssItemList);
         }
     }

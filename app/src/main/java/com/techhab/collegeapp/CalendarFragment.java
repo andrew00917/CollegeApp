@@ -51,15 +51,13 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(
-                getActivity());
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
         mRecyclerView.setLayoutManager(layoutManager);
 
         String[] dataset = new String[3];
-        /*for (int i = 0; i < dataset.length; i++) {
-            dataset[i] = "item" + i;
-        }*/
         dataset[0] = "2014-15";
         dataset[1] = "2015-16";
         dataset[2] = "2016-17";
@@ -90,7 +88,7 @@ public class CalendarFragment extends Fragment {
             public ViewHolder(View itemView) {
                 super(itemView);
                 mTextView = (TextView) itemView.findViewById(R.id.year);
-                itemView.setOnTouchListener(new View.OnTouchListener(){
+                mTextView.setOnTouchListener(new View.OnTouchListener(){
 
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {

@@ -1,6 +1,5 @@
 package com.techhab.collegeapp;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -13,6 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 
 public class EventsActivity extends ActionBarActivity
@@ -20,9 +22,9 @@ public class EventsActivity extends ActionBarActivity
 
     private final Handler handler = new Handler();
 
-    Toolbar toolbar;
-    PagerSlidingTabStrip tabs;
-    ViewPager pager;
+    private Toolbar toolbar;
+    private PagerSlidingTabStrip tabs;
+    private ViewPager pager;
 
     private MyPagerAdapter adapter;
 
@@ -47,7 +49,11 @@ public class EventsActivity extends ActionBarActivity
         getSupportActionBar().setTitle("");
 
         adapter = new MyPagerAdapter(getSupportFragmentManager());
+
         pager.setAdapter(adapter);
+        currentPosition = 1;
+        pager.setCurrentItem(currentPosition);
+
         tabs.setViewPager(pager);
 
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
@@ -68,7 +74,7 @@ public class EventsActivity extends ActionBarActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds rssItemList to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_events, menu);
         return true;
     }
@@ -112,11 +118,34 @@ public class EventsActivity extends ActionBarActivity
     }
 
     /**
+     * Button pressed method
+     *
+     * @param view button
+     */
+    public void buttonPressed(View view) {
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.button_pressed);
+        view.startAnimation(animation);
+    }
+
+    /**
+     * Button released method
+     *
+     * @param view button
+     */
+    public void buttonReleased(View view) {
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.button_released);
+        view.startAnimation(animation);
+    }
+
+
+    /**
      * MyPagerAdapter
      */
     public class MyPagerAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = {"Upcoming Events", "Zoo After Dark", "Movie Night", "Etc"};
+        private final String[] TITLES = {"Etc", "Upcoming Events", "Stress Free Zone"
+                , "Tuesdays With...","Wind Down Wednesday", "Trivia Night", "Zoo Flicks"
+                , "Zoo After Dark"};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -138,8 +167,43 @@ public class EventsActivity extends ActionBarActivity
             Bundle args = new Bundle();
             switch (position) {
                 case 0:
+                    fragment = new EventsEtcFragment();
+                    args.putInt(EventsFragment.ARG_OBJECT, position + 1);
+                    fragment.setArguments(args);
+                    break;
+                case 1:
                     fragment = new EventsFragment();
                     args.putInt(EventsFragment.ARG_OBJECT, position + 1);
+                    fragment.setArguments(args);
+                    break;
+                case 2:
+                    fragment = new EventsStressFragment();
+                    args.putInt(EventsStressFragment.ARG_OBJECT, position + 1);
+                    fragment.setArguments(args);
+                    break;
+                case 3:
+                    fragment = new EventsTuesdayFragment();
+                    args.putInt(EventsTuesdayFragment.ARG_OBJECT, position + 1);
+                    fragment.setArguments(args);
+                    break;
+                case 4:
+                    fragment = new EventsWednesdayFragment();
+                    args.putInt(EventsWednesdayFragment.ARG_OBJECT, position + 1);
+                    fragment.setArguments(args);
+                    break;
+                case 5:
+                    fragment = new EventsTriviaFragment();
+                    args.putInt(EventsTriviaFragment.ARG_OBJECT, position + 1);
+                    fragment.setArguments(args);
+                    break;
+                case 6:
+                    fragment = new EventsFlicksFragment();
+                    args.putInt(EventsFlicksFragment.ARG_OBJECT, position + 1);
+                    fragment.setArguments(args);
+                    break;
+                case 7:
+                    fragment = new EventsZooDarkFragment();
+                    args.putInt(EventsZooDarkFragment.ARG_OBJECT, position + 1);
                     fragment.setArguments(args);
                     break;
                 default:
@@ -151,4 +215,6 @@ public class EventsActivity extends ActionBarActivity
             return fragment;
         }
     }
+
+
 }
