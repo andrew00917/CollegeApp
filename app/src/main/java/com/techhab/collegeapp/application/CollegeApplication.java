@@ -31,13 +31,27 @@ public class CollegeApplication extends Application {
     // CollegeAppRequestError to show when the GameFragment closes
     private CollegeAppRequestError gameFragmentFBRequestError = null;
 
-
     /* Sports Activity */
     private static final String SPORTS_FIRST_TIME = "sports_first_time";
-    private boolean openForFirstTime;
+    private boolean sportsFirstTimeValue = true;
+
+    // True = boys, false = girls. Sorry, ladies.
+    private static final String SPORTS_PREFERENCE = "sports_preference";
+    private boolean sportsPreference;
 
 
     /* College App attributes getters and setters */
+
+    public void setSportsPreference(boolean sportsPreference) {
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(SPORTS_PREFERENCE, sportsPreference);
+        editor.commit();
+    }
+    public boolean getSportsPreference() {
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
+        return prefs.getBoolean(SPORTS_PREFERENCE, true);
+    }
 
     public String getTag() {
         return TAG;
@@ -103,13 +117,13 @@ public class CollegeApplication extends Application {
     }
 
     /* Sports Activity getters and setters */
-    public boolean getOpenForFirstTime() {
+    public boolean getSportsFirstTime() {
         SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
-        boolean ret = prefs.getBoolean(SPORTS_FIRST_TIME, false);
+        boolean ret = prefs.getBoolean(SPORTS_FIRST_TIME, sportsFirstTimeValue);
         return ret;
     }
 
-    public void setOpenForFirstTime(boolean value) {
+    public void setSportsFirstTime(boolean value) {
         SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean(SPORTS_FIRST_TIME, value);
