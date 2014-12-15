@@ -15,7 +15,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
-            <include layout="@layout/toolbar"/>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/expanded_toolbar"
+                android:minHeight="@dimen/abc_action_bar_default_height_material"
+                android:background="@color/main01"
+                app:theme="@style/Toolbar"
+                app:popupTheme="@style/Theme.AppCompat.Light" />
 
             <com.techhab.collegeapp.PagerSlidingTabStrip
                 android:id="@+id/tabs"

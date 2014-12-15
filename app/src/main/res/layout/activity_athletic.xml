@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/expanded_toolbar"
                 android:minHeight="@dimen/abc_action_bar_default_height_material"
-                android:background="@color/kzooOrange"
+                android:background="@color/main11"
                 app:theme="@style/Toolbar"
                 app:popupTheme="@style/Theme.AppCompat.Light"
                 />
