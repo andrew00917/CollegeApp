@@ -164,6 +164,22 @@
     <!-- Athletic Activity -->
     <string name="men">MEN</string>
     <string name="women">WOMEN</string>
+
+        <!-- Card Titles -->
+        <string name="game_in_progress">Game In Progress</string>
+        <string name="roster">Team Roster</string>
+        <string name="schedule_results">Schedule/Results</string>
+
+        <string name="athlete_no.">No.</string>
+        <string name="athlete_name">Name</string>
+        <string name="athlete_position">Pos.</string>
+
+    <string name="head_coach">Head Coach</string>
+    <string name="assistant_coaches">Assistant Coaches</string>
+    <string name="student_assistants_managers">Student Assistants/Managers</string>
+    <string name="captains">Captains</string>
+
+
     <!-- Academic Activity -->
         <!-- Search Courses -->
         <string name="term_prompt">Term</string>

@@ -11,7 +11,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -51,13 +50,14 @@ public class AthleticActivity extends ActionBarActivity
     private String[] womensSports = {"Home Games", "Basketball", "Cross Country", "Golf",
             "Soccer", "Softball", "Swim/Dive", "Tennis", "Volleyball", "Lacrosse"};
 
+    private boolean isLoading; // Variable used to track complex genderSwitch bug
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_athletic);
 
         application = (CollegeApplication) getApplication();
-
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         mPagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -69,7 +69,8 @@ public class AthleticActivity extends ActionBarActivity
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.kzooOrange));
 
         // Handle Boys/Girls toggle switch
         genderSwitch = (SwitchCompat) findViewById(R.id.gender_switch);
@@ -78,7 +79,9 @@ public class AthleticActivity extends ActionBarActivity
                 R.drawable.abc_switch_track_mtrl_alpha);
         genderSwitchTrack.setColorFilter( 0xff9e501b, PorterDuff.Mode.MULTIPLY );
         genderSwitch.setTrackDrawable(genderSwitchTrack);
-        genderSwitch.setThumbResource(R.drawable.abc_switch_thumb_material);
+        Drawable genderSwitchThumb = getResources().getDrawable(
+                R.drawable.abc_switch_thumb_material);
+        genderSwitch.setThumbDrawable(genderSwitchThumb);
         genderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -117,17 +120,10 @@ public class AthleticActivity extends ActionBarActivity
                 getResources().getDisplayMetrics());
         mViewPager.setPageMargin(pageMargin);
 
-        /*mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override public void onPageScrollStateChanged(int state){
-            }
-            @Override public void onPageScrolled(int position,
-                float positionOffset, int positionOffsetPixels){
-            }
-            @Override
-            public  void onPageSelected(int position) {
-                application.setSportPreference(position);
-            }
-        });*/
+        mViewPager.setCurrentItem(application.getSportPreference());
+        // Call notifyDataSetChanged() to get rid of a minor visual bug that keeps the
+        // colors from updating in the tab strip
+        mPagerSlidingTabStrip.notifyDataSetChanged();
 
         /* Check to see if this is the first time the user has opened
         AthleticActivity. If it is, show the dialog to choose
@@ -138,7 +134,6 @@ public class AthleticActivity extends ActionBarActivity
             mPagerSlidingTabStrip.setVisibility(View.INVISIBLE);
             mViewPager.setVisibility(View.INVISIBLE);
             genderSwitchLayout.setVisibility(View.INVISIBLE);
-            Log.d("Open sports for first time", "true!");
             new MaterialDialog.Builder(this)
                     .title("View Sports For...")
                     .items(new String[]{"Men", "Women"})
@@ -149,7 +144,6 @@ public class AthleticActivity extends ActionBarActivity
                             if (which == 0) {
                                 application.setSportsFirstTime(false);
                                 application.setSportsGenderPreference(true);
-                                Log.d("Sports Preferences", "I chose men");
                                 changeGenderView(mensSports);
                                 genderSwitch.setChecked(false);
                                 mPagerSlidingTabStrip.setVisibility(View.VISIBLE);
@@ -159,7 +153,6 @@ public class AthleticActivity extends ActionBarActivity
                             } else if (which == 1) {
                                 application.setSportsFirstTime(false);
                                 application.setSportsGenderPreference(false);
-                                Log.d("Sports Preferences", "I chose women");
                                 genderSwitch.setChecked(true);
                                 changeGenderView(womensSports);
                                 mPagerSlidingTabStrip.setVisibility(View.VISIBLE);
@@ -167,7 +160,6 @@ public class AthleticActivity extends ActionBarActivity
                                 genderSwitchLayout.setVisibility(View.VISIBLE);
                                 dialog.dismiss();
                             } else {
-                                Log.d("Sports Preferences", "I chose none");
                                 Toast.makeText(getApplicationContext(), "Please choose a gender",
                                         Toast.LENGTH_SHORT).show();
                             }
@@ -194,18 +186,12 @@ public class AthleticActivity extends ActionBarActivity
                     .show();
         } else {
             if ( application.getSportsGenderPreference() ) {
-                changeGenderView(mensSports);
                 genderSwitch.setChecked(false);
             } else {
-                changeGenderView(womensSports);
+                isLoading = true;
                 genderSwitch.setChecked(true);
             }
         }
-
-        mViewPager.setCurrentItem(application.getSportPreference());
-        // Call notifyDataSetChanged() to get rid of a minor visual bug that keeps the
-        // colors from updating in the tab strip
-        mPagerSlidingTabStrip.notifyDataSetChanged();
     }
 
     /** Changes the activity from viewing men's sports to women's by modifying the
@@ -217,6 +203,7 @@ public class AthleticActivity extends ActionBarActivity
 
         // Get the page index before it changes
         int pageIndexPreSwitch = mViewPager.getCurrentItem();
+        Log.d("pageIndexPreSwitch", "pageIndexPreSwitch: " + pageIndexPreSwitch);
 
         if ( titleArray.equals(mensSports) ) {
             application.setSportsGenderPreference(true);
@@ -227,7 +214,12 @@ public class AthleticActivity extends ActionBarActivity
         mPagerAdapter.notifyDataSetChanged();
         mPagerSlidingTabStrip.notifyDataSetChanged();
 
-        mViewPager.setCurrentItem(convertPage(pageIndexPreSwitch));
+        if ( isLoading ) {
+            mViewPager.setCurrentItem(application.getSportPreference());
+            isLoading = false;
+        } else {
+            mViewPager.setCurrentItem(convertPage(pageIndexPreSwitch));
+        }
         mPagerSlidingTabStrip.notifyDataSetChanged();
 
     }
@@ -260,7 +252,7 @@ public class AthleticActivity extends ActionBarActivity
                 case 6: return 4;
                 case 7: return 6;
                 case 8: return 7;
-                case 9: return 8;
+                case 9: return 9;
             }
         } else {
             Log.d("position:", "Position: " + position);
@@ -298,7 +290,6 @@ public class AthleticActivity extends ActionBarActivity
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
-                application.setSportPreference(mViewPager.getCurrentItem());
                 return true;
             case R.id.action_reset_shared_prefs:
                 application.setSportsFirstTime(true);

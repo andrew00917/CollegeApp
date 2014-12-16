@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!-- Game In Progress card -->
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/current_game"
@@ -24,7 +25,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Game In Progress"
+                android:text="@string/game_in_progress"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/primary_text_default_material_light"
                 android:textSize="24sp" />
 
             <LinearLayout
@@ -36,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    android:alpha="0.75"
+                    android:textColor="@color/secondary_text_default_material_light"
                     android:text="Sat, Dec 13"/>
 
                 <LinearLayout
@@ -49,7 +52,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:alpha="0.75"
+                        android:textColor="@color/secondary_text_default_material_light"
                         android:layout_marginRight="5dp"
                         android:text="3rd Quarter"/>
 
@@ -57,7 +60,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="3dp"
-                        android:background="@color/DarkSlateGray"
+                        android:background="@color/secondary_text_default_material_light"
                         android:textColor="@color/white"
                         android:text="09:26"/>
 
@@ -87,13 +90,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:alpha="0.75"
+                        android:textColor="@color/secondary_text_default_material_light"
                         android:text="Western Michigan University" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="21sp"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="@color/primary_text_default_material_light"
                         android:text="Broncos"
                         />
 
@@ -108,6 +113,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="32sp"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="@color/abc_primary_text_material_light"
                         android:text="24" />
 
                 </LinearLayout>
@@ -136,13 +143,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:alpha="0.75"
+                        android:textColor="@color/secondary_text_default_material_light"
                         android:text="Kalamazoo College" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="21sp"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="@color/primary_text_default_material_light"
                         android:text="Hornets"
                         />
 
@@ -157,6 +166,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="32sp"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="@color/primary_text_default_material_light"
                         android:text="56"/>
 
                 </LinearLayout>
@@ -169,7 +180,7 @@
 
         </android.support.v7.widget.CardView>
 
-
+    <!-- Schedule/Results Card -->
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
         android:layout_gravity="top"
@@ -180,24 +191,319 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/schedule_results"
+                android:textColor="@color/primary_text_default_material_light"
+                android:fontFamily="sans-serif-light"
+                android:textSize="24sp" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <TableRow
+                    android:id="@+id/schedule_table_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:gravity="center"
+                        android:text="Overall" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:gravity="center"
+                        android:text="Pct." />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:gravity="center"
+                        android:text="Conf." />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:gravity="center"
+                        android:text="Pct." />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="6dp"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_text_default_material_light"
+                        android:layout_weight="0.25"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:text="4-3" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_text_default_material_light"
+                        android:layout_weight="0.25"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:text=".571" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_text_default_material_light"
+                        android:layout_weight="0.25"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:text="0-0" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_text_default_material_light"
+                        android:layout_weight="0.25"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:text=".000" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:gravity="center"
+                        android:text="Streak" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:gravity="center"
+                        android:text="Home" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:gravity="center"
+                        android:text="Away" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:gravity="center"
+                        android:text="Neutral" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="6dp"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_text_default_material_light"
+                        android:layout_weight="0.25"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:text="Lost 1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_text_default_material_light"
+                        android:layout_weight="0.25"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:text="1-1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_text_default_material_light"
+                        android:layout_weight="0.25"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:text="2-2" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_text_default_material_light"
+                        android:layout_weight="0.25"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:text="1-0" />
+
+                </TableRow>
+
+
+                </TableLayout>
+
+
+
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <!-- Roster card -->
+    <android.support.v7.widget.CardView
+        android:id="@+id/team_roster"
+        android:layout_gravity="top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        style="@style/CardView" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
             android:layout_margin="16dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Game In Progress"
+                android:text="@string/roster"
+                android:textColor="@color/primary_text_default_material_light"
+                android:fontFamily="sans-serif-light"
                 android:textSize="24sp" />
 
 
+            <!--<include layout="@layout/card_divider" />-->
+
+            <TableLayout
+                android:id="@+id/roster_table_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="2dp">
+
+                <TableRow
+                    android:id="@+id/table_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="6dp"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
+                        android:gravity="center"
+                        android:text="@string/athlete_no." />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.85"
+                        android:text="@string/athlete_name" />
 
 
 
-            </LinearLayout>
+                </TableRow>
+
+
+                </TableLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/head_coach"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/primary_text_default_material_light"
+                android:layout_marginBottom="5dp"
+                android:text="Eric Dougal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/assistant_coaches"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/primary_text_default_material_light"
+                android:layout_marginBottom="5dp"
+                android:text="Jesse Vanabel, Bryan Dutton, Rob Kuhtz, Kevin White"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/student_assistants_managers"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/primary_text_default_material_light"
+                android:layout_marginBottom="5dp"
+                android:text="Blake Beauchamp, Koji Vroom"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/captains"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/primary_text_default_material_light"
+                android:layout_marginBottom="5dp"
+                android:text="Aaron Schoenfeldt, Adam Peters, Carter Goetz, Scott Wharam"/>
+
+            <!--<include layout="@layout/card_divider" />-->
+
+
+        </LinearLayout>
+
+
 
 
         </android.support.v7.widget.CardView>
+
+
 
 </LinearLayout>
 
