@@ -24,11 +24,11 @@
     <style name="Theme.KZOO" parent="Theme.AppCompat.Light">
 
         <!-- customize the color palette -->
-        <item name="colorPrimary">@color/DarkOrange</item>
-        <item name="colorPrimaryDark">@color/Orange</item>
-        <item name="colorAccent">@color/LightSalmon</item>
+        <item name="colorPrimary">@color/kzooOrange</item>
+        <item name="colorPrimaryDark">@color/OrangeRed</item>
+        <item name="colorAccent">@color/Orange</item>
         <item name="windowActionBar">false</item>
-        <item name="drawerArrowStyle">@style/Theme.KZOO.DrawerArrowStyle</item>
+        <!--<item name="drawerArrowStyle">@style/Theme.KZOO.DrawerArrowStyle</item>-->
         <item name="android:fitsSystemWindows">true</item>
     </style>
 
@@ -51,6 +51,9 @@
         <item name="android:layout_marginRight">@dimen/nav_drawer_margin_offset</item>
     </style>
 
+    <style name="Theme.NeutralSwitchStyle" parent="Theme.KZOO">
+        <item name="colorControlActivated">@color/white</item>
+    </style>
     <!-- android:textColorPrimary is the  color of the title text
              in the Toolbar, in the Theme.AppCompat theme:  -->
     <!--<item name="android:textColorPrimary">@color/abc_primary_text_material_light</item>-->
@@ -60,14 +63,13 @@
     <!-- <item name="android:textColorPrimaryInverse">@color/abc_primary_text_material_light</item> -->
 
     <!-- android:actionMenuTextColor is the color of the text of
-          action (menu) items in the Toolbar, at least in the
+          action (menu) rssItemList in the Toolbar, at least in the
           Theme.AppCompat theme.
           For some reason, they already get the textColorPrimary
           when running on API 21, but not on older versions of
           Android, so this is only necessary to support older
           Android versions.-->
     <!--<item name="actionMenuTextColor">@color/abc_primary_text_material_light</item>-->
-
 
 
     <!-- This would set the toolbar's background color,

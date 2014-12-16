@@ -28,6 +28,7 @@
                 />
 
             <LinearLayout
+                android:id="@+id/genderSwitchLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -35,18 +36,23 @@
                 android:layout_marginRight="10dp">
 
                 <TextView
+                    android:id="@+id/men_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:text="@string/men"/>
 
-                <Switch
-                    android:id="@+id/boys_girls_switch"
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/gender_switch"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginLeft="3dp"
+                    app:showText="false"/>
 
                 <TextView
+                    android:id="@+id/women_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
