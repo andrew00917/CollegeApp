@@ -222,7 +222,6 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     public void notifyDataSetChanged() {
         tabsContainer.removeAllViews();
         tabCount = pager.getAdapter().getCount();
-        Log.d("tabCount", "tabCount:" + tabCount);
 
         View tabView;
         for (int i = 0; i < tabCount; i++) {

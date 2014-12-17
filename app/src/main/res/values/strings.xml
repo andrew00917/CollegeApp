@@ -162,8 +162,35 @@
     <string name="label_grocery_pacificRimFoods">Pacific Rim Foods</string>
 
     <!-- Athletic Activity -->
-    <string name="men">MEN</string>
-    <string name="women">WOMEN</string>
+    <string name="men">MEN\'S</string>
+    <string name="women">WOMEN\'S</string>
+
+        <!-- Game In Progress card-->
+        <string name="game_in_progress">Game In Progress</string>
+
+        <!-- Upcoming Games card -->
+        <string name="upcoming_games">Upcoming Games</string>
+
+        <!-- Team Roster card -->
+        <string name="roster">Team Roster</string>
+
+        <string name="head_coach">Head Coach</string>
+        <string name="assistant_coaches">Assistant Coaches</string>
+        <string name="student_assistants_managers">Student Assistants/Managers</string>
+        <string name="captains">Captains</string>
+
+        <!-- Results card -->
+        <string name="results">Results</string>
+
+        <string name="athlete_no.">No.</string>
+        <string name="athlete_name">Name</string>
+        <string name="athlete_position">Pos.</string>
+        <string name="date">Date</string>
+        <string name="opponent">Opponent</string>
+        <string name="result">Result</string>
+
+
+
     <!-- Academic Activity -->
         <!-- Search Courses -->
         <string name="term_prompt">Term</string>
