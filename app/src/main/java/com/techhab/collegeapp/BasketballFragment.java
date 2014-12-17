@@ -1,31 +1,21 @@
 package com.techhab.collegeapp;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 
 
 /**
@@ -44,7 +34,9 @@ public class BasketballFragment extends Fragment {
 
     public static final String ARG_OBJECT = "object";
 
-    private TableLayout tableLayout;
+    private TableLayout rosterTableLayout, scheduleTableLayout;
+    private UpcomingGamesAdapter mUpcomingGamesAdapter;
+    private ListView upcomingGamesListView;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -89,7 +81,9 @@ public class BasketballFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_basketball, container, false);
-        tableLayout = (TableLayout) rootView.findViewById(R.id.roster_table_layout);
+        rosterTableLayout = (TableLayout) rootView.findViewById(R.id.roster_table_layout);
+        scheduleTableLayout = (TableLayout) rootView.findViewById(R.id.schedule_table_layout);
+        upcomingGamesListView = (ListView) rootView.findViewById(R.id.upcoming_games_listview);
 
         // I'm too lazy to make a custom class for player objects, so i'm just gonna have
         // two strings for two diff types of data.
@@ -98,6 +92,71 @@ public class BasketballFragment extends Fragment {
         String[] athleteNames = new String[] { "Cam Schwartz", "Stephen Oliphant", "Matt Jong",
                 "Mike Oravetz", "Charlie Carson", "Aaron Schoenfeldt", "Roger Hood" };
 
+        String[] dates = new String[] { "Nov. 9", "Nov. 15", "Dec. 20"};
+
+        String[] opponents = new String[] { "at Western Mich.", "at Bluffton",
+                "at Wis.-Whitewater"};
+
+        String[] results = new String[] { "L, 81-32", "L, 81-69", "W, 100-0"};
+
+
+        populateTeamRosterTable(athleteNames, athleteNumbers);
+        populateScheduleResultsTable(dates, opponents, results);
+
+        mUpcomingGamesAdapter = new UpcomingGamesAdapter(getActivity());
+        upcomingGamesListView.setAdapter(mUpcomingGamesAdapter);
+        setListViewHeightBasedOnChildren(upcomingGamesListView);
+        return rootView;
+    }
+
+    private void populateScheduleResultsTable(String[] dates, String[] opponents,
+                                              String[] results) {
+        for (int i = 0; i < dates.length; i ++) {
+            TableRow tableRow = new TableRow(getActivity());
+            int tableRowHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12,
+                    getResources().getDisplayMetrics());
+//            tableRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+//                    tableRowHeight, 10f));
+            tableRow.setWeightSum(10f);
+            tableRow.setPadding(0, 0, 0, tableRowHeight);
+
+            TextView date = new TextView(getActivity());
+            TextView opponent = new TextView(getActivity());
+            TextView result = new TextView(getActivity());
+
+            date.setText(dates[i]);
+            opponent.setText(opponents[i]);
+            result.setText(results[i]);
+
+            date.setTextColor(getResources().getColor(
+                    R.color.primary_text_default_material_light));
+            opponent.setTextColor(getResources().getColor(
+                    R.color.primary_text_default_material_light));
+            result.setTextColor(getResources().getColor(
+                    R.color.primary_text_default_material_light));
+
+            date.setTextSize(16);
+            opponent.setTextSize(16);
+            result.setTextSize(16);
+
+//            athleteNumber.setGravity(Gravity.CENTER);
+
+            date.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                    TableRow.LayoutParams.WRAP_CONTENT, 1.5f));
+            opponent.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                    TableRow.LayoutParams.WRAP_CONTENT, 6.5f));
+            result.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                    TableRow.LayoutParams.WRAP_CONTENT, 2f));
+
+            tableRow.addView(date);
+            tableRow.addView(opponent);
+            tableRow.addView(result);
+            scheduleTableLayout.addView(tableRow);
+        }
+    }
+
+
+    private void populateTeamRosterTable(String[] athleteNames, String[] athleteNumbers) {
         for (int i = 0; i < athleteNames.length; i ++) {
             TableRow tableRow = new TableRow(getActivity());
             int tableRowHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12,
@@ -130,9 +189,9 @@ public class BasketballFragment extends Fragment {
 
             tableRow.addView(athleteNumber);
             tableRow.addView(athleteName);
-            tableLayout.addView(tableRow);
+            rosterTableLayout.addView(tableRow);
         }
-        return rootView;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -157,4 +216,77 @@ public class BasketballFragment extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        UpcomingGamesAdapter listAdapter = (UpcomingGamesAdapter) listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount()));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
+
+    private class UpcomingGamesAdapter extends BaseAdapter {
+
+        // ULTIMATELY I WILL USE COMPLEX DATA OBJECTS TO POPULATE THE DIFFERENT VIEWS,
+        // BUT FOR NOW I WILL USE SIMPLE ARRAYS
+        String[] dates = new String[] { "Nov. 9, 2:00PM", "Nov. 15, 6:00PM", "Dec. 20, 8:30PM"};
+
+        String[] opponents = new String[] { "at Western Mich.", "at Bluffton",
+                "at Wis.-Whitewater"};
+
+        int[] teamLogos = {R.drawable.western_michigan_broncos,
+                R.drawable.bluffton_beavers, R.drawable.wisconsin_whitewater};
+
+        private Context context;
+
+        public UpcomingGamesAdapter(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return opponents[position];
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View row = null;
+            if (convertView == null) {
+                LayoutInflater inflater =
+                        (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                row = inflater.inflate(R.layout.upcoming_games_row, parent, false);
+            } else {
+                row = convertView;
+            }
+            ImageView opponentLogo = (ImageView) row.findViewById(R.id.opponent_logo);
+            TextView opponentTitle = (TextView) row.findViewById(R.id.opponent_title);
+            TextView gameDate = (TextView) row.findViewById(R.id.game_date);
+
+            opponentLogo.setImageResource(teamLogos[position]);
+            opponentTitle.setText(opponents[position]);
+            gameDate.setText(dates[position]);
+            return row;
+        }
+    }
 }
