@@ -105,7 +105,7 @@ public class FoodActivity extends ActionBarActivity
          */
         public class MyPagerAdapter extends FragmentPagerAdapter {
 
-            private final String[] TITLES = {"Cafeteria", "Grocery", "Discount"};
+            private final String[] TITLES = {"Cafeteria", "Richardson", "BookClub"};
 
             public MyPagerAdapter(FragmentManager fm) {
                 super(fm);

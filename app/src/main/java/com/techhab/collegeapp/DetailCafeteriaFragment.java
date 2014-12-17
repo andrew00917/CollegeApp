@@ -9,19 +9,31 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import org.w3c.dom.Text;
 
-import java.util.Calendar;
+import java.util.*;
 
 
 public class DetailCafeteriaFragment extends Fragment implements View.OnClickListener {
     public static final String ARG_OBJECT = "object";
     // Buttons Cafeteria
-    private RelativeLayout btn_cafeteria_phone;
-    private RelativeLayout btn_cafeteria_richardson;
-    private RelativeLayout btn_cafeteria_welles;
     View v;
+    LinearLayout llMainLines;
+    LinearLayout llMainLines1;
+    LinearLayout llInternationalCorners;
+    LinearLayout llInternationalCorners1;
+    FoodStore cafeteriaStore;
+    TextView tvViewMore;
+    TextView tvViewMore1;
+    TextView tvTimeInfo;
+    TextView tvTimeDetailInfo;
+    private boolean isBreakfastCollapse = true;
+    private boolean isLunchCollapse = true;
+
+
 
     private static final int RICHARDSON = 1;
 
@@ -38,85 +50,261 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_cafeteria, parent, false);
-        btn_cafeteria_phone = (RelativeLayout) v.findViewById(R.id.btn_cafeteria_phone);
-        btn_cafeteria_phone.setOnClickListener(this);
-        btn_cafeteria_richardson = (RelativeLayout) v.findViewById(R.id.btn_cafeteria_richardson);
-        btn_cafeteria_richardson.setOnClickListener(this);
-        btn_cafeteria_welles = (RelativeLayout) v.findViewById(R.id.btn_cafeteria_welles);
-        btn_cafeteria_welles.setOnClickListener(this);
-        // Example of getting Button view:
-        // Button b = (Button) v.findViewById(R.id.BUTTON_ID);
-        TextView richardsonStoreStatus = (TextView) v.findViewById(R.id.tvRichardsonCafeStatus);
-        TextView wellesStoreStatus = (TextView) v.findViewById(R.id.tvWellesCafeStatus);
-        TextView bookCafeStatus = (TextView) v.findViewById(R.id.tvBookCafeStatus);
-        if (!isOpened(8,0, 22,0))
-        {
-            richardsonStoreStatus.setText("Closed");
-            richardsonStoreStatus.setTextColor(getResources().getColor(R.color.red));
-        }
+        llMainLines = (LinearLayout) v.findViewById(R.id.fragment_cafeteria_llMainLine);
+        llMainLines1 = (LinearLayout) v.findViewById(R.id.fragment_cafeteria_llMainLine1);
+        llInternationalCorners = (LinearLayout) v.findViewById(R.id.fragment_cafeteria_llInternationalCorner);
+        llInternationalCorners1 = (LinearLayout) v.findViewById(R.id.fragment_cafeteria_llInternationalCorner1);
+        tvViewMore = (TextView) v.findViewById(R.id.fragment_cafeteria_tvViewMore);
+        tvViewMore1 = (TextView) v.findViewById(R.id.fragment_cafeteria_tvViewMore1);
+        tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
+        tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
+        tvViewMore.setOnClickListener(this);
+        tvViewMore1.setOnClickListener(this);
 
-        if (!isOpened(8, 0, 22, 0))
-        {
-            wellesStoreStatus.setText("Closed");
-            wellesStoreStatus.setTextColor(getResources().getColor(R.color.red));
-        }
-
-        if (!isOpened(8, 0, 22, 0))
-        {
-            bookCafeStatus.setText("Closed");
-            bookCafeStatus.setTextColor(getResources().getColor(R.color.red));
-        }
+        tvTimeInfo.setOnClickListener(this);
+        //todo: fake data for cafeteriaStore
+        cafeteriaStore = new FoodStore();
+        cafeteriaStore.setStoreName("Cafeteria");
+        cafeteriaStore.setOpenHour(8);
+        cafeteriaStore.setCloseHour(22);
+        List<String> mainLines = new ArrayList<String>();
+        mainLines.add("Pancakes");
+        mainLines.add("Scrambled Eggs");
+        mainLines.add("Bacon");
+        mainLines.add("Kfc");
+        mainLines.add("Pate");
+        cafeteriaStore.setMainLines(mainLines);
+        List<String> mainLines1 = new ArrayList<String>();
+        mainLines1.add("item1");
+        mainLines1.add("item2");
+        mainLines1.add("item3");
+        mainLines1.add("item4");
+        mainLines1.add("item5");
+        cafeteriaStore.setMainLines1(mainLines1);
+        List<String> internationalCorner = new ArrayList<String>();
+        internationalCorner.add("Pho soups");
+        internationalCorner.add("Dumpling");
+        cafeteriaStore.setInternationalCorner(internationalCorner);
+        List<String> internationalCorner1 = new ArrayList<String>();
+        internationalCorner1.add("item1");
+        internationalCorner1.add("item2");
+        cafeteriaStore.setInternationalCorner1(internationalCorner1);
+        collapseBreakfastMenu();
 
 
         return v;
     }
 
-    private boolean isOpened(int openHour, int openMinute, int closeHour, int closeMinute)
+    private void collapseBreakfastMenu() {
+        llMainLines.removeAllViews();
+        llInternationalCorners.removeAllViews();
+        int maxShortLength = cafeteriaStore.getMainLines().size() > 3 ? 3 : cafeteriaStore.getMainLines().size();
+        for (int i = 0; i < maxShortLength; i ++)
+        {
+            llMainLines.addView(createFoodItemView(cafeteriaStore.getMainLines().get(i)));
+
+        }
+        maxShortLength = cafeteriaStore.getInternationalCorner().size() > 3 ? 3 : cafeteriaStore.getInternationalCorner().size();
+        for (int i = 0; i < maxShortLength; i++)
+        {
+            llInternationalCorners.addView(createFoodItemView(cafeteriaStore.getInternationalCorner().get(i)));
+        }
+        isBreakfastCollapse = true;
+    }
+    private void collapseLunchMenu() {
+        llMainLines1.removeAllViews();
+        llInternationalCorners1.removeAllViews();
+        int maxShortLength = cafeteriaStore.getMainLines1().size() > 3 ? 3 : cafeteriaStore.getMainLines1().size();
+        for (int i = 0; i < maxShortLength; i ++)
+        {
+            llMainLines1.addView(createFoodItemView(cafeteriaStore.getMainLines1().get(i)));
+
+        }
+        maxShortLength = cafeteriaStore.getInternationalCorner1().size() > 3 ? 3 : cafeteriaStore.getInternationalCorner1().size();
+        for (int i = 0; i < maxShortLength; i++)
+        {
+            llInternationalCorners1.addView(createFoodItemView(cafeteriaStore.getInternationalCorner1().get(i)));
+        }
+        isLunchCollapse = true;
+    }
+
+    private void openBreakfastMenu() {
+        llMainLines.removeAllViews();
+        for (String foodItem : cafeteriaStore.getMainLines())
+        {
+            llMainLines.addView(createFoodItemView(foodItem));
+        }
+
+        llInternationalCorners.removeAllViews();
+        for (String foodItem : cafeteriaStore.getInternationalCorner())
+        {
+            llInternationalCorners.addView(createFoodItemView(foodItem));
+        }
+        isBreakfastCollapse = false;
+    }
+    private void openLunchMenu() {
+        llMainLines1.removeAllViews();
+        for (String foodItem1 : cafeteriaStore.getMainLines1())
+        {
+            llMainLines1.addView(createFoodItemView(foodItem1));
+        }
+
+        llInternationalCorners1.removeAllViews();
+        for (String foodItem1 : cafeteriaStore.getInternationalCorner1())
+        {
+            llInternationalCorners1.addView(createFoodItemView(foodItem1));
+        }
+        isLunchCollapse = false;
+    }
+    private boolean isOpened(FoodStore foodStore)
     {
         Long currentTime = System.currentTimeMillis();
-        Calendar openCalendar = Calendar.getInstance();
-        openCalendar.set(Calendar.HOUR_OF_DAY, openHour);
-        openCalendar.set(Calendar.MINUTE, openMinute);
-        openCalendar.set(Calendar.SECOND, 0);
-        long openTime = openCalendar.getTimeInMillis();
+        long openTime = getTimeOFDay(foodStore.getOpenHour(), foodStore.getOpenMinutes());
         Calendar closeCalendar = Calendar.getInstance();
-        closeCalendar.set(Calendar.HOUR_OF_DAY, closeHour);
-        closeCalendar.set(Calendar.MINUTE, closeMinute);
+        closeCalendar.set(Calendar.HOUR_OF_DAY, foodStore.getCloseHour());
+        closeCalendar.set(Calendar.MINUTE, foodStore.getCloseMinutes());
         closeCalendar.set(Calendar.SECOND, 0);
-        long closedTIme = closeCalendar.getTimeInMillis();
+        long closedTIme = getTimeOFDay(foodStore.getCloseHour(), foodStore.getCloseMinutes());
         if (currentTime >= openTime && currentTime <= closedTIme)
             return true;
         return false;
     }
 
+    private long getTimeOFDay(int hour, int minute)
+    {
+        Calendar openCalendar = Calendar.getInstance();
+        openCalendar.set(Calendar.HOUR_OF_DAY, hour);
+        openCalendar.set(Calendar.MINUTE, minute);
+        openCalendar.set(Calendar.SECOND, 0);
+        return openCalendar.getTimeInMillis();
+    }
+
+
     @Override
     public void onClick(View v) {
 
-        //Intent intent = new Intent(getActivity(), );
-        String phoneNumber = null;
         switch (v.getId()) {
-            // Phone Call
-            case R.id.btn_cafeteria_phone:
-                phoneNumber = getText(R.string.label_cafeteria_phone).toString();
-                PhoneCall(phoneNumber);
+            case R.id.fragment_cafeteria_tvViewMore:
+                if (isBreakfastCollapse)
+                {
+                    openBreakfastMenu();
+                }
+                else
+                {
+                    collapseBreakfastMenu();
+                }
                 break;
-            case R.id.btn_cafeteria_welles:
-                Intent intent = new Intent(getActivity(), CafeteriaActivity.class);
-                startActivity(intent);
+            case R.id.fragment_cafeteria_tvViewMore1:
+                if (isLunchCollapse)
+                {
+                    openLunchMenu();
+                }
+                else
+                {
+                    collapseLunchMenu();
+                }
                 break;
-            case R.id.btn_cafeteria_richardson:
-                Intent intent1 = new Intent(getActivity(), CafeteriaActivity.class);
-                startActivity(intent1);
-                break;
+            case R.id.fragment_cafeteria_tvInfo:
+                tvTimeDetailInfo.setVisibility(tvTimeDetailInfo.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+
 
 
         }
     }
+
+
+
     private void PhoneCall(String phoneNumber) {
         Intent phoneIntent = new Intent(Intent.ACTION_CALL);
         phoneIntent.setData(Uri.parse("tel:" + phoneNumber));
         startActivity(phoneIntent);
     }
 
+    private TextView createFoodItemView(String foodName)
+    {
+        TextView tvFoodItem = new TextView(getActivity());
+        tvFoodItem.setText("- " + foodName);
+        tvFoodItem.setTextSize(18);
+        return tvFoodItem;
+    }
+
+    private class FoodStore
+    {
+        int openHour;
+        int openMinutes;
+        int closeHour;
+        int closeMinutes;
+        String storeName;
+        List<String> mainLines;
+        List<String> mainLines1;
+        List<String> internationalCorner;
+        List<String> internationalCorner1;
+
+
+        public int getOpenHour() {
+            return openHour;
+        }
+
+        public void setOpenHour(int openHour) {
+            this.openHour = openHour;
+        }
+
+        public int getOpenMinutes() {
+            return openMinutes;
+        }
+
+        public void setOpenMinutes(int openMinutes) {
+            this.openMinutes = openMinutes;
+        }
+
+        public int getCloseHour() {
+            return closeHour;
+        }
+
+        public void setCloseHour(int closeHour) {
+            this.closeHour = closeHour;
+        }
+
+        public int getCloseMinutes() {
+            return closeMinutes;
+        }
+
+        public void setCloseMinutes(int closeMinutes) {
+            this.closeMinutes = closeMinutes;
+        }
+
+        public String getStoreName() {
+            return storeName;
+        }
+
+        public void setStoreName(String storeName) {
+            this.storeName = storeName;
+        }
+
+        public List<String> getMainLines() {
+            return mainLines;
+        }
+        public List<String> getMainLines1() {
+            return mainLines1;
+        }
+        public void setMainLines(List<String> mainLines) {
+            this.mainLines = mainLines;
+        }
+        public void setMainLines1(List<String> mainLines1) {
+            this.mainLines1 = mainLines1;
+        }
+        public List<String> getInternationalCorner() {
+            return internationalCorner;
+        }
+        public List<String> getInternationalCorner1() {
+            return internationalCorner1;
+        }
+        public void setInternationalCorner(List<String> internationalCorner) {
+            this.internationalCorner = internationalCorner;
+        }
+        public void setInternationalCorner1(List<String> internationalCorner1) {
+            this.internationalCorner1 = internationalCorner1;
+        }
+    }
 
 }
