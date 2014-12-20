@@ -203,7 +203,6 @@ public class AthleticActivity extends ActionBarActivity
 
         // Get the page index before it changes
         int pageIndexPreSwitch = mViewPager.getCurrentItem();
-        Log.d("pageIndexPreSwitch", "pageIndexPreSwitch: " + pageIndexPreSwitch);
 
         if ( titleArray.equals(mensSports) ) {
             application.setSportsGenderPreference(true);

@@ -8,8 +8,8 @@ public class EventsRssItem {
     private final String time;
     private final String link;
 
-    public EventsRssItem(String date, String event, String place
-            , String time, String link) {
+    public EventsRssItem(String date, String event, String place,
+                         String time, String link) {
         this.date = date;
         this.event = event;
         this.place = place;
