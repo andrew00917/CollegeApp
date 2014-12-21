@@ -119,7 +119,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO: Point nav drawer items to actual fragments/activities
+                //TODO: Point nav drawer rssItemList to actual fragments/activities
                 ((HomeActivity) getActivity()).showFragment(position, false);
                 selectItem(position);
             }
@@ -127,7 +127,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListViewSettingsSupport.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO: Point nav drawer items to actual fragments/activities
+                //TODO: Point nav drawer rssItemList to actual fragments/activities
                 ((HomeActivity) getActivity()).showFragment(position, false);
                 selectItem(position);
             }

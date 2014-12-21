@@ -4,11 +4,10 @@
     </style>
 
     <style name="Theme.KZOO" parent="@style/Theme.AppCompat.Light">
-
         <!-- customize the color palette -->
-        <item name="colorPrimary">#F00000</item>
-        <item name="colorPrimaryDark">#F00000</item>
-        <item name="colorAccent">@color/kzooOrange</item>
+        <item name="colorPrimary">@color/kzooOrange</item>
+        <item name="colorPrimaryDark">@color/OrangeRed</item>
+        <item name="colorAccent">@color/Orange</item>
         <item name="windowActionBar">false</item>
         <item name="drawerArrowStyle">@style/Theme.Test.DrawerArrowStyle</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
@@ -21,4 +20,23 @@
         <item name="spinBars">true</item>
         <item name="color">@android:color/white</item>
     </style>
+
+    <style name="Theme.NeutralSwitchStyle" parent="Theme.KZOO">
+        <item name="colorAccent">@color/kzooOrange</item>
+    </style>
+
+    <style name="CardTitle">
+        <item name="android:textColor">@color/primary_text_default_material_light</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="CardSubtitle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:alpha">0.75</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="ButtonFlatMaterial" parent="android:Widget.Material.Button.Borderless" />
+
 </resources>

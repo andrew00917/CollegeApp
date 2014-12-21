@@ -486,14 +486,14 @@ public class HomeActivity extends ActionBarActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 //        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-//            // Only show items in the action bar relevant to this screen
+//            // Only show rssItemList in the action bar relevant to this screen
 //            // if the drawer is not showing. Otherwise, let the drawer
 //            // decide what to show in the action bar.
 //            getMenuInflater().inflate(R.menu.main, menu);
 //            restoreActionBar();
 //            return true;
 //        }
-        // Inflate the menu items for use in the action bar
+        // Inflate the menu rssItemList for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_activity_actions, menu);
         return super.onCreateOptionsMenu(menu);
