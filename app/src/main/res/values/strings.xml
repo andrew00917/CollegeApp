@@ -137,6 +137,17 @@
     <string name="action_overflow">More</string>
     <string name="action_send">Send</string>
 
+    <!-- Maps Overflow -->
+    <string name="title_action_academic_buildings">Academic Buildings</string>
+    <string name="title_action_residential_halls">Residential Halls</string>
+    <string name="title_action_recreational_centers">Recreational Centers</string>
+    <string name="title_action_offices">Offices</string>
+    <string name="title_action_other">Other</string>
+    <string name="title_action_show_all">Show All</string>
+
+
+
+
     <!-- Campus Info -->
     <string name="title_activity_info">Campus Information</string>
     <string name="label_building_Hicks_Center">Hicks Center</string>

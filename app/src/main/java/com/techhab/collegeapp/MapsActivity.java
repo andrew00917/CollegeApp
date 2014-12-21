@@ -2,6 +2,9 @@ package com.techhab.collegeapp;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -15,6 +18,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 public class MapsActivity extends FragmentActivity {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private static boolean academicBuildings = false;
+    private static boolean residentialHalls = false;
+    private static boolean showAll = false;
+    private static Menu mMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +34,49 @@ public class MapsActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        mMenu = menu;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_maps, mMenu);
+        return super.onCreateOptionsMenu(mMenu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_academic_buildings:
+                if (item.isChecked()) {
+                    academicBuildings = false;
+                    setUpMap();
+                    item.setChecked(false);
+                }
+                else {
+                    academicBuildings = true;
+                    setUpMap();
+                    item.setChecked(true);
+                }
+                break;
+            case R.id.action_residential_halls:
+                if (item.isChecked()) {
+                    residentialHalls = false;
+                    setUpMap();
+                    item.setChecked(false);
+                }
+                else {
+                    residentialHalls = true;
+                    setUpMap();
+                    item.setChecked(true);
+                }
+                break;
+            default:
+                break;
+        }
+        setUpMap();
+        return true;
     }
 
     /**
@@ -65,19 +115,36 @@ public class MapsActivity extends FragmentActivity {
      */
     private void setUpMap() {
 
+        //clear map of markers
+        mMap.clear();
+
         //KCollege
         mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(42.290304, -85.601896), 17.0f) );
 //        CameraUpdateFactory.zoomTo(5);
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(42.290304, -85.601896))
-                .title("Kalamazoo College")
-                .snippet("Here lies the hopes and dreams of thousands.Buried."));
-        //Mandelle Hall
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(42.290056, -85.60088))
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                .title("Mandelle Hall")
-                .snippet("Is great place. nine-outta-seven."));
+//        if (!(academicBuildings&&residentialHalls)) {
+//            showAll = true;
+//        }
+//        else showAll = false;
+        if (academicBuildings || showAll) {
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(42.290304, -85.601896))
+                    .title("Kalamazoo College")
+                    .snippet("Here lies the hopes and dreams of thousands.Buried."));
+        }
+        if (residentialHalls || showAll) {
+            //Mandelle Hall
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(42.290056, -85.60088))
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                    .title("Mandelle Hall")
+                    .snippet("Is great place. nine-outta-seven."));
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(42.29006, -85.6007))
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                    .title("Test")
+                    .snippet("Disappear!"));
+        }
 
     }
 }
