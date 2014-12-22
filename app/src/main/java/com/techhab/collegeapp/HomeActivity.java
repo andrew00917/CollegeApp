@@ -1,6 +1,5 @@
 package com.techhab.collegeapp;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -83,21 +82,20 @@ public class HomeActivity extends ActionBarActivity
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.home_navigation_drawer);
+        mNavigationDrawerFragment.setUp(R.id.home_navigation_drawer, mDrawerLayout, mToolbar);
 
         setSupportActionBar(mToolbar);
 
         // Disable app name in toolbar
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         getSupportActionBar().setHomeButtonEnabled(true);
 
         mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.kzooOrange));
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.home_navigation_drawer);
-
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,  R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             /** Called when a drawer has settled in a completely closed state. */
             @Override
             public void onDrawerClosed(View view) {
@@ -116,18 +114,17 @@ public class HomeActivity extends ActionBarActivity
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mDrawerToggle.syncState();
+//        mDrawerToggle.syncState();
 
         // Set up the drawer.
-        mNavigationDrawerFragment.setUp(R.id.home_navigation_drawer, mDrawerLayout, mToolbar);
 
-//        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d("cek", "home selected");
-//                mDrawerLayout.openDrawer(Gravity.LEFT);
-//            }
-//        });
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("cek", "home selected");
+                mDrawerLayout.openDrawer(Gravity.START);
+            }
+        });
 
         FragmentManager fm = getSupportFragmentManager();
         fragments[LOG_IN_HOME] = fm.findFragmentById(R.id.loggedOutHomeFragment);
@@ -520,7 +517,11 @@ public class HomeActivity extends ActionBarActivity
                 return super.onOptionsItemSelected(item);
         }*/
 
-        switch (item.getItemId()) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        /*switch (item.getItemId()) {
             case android.R.id.home:
                 if(mDrawerLayout.isDrawerOpen(Gravity.START)) //or other check
                     mDrawerLayout.openDrawer(Gravity.START);
@@ -529,7 +530,7 @@ public class HomeActivity extends ActionBarActivity
                 return true;
             default:
                 break;
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 

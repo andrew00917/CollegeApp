@@ -4,16 +4,17 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.techhab.collegeapp.application.CollegeApplication;
 
 
@@ -27,9 +28,10 @@ public class LogInFragment extends Fragment {
     View progressContainer;
     View v;
 
-    private EditText username;
-    private EditText password;
-    private Button login;
+    private TextView rememberMeText;
+    private CheckBox rememberMeCheckBox;
+    private EditText kEmail, password;
+    private Button guestButton, logInButton;
 
     private int numChar;
 
@@ -53,46 +55,37 @@ public class LogInFragment extends Fragment {
         progressContainer.setVisibility(View.INVISIBLE);
 
         // set buttons here
-        // remember me check button and login button etc.
-        login = (Button) v.findViewById(R.id.login_button);
+        // remember me check button and guestButton button etc.
+        guestButton = (Button) v.findViewById(R.id.guest_button);
+        logInButton = (Button) v.findViewById(R.id.log_in_button);
+        rememberMeCheckBox = (CheckBox) v.findViewById(R.id.remember_me_checkbox);
+        kEmail = (EditText) v.findViewById(R.id.username_input);
+        password = (EditText) v.findViewById(R.id.password_input);
 
-        username = (EditText) v.findViewById(R.id.username_input);
-        numChar = username.getText().toString().length();
-        username.addTextChangedListener(new TextWatcher() {
+        logInButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (numChar != 0) {
-                    if (s.length() == 0) {
-                        login.setText(R.string.guest_in);
-                    }
-                    else {
-                        login.setText(R.string.login);
-                    }
-                }
-                else {
-                    if (count == 0) {
-                        login.setText(R.string.guest_in);
-                    }
-                    else {
-                        login.setText(R.string.login);
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                numChar = s.length();
+            public void onClick(View v) {
+                kEmail.setError("Invalid email or password");
             }
         });
 
-        password = (EditText) v.findViewById(R.id.password_input);
+        rememberMeText = (TextView) v.findViewById(R.id.remember_me_text);
 
-        login.setOnClickListener(new View.OnClickListener() {
+        numChar = kEmail.getText().toString().length();
+
+
+        rememberMeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ( rememberMeCheckBox.isChecked() ) {
+                    rememberMeCheckBox.setChecked(false);
+                } else {
+                    rememberMeCheckBox.setChecked(true);
+                }
+            }
+        });
+
+        guestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 login_submit();
@@ -103,7 +96,7 @@ public class LogInFragment extends Fragment {
     }
 
     private void login_submit() {
-        String u = username.getText().toString();
+        String u = kEmail.getText().toString();
         String p = password.getText().toString();
 
         try {
@@ -114,7 +107,7 @@ public class LogInFragment extends Fragment {
             application.setCurrentUser(newUser);
             application.load();
             if (application.isLoggedIn()) {
-                closeKeyboard(getActivity(), username.getWindowToken());
+                closeKeyboard(getActivity(), kEmail.getWindowToken());
                 closeKeyboard(getActivity(), password.getWindowToken());
                 ((HomeActivity) getActivity()).showFragment(HOME_FRAGMENT, false);
                 ((HomeActivity) getActivity()).mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);

@@ -109,7 +109,6 @@ public class NavigationDrawerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView = (ListView) view.findViewById(R.id.drawer_list);
         mDrawerListViewSettingsSupport = (ListView) view.findViewById(R.id.settings_support);
-        mDrawerImage = (ImageView) view.findViewById(R.id.nav_image);
         mDrawerText = (TextView) view.findViewById(R.id.nav_user_name);
         mDrawerUserName = (TextView) view.findViewById(R.id.user_email);
         mProfileLayout = (LinearLayout) view.findViewById(R.id.profile_layout);
@@ -119,7 +118,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO: Point nav drawer rssItemList to actual fragments/activities
+                //TODO: Point nav drawer items to actual fragments/activities
                 ((HomeActivity) getActivity()).showFragment(position, false);
                 selectItem(position);
             }
@@ -165,12 +164,12 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         // Defer code dependent on restoration of previous instance state.
-//        mDrawerLayout.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                mDrawerToggle.syncState();
-//            }
-//        });
+        /*mDrawerLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mDrawerToggle.syncState();
+            }
+        });*/
     }
 
 
@@ -266,7 +265,7 @@ public class NavigationDrawerFragment extends Fragment {
         String[] nav_drawer_items;
 
         // Array of drawables. MUST BE IN THE SAME ORDER AS THE nav_drawer_items STRING ARRAY!
-        int[] images = { R.drawable.phone, R.drawable.bookmark };
+        int[] images = { R.drawable.phone, R.drawable.bookmark, R.drawable.logout };
 
         public NavAdapter(Context context) {
             this.context = context;

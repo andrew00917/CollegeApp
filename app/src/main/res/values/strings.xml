@@ -64,6 +64,7 @@
     <string-array name="nav_drawer_items">
         <item>Emergency Call</item>
         <item>About</item>
+        <item>Log Out</item>
     </string-array>
 
     <string-array name="nav_drawer_settings_support">
@@ -124,11 +125,11 @@
     </string-array>
 
     <!-- Login fragment -->
-    <string name="username">Username: </string>
-    <string name="password">Password: </string>
+    <string name="k_email">K Email</string>
+    <string name="k_password">K Password</string>
     <string name="remember_me">Remember Me</string>
-    <string name="guest_in">guest ></string>
-    <string name="login">login</string>
+    <string name="guest_in">continue as guest</string>
+    <string name="login">log in</string>
 
     <!-- Toolbar -->
     <string name="action_search">Search</string>

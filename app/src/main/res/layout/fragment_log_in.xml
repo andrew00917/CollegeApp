@@ -1,79 +1,63 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.techhab.collegeapp.LogInFragment">
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@drawable/k_login_background" >
+        android:layout_height="fill_parent" >
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
             android:gravity="center"
             android:orientation="vertical" >
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/icon_vertical_margin"
+                android:layout_marginBottom="20dp"
                 android:src="@drawable/k_login_header"
                 android:layout_gravity="center_horizontal"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/username_input"
+                android:layout_width="@dimen/login_width"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:hint="@string/k_email"
+                android:textSize="16sp"
+                app:floatingLabel="normal"
+                android:inputType="textNoSuggestions" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:text="@string/username" />
 
-                <EditText
-                    android:id="@+id/username_input"
-                    android:layout_width="@dimen/login_width"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:inputType="textNoSuggestions" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/password_input"
+                android:layout_width="@dimen/login_width"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:layout_gravity="center"
+                android:hint="@string/k_password"
+                android:textSize="16sp"
+                app:floatingLabel="normal"
+                android:inputType="textWebPassword" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:text="@string/password"/>
-
-                <EditText
-                    android:id="@+id/password_input"
-                    android:layout_width="@dimen/login_width"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:inputType="textWebPassword" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:orientation="horizontal" >
 
                 <CheckBox
-                    android:id="@+id/remember_me_button"
+                    android:id="@+id/remember_me_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:id="@+id/remember_me_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/remember_me" />
@@ -81,10 +65,17 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/login_button"
+                android:id="@+id/log_in_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
+                android:text="@string/login"
+                android:textColor="@color/white"/>
+
+            <Button
+                style="@style/ButtonFlatMaterial"
+                android:id="@+id/guest_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/guest_in"
                 android:textColor="@color/kzooOrange" />
 

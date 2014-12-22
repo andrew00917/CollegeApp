@@ -26,7 +26,7 @@
         <!-- customize the color palette -->
         <item name="colorPrimary">@color/kzooOrange</item>
         <item name="colorPrimaryDark">@color/OrangeRed</item>
-        <item name="colorAccent">@color/Orange</item>
+        <item name="colorAccent">@color/kzooOrange</item>
         <item name="windowActionBar">false</item>
         <!--<item name="drawerArrowStyle">@style/Theme.KZOO.DrawerArrowStyle</item>-->
         <item name="android:fitsSystemWindows">true</item>
