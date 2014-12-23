@@ -77,7 +77,7 @@
         <LinearLayout
             android:id="@+id/button_section"
             android:layout_width="fill_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:orientation="horizontal"
             android:layout_gravity="end|bottom"
             android:gravity="end|center_vertical"
