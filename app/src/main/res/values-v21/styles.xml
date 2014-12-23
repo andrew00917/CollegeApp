@@ -9,7 +9,7 @@
         <item name="colorPrimaryDark">@color/OrangeRed</item>
         <item name="colorAccent">@color/kzooOrange</item>
         <item name="windowActionBar">false</item>
-        <item name="drawerArrowStyle">@style/Theme.Test.DrawerArrowStyle</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
@@ -17,8 +17,8 @@
         <item name="android:colorButtonNormal">@color/kzooOrange</item>
     </style>
 
-    <style name="Theme.Test.DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
-        <item name="spinBars">true</item>
+    <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">false</item>
         <item name="color">@android:color/white</item>
     </style>
 

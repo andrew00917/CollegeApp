@@ -16,7 +16,7 @@ import android.view.MenuItem;
 
 
 public class CampusActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerCallbacks {
 
         private final Handler handler = new Handler();
 

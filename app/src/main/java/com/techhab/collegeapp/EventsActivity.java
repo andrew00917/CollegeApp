@@ -18,7 +18,7 @@ import android.view.animation.AnimationUtils;
 
 
 public class EventsActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerCallbacks {
 
     private final Handler handler = new Handler();
 

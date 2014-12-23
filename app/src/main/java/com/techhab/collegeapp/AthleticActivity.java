@@ -28,7 +28,7 @@ import com.techhab.collegeapp.application.CollegeApplication;
 
 
 public class AthleticActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerCallbacks {
 
     private final Handler handler = new Handler();
 
@@ -306,9 +306,7 @@ public class AthleticActivity extends ActionBarActivity
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
-
-    }
+    public void onNavigationDrawerItemSelected(int position) {    }
 
     /**
      * pagerAdapter for the SlidingPageTab thing

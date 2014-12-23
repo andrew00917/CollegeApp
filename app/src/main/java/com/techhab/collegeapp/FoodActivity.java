@@ -15,7 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class FoodActivity extends ActionBarActivity
-            implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+            implements NavigationDrawerCallbacks {
 
         private final Handler handler = new Handler();
 
