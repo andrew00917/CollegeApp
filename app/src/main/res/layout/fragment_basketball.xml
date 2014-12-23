@@ -178,6 +178,7 @@
 
         </android.support.v7.widget.CardView>
 
+    <!-- Upcoming Games card -->
     <android.support.v7.widget.CardView
         android:id="@+id/upcoming_games_card"
         android:layout_gravity="top"
@@ -221,11 +222,10 @@
                 android:orientation="horizontal">
 
                 <Button
+                    style="@style/MaterialButtonFlat"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/ButtonFlatMaterial"
                     android:textColor="@color/kzooOrange"
-                    android:text="VIEW MORE"/>
+                    android:text="@string/view_more"/>
 
                 </LinearLayout>
 
@@ -234,7 +234,6 @@
 
 
         </android.support.v7.widget.CardView>
-
 
     <!-- Schedule/Results Card -->
     <android.support.v7.widget.CardView
@@ -489,7 +488,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/ButtonFlatMaterial"
+                    style="@style/MaterialButtonFlat"
                     android:textColor="@color/kzooOrange"
                     android:text="VIEW MORE"/>
 
@@ -502,7 +501,7 @@
     </android.support.v7.widget.CardView>
 
     <!-- Roster card -->
-    <android.support.v7.widget.CardView
+    <!--<android.support.v7.widget.CardView
         android:id="@+id/team_roster"
         android:layout_gravity="top"
         android:layout_width="match_parent"
@@ -524,7 +523,7 @@
                 style="@style/CardTitle" />
 
 
-            <!--<include layout="@layout/card_divider" />-->
+            &lt;!&ndash;<include layout="@layout/card_divider" />&ndash;&gt;
 
             <TableLayout
                 android:id="@+id/roster_table_layout"
@@ -612,7 +611,7 @@
                 android:layout_marginBottom="5dp"
                 android:text="Aaron Schoenfeldt, Adam Peters, Carter Goetz, Scott Wharam"/>
 
-            <!--<include layout="@layout/card_divider" />-->
+            &lt;!&ndash;<include layout="@layout/card_divider" />&ndash;&gt;
 
 
         </LinearLayout>
@@ -620,7 +619,7 @@
 
 
 
-        </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>-->
 
 
 

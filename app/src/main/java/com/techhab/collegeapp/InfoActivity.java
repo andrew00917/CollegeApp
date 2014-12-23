@@ -14,7 +14,7 @@ import com.techhab.collegeapp.application.CollegeApplication;
 
 
 public class InfoActivity extends FragmentActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerCallbacks {
     public static FragmentManager fm;
     // Tag used when logging messages
     private static final String TAG = InfoActivity.class.getSimpleName();

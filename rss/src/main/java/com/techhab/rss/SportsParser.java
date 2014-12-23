@@ -12,14 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by jhchoe on 12/10/14.
+ * Created by Griffin on 12/19/2014.
  */
-public class EventsParser {
-
+public class SportsParser {
     // We don't use namespaces
     private final String ns = null;
 
-    public List<EventsRssItem> parse(InputStream inputStream) throws XmlPullParserException, IOException {
+    public List<SportsRssItem> parse(InputStream inputStream) throws XmlPullParserException,
+            IOException {
         try {
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -33,18 +33,19 @@ public class EventsParser {
         }
     }
 
-    private List<EventsRssItem> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
+    private List<SportsRssItem> readFeed(XmlPullParser parser) throws XmlPullParserException,
+            IOException {
         parser.require(XmlPullParser.START_TAG, null, "rss");
-        String title = null;
-        String description = null;
+        String titleAndScore = null;
+        String pubDate = null;
         String link = null;
-        List<EventsRssItem> items = new ArrayList<EventsRssItem>();
+        List<SportsRssItem> items = new ArrayList<SportsRssItem>();
         while (parser.next() != XmlPullParser.END_DOCUMENT) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
             String name = parser.getName();
-//            Log.d("readFeed name", "name: " + name);
+            Log.d("readFeed name", "name: " + name);
             if (name.equals("channel")) {
                 continue;
             }
@@ -60,22 +61,22 @@ public class EventsParser {
                     n = parser.getName();
 
                     if (n.equals("title")) {
-                        title = readTitle(parser);
-                    } else if (n.equals("description")) {
-                        description = readDescription(parser);
+                        titleAndScore = readTitle(parser);
+                    } else if (n.equals("pubDate")) {
+                        pubDate = readPubDate(parser);
                     } else if (n.equals("link")) {
                         link = readLink(parser);
                     }
                 }
             }
-            if (title != null && description != null && link != null) {
-                String[] dateAndEvent = title.split(" - ");
-                String[] placeAndTime = description.split(", ");
-                EventsRssItem item = new EventsRssItem(dateAndEvent[0], dateAndEvent[1]
-                        , placeAndTime[0], placeAndTime[placeAndTime.length - 1], link);
+            if (titleAndScore != null && pubDate != null && link != null) {
+//                String[] dateAndEvent = titleAndScore.split(" - ");
+//                String[] placeAndTime = description.split(", ");
+
+                SportsRssItem item = new SportsRssItem(pubDate, titleAndScore, link);
                 items.add(item);
-                title = null;
-                description = null;
+                pubDate = null;
+                titleAndScore = null;
                 link = null;
             }
         }
@@ -99,29 +100,42 @@ public class EventsParser {
         }
     }
 
-    private String readLink(XmlPullParser parser) throws XmlPullParserException, IOException {
+    private String readLink(XmlPullParser parser) throws XmlPullParserException,
+            IOException {
         parser.require(XmlPullParser.START_TAG, ns, "link");
         String link = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "link");
         return link;
     }
 
-    private String readDescription(XmlPullParser parser) throws XmlPullParserException, IOException {
+    private String readDescription(XmlPullParser parser) throws XmlPullParserException,
+            IOException {
         parser.require(XmlPullParser.START_TAG, ns, "description");
         String description = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "description");
         return description;
     }
 
-    private String readTitle(XmlPullParser parser) throws XmlPullParserException, IOException {
+    private String readTitle(XmlPullParser parser) throws XmlPullParserException,
+            IOException {
         parser.require(XmlPullParser.START_TAG, ns, "title");
         String title = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "title");
         return title;
     }
 
+    private String readPubDate(XmlPullParser parser) throws XmlPullParserException,
+            IOException {
+        parser.require(XmlPullParser.START_TAG, ns, "pubDate");
+        String pubDate = readText(parser);
+        Log.d("pubDate", "pubDate: " + pubDate);
+        parser.require(XmlPullParser.END_TAG, ns, "pubDate");
+        return pubDate;
+    }
+
     // For the tags title and link, extract their text values.
-    private String readText(XmlPullParser parser) throws IOException, XmlPullParserException {
+    private String readText(XmlPullParser parser) throws IOException,
+            XmlPullParserException {
         String result = "";
         if (parser.next() == XmlPullParser.TEXT) {
             result = parser.getText();
