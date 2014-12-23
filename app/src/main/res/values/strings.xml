@@ -128,8 +128,8 @@
     <string name="k_email">K Email</string>
     <string name="k_password">K Password</string>
     <string name="remember_me">Remember Me</string>
-    <string name="guest_in">continue as guest</string>
-    <string name="login">log in</string>
+    <string name="guest_in">CONTINUE AS GUEST</string>
+    <string name="login">LOG IN</string>
 
     <!-- Toolbar -->
     <string name="action_search">Search</string>
@@ -165,6 +165,7 @@
     <!-- Athletic Activity -->
     <string name="men">MEN\'S</string>
     <string name="women">WOMEN\'S</string>
+    <string name="view_more">VIEW MORE</string>
 
         <!-- Game In Progress card-->
         <string name="game_in_progress">Game In Progress</string>

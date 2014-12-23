@@ -52,7 +52,10 @@ public class BasketballFragment extends Fragment {
 
     private List<SportsRssItem> rssItemList;
 
-    private TableLayout rosterTableLayout, scheduleTableLayout;
+    // Commented out until later date
+//    private TableLayout rosterTableLayout;
+
+    private TableLayout scheduleTableLayout;
     private UpcomingGamesAdapter mUpcomingGamesAdapter;
     private ListView upcomingGamesListView;
 
@@ -117,16 +120,16 @@ public class BasketballFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_basketball, container, false);
-        rosterTableLayout = (TableLayout) rootView.findViewById(R.id.roster_table_layout);
+//        rosterTableLayout = (TableLayout) rootView.findViewById(R.id.roster_table_layout);
         scheduleTableLayout = (TableLayout) rootView.findViewById(R.id.schedule_table_layout);
         upcomingGamesListView = (ListView) rootView.findViewById(R.id.upcoming_games_listview);
 
         // I'm too lazy to make a custom class for player objects, so i'm just gonna have
         // two strings for two diff types of data.
-        String[] athleteNumbers = new String[] { "4", "10", "12",
-                "15", "17", "19", "20" };
-        String[] athleteNames = new String[] { "Cam Schwartz", "Stephen Oliphant", "Matt Jong",
-                "Mike Oravetz", "Charlie Carson", "Aaron Schoenfeldt", "Roger Hood" };
+        /*String[] athleteNumbers = new String[] { "4", "10", "12",
+                "15", "17", "19", "20" };*/
+        /*String[] athleteNames = new String[] { "Cam Schwartz", "Stephen Oliphant", "Matt Jong",
+                "Mike Oravetz", "Charlie Carson", "Aaron Schoenfeldt", "Roger Hood" };*/
 
         String[] dates = new String[] { "Nov. 9", "Nov. 15", "Dec. 20"};
 
@@ -136,7 +139,7 @@ public class BasketballFragment extends Fragment {
         String[] results = new String[] { "L, 81-32", "L, 81-69", "W, 100-0"};
 
 
-        populateTeamRosterTable(athleteNames, athleteNumbers);
+//        populateTeamRosterTable(athleteNames, athleteNumbers);
         populateScheduleResultsTable(dates, opponents, results);
 
 //        setListViewHeightBasedOnChildren(upcomingGamesListView);
@@ -197,7 +200,8 @@ public class BasketballFragment extends Fragment {
     }
 
 
-    private void populateTeamRosterTable(String[] athleteNames, String[] athleteNumbers) {
+    // Commented out for future usage
+    /*private void populateTeamRosterTable(String[] athleteNames, String[] athleteNumbers) {
         for (int i = 0; i < athleteNames.length; i ++) {
             TableRow tableRow = new TableRow(getActivity());
             int tableRowHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12,
@@ -233,7 +237,7 @@ public class BasketballFragment extends Fragment {
             rosterTableLayout.addView(tableRow);
         }
 
-    }
+    }*/
 
     /**
      * This interface must be implemented by activities that contain this

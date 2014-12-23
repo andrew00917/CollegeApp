@@ -65,14 +65,15 @@
             </LinearLayout>
 
             <Button
+                style="@style/MaterialButton"
                 android:id="@+id/log_in_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white" />
 
             <Button
-                style="@style/ButtonFlatMaterial"
+                style="@style/MaterialButtonFlat"
                 android:id="@+id/guest_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

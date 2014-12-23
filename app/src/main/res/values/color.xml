@@ -7,6 +7,7 @@
     <color name="trans">#80FFFFFF</color>
     <color name="theGray">#999999</color>
     <color name="navDrawerIcon">#999999</color>
+    <color name="transparent">#00000000</color>
 
     <!-- Kzoo College colors -->
     <color name="kzooOrange">#E27226</color>
@@ -20,6 +21,13 @@
     <!-- Material Button -->
     <color name="blue_pressed">@android:color/holo_blue_dark</color>
     <color name="blue_normal">@android:color/holo_blue_light</color>
+
+        <!-- Material Button Raised pressed background color -->
+        <color name="kzooOrangePressed">#c66421</color>
+
+        <!-- Material Button Flat pressed background color -->
+        <color name="material_button_flat_pressed_color">#29999999</color>
+
     <!-- A dark Holo shade of blue -->
     <color name="holo_blue_dark">#ff0099cc</color>
     <!-- A light Holo shade of blue -->
