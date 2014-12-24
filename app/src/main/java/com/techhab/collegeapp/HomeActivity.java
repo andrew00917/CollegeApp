@@ -80,7 +80,7 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
         application = (CollegeApplication) getApplication();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        
+
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
