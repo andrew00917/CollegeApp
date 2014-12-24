@@ -104,6 +104,8 @@
     <string name="title_activity_info">Campus Information</string>
     <string name="label_building_Hicks_Center">Hicks Center</string>
     <!-- Cafeteria(DetailedCafeteriaFragment) -->
+    <string name="open">OPEN</string>
+    <string name="closed">CLOSED</string>
     <string name="label_cafeteria_contact">Contact Us:</string>
     <string name="label_cafeteria_phone">(517) 763-1377</string>
     <string name="label_cafeteria_richardson">Richardson Cafe</string>

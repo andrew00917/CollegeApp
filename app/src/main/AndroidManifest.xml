@@ -100,10 +100,6 @@
             android:label="@string/title_activity_maps" >
         </activity>
         <activity
-            android:name="com.techhab.collegeapp.CafeteriaActivity"
-            android:label="@string/title_activity_cafeteria" >
-        </activity>
-        <activity
             android:name="com.techhab.collegeapp.TermActivity"
             android:label="@string/title_activity_term" >
             <meta-data

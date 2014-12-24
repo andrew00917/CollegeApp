@@ -110,16 +110,16 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
         mLayoutManager = new LinearLayoutManager(getActivity());
         rvMenu.setLayoutManager(mLayoutManager);
         rvMenu.setAdapter(new MenuAdapter(getActivity(), menuItems));
-        if (isOpened(cafeteriaStore))
+        /*if (isOpened(cafeteriaStore))
         {
             v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.green));
-            ((TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText("Open");
+            ((TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText(R.string.open);
         }
         else
         {
             v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.red));
-            ((TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText("Closed");
-        }
+            ((TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText(R.string.closed);
+        }*/
         getRemainTime();
         return v;
     }
@@ -182,7 +182,7 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
 
 
                 tvTimeInfo.setText(
-                        " "+ "for " + hours + "hours and " + minutes + " minutes"
+                        " "+ "for " + hours + " hours and " + minutes + " minutes"
                              );
 
             }
