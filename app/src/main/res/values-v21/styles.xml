@@ -7,22 +7,28 @@
         <!-- customize the color palette -->
         <item name="colorPrimary">@color/kzooOrange</item>
         <item name="colorPrimaryDark">@color/OrangeRed</item>
-        <item name="colorAccent">@color/Orange</item>
+        <item name="colorAccent">@color/kzooOrange</item>
         <item name="windowActionBar">false</item>
-        <item name="drawerArrowStyle">@style/Theme.Test.DrawerArrowStyle</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:fitsSystemWindows">true</item>
+        <item name="android:colorButtonNormal">@color/kzooOrange</item>
     </style>
 
-    <style name="Theme.Test.DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
-        <item name="spinBars">true</item>
+    <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">false</item>
         <item name="color">@android:color/white</item>
     </style>
 
     <style name="Theme.NeutralSwitchStyle" parent="Theme.KZOO">
         <item name="colorAccent">@color/kzooOrange</item>
+    </style>
+
+    <style name="NavDrawer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginRight">@dimen/nav_drawer_margin_offset</item>
     </style>
 
     <style name="CardTitle">
@@ -37,6 +43,8 @@
         <item name="android:textSize">15sp</item>
     </style>
 
-    <style name="ButtonFlatMaterial" parent="android:Widget.Material.Button.Borderless" />
+    <style name="MaterialButtonFlat" parent="android:Widget.Material.Button.Borderless" />
+
+    <style name="MaterialButton" parent="android:Widget.Material.Button" />
 
 </resources>

@@ -53,17 +53,20 @@
     <string name="content_description">Content Description</string>
 
     <!-- Main Menu -->
-    <string name="main_menu_00">Main Menu 00</string>
-    <string name="main_menu_01">Main Menu 01</string>
-    <string name="main_menu_10">Main Menu 10</string>
-    <string name="main_menu_11">Main Menu 11</string>
-    <string name="main_menu_20">Main Menu 20</string>
-    <string name="main_menu_21">Main Menu 21</string>
+    <string name="main_menu_00">Academic</string>
+    <string name="main_menu_01">Campus</string>
+    <string name="main_menu_02">Dining</string>
+    <string name="main_menu_10">Athletic</string>
+    <string name="main_menu_11">Events</string>
+    <string name="main_menu_12">Map</string>
+    <string name="image_description_name">Seung Yoon Hong 15\'</string>
+    <string name="image_description_place">Venice, Italy</string>
 
     <!-- Navigation Drawer -->
     <string-array name="nav_drawer_items">
         <item>Emergency Call</item>
         <item>About</item>
+        <item>Log Out</item>
     </string-array>
 
     <string-array name="nav_drawer_settings_support">
@@ -72,48 +75,7 @@
     </string-array>
 
     <!-- Sub Menu List -->
-    <string-array name="sub_menu_00">
-        <item>Sub menu 00 1</item>
-        <item>Sub menu 00 2</item>
-        <item>Sub menu 00 3</item>
-        <item>Sub menu 00 4</item>
-        <item>Sub menu 00 5</item>
-    </string-array>
-    <string-array name="sub_menu_01">
-        <item>Sub menu 01 1</item>
-        <item>Sub menu 01 2</item>
-        <item>Sub menu 01 3</item>
-        <item>Sub menu 01 4</item>
-        <item>Sub menu 01 5</item>
-    </string-array>
-    <string-array name="sub_menu_10">
-        <item>Sub menu 10 1</item>
-        <item>Sub menu 10 2</item>
-        <item>Sub menu 10 3</item>
-        <item>Sub menu 10 4</item>
-        <item>Sub menu 10 5</item>
-    </string-array>
-    <string-array name="sub_menu_11">
-        <item>Sub menu 11 1</item>
-        <item>Sub menu 11 2</item>
-        <item>Sub menu 11 3</item>
-        <item>Sub menu 11 4</item>
-        <item>Sub menu 11 5</item>
-    </string-array>
-    <string-array name="sub_menu_20">
-        <item>Sub menu 20 1</item>
-        <item>Sub menu 20 2</item>
-        <item>Sub menu 20 3</item>
-        <item>Sub menu 20 4</item>
-        <item>Sub menu 20 5</item>
-    </string-array>
-    <string-array name="sub_menu_21">
-        <item>Sub menu 21 1</item>
-        <item>Sub menu 21 2</item>
-        <item>Sub menu 21 3</item>
-        <item>Sub menu 21 4</item>
-        <item>Sub menu 21 5</item>
-    </string-array>
+
     <string-array name="campus_info">
         <item>Facilities</item>
         <item>Cafeteria</item>
@@ -124,11 +86,11 @@
     </string-array>
 
     <!-- Login fragment -->
-    <string name="username">Username: </string>
-    <string name="password">Password: </string>
+    <string name="k_email">K Email</string>
+    <string name="k_password">K Password</string>
     <string name="remember_me">Remember Me</string>
-    <string name="guest_in">guest ></string>
-    <string name="login">login</string>
+    <string name="guest_in">CONTINUE AS GUEST</string>
+    <string name="login">LOG IN</string>
 
     <!-- Toolbar -->
     <string name="action_search">Search</string>
@@ -164,6 +126,7 @@
     <!-- Athletic Activity -->
     <string name="men">MEN\'S</string>
     <string name="women">WOMEN\'S</string>
+    <string name="view_more">VIEW MORE</string>
 
         <!-- Game In Progress card-->
         <string name="game_in_progress">Game In Progress</string>

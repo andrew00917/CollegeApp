@@ -2,7 +2,6 @@ package com.techhab.collegeapp;
 
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -23,9 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
 
@@ -35,7 +32,8 @@ import android.support.v7.widget.Toolbar;
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment
+        implements NavigationDrawerCallbacks  {
 
     /**
      * Remember the position of the selected item.
@@ -61,6 +59,7 @@ public class NavigationDrawerFragment extends Fragment {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView, mDrawerListViewSettingsSupport;
     private View mFragmentContainerView;
+    private ActionBarDrawerToggle mActionBarDrawerToggle;
 
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
@@ -97,8 +96,6 @@ public class NavigationDrawerFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    private ImageView mDrawerImage;
-    private TextView mDrawerText, mDrawerUserName;
     private LinearLayout mProfileLayout;
 
     @Override
@@ -109,9 +106,6 @@ public class NavigationDrawerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView = (ListView) view.findViewById(R.id.drawer_list);
         mDrawerListViewSettingsSupport = (ListView) view.findViewById(R.id.settings_support);
-        mDrawerImage = (ImageView) view.findViewById(R.id.nav_image);
-        mDrawerText = (TextView) view.findViewById(R.id.nav_user_name);
-        mDrawerUserName = (TextView) view.findViewById(R.id.user_email);
         mProfileLayout = (LinearLayout) view.findViewById(R.id.profile_layout);
 
         //TODO set actual onClickListener (should take user to profile page)
@@ -119,7 +113,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO: Point nav drawer rssItemList to actual fragments/activities
+                //TODO: Point nav drawer items to actual fragments/activities
                 ((HomeActivity) getActivity()).showFragment(position, false);
                 selectItem(position);
             }
@@ -151,12 +145,35 @@ public class NavigationDrawerFragment extends Fragment {
      * @param fragmentId   The android:id of this fragment in its activity's layout.
      * @param drawerLayout The DrawerLayout containing this fragment's UI.
      */
-    public void setUp(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar) {
+    public void setUp(int fragmentId, DrawerLayout drawerLayout, Toolbar mToolbar) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+
+        mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, mToolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            /** Called when a drawer has settled in a completely closed state. */
+            @Override
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                if (!isAdded()) return;
+                getActivity().invalidateOptionsMenu();
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                if (!isAdded()) return;
+                if (!mUserLearnedDrawer) {
+                    mUserLearnedDrawer = true;
+                }
+
+                getActivity().invalidateOptionsMenu();
+            }
+        };
 
         // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
         // per the navigation drawer design guidelines.
@@ -164,13 +181,14 @@ public class NavigationDrawerFragment extends Fragment {
             mDrawerLayout.openDrawer(mFragmentContainerView);
         }
 
-        // Defer code dependent on restoration of previous instance state.
-//        mDrawerLayout.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                mDrawerToggle.syncState();
-//            }
-//        });
+        mDrawerLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mDrawerToggle.syncState();
+            }
+        });
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
 
@@ -245,16 +263,10 @@ public class NavigationDrawerFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Callbacks interface that all activities using this fragment must implement.
-     */
-    public static interface NavigationDrawerCallbacks {
-        /**
-         * Called when an item in the navigation drawer is selected.
-         */
-        void onNavigationDrawerItemSelected(int position);
+    @Override
+    public void onNavigationDrawerItemSelected(int position) {
+        selectItem(position);
     }
-
 
     /**
      * Custom ListView adapter for the nav drawer
@@ -266,7 +278,7 @@ public class NavigationDrawerFragment extends Fragment {
         String[] nav_drawer_items;
 
         // Array of drawables. MUST BE IN THE SAME ORDER AS THE nav_drawer_items STRING ARRAY!
-        int[] images = { R.drawable.phone, R.drawable.bookmark };
+        int[] images = { R.drawable.phone, R.drawable.bookmark, R.drawable.logout };
 
         public NavAdapter(Context context) {
             this.context = context;

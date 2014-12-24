@@ -1,5 +1,6 @@
 package com.techhab.rss;
 
+import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -43,6 +44,7 @@ public class EventsParser {
                 continue;
             }
             String name = parser.getName();
+//            Log.d("readFeed name", "name: " + name);
             if (name.equals("channel")) {
                 continue;
             }
