@@ -171,7 +171,8 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
                         }
                         else {
                             mainContainer.setLayoutParams(new FrameLayout
-                                    .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200));
+                                    .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                    mainExpand.getHeight() + main00.getHeight()));
                             mainContainer.setBackgroundColor(getResources().getColor(R.color.main00_trans));
                             nullifyText();
                             lessToolbar();
