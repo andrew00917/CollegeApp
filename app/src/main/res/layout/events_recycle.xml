@@ -1,78 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
     android:layout_marginStart="8dp"
     android:layout_marginLeft="8dp"
     android:layout_marginEnd="8dp"
     android:layout_marginRight="8dp"
-    app:style="@style/CardView">
+    app:style="@style/CardView"
+    android:animateLayoutChanges="true" >
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="150dp">
-
-        <ImageView
-            android:contentDescription="@string/content_description"
-            android:id="@+id/image"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/banner"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
         <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:padding="16dp" >
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/banner" >
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:padding="16dp" >
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="end"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:textColor="@color/white" />
+
+            </FrameLayout>
 
             <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:gravity="center_vertical"
-                android:textSize="16sp"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_gravity="end"
-                android:gravity="center_vertical"
-                android:textSize="16sp"
+                android:id="@+id/event"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:padding="16dp"
+                android:textSize="20sp"
                 android:textColor="@color/white" />
 
         </FrameLayout>
 
         <TextView
-            android:id="@+id/event"
+            android:id="@+id/place"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:gravity="center_vertical"
             android:padding="16dp"
-            android:textSize="20sp"
-            android:textColor="@color/white" />
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:layout_gravity="bottom" >
-
-        <TextView
-            android:id="@+id/place"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:textColor="@color/main20" />
+            android:textColor="@color/primary_text_default_material_light" />
 
-    </FrameLayout>
+        <include layout="@layout/card_divider"
+            android:id="@+id/divider"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/button_section"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_gravity="end|bottom"
+            android:gravity="end|center_vertical"
+            android:weightSum="6"
+            android:visibility="gone" >
+
+            <ImageButton
+                android:contentDescription="@string/content_description"
+                android:id="@+id/info_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:src="@drawable/ic_info_outline"
+                android:background="@android:color/transparent" />
+
+            <ImageButton
+                android:contentDescription="@string/content_description"
+                android:id="@+id/campus_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:src="@drawable/ic_campus"
+                android:background="@android:color/transparent" />
+
+            <ImageButton
+                android:contentDescription="@string/content_description"
+                android:id="@+id/calendar_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:src="@drawable/ic_calendar"
+                android:background="@android:color/transparent" />
+
+            <ImageButton
+                android:contentDescription="@string/content_description"
+                android:id="@+id/favorite_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:src="@drawable/ic_favorite_outline"
+                android:background="@android:color/transparent" />
+
+            <ImageButton
+                android:contentDescription="@string/content_description"
+                android:id="@+id/attending_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:src="@drawable/ic_check"
+                android:background="@android:color/transparent" />
+
+            <ImageButton
+                android:contentDescription="@string/content_description"
+                android:id="@+id/mapit_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:src="@drawable/ic_mapit"
+                android:background="@android:color/transparent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

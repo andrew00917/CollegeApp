@@ -19,7 +19,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -78,6 +80,7 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
         application = (CollegeApplication) getApplication();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -288,6 +291,22 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
                     break;
             }
         }
+    }
+
+    public void setActionBarLess() {
+        mToolbar.setBackgroundColor(getResources().getColor(R.color.main00));
+        mToolbar.collapseActionView();
+        mToolbar.setLayoutParams(new LinearLayout
+                .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                (int) getResources().getDimension(R.dimen.abc_action_bar_default_height_material)));
+    }
+
+    public void setActionBarExpand() {
+        mToolbar.setBackground(getResources().getDrawable(R.drawable.k_banner_day));
+        mToolbar.collapseActionView();
+        mToolbar.setLayoutParams(new LinearLayout
+                .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                (int) getResources().getDimension(R.dimen.expanded_toolbar)));
     }
 
 	/* Facebook Integration Only ... */
