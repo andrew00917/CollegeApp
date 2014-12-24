@@ -18,6 +18,8 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -72,6 +74,8 @@ public class AthleticActivity extends ActionBarActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.kzooOrange));
 
+//        getSupportActionBar().hide();
+
         // Handle Boys/Girls toggle switch
         genderSwitch = (SwitchCompat) findViewById(R.id.gender_switch);
         // Set a custom track drawable to keep it from "highlighting" upon selection
@@ -87,10 +91,11 @@ public class AthleticActivity extends ActionBarActivity
                 if (isChecked) {
                     changeGenderView(womensSports);
                     application.setSportPreference(mViewPager.getCurrentItem());
-
+                    getSupportActionBar().hide();
                 } else {
                     changeGenderView(mensSports);
                     application.setSportPreference(mViewPager.getCurrentItem());
+                    getSupportActionBar().show();
                 }
             }
         });
@@ -192,6 +197,13 @@ public class AthleticActivity extends ActionBarActivity
                 genderSwitch.setChecked(true);
             }
         }
+    }
+
+    private void hideMenu() {
+        Animation a = AnimationUtils.loadAnimation(this, R.anim.hide_toolbar);
+        a.reset();
+        toolbar.startAnimation(a);
+//        btn.setVisibility(View.INVISIBLE);
     }
 
     /** Changes the activity from viewing men's sports to women's by modifying the

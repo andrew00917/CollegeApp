@@ -14,13 +14,12 @@
 
         <FrameLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content" >
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/expanded_toolbar"
+                android:layout_height="@dimen/abc_action_bar_default_height_material"
                 android:minHeight="@dimen/abc_action_bar_default_height_material"
                 android:background="@color/kzooOrange"
                 app:theme="@style/Toolbar"
@@ -32,7 +31,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_gravity="right|center_vertical"
+                android:layout_marginTop="@dimen/abc_action_bar_default_height_material"
+                android:layout_gravity="right"
                 android:layout_marginRight="10dp">
 
                 <TextView
@@ -69,6 +69,7 @@
                 android:scrollbars="none"
                 android:fillViewport="true"
                 android:clipToPadding="false"
+                android:layout_marginTop="85dp"
                 app:pstsPaddingMiddle="true" />
 
         </FrameLayout>
