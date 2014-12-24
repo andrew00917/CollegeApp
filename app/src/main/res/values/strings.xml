@@ -138,7 +138,9 @@
     <string name="action_send">Send</string>
     <string name="action_reset_shared_prefs">Reset shared prefs</string>
 
-    <!-- Maps Overflow -->
+    <!-- Maps action bar-->
+    <string name="title_buildings_select">Buildings</string>
+
     <string name="title_action_academic_buildings">Academic Buildings</string>
     <string name="title_action_residential_halls">Residential Halls</string>
     <string name="title_action_recreational_centers">Recreational Centers</string>

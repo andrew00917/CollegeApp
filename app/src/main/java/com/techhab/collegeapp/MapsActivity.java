@@ -5,7 +5,10 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -44,39 +47,34 @@ public class MapsActivity extends FragmentActivity {
         inflater.inflate(R.menu.menu_maps, mMenu);
         return super.onCreateOptionsMenu(mMenu);
     }
+    public void chooseBuildings() {
+        new MaterialDialog.Builder(this)
+                .title("View Buildings")
+                .items(new String[]{"Academic", "Residential", "Offices",
+                                        "Recreational", "Other", "All"})
+                .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMulti() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, Integer[] which,
+                                            CharSequence[] text) {
+                    }
+                })
+                .positiveText("OK")
+                .positiveColor(getResources().getColor(R.color.kzooOrange))
+                .negativeText("Cancel")
+                .autoDismiss(false)
+                .negativeColor(getResources().getColor(R.color.gray))
+                .show();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_academic_buildings:
-                if (item.isChecked()) {
-                    academicBuildings = false;
-                    setUpMap();
-                    item.setChecked(false);
-                }
-                else {
-                    academicBuildings = true;
-                    setUpMap();
-                    item.setChecked(true);
-                }
-                break;
-            case R.id.action_residential_halls:
-                if (item.isChecked()) {
-                    residentialHalls = false;
-                    setUpMap();
-                    item.setChecked(false);
-                }
-                else {
-                    residentialHalls = true;
-                    setUpMap();
-                    item.setChecked(true);
-                }
-                break;
+            case R.id.action_buildings_select:
+                chooseBuildings();
+                return true;
             default:
-                break;
+                return true;
         }
-        setUpMap();
-        return true;
     }
 
     /**
