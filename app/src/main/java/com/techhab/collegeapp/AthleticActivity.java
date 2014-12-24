@@ -18,6 +18,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
@@ -91,11 +92,11 @@ public class AthleticActivity extends ActionBarActivity
                 if (isChecked) {
                     changeGenderView(womensSports);
                     application.setSportPreference(mViewPager.getCurrentItem());
-                    getSupportActionBar().hide();
+                    toolbar.animate().translationY(-toolbar.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
                 } else {
                     changeGenderView(mensSports);
                     application.setSportPreference(mViewPager.getCurrentItem());
-                    getSupportActionBar().show();
+//                    toolbar.animate().translationY(-toolbar.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
                 }
             }
         });

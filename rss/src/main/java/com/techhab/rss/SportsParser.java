@@ -45,7 +45,6 @@ public class SportsParser {
                 continue;
             }
             String name = parser.getName();
-            Log.d("readFeed name", "name: " + name);
             if (name.equals("channel")) {
                 continue;
             }
@@ -66,13 +65,16 @@ public class SportsParser {
                         pubDate = readPubDate(parser);
                     } else if (n.equals("link")) {
                         link = readLink(parser);
+                    } else if (n.equals("description")) {
+                        parser.next();
+                        parser.nextTag();
+                    } else if (n.equals("category")) {
+                        parser.next();
+                        parser.nextTag();
                     }
                 }
             }
             if (titleAndScore != null && pubDate != null && link != null) {
-//                String[] dateAndEvent = titleAndScore.split(" - ");
-//                String[] placeAndTime = description.split(", ");
-
                 SportsRssItem item = new SportsRssItem(pubDate, titleAndScore, link);
                 items.add(item);
                 pubDate = null;
@@ -128,7 +130,6 @@ public class SportsParser {
             IOException {
         parser.require(XmlPullParser.START_TAG, ns, "pubDate");
         String pubDate = readText(parser);
-        Log.d("pubDate", "pubDate: " + pubDate);
         parser.require(XmlPullParser.END_TAG, ns, "pubDate");
         return pubDate;
     }

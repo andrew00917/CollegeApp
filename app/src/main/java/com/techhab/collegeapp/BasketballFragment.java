@@ -98,7 +98,6 @@ public class BasketballFragment extends Fragment {
         receiver = new MyResultReceiver(new Handler());
         rssItemList = new ArrayList<>();
         new DownloadXmlTask().execute();
-        Log.d("onCreate", "I created everything!!");
 
     }
 
@@ -107,7 +106,6 @@ public class BasketballFragment extends Fragment {
         SportsRssItem item;
         for (int i = 0; i < list.size(); i++) {
             item = list.get(i);
-            Log.d("Upcoming games", "title and score: " + item.getTitleAndScore());
 //            if ( !item.getTitleAndScore().contains("Final")) {
                 ret.add(item);
 //            }
@@ -318,7 +316,6 @@ public class BasketballFragment extends Fragment {
         @Override
         public int getCount() {
 //            return items.size() > 0 ? 3 : 0;
-            Log.d("getCount", "items.size: " + items.size());
             return items.size();
         }
 
@@ -377,7 +374,7 @@ public class BasketballFragment extends Fragment {
 //            gameDate.setText(item.getDateAndTime());
 
             viewHolder.date.setText(item.getDateAndTime());
-            viewHolder.title.setText(item.getTitleAndScore());
+            viewHolder.title.setText(item.getOpponent());
 
             return convertView;
         }
@@ -396,10 +393,8 @@ public class BasketballFragment extends Fragment {
         @SuppressWarnings("unchecked")
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-            Log.d("onReceiveResult", "onReceiveResult is runniNG!!");
             rssItemList = (List<SportsRssItem>) resultData.getSerializable(ITEMS);
 //            rssItemList = getUpcomingGames(rssItemList);
-            Log.d("rssItemList", "rss: " + rssItemList.size());
             mUpcomingGamesAdapter.updateChange(rssItemList);
         }
     }
@@ -414,7 +409,6 @@ public class BasketballFragment extends Fragment {
                 mServiceIntent.putExtra(RECEIVER, receiver);
                 // Starts the IntentService
                 getActivity().startService(mServiceIntent);
-                Log.d("doInBackground", "Intent Service started");
                 return "Intent Service Started";
             } catch (Exception e) {
                 e.printStackTrace();
