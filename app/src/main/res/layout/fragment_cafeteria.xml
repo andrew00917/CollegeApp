@@ -1,14 +1,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/WhiteSmoke"
     tools:context="com.techhab.collegeapp.CafeteriaFragment">
 
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
         <LinearLayout
             android:orientation="vertical"
             android:id="@+id/panel_side_cafeteria"
@@ -16,164 +14,41 @@
             android:layout_height="wrap_content"
             android:showDividers="middle"
             android:divider="?android:dividerHorizontal">
-
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical">
-                <RelativeLayout
-                    android:id="@+id/btn_cafeteria_welles"
-                    android:layout_width="fill_parent"
+            <LinearLayout android:id="@+id/fragment_careteria_llHeader"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:background="@color/green"
+                android:padding="10dp"
+                android:layout_height="wrap_content">
+                <TextView android:id="@+id/fragment_cafeteria_tvInfo1"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/btn_whitebackground"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/tv01"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:text="@string/label_cafeteria_welles"
-                        android:textSize="18dp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:layout_alignParentTop="true"/>
-                    <TextView android:id="@+id/tvWellesCafe"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv01"
-                        android:paddingTop="3dp"
-                        android:text="8:00am - 10:00pm"/>
-                    <TextView android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Open"
-                        android:textColor="@color/blue"
-                        android:textSize="18dp"
-                        android:drawableRight="@drawable/bt_next_blue"
-                        android:drawablePadding="3dp"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true"
-                        android:id="@+id/tvWellesCafeStatus"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/btn_cafeteria_richardson"
-                    android:layout_width="fill_parent"
+                    android:textSize="20dp"
+                    android:textColor="@color/white"
+                    android:text="Open"/>
+                <TextView android:id="@+id/fragment_cafeteria_tvInfo"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:background="@drawable/btn_whitebackground"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/tv02"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:text="@string/label_cafeteria_richardson"
-                        android:textSize="18dp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:layout_alignParentTop="true"/>
-                    <TextView android:id="@+id/tvRichardsonCafe"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv02"
-                        android:paddingTop="3dp"
-                        android:text="8:00am - 10:00pm"/>
-                    <TextView android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Open"
-                        android:textColor="@color/blue"
-                        android:textSize="18dp"
-                        android:drawableRight="@drawable/bt_next_blue"
-                        android:drawablePadding="3dp"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true"
-                        android:id="@+id/tvRichardsonCafeStatus"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_marginTop="1dp"
-                    android:layout_width="fill_parent"
+                    android:textSize="20dp"
+                    android:textColor="@color/white"
+                    android:text="till 11am"
+                    android:drawableRight="@drawable/icon_arrow_expand_drawer"/>
+                <TextView android:id="@+id/fragment_cafeteria_tvTimeDetail"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/btn_whitebackground"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/tv03"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:text="@string/label_cafeteria_bookClub"
-                        android:textSize="18dp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:layout_alignParentTop="true"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv03"
-                        android:layout_marginRight="5dp"
-                        android:paddingTop="3dp"
-                        android:text="8:00am - 10:00pm"
-                        />
-
-                    <TextView android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Open"
-                        android:textColor="@color/blue"
-                        android:textSize="18dp"
-                        android:drawableRight="@drawable/bt_next_blue"
-                        android:drawablePadding="3dp"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true"
-                        android:id="@+id/tvBookCafeStatus"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/btn_cafeteria_phone"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_whitebackground"
-                    android:padding="10dp">
-                    <ImageView
-                        android:id="@+id/img01"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/phone"
-                        android:layout_alignParentLeft="true"/>
-                    <TextView
-                        android:id="@+id/tv04"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:text="@string/label_cafeteria_contact"
-                        android:textSize="12dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_toRightOf="@+id/img01"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv04"
-                        android:text="@string/label_cafeteria_phone"
-                        android:layout_toRightOf="@+id/img01"
-                        android:layout_marginRight="5dp"
-                        android:textSize="14dp"/>
-                </RelativeLayout>
+                    android:visibility="gone"
+                    android:textSize="18dp"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/white"
+                    android:text="M-F 8:00-10:00pm\nSaturdays 12:00-6:00pm\nSundays 10-7pm"/>
 
             </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_cafeteria_rvMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
 
 </FrameLayout>

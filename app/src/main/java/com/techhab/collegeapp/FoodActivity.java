@@ -105,7 +105,7 @@ public class FoodActivity extends ActionBarActivity
          */
         public class MyPagerAdapter extends FragmentPagerAdapter {
 
-            private final String[] TITLES = {"Cafeteria", "Grocery", "Discount"};
+            private final String[] TITLES = {"Cafeteria", "Richardson", "BookClub"};
 
             public MyPagerAdapter(FragmentManager fm) {
                 super(fm);
@@ -137,8 +137,8 @@ public class FoodActivity extends ActionBarActivity
                         fragment.setArguments(args);
                         break;
                     default:
-                        fragment = new DiscountFragment();
-                        args.putInt(DiscountFragment.ARG_OBJECT, position + 1);
+                        fragment = new BookClubFragment();
+                        args.putInt(BookClubFragment.ARG_OBJECT, position + 1);
                         fragment.setArguments(args);
                         break;
                 }

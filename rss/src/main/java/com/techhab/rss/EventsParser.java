@@ -72,7 +72,7 @@ public class EventsParser {
                 String[] dateAndEvent = title.split(" - ");
                 String[] placeAndTime = description.split(", ");
                 EventsRssItem item = new EventsRssItem(dateAndEvent[0], dateAndEvent[1]
-                        , placeAndTime[0], placeAndTime[1], link);
+                        , placeAndTime[0], placeAndTime[placeAndTime.length - 1], link);
                 items.add(item);
                 title = null;
                 description = null;

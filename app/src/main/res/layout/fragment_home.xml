@@ -2,12 +2,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/example_home_background"
     tools:context="com.techhab.collegeapp.HomeFragment">
 
     <LinearLayout
+        android:id="@+id/image_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:gravity="end|center_vertical"
+        android:padding="8dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/image_description_name"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/image_description_place"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:minHeight="200dp"
+        android:animateLayoutChanges="true"
+        android:background="@color/main00" >
+
+        <ImageView
+            android:id="@+id/main_expand"
+            android:contentDescription="@string/content_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:gravity="center"
+            android:padding="8dp"
+            android:src="@drawable/main_expand_less"
+            android:clickable="true" />
 
         <ScrollView
             android:id="@+id/container"
@@ -15,89 +57,163 @@
             android:layout_height="fill_parent"
             android:fillViewport="true" >
 
-            <LinearLayout
+            <TableLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@color/main00" >
+                android:weightSum="2" >
 
-                <LinearLayout
+                <TableRow
                     android:layout_width="fill_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp" >
 
-                    <ImageView
-                        android:id="@+id/main_menu_00"
+                    <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_height="fill_parent"
+                        android:gravity="center_vertical"
                         android:layout_weight="1"
-                        android:contentDescription="@string/content_description"
-                        android:src="@drawable/main_academic"
-                        android:clickable="true" />
+                        android:orientation="vertical" >
 
-                    <ImageView
-                        android:id="@+id/main_menu_01"
+                        <TextView
+                            android:id="@+id/main_menu_00"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:drawableTop="@drawable/main_academic"
+                            android:text="@string/main_menu_00"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:clickable="true" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_height="fill_parent"
+                        android:gravity="center_vertical"
                         android:layout_weight="1"
-                        android:contentDescription="@string/content_description"
-                        android:src="@drawable/main_campus"
-                        android:clickable="true" />
+                        android:orientation="vertical" >
 
-                    <ImageView
-                        android:id="@+id/main_menu_02"
+                        <TextView
+                            android:id="@+id/main_menu_01"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:drawableTop="@drawable/main_campus"
+                            android:text="@string/main_menu_01"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:clickable="true" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_height="fill_parent"
+                        android:gravity="center_vertical"
                         android:layout_weight="1"
-                        android:contentDescription="@string/content_description"
-                        android:src="@drawable/main_food"
-                        android:clickable="true" />
+                        android:orientation="vertical" >
 
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/main_menu_02"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:drawableTop="@drawable/main_food"
+                            android:text="@string/main_menu_02"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:clickable="true" />
 
-                <LinearLayout
+                    </LinearLayout>
+
+                </TableRow>
+
+                <TableRow
                     android:layout_width="fill_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp" >
 
-                    <ImageView
-                        android:id="@+id/main_menu_10"
+                    <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_height="fill_parent"
+                        android:gravity="center_vertical"
                         android:layout_weight="1"
-                        android:contentDescription="@string/content_description"
-                        android:src="@drawable/main_athletic"
-                        android:clickable="true" />
+                        android:orientation="vertical" >
 
-                    <ImageView
-                        android:id="@+id/main_menu_11"
+                        <TextView
+                            android:id="@+id/main_menu_10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:drawableTop="@drawable/main_athletic"
+                            android:text="@string/main_menu_10"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:clickable="true" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_height="fill_parent"
+                        android:gravity="center_vertical"
                         android:layout_weight="1"
-                        android:contentDescription="@string/content_description"
-                        android:src="@drawable/main_event"
-                        android:clickable="true" />
+                        android:orientation="vertical" >
 
-                    <ImageView
-                        android:id="@+id/main_menu_12"
+                        <TextView
+                            android:id="@+id/main_menu_11"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:drawableTop="@drawable/main_event"
+                            android:text="@string/main_menu_11"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:clickable="true" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_height="fill_parent"
+                        android:gravity="center_vertical"
                         android:layout_weight="1"
-                        android:contentDescription="@string/content_description"
-                        android:src="@drawable/main_news"
-                        android:clickable="true" />
+                        android:orientation="vertical" >
 
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/main_menu_12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:drawableTop="@drawable/main_news"
+                            android:text="@string/main_menu_12"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:clickable="true" />
 
-            </LinearLayout>
+                    </LinearLayout>
+
+                </TableRow>
+
+            </TableLayout>
         </ScrollView>
 
     </LinearLayout>
