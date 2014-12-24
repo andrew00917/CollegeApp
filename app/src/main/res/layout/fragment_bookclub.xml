@@ -1,0 +1,54 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/WhiteSmoke"
+    tools:context="com.techhab.collegeapp.CafeteriaFragment">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/panel_side_cafeteria"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:showDividers="middle"
+        android:divider="?android:dividerHorizontal">
+        <LinearLayout android:id="@+id/fragment_careteria_llHeader"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="@color/green"
+            android:padding="10dp"
+            android:layout_height="wrap_content">
+            <TextView android:id="@+id/fragment_cafeteria_tvInfo1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textColor="@color/white"
+                android:text="Open"/>
+            <TextView android:id="@+id/fragment_cafeteria_tvInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textColor="@color/white"
+                android:text="till 11am"
+                android:drawableRight="@drawable/icon_arrow_expand_drawer"/>
+            <TextView android:id="@+id/fragment_cafeteria_tvTimeDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:textSize="18dp"
+                android:paddingTop="5dp"
+                android:textColor="@color/white"
+                android:text="M-F 8:00-10:00pm\nSaturdays 12:00-6:00pm\nSundays 10-7pm"/>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_cafeteria_rvMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</FrameLayout>
