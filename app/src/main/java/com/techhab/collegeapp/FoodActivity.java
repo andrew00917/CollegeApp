@@ -132,10 +132,11 @@ public class FoodActivity extends ActionBarActivity
                         fragment.setArguments(args);
                         break;
                     case 1:
-                        fragment = new GroceryFragment();
-                        args.putInt(GroceryFragment.ARG_OBJECT, position + 1);
+                        fragment = new RichardsonFragment();
+                        args.putInt(RichardsonFragment.ARG_OBJECT, position + 1);
                         fragment.setArguments(args);
                         break;
+
                     default:
                         fragment = new BookClubFragment();
                         args.putInt(BookClubFragment.ARG_OBJECT, position + 1);

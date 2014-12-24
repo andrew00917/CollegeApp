@@ -30,7 +30,7 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
     public static final String ARG_OBJECT = "object";
     // Buttons Cafeteria
     View v;
-    FoodStore bookClub;
+    FoodStore Richardson;
     TextView tvTimeInfo;
     TextView tvTimeInfo1;
     TextView tvTimeDetailInfo;
@@ -42,7 +42,7 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
     private static final int RICHARDSON = 1;
 
     public static Fragment createNewIntace() {
-        DetailCafeteriaFragment fragment = new DetailCafeteriaFragment();
+        RichardsonFragment fragment = new RichardsonFragment();
         Bundle arg = new Bundle();
         fragment.setArguments(arg);
         return fragment;
@@ -53,27 +53,25 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_bookclub, parent, false);
+        v = inflater.inflate(R.layout.fragment_richardson, parent, false);
         rvMenu = (RecyclerView) v.findViewById(R.id.fragment_cafeteria_rvMenu);
         tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
         tvTimeInfo1 = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1);
         tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
 
         tvTimeInfo.setOnClickListener(this);
-        //todo: fake data for bookClub
-        bookClub = new FoodStore();
-        bookClub.setStoreName("Book Club");
-        bookClub.setOpenHour(4);
-        bookClub.setCloseHour(22);
+        //todo: fake data for Richardson
+        Richardson = new FoodStore();
+        Richardson.setStoreName("Richardson Room");
+        Richardson.setOpenHour(4);
+        Richardson.setCloseHour(22);
         MenuItem Specials = new MenuItem();
         Specials.setTitle("Specials");
         Specials.setSubTitle("Sandwich");
         List<String> specialSandwiches = new ArrayList<String>();
-        specialSandwiches.add("Pancakes");
-        specialSandwiches.add("Scrambled Eggs");
+        specialSandwiches.add("meant ball mea");
+        specialSandwiches.add("");
         specialSandwiches.add("Bacon");
-        specialSandwiches.add("Kfc");
-        specialSandwiches.add("Pate");
         Specials.setMainLines(specialSandwiches);
         List<String> specialSoups = new ArrayList<String>();
         specialSoups.add("Pho soups");
@@ -112,11 +110,11 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
         menuItems.add(Specials);
         menuItems.add(lunch);
         menuItems.add(dinner);
-        bookClub.setMenuItemList(menuItems);
+        Richardson.setMenuItemList(menuItems);
         mLayoutManager = new LinearLayoutManager(getActivity());
         rvMenu.setLayoutManager(mLayoutManager);
         rvMenu.setAdapter(new MenuAdapter(getActivity(), menuItems));
-        if (isOpened(bookClub))
+        if (isOpened(Richardson))
         {
             v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.green));
             ((TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText("Open");
@@ -158,8 +156,8 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
 
     private void getRemainTime()
     {
-        long openMillis = getTimeOFDay(bookClub.getOpenHour(), bookClub.getOpenMinutes());
-        long closeMillis = getTimeOFDay(bookClub.getCloseHour(), bookClub.getCloseMinutes());
+        long openMillis = getTimeOFDay(Richardson.getOpenHour(), Richardson.getOpenMinutes());
+        long closeMillis = getTimeOFDay(Richardson.getCloseHour(), Richardson.getCloseMinutes());
         Time TimeNow = new Time();
         TimeNow.setToNow(); // set the date to Current Time
         TimeNow.normalize(true);
