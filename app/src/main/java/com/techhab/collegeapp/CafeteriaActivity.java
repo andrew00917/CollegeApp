@@ -34,7 +34,7 @@ import com.techhab.collegeapp.application.CollegeApplication;
 import java.util.Calendar;
 
 public class CafeteriaActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerCallbacks {
 
     private static final int DATE_PICKER_ID = 999;
     private final Handler handler = new Handler();

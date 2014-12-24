@@ -31,7 +31,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 public class TermActivity  extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerCallbacks {
 
     private static String year;
 

@@ -66,6 +66,7 @@
     <string-array name="nav_drawer_items">
         <item>Emergency Call</item>
         <item>About</item>
+        <item>Log Out</item>
     </string-array>
 
     <string-array name="nav_drawer_settings_support">
@@ -85,11 +86,11 @@
     </string-array>
 
     <!-- Login fragment -->
-    <string name="username">Username: </string>
-    <string name="password">Password: </string>
+    <string name="k_email">K Email</string>
+    <string name="k_password">K Password</string>
     <string name="remember_me">Remember Me</string>
-    <string name="guest_in">guest ></string>
-    <string name="login">login</string>
+    <string name="guest_in">CONTINUE AS GUEST</string>
+    <string name="login">LOG IN</string>
 
     <!-- Toolbar -->
     <string name="action_search">Search</string>
@@ -125,6 +126,7 @@
     <!-- Athletic Activity -->
     <string name="men">MEN\'S</string>
     <string name="women">WOMEN\'S</string>
+    <string name="view_more">VIEW MORE</string>
 
         <!-- Game In Progress card-->
         <string name="game_in_progress">Game In Progress</string>
