@@ -1,7 +1,8 @@
 package com.techhab.collegeapp;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -13,13 +14,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 /**
  * Created by Kevin on 11/9/2014.
  */
-public class MapsActivity extends FragmentActivity {
+public class MapsActivity extends ActionBarActivity {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         setUpMapIfNeeded();
     }
 
@@ -66,7 +71,7 @@ public class MapsActivity extends FragmentActivity {
     private void setUpMap() {
 
         //KCollege
-        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(42.290304, -85.601896), 17.0f) );
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(42.290304, -85.601896), 17.0f));
 //        CameraUpdateFactory.zoomTo(5);
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(42.290304, -85.601896))
