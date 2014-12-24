@@ -53,7 +53,7 @@
                 android:textOff="View More"
                 android:textOn="View Less"
                 android:background="@null"
-                style="@style/ButtonFlatMaterial"
+                style="@style/MaterialButtonFlat"
                 android:textColor="@color/kzooOrange"
                 android:gravity="right"/>
 
