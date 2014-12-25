@@ -2,6 +2,9 @@ package com.techhab.rss;
 
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,21 +18,20 @@ public class SportsRssItem {
     private final String link;
     private final boolean isUpcoming;
     private String opponent;
-    private String dateAndTimePretty;
+    private String dateAndTimeUpcoming;
 
-    public SportsRssItem(String dateAndTime, String titleAndScore, String link) {
+    public SportsRssItem(String dateAndTime, String titleAndScore, String link, String description) {
         if (titleAndScore.contains("Final")) {
             this.isUpcoming = false;
         } else {
             this.isUpcoming = true;
         }
 
-
         this.dateAndTime = dateAndTime;
         this.titleAndScore = titleAndScore;
         this.link = link;
         this.opponent = parseOpponent(titleAndScore);
-        this.dateAndTimePretty = parseDateAndTime(dateAndTime);
+        this.dateAndTimeUpcoming = parseDateAndTime(description);
     }
 
     private String parseOpponent(String titleAndScore) {
@@ -64,27 +66,41 @@ public class SportsRssItem {
         return null;
     }
 
-    private String parseDateAndTime(String dateAndTime) {
-        String date = dateAndTime.substring(0, 11);
-        Log.d("parseDateAndTime", "date = " + date);
-        String GMTHour = dateAndTime.substring(17, 19);
-        Log.d("parseDateAndTime", "time = " + GMTHour);
-        int GMTHourInt = Integer.parseInt(GMTHour);
-        int ESTHourInt = GMTHourInt - 5;
-        Log.d("parseDateAndTime", "ESTHourInt = " + ESTHourInt);
-        if ( ESTHourInt <= 0 ) {
-            ESTHourInt = ESTHourInt + 24;
-        }
-        if (ESTHourInt > 12 ) {
-            int ESTTwelveHourInt = (ESTHourInt - 12);
-            Log.d("parseDateAndTime", "ESTTwelveHourInt = " + ESTTwelveHourInt);
-            return Integer.toString(ESTTwelveHourInt);
+    private String parseDateAndTime(String description) {
+        int dateEndIndex = description.indexOf(" at");
+        String date = description.substring(20, dateEndIndex);
+
+        Date parsedDate = null;
+        if ( date.length() == 12) {
+            try {
+                parsedDate = new SimpleDateFormat("MMM dd, yyyy", Locale.US).parse(date);
+            } catch (Exception e) {
+                Log.d("parsedDate exception", "Couldn't parse the date!");
+            }
         } else {
-            return Integer.toString(ESTHourInt);
+            try {
+                parsedDate = new SimpleDateFormat("MMM d, yyyy", Locale.US).parse(date);
+            } catch (Exception e) {
+                Log.d("parsedDate exception", "Couldn't parse the date!");
+            }
         }
+
+        String dayOfTheWeek = new SimpleDateFormat("EE").format(parsedDate);
+
+        int timeStartIndex = description.indexOf("at ") + 3;
+        int timeEndIndex = description.indexOf(": ");
+        String time = description.substring(timeStartIndex, timeEndIndex);
+
+        String finalDateAndTime = dayOfTheWeek + ", " + date.substring(0, date.length() - 6) + " at " + time;
+
+        return finalDateAndTime;
     }
 
-    public boolean getIsUpcoming() {
+    public String getDateAndTimeUpcoming() {
+        return dateAndTimeUpcoming;
+    }
+
+    public boolean isUpcoming() {
         return isUpcoming;
     }
 

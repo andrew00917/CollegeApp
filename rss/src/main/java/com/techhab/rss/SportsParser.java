@@ -39,6 +39,7 @@ public class SportsParser {
         String titleAndScore = null;
         String pubDate = null;
         String link = null;
+        String description = null;
         List<SportsRssItem> items = new ArrayList<SportsRssItem>();
         while (parser.next() != XmlPullParser.END_DOCUMENT) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -66,8 +67,7 @@ public class SportsParser {
                     } else if (n.equals("link")) {
                         link = readLink(parser);
                     } else if (n.equals("description")) {
-                        parser.next();
-                        parser.nextTag();
+                        description = readDescription(parser);
                     } else if (n.equals("category")) {
                         parser.next();
                         parser.nextTag();
@@ -75,11 +75,12 @@ public class SportsParser {
                 }
             }
             if (titleAndScore != null && pubDate != null && link != null) {
-                SportsRssItem item = new SportsRssItem(pubDate, titleAndScore, link);
+                SportsRssItem item = new SportsRssItem(pubDate, titleAndScore, link, description);
                 items.add(item);
                 pubDate = null;
                 titleAndScore = null;
                 link = null;
+                description = null;
             }
         }
         return items;

@@ -216,12 +216,14 @@
                 android:layout_height="300dp"/>
 
             <LinearLayout
+                android:id="@+id/upcoming_games_view_more_button_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
                 android:gravity="right|center_vertical"
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/upcoming_games_view_more_button"
                     style="@style/MaterialButtonFlat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
