@@ -52,7 +52,7 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
         v = inflater.inflate(R.layout.fragment_cafeteria, parent, false);
         rvMenu = (RecyclerView) v.findViewById(R.id.fragment_cafeteria_rvMenu);
         tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
-        tvTimeInfo1 = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1);
+        //tvTimeInfo1 = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1);
         tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
 
         tvTimeInfo.setOnClickListener(this);

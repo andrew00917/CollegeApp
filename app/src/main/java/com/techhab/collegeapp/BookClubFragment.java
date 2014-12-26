@@ -56,7 +56,6 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
         v = inflater.inflate(R.layout.fragment_richardson, parent, false);
         rvMenu = (RecyclerView) v.findViewById(R.id.fragment_cafeteria_rvMenu);
         tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
-        tvTimeInfo1 = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1);
         tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
 
         tvTimeInfo.setOnClickListener(this);
@@ -114,19 +113,19 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
         mLayoutManager = new LinearLayoutManager(getActivity());
         rvMenu.setLayoutManager(mLayoutManager);
         rvMenu.setAdapter(new MenuAdapter(getActivity(), menuItems));
-        if (isOpened(Richardson))
-        {
-            v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.green));
-            ((TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText("Open");
-        }
-        else
-        {
-            v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.red));
-            ((TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText("Closed");
-        }
-        getRemainTime();
-        return v;
-    }
+//        if (isOpened(Richardson))
+//        {
+//            v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.green));
+//            ((TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText("Open");
+//        }
+//        else
+//        {
+//            v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.red));
+//            ((ImageView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText("Closed");
+//        }
+       getRemainTime();
+       return v;
+   }
 
 
     private boolean isOpened(FoodStore foodStore)

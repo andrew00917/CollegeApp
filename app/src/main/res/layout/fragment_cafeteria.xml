@@ -50,6 +50,7 @@
                     android:text="Closes in 2 hours"/>
 
                 <ImageButton
+                    android:id="@+id/fragment_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"
