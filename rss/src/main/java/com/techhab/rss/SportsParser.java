@@ -39,13 +39,13 @@ public class SportsParser {
         String titleAndScore = null;
         String pubDate = null;
         String link = null;
+        String description = null;
         List<SportsRssItem> items = new ArrayList<SportsRssItem>();
         while (parser.next() != XmlPullParser.END_DOCUMENT) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
             String name = parser.getName();
-            Log.d("readFeed name", "name: " + name);
             if (name.equals("channel")) {
                 continue;
             }
@@ -66,18 +66,21 @@ public class SportsParser {
                         pubDate = readPubDate(parser);
                     } else if (n.equals("link")) {
                         link = readLink(parser);
+                    } else if (n.equals("description")) {
+                        description = readDescription(parser);
+                    } else if (n.equals("category")) {
+                        parser.next();
+                        parser.nextTag();
                     }
                 }
             }
             if (titleAndScore != null && pubDate != null && link != null) {
-//                String[] dateAndEvent = titleAndScore.split(" - ");
-//                String[] placeAndTime = description.split(", ");
-
-                SportsRssItem item = new SportsRssItem(pubDate, titleAndScore, link);
+                SportsRssItem item = new SportsRssItem(pubDate, titleAndScore, link, description);
                 items.add(item);
                 pubDate = null;
                 titleAndScore = null;
                 link = null;
+                description = null;
             }
         }
         return items;
@@ -128,7 +131,6 @@ public class SportsParser {
             IOException {
         parser.require(XmlPullParser.START_TAG, ns, "pubDate");
         String pubDate = readText(parser);
-        Log.d("pubDate", "pubDate: " + pubDate);
         parser.require(XmlPullParser.END_TAG, ns, "pubDate");
         return pubDate;
     }

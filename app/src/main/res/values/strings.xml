@@ -99,6 +99,7 @@
     <string name="action_overflow">More</string>
     <string name="action_send">Send</string>
     <string name="action_reset_shared_prefs">Reset shared prefs</string>
+    <string name="scroll_to_bottom">Scroll to bottom</string>
 
     <!-- Campus Info -->
     <string name="title_activity_info">Campus Information</string>
