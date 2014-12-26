@@ -49,9 +49,9 @@ public class AthleticActivity extends ActionBarActivity
     private PagerSlidingTabStrip mPagerSlidingTabStrip;
     private ViewPager mViewPager;
     private SwitchCompat genderSwitch;
-    private LinearLayout genderSwitchLayout;
+    private LinearLayout genderSwitchLayout, header;
     private TextView menText, womenText;
-    private FrameLayout toolbarAndGenderSwitch, header;
+    private FrameLayout toolbarAndGenderSwitch;
 
     private int mBaseTranslationY;
 
@@ -76,8 +76,8 @@ public class AthleticActivity extends ActionBarActivity
         application = (CollegeApplication) getApplication();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbarAndGenderSwitch = (FrameLayout) findViewById(R.id.toolbar_and_gender_switch);
-        header = (FrameLayout) findViewById(R.id.header);
+//        toolbarAndGenderSwitch = (FrameLayout) findViewById(R.id.toolbar_and_gender_switch);
+        header = (LinearLayout) findViewById(R.id.header);
         mPagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         genderSwitchLayout = (LinearLayout) findViewById(R.id.gender_switch_layout);
@@ -350,7 +350,7 @@ public class AthleticActivity extends ActionBarActivity
     @Override
     public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
         if (dragging) {
-            int toolbarHeight = toolbarAndGenderSwitch.getHeight();
+            int toolbarHeight = toolbar.getHeight();
             float currentHeaderTranslationY = ViewHelper.getTranslationY(header);
             if (firstScroll) {
                 if (-toolbarHeight < currentHeaderTranslationY) {
@@ -380,7 +380,7 @@ public class AthleticActivity extends ActionBarActivity
             return;
         }
 
-        int toolbarHeight = toolbarAndGenderSwitch.getHeight();
+        int toolbarHeight = toolbar.getHeight();
         final ObservableScrollView scrollView = (ObservableScrollView) view.findViewById(R.id.basketball_fragment_scrollview);
         if (scrollView == null) {
             return;
@@ -413,7 +413,7 @@ public class AthleticActivity extends ActionBarActivity
     }
 
     private void propagateToolbarState(boolean isShown) {
-        int toolbarHeight = toolbarAndGenderSwitch.getHeight();
+        int toolbarHeight = toolbar.getHeight();
 
         // Set scrollY for the fragments that are not created yet
         mPagerAdapter.setScrollY(isShown ? 0 : toolbarHeight);
@@ -450,7 +450,7 @@ public class AthleticActivity extends ActionBarActivity
         return ViewHelper.getTranslationY(header) == 0;
     }
     private boolean toolbarIsHidden() {
-        return ViewHelper.getTranslationY(header) == -toolbarAndGenderSwitch.getHeight();
+        return ViewHelper.getTranslationY(header) == -toolbar.getHeight();
     }
 
     private void showToolbar() {
@@ -464,7 +464,7 @@ public class AthleticActivity extends ActionBarActivity
 
     private void hideToolbar() {
         float headerTranslationY = ViewHelper.getTranslationY(header);
-        int toolbarHeight = toolbarAndGenderSwitch.getHeight();
+        int toolbarHeight = toolbar.getHeight();
         if (headerTranslationY != -toolbarHeight) {
             ViewPropertyAnimator.animate(header).cancel();
             ViewPropertyAnimator.animate(header).translationY(-toolbarHeight).setDuration(200).start();

@@ -16,31 +16,29 @@
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="144dp"
+                android:paddingTop="@dimen/abc_action_bar_default_height_material"
                 tools:context=".AthleticActivity"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/kzooOrange"
+                android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/header"
-            android:layout_width="fill_parent"
-            android:background="@color/kzooOrange"
-            android:layout_height="wrap_content" >
 
-            <FrameLayout
+
+            <!--<FrameLayout
                 android:id="@+id/toolbar_and_gender_switch"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content">-->
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/abc_action_bar_default_height_material"
                     android:minHeight="@dimen/abc_action_bar_default_height_material"
-                    android:background="@color/kzooOrange"
+                    android:background="@color/red"
                     app:theme="@style/Toolbar"
                     app:popupTheme="@style/Theme.AppCompat.Light"
                     />
@@ -52,7 +50,8 @@
                     android:orientation="horizontal"
                     android:layout_marginTop="@dimen/abc_action_bar_default_height_material"
                     android:layout_gravity="right"
-                    android:layout_marginRight="10dp">
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/men_text"
@@ -80,7 +79,6 @@
 
                 </LinearLayout>
 
-            </FrameLayout>
 
             <com.techhab.collegeapp.PagerSlidingTabStrip
                 android:id="@+id/tabs"
@@ -90,13 +88,12 @@
                 android:scrollbars="none"
                 android:fillViewport="true"
                 android:clipToPadding="false"
-                android:layout_marginTop="85dp"
                 app:pstsPaddingMiddle="true" />
 
-        </FrameLayout>
+        <!--</FrameLayout>-->
 
 
-    </LinearLayout>
+            </LinearLayout>
 
         </FrameLayout>
 
