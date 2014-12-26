@@ -16,13 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.util.*;
 
 
-public class DetailCafeteriaFragment extends Fragment implements View.OnClickListener {
+public class CafeteriaFragment extends Fragment implements View.OnClickListener {
     public static final String ARG_OBJECT = "object";
     // Buttons Cafeteria
     View v;
@@ -38,7 +39,7 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
     private static final int RICHARDSON = 1;
 
     public static Fragment createNewIntace() {
-        DetailCafeteriaFragment fragment = new DetailCafeteriaFragment();
+        CafeteriaFragment fragment = new CafeteriaFragment();
         Bundle arg = new Bundle();
         fragment.setArguments(arg);
         return fragment;
@@ -437,5 +438,13 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
             linearLayout.requestLayout();
         }
     }
+
+    /*private class MySpinnerAdapter extends SpinnerAdapter {
+
+        public MySpinnerAdapter() {
+
+        }
+
+    }*/
 
 }

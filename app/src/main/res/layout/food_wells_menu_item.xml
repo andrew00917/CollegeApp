@@ -58,8 +58,8 @@
             <ToggleButton android:id="@+id/fragment_cafeteria_tbViewMore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textOff="View More"
-                android:textOn="View Less"
+                android:textOff="@string/view_more"
+                android:textOn="@string/view_less"
                 style="@style/MaterialButtonFlat"
                 android:textColor="@color/kzooOrange"
                 android:layout_gravity="right|center_vertical" />

@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -134,8 +133,8 @@ public class FoodActivity extends ActionBarActivity
                 Bundle args = new Bundle();
                 switch (position) {
                     case 0:
-                        fragment = new DetailCafeteriaFragment();
-                        args.putInt(DetailCafeteriaFragment.ARG_OBJECT, position + 1);
+                        fragment = new CafeteriaFragment();
+                        args.putInt(CafeteriaFragment.ARG_OBJECT, position + 1);
                         fragment.setArguments(args);
                         break;
                     case 1:

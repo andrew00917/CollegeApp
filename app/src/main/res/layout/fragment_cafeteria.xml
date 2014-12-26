@@ -68,6 +68,12 @@
 
             </LinearLayout>
 
+            <SpinnerCompat
+                android:id="@+id/date_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+                </SpinnerCompat>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/fragment_cafeteria_rvMenu"
                 android:layout_width="match_parent"
