@@ -1,5 +1,6 @@
 package com.techhab.collegeapp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,10 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -55,6 +59,8 @@ public class BasketballFragment extends Fragment {
     // Commented out until later date
 //    private TableLayout rosterTableLayout;
 
+    private ScrollView basketballScrollView;
+
     private TableLayout scheduleTableLayout;
     private UpcomingGamesAdapter mUpcomingGamesAdapter;
     private ListView upcomingGamesListView;
@@ -62,6 +68,7 @@ public class BasketballFragment extends Fragment {
     private LinearLayout upcomingGamesViewMoreButtonLayout;
     private Button upcomingGamesViewMoreButton;
     private CardView upcomingGamesCardView;
+    private ProgressBar upcomingGamesProgressBar;
 
     private static int upcomingGamesListViewHeight;
     private int upcomingGamesCount;
@@ -109,34 +116,11 @@ public class BasketballFragment extends Fragment {
 
     }
 
-    public List<SportsRssItem> getUpcomingGamesList(List<SportsRssItem> list) {
-        SportsRssItem item;
-        for (int i = 0; i < list.size(); i++) {
-            item = list.get(i);
-            if ( item.isUpcoming()) {
-                upcomingGamesList.add(item);
-            }
-        }
-
-        // Set the initial value of upcomingGamesCount, so that mUpcomingGamesAdapter
-        // can initialize properly.
-        if ( upcomingGamesList.size() > 6 ) {
-            upcomingGamesCount = 6;
-        } else if (upcomingGamesList.size() > 3 ) {
-            upcomingGamesCount = 3;
-        } else {
-            upcomingGamesCount = upcomingGamesList.size();
-        }
-
-        return upcomingGamesList;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_basketball, container, false);
-//        rosterTableLayout = (TableLayout) rootView.findViewById(R.id.roster_table_layout);
         scheduleTableLayout = (TableLayout) rootView.findViewById(R.id.schedule_table_layout);
         upcomingGamesListView = (ListView) rootView.findViewById(R.id.upcoming_games_listview);
         upcomingGamesViewMoreButton = (Button) rootView.findViewById(
@@ -144,6 +128,13 @@ public class BasketballFragment extends Fragment {
         upcomingGamesCardView = (CardView) rootView.findViewById(R.id.upcoming_games_card);
         upcomingGamesViewMoreButtonLayout = (LinearLayout) rootView.findViewById(
                 R.id.upcoming_games_view_more_button_layout);
+        upcomingGamesProgressBar = (ProgressBar) rootView.findViewById(
+                R.id.upcoming_games_progress_bar);
+        basketballScrollView = (ScrollView) rootView.findViewById(
+                R.id.basketball_fragment_scrollview);
+
+        upcomingGamesListView.setEmptyView(upcomingGamesProgressBar);
+
 
         upcomingGamesViewMoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,10 +146,11 @@ public class BasketballFragment extends Fragment {
                 if (upcomingGamesCount == upcomingGamesList.size()) {
                     upcomingGamesViewMoreButtonLayout.setVisibility(View.GONE);
                 }
+
                 updateUpcomingGamesCount();
+                // TODO: fix auto-scrolling
+//                basketballScrollView.scrollTo(0, upcomingGamesViewMoreButton.getBottom());
 
-
-                //TODO: Scroll user's screen to bottom of newly expanded card
             }
         });
 
@@ -196,6 +188,28 @@ public class BasketballFragment extends Fragment {
             upcomingGamesCount = upcomingGamesCount + 3;
         }
         mUpcomingGamesAdapter.notifyDataSetChanged();
+    }
+
+    public List<SportsRssItem> getUpcomingGamesList(List<SportsRssItem> list) {
+        SportsRssItem item;
+        for (int i = 0; i < list.size(); i++) {
+            item = list.get(i);
+            if ( item.isUpcoming()) {
+                upcomingGamesList.add(item);
+            }
+        }
+
+        // Set the initial value of upcomingGamesCount, so that mUpcomingGamesAdapter
+        // can initialize properly.
+        if ( upcomingGamesList.size() > 6 ) {
+            upcomingGamesCount = 6;
+        } else if (upcomingGamesList.size() > 3 ) {
+            upcomingGamesCount = 3;
+        } else {
+            upcomingGamesCount = upcomingGamesList.size();
+        }
+
+        return upcomingGamesList;
     }
 
     @Override
@@ -431,6 +445,18 @@ public class BasketballFragment extends Fragment {
      *  Background task to start service for Rss
      */
     private class DownloadXmlTask extends AsyncTask<Void, Void, String> {
+
+        ProgressDialog progress;
+
+        @Override
+        protected void onPreExecute() {
+            /*progress = new ProgressDialog(getActivity());
+            progress.setMessage("loading games");
+            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progress.setIndeterminate(true);
+            progress.show();*/
+        }
+
         @Override
         protected String doInBackground(Void...voids) {
             try {
@@ -446,7 +472,6 @@ public class BasketballFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-
         }
     }
 }
