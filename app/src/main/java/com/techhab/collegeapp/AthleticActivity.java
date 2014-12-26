@@ -8,30 +8,40 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.nineoldandroids.view.ViewHelper;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.techhab.collegeapp.application.CollegeApplication;
 
 
+
 public class AthleticActivity extends ActionBarActivity
-        implements NavigationDrawerCallbacks {
+        implements NavigationDrawerCallbacks, ObservableScrollViewCallbacks {
 
     private final Handler handler = new Handler();
 
@@ -41,6 +51,9 @@ public class AthleticActivity extends ActionBarActivity
     private SwitchCompat genderSwitch;
     private LinearLayout genderSwitchLayout;
     private TextView menText, womenText;
+    private FrameLayout toolbarAndGenderSwitch, header;
+
+    private int mBaseTranslationY;
 
     private pagerAdapter mPagerAdapter;
 
@@ -63,12 +76,16 @@ public class AthleticActivity extends ActionBarActivity
         application = (CollegeApplication) getApplication();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbarAndGenderSwitch = (FrameLayout) findViewById(R.id.toolbar_and_gender_switch);
+        header = (FrameLayout) findViewById(R.id.header);
         mPagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        genderSwitchLayout = (LinearLayout) findViewById(R.id.genderSwitchLayout);
+        genderSwitchLayout = (LinearLayout) findViewById(R.id.gender_switch_layout);
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         menText = (TextView) findViewById(R.id.men_text);
         womenText = (TextView) findViewById(R.id.women_text);
+
+        ViewCompat.setElevation(header, getResources().getDimension(R.dimen.toolbar_elevation));
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -82,7 +99,7 @@ public class AthleticActivity extends ActionBarActivity
         // Set a custom track drawable to keep it from "highlighting" upon selection
         Drawable genderSwitchTrack = getResources().getDrawable(
                 R.drawable.abc_switch_track_mtrl_alpha);
-        genderSwitchTrack.setColorFilter( 0xff9e501b, PorterDuff.Mode.MULTIPLY );
+        genderSwitchTrack.setColorFilter(0xff9e501b, PorterDuff.Mode.MULTIPLY);
         genderSwitch.setTrackDrawable(genderSwitchTrack);
         Drawable genderSwitchThumb = getResources().getDrawable(
                 R.drawable.abc_switch_thumb_material);
@@ -92,11 +109,10 @@ public class AthleticActivity extends ActionBarActivity
                 if (isChecked) {
                     changeGenderView(womensSports);
                     application.setSportPreference(mViewPager.getCurrentItem());
-                    toolbar.animate().translationY(-toolbar.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
+
                 } else {
                     changeGenderView(mensSports);
                     application.setSportPreference(mViewPager.getCurrentItem());
-//                    toolbar.animate().translationY(-toolbar.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
                 }
             }
         });
@@ -321,6 +337,149 @@ public class AthleticActivity extends ActionBarActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {    }
 
+
+    /**
+     * =======================
+     *
+     * BEGIN OBSERVABLE SCROLL VIEW
+     *
+     * =======================
+     */
+
+
+    @Override
+    public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+        if (dragging) {
+            int toolbarHeight = toolbarAndGenderSwitch.getHeight();
+            float currentHeaderTranslationY = ViewHelper.getTranslationY(header);
+            if (firstScroll) {
+                if (-toolbarHeight < currentHeaderTranslationY) {
+                    mBaseTranslationY = scrollY;
+                }
+            }
+            int headerTranslationY = Math.min(0, Math.max(-toolbarHeight, -(scrollY - mBaseTranslationY)));
+            ViewPropertyAnimator.animate(header).cancel();
+            ViewHelper.setTranslationY(header, headerTranslationY);
+        }
+    }
+
+    @Override
+    public void onDownMotionEvent() {
+    }
+
+    @Override
+    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+        mBaseTranslationY = 0;
+
+        Fragment fragment = getCurrentFragment();
+        if (fragment == null) {
+            return;
+        }
+        View view = fragment.getView();
+        if (view == null) {
+            return;
+        }
+
+        int toolbarHeight = toolbarAndGenderSwitch.getHeight();
+        final ObservableScrollView scrollView = (ObservableScrollView) view.findViewById(R.id.basketball_fragment_scrollview);
+        if (scrollView == null) {
+            return;
+        }
+        int scrollY = scrollView.getCurrentScrollY();
+        if (scrollState == ScrollState.DOWN) {
+            showToolbar();
+        } else if (scrollState == ScrollState.UP) {
+            if (toolbarHeight <= scrollY) {
+                hideToolbar();
+            } else {
+                showToolbar();
+            }
+        } else {
+            // Even if onScrollChanged occurs without scrollY changing, toolbar should be adjusted
+            if (toolbarIsShown() || toolbarIsHidden()) {
+                // Toolbar is completely moved, so just keep its state
+                // and propagate it to other pages
+                propagateToolbarState(toolbarIsShown());
+            } else {
+                // Toolbar is moving but doesn't know which to move:
+                // you can change this to hideToolbar()
+                showToolbar();
+            }
+        }
+    }
+
+    private Fragment getCurrentFragment() {
+        return mPagerAdapter.getItemAt(mViewPager.getCurrentItem());
+    }
+
+    private void propagateToolbarState(boolean isShown) {
+        int toolbarHeight = toolbarAndGenderSwitch.getHeight();
+
+        // Set scrollY for the fragments that are not created yet
+        mPagerAdapter.setScrollY(isShown ? 0 : toolbarHeight);
+
+        // Set scrollY for the active fragments
+        for (int i = 0; i < mPagerAdapter.getCount(); i++) {
+            // Skip current item
+            if (i == mViewPager.getCurrentItem()) {
+                continue;
+            }
+
+            // Skip destroyed or not created item
+            Fragment f = mPagerAdapter.getItemAt(i);
+            if (f == null) {
+                continue;
+            }
+
+            ObservableScrollView scrollView = (ObservableScrollView) f.getView().findViewById(R.id.basketball_fragment_scrollview);
+            if (isShown) {
+                // Scroll up
+                if (0 < scrollView.getCurrentScrollY()) {
+                    scrollView.scrollTo(0, 0);
+                }
+            } else {
+                // Scroll down (to hide padding)
+                if (scrollView.getCurrentScrollY() < toolbarHeight) {
+                    scrollView.scrollTo(0, toolbarHeight);
+                }
+            }
+        }
+    }
+
+    private boolean toolbarIsShown() {
+        return ViewHelper.getTranslationY(header) == 0;
+    }
+    private boolean toolbarIsHidden() {
+        return ViewHelper.getTranslationY(header) == -toolbarAndGenderSwitch.getHeight();
+    }
+
+    private void showToolbar() {
+        float headerTranslationY = ViewHelper.getTranslationY(header);
+        if (headerTranslationY != 0) {
+            ViewPropertyAnimator.animate(header).cancel();
+            ViewPropertyAnimator.animate(header).translationY(0).setDuration(200).start();
+        }
+        propagateToolbarState(true);
+    }
+
+    private void hideToolbar() {
+        float headerTranslationY = ViewHelper.getTranslationY(header);
+        int toolbarHeight = toolbarAndGenderSwitch.getHeight();
+        if (headerTranslationY != -toolbarHeight) {
+            ViewPropertyAnimator.animate(header).cancel();
+            ViewPropertyAnimator.animate(header).translationY(-toolbarHeight).setDuration(200).start();
+        }
+        propagateToolbarState(false);
+    }
+
+    /**
+     * =======================
+     *
+     * END OBSERVABLE SCROLL VIEW
+     *
+     * =======================
+     */
+
     /**
      * pagerAdapter for the SlidingPageTab thing
      */
@@ -329,8 +488,16 @@ public class AthleticActivity extends ActionBarActivity
         // Temporarily initiate the TITLES to be an array to avoid NullPointerExceptions
         private String[] TITLES = mensSports;
 
+        private SparseArray<Fragment> mPages;
+        private int mScrollY;
+
         public pagerAdapter(FragmentManager fm) {
             super(fm);
+            mPages = new SparseArray<Fragment>();
+        }
+
+        public void setScrollY(int scrollY) {
+            mScrollY = scrollY;
         }
 
         @Override
@@ -343,6 +510,18 @@ public class AthleticActivity extends ActionBarActivity
             return TITLES.length;
         }
 
+        public Fragment getItemAt(int position) {
+            return mPages.get(position);
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            if (0 <= mPages.indexOfKey(position)) {
+                mPages.remove(position);
+            }
+            super.destroyItem(container, position, object);
+        }
+
         @Override
         public int getItemPosition(Object object) {
             return POSITION_NONE;
@@ -350,7 +529,7 @@ public class AthleticActivity extends ActionBarActivity
 
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment;
+            /*Fragment fragment;
             Bundle args = new Bundle();
             if (application.getSportsGenderPreference()) {
                 switch (position) {
@@ -385,7 +564,15 @@ public class AthleticActivity extends ActionBarActivity
                         break;
                 }
                 return fragment;
+            }*/
+            Fragment f = new BasketballFragment();
+            if (0 <= mScrollY) {
+                Bundle args = new Bundle();
+                args.putInt(BasketballFragment.ARG_SCROLL_Y, mScrollY);
+                f.setArguments(args);
             }
+            mPages.put(position, f);
+            return f;
         }
     }
 }

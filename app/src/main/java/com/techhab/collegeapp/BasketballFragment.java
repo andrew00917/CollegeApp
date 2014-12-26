@@ -1,10 +1,12 @@
 package com.techhab.collegeapp;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -45,6 +48,8 @@ public class BasketballFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    public static final String ARG_SCROLL_Y = "ARG_SCROLL_Y";
 
     public static final String ARG_OBJECT = "object";
 
@@ -134,6 +139,45 @@ public class BasketballFragment extends Fragment {
                 R.id.basketball_fragment_scrollview);
 
         upcomingGamesListView.setEmptyView(upcomingGamesProgressBar);
+
+        /**
+         *
+         * BEGIN OBSERVABLE SCROLL VIEW
+         *
+         */
+
+        final ObservableScrollView scrollView = (ObservableScrollView) rootView.findViewById(R.id.basketball_fragment_scrollview);
+        Activity parentActivity = getActivity();
+
+        if (parentActivity instanceof ObservableScrollViewCallbacks) {
+            // Scroll to the specified offset after layout
+            Bundle args = getArguments();
+            if (args != null && args.containsKey(ARG_SCROLL_Y)) {
+                final int scrollY = args.getInt(ARG_SCROLL_Y, 0);
+                ViewTreeObserver vto = scrollView.getViewTreeObserver();
+                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                            scrollView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        } else {
+                            scrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        }
+                        scrollView.scrollTo(0, scrollY);
+                    }
+                });
+            }
+            scrollView.setScrollViewCallbacks((ObservableScrollViewCallbacks) parentActivity);
+        }
+
+        /**
+         *
+         * END OBSERVABLE SCROLL VIEW
+         *
+         */
+
+
+
 
 
         upcomingGamesViewMoreButton.setOnClickListener(new View.OnClickListener() {
