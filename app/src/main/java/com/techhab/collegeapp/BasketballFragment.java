@@ -65,15 +65,16 @@ public class BasketballFragment extends Fragment {
 
     private ScrollView basketballScrollView;
 
-    private TableLayout scheduleTableLayout;
+    private TableLayout pastGamesTableLayout;
     private UpcomingGamesAdapter mUpcomingGamesAdapter;
     private ListView upcomingGamesListView;
 
     private LinearLayout upcomingGamesViewMoreButtonLayout;
-    private Button upcomingGamesViewMoreButton;
+    private Button upcomingGamesViewMoreButton, pastGamesViewMoreButton;
     private CardView upcomingGamesCardView;
     private ProgressBar upcomingGamesProgressBar;
 
+    private static int pastGamesTableLayoutHeight;
     private static int upcomingGamesListViewHeight;
     private int upcomingGamesCount;
     private List<SportsRssItem> upcomingGamesList = new ArrayList<>();
@@ -126,7 +127,6 @@ public class BasketballFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_basketball, container, false);
-        scheduleTableLayout = (TableLayout) rootView.findViewById(R.id.schedule_table_layout);
         upcomingGamesListView = (ListView) rootView.findViewById(R.id.upcoming_games_listview);
         upcomingGamesViewMoreButton = (Button) rootView.findViewById(
                 R.id.upcoming_games_view_more_button);
@@ -135,15 +135,13 @@ public class BasketballFragment extends Fragment {
                 R.id.upcoming_games_view_more_button_layout);
         upcomingGamesProgressBar = (ProgressBar) rootView.findViewById(
                 R.id.upcoming_games_progress_bar);
-        /*basketballScrollView = (ScrollView) rootView.findViewById(
-                R.id.basketball_fragment_scrollview);*/
+        pastGamesTableLayout = (TableLayout) rootView.findViewById(R.id.past_games_table_layout);
+        pastGamesViewMoreButton = (Button) rootView.findViewById(R.id.past_games_view_more_button);
 
         upcomingGamesListView.setEmptyView(upcomingGamesProgressBar);
 
         /**
-         *
          * BEGIN OBSERVABLE SCROLL VIEW
-         *
          */
 
         final ObservableScrollView scrollView = (ObservableScrollView) rootView.findViewById(R.id.basketball_fragment_scrollview);
@@ -171,21 +169,15 @@ public class BasketballFragment extends Fragment {
         }
 
         /**
-         *
          * END OBSERVABLE SCROLL VIEW
-         *
          */
-
-
-
-
 
         upcomingGamesViewMoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HeightAnimation animation = new HeightAnimation(upcomingGamesListView,
                         upcomingGamesListViewHeight, true);
-                animation.setDuration(400);
+                animation.setDuration(300);
                 upcomingGamesCardView.startAnimation(animation);
                 if (upcomingGamesCount == upcomingGamesList.size()) {
                     upcomingGamesViewMoreButtonLayout.setVisibility(View.GONE);
@@ -198,13 +190,19 @@ public class BasketballFragment extends Fragment {
             }
         });
 
-        String[] dates = new String[] { "Nov. 9", "Nov. 15", "Dec. 20"};
+        pastGamesViewMoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HeightAnimation animation = new HeightAnimation(pastGamesTableLayout,
+                        pastGamesTableLayoutHeight, true);
+                animation.setDuration(300);
+                pastGamesTableLayout.startAnimation(animation);
 
-        String[] opponents = new String[] { "at Western Mich.", "at Bluffton",
-                "at Wis.-Whitewater"};
 
-
-
+                // TODO: fix auto-scrolling
+//                basketballScrollView.scrollTo(0, upcomingGamesViewMoreButton.getBottom());
+            }
+        });
 
 //        populateTeamRosterTable(athleteNames, athleteNumbers);
 
@@ -259,7 +257,7 @@ public class BasketballFragment extends Fragment {
 
     private void populateScheduleResultsTable(List<SportsRssItem> pastGamesList,
                                               String[] results) {
-        for (int i = 0; i < 3; i ++) {
+        for (int i = pastGamesList.size() - 1; i > 0; i --) {
             TableRow tableRow = new TableRow(getActivity());
             int tableRowHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12,
                     getResources().getDisplayMetrics());
@@ -278,23 +276,18 @@ public class BasketballFragment extends Fragment {
             }
             addViewToRow(item.getResult(), tableRow, 2f);
 
-            scheduleTableLayout.addView(tableRow);
+            pastGamesTableLayout.addView(tableRow);
         }
     }
 
     private void addViewToRow(String text, TableRow tableRow, float rowWeight) {
-
         TextView newTextView = new TextView(getActivity());
-
         newTextView.setText(text);
-
         newTextView.setTextColor(getResources().getColor(
                 R.color.primary_text_default_material_light));
         newTextView.setTextSize(16);
-
         newTextView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.WRAP_CONTENT, rowWeight));
-
         tableRow.addView(newTextView);
     }
 
@@ -379,6 +372,38 @@ public class BasketballFragment extends Fragment {
                 (listView.getDividerHeight() * (3));
         listView.setLayoutParams(params);
         listView.requestLayout();
+    }
+
+    public static void setTableLayoutHeightBasedOnChildren(TableLayout tableLayout) {
+        if (tableLayout == null) {
+            return;
+        }
+
+        // Check to make sure there's at least one past game
+        if ( tableLayout.getChildAt(1) != null ) {
+            View headerRow = tableLayout.getChildAt(0);
+            headerRow.measure(0, 0);
+            int heightOfHeaderRow = headerRow.getMeasuredHeight();
+
+
+            View gameRow = tableLayout.getChildAt(1);
+            gameRow.measure(0, 0);
+            int heightOfGameRow = gameRow.getMeasuredHeight();
+            pastGamesTableLayoutHeight = (heightOfGameRow * 3);
+
+            int starterHeight = pastGamesTableLayoutHeight + heightOfHeaderRow;
+
+            ViewGroup.LayoutParams params = tableLayout.getLayoutParams();
+            params.height = starterHeight;
+            tableLayout.setLayoutParams(params);
+            tableLayout.requestLayout();
+        }
+
+        /*for (int i = 0; i < 3; i++) {
+            listItem.measure(0, 0);
+            heightToAdd += listItem.getMeasuredHeight();
+        }
+        View listItem = linearLayout.getChildAt(0);*/
     }
 
     /**
@@ -479,6 +504,7 @@ public class BasketballFragment extends Fragment {
             String[] results = new String[] { "L, 81-32", "L, 81-69", "W, 100-0"};
             populateScheduleResultsTable(pastGamesList, results);
             setListViewHeightBasedOnChildren(upcomingGamesListView);
+            setTableLayoutHeightBasedOnChildren(pastGamesTableLayout);
         }
     }
 

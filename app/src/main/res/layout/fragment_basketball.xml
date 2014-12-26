@@ -467,7 +467,7 @@
 
 
                 <TableLayout
-                    android:id="@+id/schedule_table_layout"
+                    android:id="@+id/past_games_table_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp">
@@ -512,11 +512,12 @@
                     android:orientation="horizontal">
 
                     <Button
+                        android:id="@+id/past_games_view_more_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/MaterialButtonFlat"
                         android:textColor="@color/kzooOrange"
-                        android:text="VIEW MORE"/>
+                        android:text="@string/view_more"/>
 
                     </LinearLayout>
 
