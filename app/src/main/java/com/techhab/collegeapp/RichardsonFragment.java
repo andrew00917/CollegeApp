@@ -14,7 +14,9 @@ import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,8 +38,11 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
     ImageView image;
     TextView tvTimeDetailInfo;
     RecyclerView rvMenu;
+    ImageButton ibExpandble;
+    LinearLayout llHeader;
     private boolean isBreakfastCollapse = true;
     RecyclerView.LayoutManager mLayoutManager;
+    int currentBarColor;
 
 
     private static final int RICHARDSON = 1;
@@ -58,13 +63,14 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
         rvMenu = (RecyclerView) v.findViewById(R.id.fragment_cafeteria_rvMenu);
         tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
         tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
-
+        ibExpandble = (ImageButton) v.findViewById(R.id.ibExpandable);
+        llHeader = (LinearLayout) v.findViewById(R.id.fragment_careteria_llHeader);
         tvTimeInfo.setOnClickListener(this);
         //todo: fake data for Richardson
         Richardson = new FoodStore();
         Richardson.setStoreName("Richardson Room");
         Richardson.setOpenHour(4);
-        Richardson.setCloseHour(18);
+        Richardson.setCloseHour(19);
         MenuItem Specials = new MenuItem();
         Specials.setTitle("Specials");
         Specials.setSubTitle("Sandwich");
@@ -116,12 +122,14 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
         rvMenu.setAdapter(new MenuAdapter(getActivity(), menuItems));
         if (isOpened(Richardson))
         {
-            v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.green));
+            currentBarColor = R.color.green;
+           llHeader.setBackgroundColor(getResources().getColor(R.color.green));
             ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
         }
         else
        {
-           v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.red));
+           currentBarColor = R.color.red;
+           llHeader.setBackgroundColor(getResources().getColor(R.color.red));
            ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
        }
         getRemainTime();
@@ -185,11 +193,27 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
                 int seconds = (int) ((millisUntilFinished / 1000) % 60);
 
                 if (isOpened(Richardson))
-                {tvTimeInfo.setText(
+                {
+                    if (hours == 0 && minutes <= 30 && currentBarColor != R.color.Yellow)
+                    {
+                        currentBarColor = R.color.Yellow;
+                        llHeader.setBackgroundColor(getResources().getColor(R.color.Yellow));
+                    }
+                    else if ((hours > 0 || minutes > 30) && currentBarColor != R.color.green)
+                    {
+                        currentBarColor = R.color.green;
+                        llHeader.setBackgroundColor(getResources().getColor(R.color.green));
+                    }
+                    tvTimeInfo.setText(
                          "Closing in " + hours + " hours and " + minutes + " minutes"
                 );}
                 else
                 {
+                    if (currentBarColor != R.color.red)
+                    {
+                        currentBarColor = R.color.red;
+                        llHeader.setBackgroundColor(getResources().getColor(R.color.red));
+                    }
                     tvTimeInfo.setText(
                             "Opening in"+ " " + hours + "hours and " + minutes + " minutes");
                 }
@@ -197,6 +221,7 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
             }
 
             public void onFinish() {
+                getRemainTime();
 
             }
         }.start();
@@ -207,9 +232,16 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
 
         switch (v.getId()) {
             case R.id.fragment_cafeteria_tvInfo:
-                tvTimeDetailInfo.setVisibility(tvTimeDetailInfo.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-
-
+                if (tvTimeDetailInfo.getVisibility() == View.VISIBLE)
+                {
+                    tvTimeDetailInfo.setVisibility(View.GONE);
+                    ibExpandble.setImageResource(R.drawable.ic_action_expand);
+                }
+                else
+                {
+                    tvTimeDetailInfo.setVisibility(View.VISIBLE);
+                    ibExpandble.setImageResource(R.drawable.ic_action_collapse);
+                }
 
         }
     }

@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:background="@color/green"
             android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:src="@drawable/ic_action_expand"
-                    android:id="@+id/imageButton"
+                    android:id="@+id/ibExpandable"
                     android:layout_gravity="center_vertical"
                     />
 
@@ -56,6 +57,7 @@
                 android:textSize="16dp"
                 android:visibility="gone"
                 android:paddingTop="4dp"
+                android:animateLayoutChanges="true"
                 android:textColor="@color/abc_secondary_text_material_dark"
                 android:layout_marginLeft="70dp"
                 android:text="Monday-Friday 8:00-10:00pm\nSaturdays 12:00-6:00pm\nSundays 10-7pm"

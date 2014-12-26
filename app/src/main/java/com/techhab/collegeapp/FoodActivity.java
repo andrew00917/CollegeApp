@@ -70,7 +70,8 @@ public class FoodActivity extends ActionBarActivity
             switch (item.getItemId()) {
                 // Respond to the action bar's Up/Home button
                 case android.R.id.home:
-                    NavUtils.navigateUpFromSameTask(this);
+                    onBackPressed();
+//                    NavUtils.navigateUpFromSameTask(this);
                     return true;
             }
 
