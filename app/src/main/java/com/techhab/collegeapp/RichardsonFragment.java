@@ -14,7 +14,6 @@ import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -64,13 +63,13 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
         tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
         tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
         ibExpandble = (ImageButton) v.findViewById(R.id.ibExpandable);
-        llHeader = (LinearLayout) v.findViewById(R.id.fragment_careteria_llHeader);
+        llHeader = (LinearLayout) v.findViewById(R.id.cafeteria_status_bar);
         tvTimeInfo.setOnClickListener(this);
         //todo: fake data for Richardson
         Richardson = new FoodStore();
         Richardson.setStoreName("Richardson Room");
         Richardson.setOpenHour(4);
-        Richardson.setCloseHour(19);
+        Richardson.setCloseHour(15);
         MenuItem Specials = new MenuItem();
         Specials.setTitle("Specials");
         Specials.setSubTitle("Sandwich");

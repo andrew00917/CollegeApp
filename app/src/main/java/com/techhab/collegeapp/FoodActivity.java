@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
@@ -13,15 +14,17 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 public class FoodActivity extends ActionBarActivity
             implements NavigationDrawerCallbacks {
 
         private final Handler handler = new Handler();
 
-        Toolbar toolbar;
-        PagerSlidingTabStrip tabs;
-        ViewPager pager;
+        private Toolbar toolbar;
+        private PagerSlidingTabStrip tabs;
+        private ViewPager pager;
+        private FrameLayout header;
 
         private MyPagerAdapter adapter;
 
@@ -39,10 +42,13 @@ public class FoodActivity extends ActionBarActivity
             tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
             pager = (ViewPager) findViewById(R.id.pager);
             DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+            header = (FrameLayout) findViewById(R.id.header);
 
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("");
+            getSupportActionBar().setTitle("Dining");
+
+            ViewCompat.setElevation(header, getResources().getDimension(R.dimen.toolbar_elevation));
 
             adapter = new MyPagerAdapter(getSupportFragmentManager());
             pager.setAdapter(adapter);

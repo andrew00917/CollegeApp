@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:showDividers="middle"
         android:divider="?android:dividerHorizontal">
-        <LinearLayout android:id="@+id/fragment_careteria_llHeader"
+        <LinearLayout android:id="@+id/cafeteria_status_bar"
             android:layout_width="match_parent"
             android:background="@color/green"
             android:layout_height="wrap_content"
