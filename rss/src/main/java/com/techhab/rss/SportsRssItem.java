@@ -19,6 +19,9 @@ public class SportsRssItem {
     private final boolean isUpcoming;
     private String opponent;
     private String dateAndTimeUpcoming;
+    private String datePast;
+    private boolean isAtHome;
+    private String result;
 
     public SportsRssItem(String dateAndTime, String titleAndScore, String link, String description) {
         if (titleAndScore.contains("Final")) {
@@ -31,7 +34,29 @@ public class SportsRssItem {
         this.titleAndScore = titleAndScore;
         this.link = link;
         this.opponent = parseOpponent(titleAndScore);
-        this.dateAndTimeUpcoming = parseDateAndTime(description);
+        this.dateAndTimeUpcoming = parseDateAndTimeUpcoming(description);
+        this.datePast = parseDatePast(this.dateAndTimeUpcoming);
+        this.result = parseResult(description, isAtHome);
+    }
+
+    private String parseResult(String description, boolean isAtHome) {
+        if ( !isUpcoming ) {
+            String score = description.substring(description.length() - 5);
+            Log.d("parseResult", "score = " + score);
+            String[] scores = score.split("-");
+            boolean kWin;
+            if (Integer.parseInt(scores[0]) < Integer.parseInt(scores[1]) && isAtHome == false) {
+                kWin = false;
+            } else {
+                kWin = true;
+            }
+            if (kWin) {
+                return "W, " + score;
+            } else {
+                return "L, " + score;
+            }
+        }
+        return "N/A";
     }
 
     private String parseOpponent(String titleAndScore) {
@@ -40,6 +65,7 @@ public class SportsRssItem {
         int opponentEndIndex;
         if ( !isUpcoming ) {
             if (titleAndScore.startsWith("Kalamazoo")) {
+                isAtHome = false;
                 opponentStartIndex = titleAndScore.indexOf(", ") + 2;
                 // Regex matcher to find the beginning of the opponent's score
                 Matcher matcher = numbersPattern.matcher(titleAndScore);
@@ -48,6 +74,7 @@ public class SportsRssItem {
                     return titleAndScore.substring(opponentStartIndex, (startOfOpponentScore - 1));
                 }
             } else {
+                isAtHome = true;
                 Matcher matcher = numbersPattern.matcher(titleAndScore);
                 if (matcher.find()) {
                     return titleAndScore.substring(0, (matcher.start() - 1));
@@ -55,9 +82,11 @@ public class SportsRssItem {
             }
         } else {
             if ( titleAndScore.startsWith("Kalamazoo") ) {
+                isAtHome = false;
                 opponentStartIndex = titleAndScore.indexOf("vs. ") + 4;
                 return titleAndScore.substring(opponentStartIndex);
             } else {
+                isAtHome = true;
                 opponentEndIndex = titleAndScore.indexOf(" vs.");
                 return titleAndScore.substring(0, opponentEndIndex);
             }
@@ -66,7 +95,7 @@ public class SportsRssItem {
         return null;
     }
 
-    private String parseDateAndTime(String description) {
+    private String parseDateAndTimeUpcoming(String description) {
         int dateEndIndex = description.indexOf(" at");
         String date = description.substring(20, dateEndIndex);
 
@@ -94,6 +123,22 @@ public class SportsRssItem {
         String finalDateAndTime = dayOfTheWeek + ", " + date.substring(0, date.length() - 6) + " at " + time;
 
         return finalDateAndTime;
+    }
+
+    private String parseDatePast(String parsedDate) {
+        return parsedDate.substring(5, 11);
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public boolean isAtHome() {
+        return isAtHome;
+    }
+
+    public String getDatePast() {
+        return datePast;
     }
 
     public String getDateAndTimeUpcoming() {

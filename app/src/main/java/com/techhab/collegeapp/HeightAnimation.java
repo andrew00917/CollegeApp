@@ -19,7 +19,6 @@ public class HeightAnimation extends Animation {
         this.targetHeight = targetHeight;
         this.grow = grow;
         height = view.getHeight();
-        Log.d("HeightAnimation", "height: " + height);
     }
 
     @Override
@@ -27,7 +26,6 @@ public class HeightAnimation extends Animation {
         int newHeight;
         if (grow) {
             newHeight = (int) (height + (targetHeight * interpolatedTime));
-            Log.d("HeightAnimation", "newHeight: " + newHeight);
         } else {
             newHeight = (int) (height + (targetHeight - height) * interpolatedTime);
         }
