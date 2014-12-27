@@ -11,10 +11,8 @@ import java.util.regex.Pattern;
 /**
  * Created by Griffin on 12/19/2014.
  */
-public class SportsRssItem {
+public class BasketballRssItem {
 
-    private final String dateAndTime;
-    private final String titleAndScore;
     private final String link;
     private final boolean isUpcoming;
     private String opponent;
@@ -23,15 +21,13 @@ public class SportsRssItem {
     private boolean isAtHome;
     private String result;
 
-    public SportsRssItem(String dateAndTime, String titleAndScore, String link, String description) {
+    public BasketballRssItem(String titleAndScore, String link, String description) {
         if (titleAndScore.contains("Final")) {
             this.isUpcoming = false;
         } else {
             this.isUpcoming = true;
         }
 
-        this.dateAndTime = dateAndTime;
-        this.titleAndScore = titleAndScore;
         this.link = link;
         this.opponent = parseOpponent(titleAndScore);
         this.dateAndTimeUpcoming = parseDateAndTimeUpcoming(description);
@@ -42,13 +38,15 @@ public class SportsRssItem {
     private String parseResult(String description, boolean isAtHome) {
         if ( !isUpcoming ) {
             String score = description.substring(description.length() - 5);
-            Log.d("parseResult", "score = " + score);
             String[] scores = score.split("-");
             boolean kWin;
-            if (Integer.parseInt(scores[0]) < Integer.parseInt(scores[1]) && isAtHome == false) {
-                kWin = false;
+            // Second score is bigger than the first, which corresponds to a win if at home and
+            // a loss if on the road
+            if (Integer.parseInt(scores[0]) < Integer.parseInt(scores[1])) {
+                // If won, then it must be at home
+                kWin = isAtHome;
             } else {
-                kWin = true;
+                kWin = !isAtHome;
             }
             if (kWin) {
                 return "W, " + score;
@@ -96,8 +94,9 @@ public class SportsRssItem {
     }
 
     private String parseDateAndTimeUpcoming(String description) {
+        int dateStartIndex = description.indexOf("on ") + 3;
         int dateEndIndex = description.indexOf(" at");
-        String date = description.substring(20, dateEndIndex);
+        String date = description.substring(dateStartIndex, dateEndIndex);
 
         Date parsedDate = null;
         if ( date.length() == 12) {
@@ -151,14 +150,6 @@ public class SportsRssItem {
 
     public String getOpponent() {
         return opponent;
-    }
-
-    public String getDateAndTime() {
-        return dateAndTime;
-    }
-
-    public String getTitleAndScore() {
-        return titleAndScore;
     }
 
     public String getLink() {

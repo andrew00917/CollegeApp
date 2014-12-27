@@ -247,7 +247,7 @@ public class AthleticActivity extends ActionBarActivity
 //        btn.setVisibility(View.INVISIBLE);
     }
 
-    /** Changes the activity from viewing men's sports to women's by modifying the
+    /** Changes the activity's view from one gender to the other by modifying the
      * adapter's data and refreshing the necessary views.
      *
      * @param titleArray the men's or women's sports titles array
@@ -273,6 +273,7 @@ public class AthleticActivity extends ActionBarActivity
             mViewPager.setCurrentItem(convertPage(pageIndexPreSwitch));
         }
         mPagerSlidingTabStrip.notifyDataSetChanged();
+        mPagerAdapter.notifyDataSetChanged();
 
     }
     @Override
@@ -407,7 +408,7 @@ public class AthleticActivity extends ActionBarActivity
 
         int toolbarHeight = toolbarAndGenderSwitch.getHeight();
         final ObservableScrollView scrollView = (ObservableScrollView) view.findViewById(
-                R.id.basketball_fragment_scrollview);
+                R.id.scrollview);
         if (scrollView == null) {
             return;
         }
@@ -457,7 +458,7 @@ public class AthleticActivity extends ActionBarActivity
                 continue;
             }
 
-            ObservableScrollView scrollView = (ObservableScrollView) f.getView().findViewById(R.id.basketball_fragment_scrollview);
+            ObservableScrollView scrollView = (ObservableScrollView) f.getView().findViewById(R.id.scrollview);
             if (isShown) {
                 // Scroll up
                 if (0 < scrollView.getCurrentScrollY()) {
@@ -555,49 +556,66 @@ public class AthleticActivity extends ActionBarActivity
 
         @Override
         public Fragment getItem(int position) {
-            /*Fragment fragment;
-            Bundle args = new Bundle();
-            if (application.getSportsGenderPreference()) {
-                switch (position) {
-                    case 0:
-                        fragment = new HomeGamesFragment();
-                        args.putInt(HomeGamesFragment.ARG_OBJECT, position + 1);
-                        fragment.setArguments(args);
-                        break;
-                    case 1:
-                        fragment = new HomeGamesFragment();
-                        args.putInt(HomeGamesFragment.ARG_OBJECT, position + 1);
-                        fragment.setArguments(args);
-                        break;
-                    case 2:
-                        fragment = new HomeGamesFragment();
-                        args.putInt(HomeGamesFragment.ARG_OBJECT, position + 1);
-                        fragment.setArguments(args);
-                        break;
-                    default:
-                        fragment = new HomeGamesFragment();
-                        args.putInt(HomeGamesFragment.ARG_OBJECT, position + 1);
-                        fragment.setArguments(args);
-                        break;
+            Fragment fragment;
+            if (0 <= mScrollY ) {
+                Bundle args = new Bundle();
+                if (application.getSportsGenderPreference()) {
+                    switch (position) {
+                        /*case 0:
+                            fragment = new HomeGamesFragment();
+                            args.putInt(HomeGamesFragment.ARG_OBJECT, position + 1);
+                            fragment.setArguments(args);
+                            break;
+                        case 1:
+                            fragment = new HomeGamesFragment();
+                            args.putInt(HomeGamesFragment.ARG_OBJECT, position + 1);
+                            fragment.setArguments(args);
+                            break;*/
+                        case 2:
+                            Log.d("pagerAdapter", "I'm getting reconstructed! (In the boys section");
+                            fragment = new BasketballFragment();
+                            args.putInt(BasketballFragment.ARG_SCROLL_Y, mScrollY);
+                            args.putBoolean(BasketballFragment.GENDER, application.getSportsGenderPreference());
+                            args.putString(BasketballFragment.SPORT, "basketball");
+                            fragment.setArguments(args);
+                            break;
+                        case 3:
+                            fragment = new CrossCountryFragment();
+                            args.putInt(CrossCountryFragment.ARG_SCROLL_Y, mScrollY);
+                            args.putBoolean(CrossCountryFragment.GENDER, application.getSportsGenderPreference());
+                            fragment.setArguments(args);
+                            break;
+                        default:
+                            fragment = new CrossCountryFragment();
+                            args.putInt(CrossCountryFragment.ARG_SCROLL_Y, mScrollY);
+                            args.putBoolean(CrossCountryFragment.GENDER, application.getSportsGenderPreference());
+                            fragment.setArguments(args);
+                            break;
+                    }
+                    mPages.put(position, fragment);
+                    return fragment;
+                } else {
+                    switch (position) {
+                        default:
+                            Log.d("pagerAdapter", "I'm getting reconstructed! (In the girls section");
+                            fragment = new BasketballFragment();
+                            args.putInt(BasketballFragment.ARG_SCROLL_Y, mScrollY);
+                            args.putBoolean(BasketballFragment.GENDER, application.getSportsGenderPreference());
+                            fragment.setArguments(args);
+                            break;
+                    }
+                    mPages.put(position, fragment);
+                    return fragment;
                 }
-                return fragment;
-            } else {
-                switch (position) {
-                    default:
-                        fragment = new BasketballFragment();
-                        args.putInt(BasketballFragment.ARG_OBJECT, position + 1);
-                        fragment.setArguments(args);
-                        break;
-                }
-                return fragment;
-            }*/
+            }
+
+
             Fragment f = new BasketballFragment();
             if (0 <= mScrollY) {
                 Bundle args = new Bundle();
                 args.putInt(BasketballFragment.ARG_SCROLL_Y, mScrollY);
                 f.setArguments(args);
             }
-            mPages.put(position, f);
             return f;
         }
     }

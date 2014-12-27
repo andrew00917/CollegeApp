@@ -137,6 +137,7 @@
 
         <!-- Upcoming Games card -->
         <string name="upcoming_games">Upcoming Games</string>
+        <string name="upcoming_events">Upcoming Events</string>
 
         <!-- Team Roster card -->
         <string name="roster">Team Roster</string>

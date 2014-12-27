@@ -1,6 +1,7 @@
 package com.techhab.collegeapp;
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,7 +16,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.app.Fragment;
 import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -27,28 +27,32 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.techhab.rss.BasketballRssItem;
+import com.techhab.rss.CrossCountryRssItem;
 import com.techhab.rss.SportsRssService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BasketballFragment extends Fragment {
+/**
+ * Created by Griffin on 12/26/2014.
+ */
+public class CrossCountryFragment extends Fragment {
     public static final String ARG_SCROLL_Y = "ARG_SCROLL_Y";
 
     public static final String GENDER = "gender";
-    public static final String SPORT = "sport";
+
+    public static final String SPORT = "cross_country";
 
     public static final String ARG_OBJECT = "object";
 
-    private static final String ITEMS = "basketballRssItemList";
-    public static final String RECEIVER = "basketballReceiver";
+    private static final String ITEMS = "xcRssItemList";
+    public static final String RECEIVER = "xcReceiver";
 
     private Intent mServiceIntent;
     private MyResultReceiver receiver;
     private boolean gender;
 
-    private List<BasketballRssItem> rssItemList;
+    private List<CrossCountryRssItem> rssItemList;
 
     // Commented out until later date
 //    private TableLayout rosterTableLayout;
@@ -57,11 +61,11 @@ public class BasketballFragment extends Fragment {
 
     private TableLayout pastGamesTableLayout;
     private UpcomingGamesAdapter mUpcomingGamesAdapter;
-    private ListView upcomingGamesListView;
+    private ListView upcomingEventsListView;
 
     private LinearLayout upcomingGamesViewMoreButtonLayout, resultsCardFooter;
     private Button upcomingGamesViewMoreButton, pastGamesViewMoreButton;
-    private CardView upcomingGamesCardView;
+    private CardView upcomingEventsCardView;
     private ProgressBar upcomingGamesProgressBar;
 
     private static int pastGamesTableLayoutHeight;
@@ -69,8 +73,8 @@ public class BasketballFragment extends Fragment {
     private int pastGamesRemainingToShow;
     private int upcomingGamesCount;
     private int gameRowHeight;
-    private List<BasketballRssItem> upcomingGamesList = new ArrayList<>();
-    private List<BasketballRssItem> pastGamesList = new ArrayList<>();
+    private List<CrossCountryRssItem> upcomingGamesList = new ArrayList<>();
+    private List<CrossCountryRssItem> pastGamesList = new ArrayList<>();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -87,9 +91,9 @@ public class BasketballFragment extends Fragment {
      * @return A new instance of fragment BasketballFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static BasketballFragment newInstance(String param1, String param2,
+    public static CrossCountryFragment newInstance(String param1, String param2,
                                                  String genderPreference) {
-        BasketballFragment fragment = new BasketballFragment();
+        CrossCountryFragment fragment = new CrossCountryFragment();
         Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
 //        args.putString(ARG_PARAM2, param2);
@@ -97,7 +101,7 @@ public class BasketballFragment extends Fragment {
         return fragment;
     }
 
-    public BasketballFragment() {
+    public CrossCountryFragment() {
         // Required empty public constructor
     }
 
@@ -109,16 +113,16 @@ public class BasketballFragment extends Fragment {
 //            mParam2 = getArguments().getString(ARG_PARAM2);
             gender = getArguments().getBoolean(GENDER);
         }
-        Log.d("Basketball Fragment onCreate", "gender = " + gender);
+        Log.d("CrossCountry Fragment onCreate", "gender = " + gender);
         mServiceIntent = new Intent(getActivity(), SportsRssService.class);
         if (gender) {
             mServiceIntent.putExtra("gender_preference",
-                    "http://hornets.kzoo.edu/sports/mbkb/2014-15/schedule?print=rss");
+                    "http://hornets.kzoo.edu/sports/mxc/2014-15/schedule?print=rss");
         } else {
             mServiceIntent.putExtra("gender_preference",
-                    "http://hornets.kzoo.edu/sports/wbkb/2014-15/schedule?print=rss");
+                    "http://hornets.kzoo.edu/sports/wxc/2014-15/schedule?print=rss");
         }
-        mServiceIntent.putExtra("sport", "basketball");
+        mServiceIntent.putExtra("sport", "cross_country");
         receiver = new MyResultReceiver(new Handler());
         rssItemList = new ArrayList<>();
         new DownloadXmlTask().execute();
@@ -129,11 +133,11 @@ public class BasketballFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_basketball, container, false);
-        upcomingGamesListView = (ListView) rootView.findViewById(R.id.upcoming_games_listview);
+        View rootView = inflater.inflate(R.layout.fragment_cross_country, container, false);
+        upcomingEventsListView = (ListView) rootView.findViewById(R.id.upcoming_events_listview);
         upcomingGamesViewMoreButton = (Button) rootView.findViewById(
                 R.id.upcoming_games_view_more_button);
-        upcomingGamesCardView = (CardView) rootView.findViewById(R.id.upcoming_games_card);
+        upcomingEventsCardView = (CardView) rootView.findViewById(R.id.upcoming_events_card);
         upcomingGamesViewMoreButtonLayout = (LinearLayout) rootView.findViewById(
                 R.id.upcoming_games_view_more_button_layout);
         upcomingGamesProgressBar = (ProgressBar) rootView.findViewById(
@@ -141,7 +145,7 @@ public class BasketballFragment extends Fragment {
         pastGamesTableLayout = (TableLayout) rootView.findViewById(R.id.past_games_table_layout);
         pastGamesViewMoreButton = (Button) rootView.findViewById(R.id.past_games_view_more_button);
         resultsCardFooter = (LinearLayout) rootView.findViewById(R.id.results_card_footer);
-        upcomingGamesListView.setEmptyView(upcomingGamesProgressBar);
+        upcomingEventsListView.setEmptyView(upcomingGamesProgressBar);
 
         /**
          * BEGIN OBSERVABLE SCROLL VIEW
@@ -178,10 +182,10 @@ public class BasketballFragment extends Fragment {
         upcomingGamesViewMoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HeightAnimation animation = new HeightAnimation(upcomingGamesListView,
+                HeightAnimation animation = new HeightAnimation(upcomingEventsListView,
                         upcomingGamesListViewHeight, true);
                 animation.setDuration(300);
-                upcomingGamesCardView.startAnimation(animation);
+                upcomingEventsCardView.startAnimation(animation);
                 if (upcomingGamesCount == upcomingGamesList.size()) {
                     upcomingGamesViewMoreButtonLayout.setVisibility(View.GONE);
                 }
@@ -235,8 +239,8 @@ public class BasketballFragment extends Fragment {
         }
     }
 
-    public void sortGames(List<BasketballRssItem> list) {
-        BasketballRssItem item;
+    public void sortGames(List<CrossCountryRssItem> list) {
+        CrossCountryRssItem item;
         try {
             for (int i = 0; i < list.size(); i++) {
                 item = list.get(i);
@@ -265,11 +269,11 @@ public class BasketballFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mUpcomingGamesAdapter = new UpcomingGamesAdapter(getActivity(), rssItemList);
-        upcomingGamesListView.setAdapter(mUpcomingGamesAdapter);
+        upcomingEventsListView.setAdapter(mUpcomingGamesAdapter);
     }
 
 
-    private void populateScheduleResultsTable(List<BasketballRssItem> pastGamesList) {
+    private void populateScheduleResultsTable(List<CrossCountryRssItem> pastGamesList) {
         for (int i = pastGamesList.size() - 1; i >= 0; i --) {
 
             // Since switching genders often cause this method to break the app, I put in a
@@ -285,14 +289,10 @@ public class BasketballFragment extends Fragment {
             tableRow.setWeightSum(10f);
             tableRow.setPadding(0, 0, 0, tableRowHeight);
 
-            BasketballRssItem item = pastGamesList.get(i);
+            CrossCountryRssItem item = pastGamesList.get(i);
 
             addViewToRow(item.getDatePast(), tableRow, 1.5f);
-            if ( item.isAtHome() ) {
-                addViewToRow("vs. " + item.getOpponent(), tableRow, 6.5f);
-            } else {
-                addViewToRow("at " + item.getOpponent(), tableRow, 6.5f);
-            }
+            addViewToRow("at " + item.getEvent(), tableRow, 6.5f);
             addViewToRow(item.getResult(), tableRow, 2f);
 
             pastGamesTableLayout.addView(tableRow);
@@ -443,16 +443,16 @@ public class BasketballFragment extends Fragment {
         int[] teamLogos = {R.drawable.western_michigan_broncos,
                 R.drawable.bluffton_beavers, R.drawable.wisconsin_whitewater};
 
-        private List<BasketballRssItem> items;
+        private List<CrossCountryRssItem> items;
 
         private Context context;
 
-        public UpcomingGamesAdapter(Context context, List<BasketballRssItem> items) {
+        public UpcomingGamesAdapter(Context context, List<CrossCountryRssItem> items) {
             this.context = context;
             this.items = items;
         }
 
-        public void updateChange(List<BasketballRssItem> list) {
+        public void updateChange(List<CrossCountryRssItem> list) {
             if ( ! items.isEmpty()) {
                 items.clear();
             }
@@ -488,28 +488,21 @@ public class BasketballFragment extends Fragment {
             if (convertView == null) {
                 LayoutInflater inflater =
                         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.upcoming_basketball_games_row, parent, false);
+                convertView = inflater.inflate(R.layout.upcoming_xc_events_row, parent, false);
 
                 viewHolder = new ViewHolder();
-                viewHolder.date = (TextView) convertView.findViewById(R.id.game_date);
-                viewHolder.title = (TextView) convertView.findViewById(R.id.opponent_title);
-                viewHolder.location = (TextView) convertView.findViewById(R.id.home_away);
+                viewHolder.date = (TextView) convertView.findViewById(R.id.event_date);
+                viewHolder.title = (TextView) convertView.findViewById(R.id.event_title);
+                viewHolder.location = (TextView) convertView.findViewById(R.id.event_location);
 
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
-            BasketballRssItem item = items.get(position);
-            Log.d("Basketball Fragment", "I've got items! " + item);
+            CrossCountryRssItem item = items.get(position);
 
             viewHolder.date.setText(item.getDateAndTimeUpcoming());
-            viewHolder.title.setText(item.getOpponent());
-
-            if ( item.isAtHome() ) {
-                viewHolder.location.setText("HOME");
-            } else {
-                viewHolder.location.setText("AWAY");
-            }
+            viewHolder.title.setText(item.getEvent());
 
             return convertView;
         }
@@ -528,11 +521,11 @@ public class BasketballFragment extends Fragment {
         @SuppressWarnings("unchecked")
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-            rssItemList = (List<BasketballRssItem>) resultData.getSerializable(ITEMS);
+            rssItemList = (List<CrossCountryRssItem>) resultData.getSerializable(ITEMS);
             Log.d("onReceiveResult", "Fragment: " + this.getClass() + ". This is RssItemList = " + rssItemList);
             sortGames(rssItemList);
             mUpcomingGamesAdapter.updateChange(upcomingGamesList);
-            setListViewHeightBasedOnChildren(upcomingGamesListView);
+            setListViewHeightBasedOnChildren(upcomingEventsListView);
             populateScheduleResultsTable(pastGamesList);
             setTableLayoutHeightBasedOnChildren(pastGamesTableLayout);
         }
