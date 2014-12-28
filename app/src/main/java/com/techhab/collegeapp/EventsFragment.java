@@ -167,6 +167,22 @@ public class EventsFragment extends Fragment {
         public void onBindViewHolder(ViewHolder h, int position) {
             final ViewHolder holder = h;
             final EventsRssItem item = items.get(position);
+            String event = item.getEvent();
+            if (event.contains("Stress Free Zone")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.stree_free_zone));
+            } else if (event.contains("Tuesdays With")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.tuesdays_with));
+            } else if (event.contains("Wind Down Wednesday")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.wind_down_wed));
+            } else if (event.contains("Trivia Night")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.trivia_night));
+            } else if (event.contains("Zoo Flicks")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.zoo_flicks));
+            } else if (event.contains("Zoo After Dark")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.zoo_after_dark));
+            } else {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.banner));
+            }
             holder.date.setText(item.getDate());
             holder.event.setText(item.getEvent());
             holder.place.setText(item.getPlace());
