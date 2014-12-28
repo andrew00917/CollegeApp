@@ -1,1 +1,1 @@
-include ':app', ':rss', ':eventdialogbuilder', ':library', ':kcollegecustomviews'
+include ':app', ':rss', ':eventdialogbuilder', ':kcollegecustomviews', ':gradle-bintray-plugin-1.0'
