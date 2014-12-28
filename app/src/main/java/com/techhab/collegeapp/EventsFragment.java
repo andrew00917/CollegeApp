@@ -127,33 +127,41 @@ public class EventsFragment extends Fragment {
             if ( ! items.isEmpty()) {
                 items.clear();
             }
-            items.addAll(list);
+            if (list != null && ! list.isEmpty()) {
+                items.addAll(list);
+            }
             this.notifyDataSetChanged();
         }
 
         // Not use static
         public class ViewHolder extends RecyclerView.ViewHolder {
 
+            public View v;
             public FrameLayout image;
             public TextView date, event, place, time;
             public View divider;
             public LinearLayout buttonSection;
-            public ImageButton infoButton, favoriteButton;
+            public ImageButton infoButton;
+            public ImageView favoriteButton;
+            public boolean cardExpanded = false;
+            public boolean buttonExpanded = false;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                image = (FrameLayout) itemView.findViewById(R.id.image);
-                date = (TextView) itemView.findViewById(R.id.date);
-                event = (TextView) itemView.findViewById(R.id.event);
-                place = (TextView) itemView.findViewById(R.id.place);
-                time = (TextView) itemView.findViewById(R.id.time);
+                v = itemView;
 
-                divider = itemView.findViewById(R.id.divider);
+                image = (FrameLayout) v.findViewById(R.id.image);
+                date = (TextView) v.findViewById(R.id.date);
+                event = (TextView) v.findViewById(R.id.event);
+                place = (TextView) v.findViewById(R.id.place);
+                time = (TextView) v.findViewById(R.id.time);
 
-                buttonSection = (LinearLayout) itemView.findViewById(R.id.button_section);
+                divider = v.findViewById(R.id.divider);
 
-                infoButton = (ImageButton) itemView.findViewById(R.id.info_button);
-                favoriteButton = (ImageButton) itemView.findViewById(R.id.favorite_button);
+                buttonSection = (LinearLayout) v.findViewById(R.id.button_section);
+
+                infoButton = (ImageButton) v.findViewById(R.id.info_button);
+                favoriteButton = (ImageView) v.findViewById(R.id.favorite_button);
             }
 
         }
@@ -202,13 +210,32 @@ public class EventsFragment extends Fragment {
                             break;
                         case MotionEvent.ACTION_UP:
                             ((EventsActivity) getActivity()).buttonReleased(v);
-                            if (holder.buttonSection.getVisibility() == LinearLayout.GONE) {
-                                holder.buttonSection.setVisibility(LinearLayout.VISIBLE);
-                                holder.divider.setVisibility(View.VISIBLE);
+                            // TODO: fix auto-scrolling
+                            HeightAnimation animation;
+                            if (holder.cardExpanded) {
+                                animation = new HeightAnimation(holder.place
+                                        , holder.buttonSection.getHeight(), false);
+                                holder.cardExpanded = false;
                             } else {
-                                holder.buttonSection.setVisibility(LinearLayout.GONE);
-                                holder.divider.setVisibility(View.GONE);
+                                animation = new HeightAnimation(holder.place
+                                        , holder.buttonSection.getHeight(), true);
+                                holder.cardExpanded = true;
                             }
+                            animation.setDuration(300);
+                            holder.place.startAnimation(animation);
+
+                            WidthAnimation widthAnimation;
+                            if (holder.buttonExpanded) {
+                                widthAnimation = new WidthAnimation(holder.favoriteButton
+                                        , holder.infoButton.getWidth(), false);
+                                holder.buttonExpanded = false;
+                            } else {
+                                widthAnimation = new WidthAnimation(holder.favoriteButton
+                                        , holder.infoButton.getWidth(), true);
+                                holder.buttonExpanded = true;
+                            }
+                            widthAnimation.setDuration(300);
+                            holder.favoriteButton.startAnimation(widthAnimation);
                             break;
                     }
                     return true;
