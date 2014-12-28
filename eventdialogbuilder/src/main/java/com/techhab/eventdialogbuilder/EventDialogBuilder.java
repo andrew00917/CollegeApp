@@ -179,8 +179,6 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
         }
 
         progressbar = (ProgressBar) layout.findViewById(R.id.progress_bar);
-        progressbar.setMax(100);
-        progressbar.setProgress(0);
 
         title.setText(event);
 
@@ -199,12 +197,23 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
 
         @Override
         protected String doInBackground(String...link) {
-            publishProgress(10);
+            int progressInt = 0;
             try {
                 StringBuffer buffer = new StringBuffer();
+                while (progressInt < 40) {
+                    //Sleep for up to one second.
+                    try {
+                        Thread.sleep(2);
+                    } catch (InterruptedException ignore) {
+
+                    }
+                    progressInt += 1;
+                    publishProgress(progressInt);
+                }
                 Document doc = Jsoup.connect(link[0]).get();
-                int progressInt = 50;
+                progressInt = 60;
                 publishProgress(progressInt);
+
                 Elements elems = doc.select("p");
 
                 String building = "";
@@ -228,9 +237,8 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
                         publishProgress(progressInt);
                     }
                 }
-                Log.e("AsyncTask Date format: ", date);
                 setOnClickListener(title.getText().toString(), building, date);
-                publishProgress(98);
+                publishProgress(100);
                 return buffer.toString();
             } catch (IOException e) {
                 e.printStackTrace();
