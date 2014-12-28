@@ -26,6 +26,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -97,10 +98,13 @@ public class CafeteriaFragment extends Fragment {
         // TODO populate the days arraylist with 4 entries. The first two will always be
         // "Today" and "Tomorrow", but the last 2 entries must be programmatically determined
         // using the current date.
-        for (int j = 0; j < 4; j++) {
-            days.add("Day" + j);
-        }
-        Log.d("CafeteriaFragment", "days = " + days);
+        days.add("Today");
+        days.add("Tomorrow");
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
+        gregorianCalendar.add(Calendar.DATE, 2);
+        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
+        String nextDay = dayFormat.format(gregorianCalendar.getTime());
+        days.add(nextDay);
         CustomAdapter spinnerAdapter = new CustomAdapter(getActivity(), android.R.layout.simple_spinner_item, days);
 //        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         cafeteriaSpinner.setAdapter(spinnerAdapter);

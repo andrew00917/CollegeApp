@@ -63,11 +63,6 @@
                 android:text="Monday-Friday 8:00-10:00pm\nSaturdays 12:00-6:00pm\nSundays 10-7pm"
                 />
 
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/richardson_spinner"
-                />
 
         </LinearLayout>
 
