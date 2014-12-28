@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:showDividers="middle"
         android:divider="?android:dividerHorizontal">
-        <LinearLayout android:id="@+id/cafeteria_status_bar"
+        <LinearLayout android:id="@+id/richardson_status_bar"
             android:layout_width="match_parent"
             android:background="@color/green"
             android:layout_height="wrap_content"
@@ -68,6 +68,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fragment_cafeteria_rvMenu"
             android:layout_width="match_parent"
+            android:animateLayoutChanges="true"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>

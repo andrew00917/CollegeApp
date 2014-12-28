@@ -63,27 +63,31 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
         tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
         tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
         ibExpandble = (ImageButton) v.findViewById(R.id.ibExpandable);
-        llHeader = (LinearLayout) v.findViewById(R.id.cafeteria_status_bar);
+        llHeader = (LinearLayout) v.findViewById(R.id.richardson_status_bar);
         tvTimeInfo.setOnClickListener(this);
         //todo: fake data for Richardson
         Richardson = new FoodStore();
         Richardson.setStoreName("Richardson Room");
         Richardson.setOpenHour(4);
         Richardson.setCloseHour(15);
-        MenuItem Specials = new MenuItem();
+        Meal Specials = new Meal();
         Specials.setTitle("Specials");
         Specials.setSubTitle("Sandwich");
         List<String> specialSandwiches = new ArrayList<String>();
         specialSandwiches.add("meat ball");
         specialSandwiches.add("panini");
         specialSandwiches.add("Tuna");
+        specialSandwiches.add("item 4");
+        specialSandwiches.add("item 5");
+        specialSandwiches.add("item 6");
+        specialSandwiches.add("item 7");
         Specials.setMainLines(specialSandwiches);
         List<String> specialSoups = new ArrayList<String>();
         specialSoups.add("Tomato soups");
         specialSoups.add("Cheddar Soup");
         Specials.setInternationalCorner(specialSoups);
 
-        MenuItem lunch = new MenuItem();
+        Meal lunch = new Meal();
         lunch.setTitle("Lunch");
         List<String> mainLines1 = new ArrayList<String>();
         mainLines1.add("item1");
@@ -97,7 +101,7 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
         internationalCorner1.add("item2");
         lunch.setInternationalCorner(internationalCorner1);
 
-        MenuItem dinner = new MenuItem();
+        Meal dinner = new Meal();
         dinner.setTitle("Dinner");
         List<String> mainLines2 = new ArrayList<String>();
         mainLines2.add("item1");
@@ -111,14 +115,14 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
         internationalCorner2.add("item2");
         dinner.setInternationalCorner(internationalCorner2);
 
-        List<MenuItem> menuItems = new ArrayList<MenuItem>();
-        menuItems.add(Specials);
-        menuItems.add(lunch);
-        menuItems.add(dinner);
-        Richardson.setMenuItemList(menuItems);
+        List<Meal> meals = new ArrayList<Meal>();
+        meals.add(Specials);
+        meals.add(lunch);
+        meals.add(dinner);
+        Richardson.setMealList(meals);
         mLayoutManager = new LinearLayoutManager(getActivity());
         rvMenu.setLayoutManager(mLayoutManager);
-        rvMenu.setAdapter(new MenuAdapter(getActivity(), menuItems));
+        rvMenu.setAdapter(new MenuAdapter(getActivity(), meals));
         if (isOpened(Richardson))
         {
             currentBarColor = R.color.green;
@@ -269,7 +273,7 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
         int closeHour;
         int closeMinutes;
         String storeName;
-        List<MenuItem> menuItemList;
+        List<Meal> mealList;
         public int getOpenHour() {
             return openHour;
         }
@@ -310,43 +314,43 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
             this.storeName = storeName;
         }
 
-        public List<MenuItem> getMenuItemList()
+        public List<Meal> getMealList()
         {
-            return menuItemList;
+            return mealList;
         }
 
-        public void setMenuItemList(List<MenuItem> menuItemList)
+        public void setMealList(List<Meal> mealList)
         {
-            this.menuItemList = menuItemList;
+            this.mealList = mealList;
         }
     }
 
-    private class MenuItem
+    private class Meal
     {
-        String title;
+        String mealTitle;
         String subTitle;
         private List<String> mainLines;
         private List<String> internationalCorner;
 
         public String getTitle()
         {
-            return title;
+            return mealTitle;
         }
 
         public String getSubTitle()
         {
             return subTitle;
         }
-        public void setTitle(String title)
+        public void setTitle(String mealTitle)
         {
-            this.title = title;
+            this.mealTitle = mealTitle;
         }
         public void setSubTitle(String subTitle)
         {
             this.subTitle = subTitle;
         }
 
-        public List<String> getMainLines()
+        public List<String> getMainLineItems()
         {
             return mainLines;
         }
@@ -356,7 +360,7 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
             this.mainLines = mainLines;
         }
 
-        public List<String> getInternationalCorner()
+        public List<String> getInternationalCornerItems()
         {
             return internationalCorner;
         }
@@ -368,9 +372,10 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
     }
     private class MenuAdapter extends RecyclerView.Adapter
     {
-        private List<MenuItem> menuList;
+        private List<Meal> menuList;
         private Context context;
-        private MenuAdapter(Context context, List<MenuItem> menuList)
+        private int heightToAdd;
+        private MenuAdapter(Context context, List<Meal> menuList)
         {
             this.context = context;
             this.menuList = menuList;
@@ -389,23 +394,39 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int i)
         {
-            final MenuItem menuItem = menuList.get(i);
+            final Meal meal = menuList.get(i);
             final MenuAdapter.ViewHolder menuViewHolder = (ViewHolder) viewHolder;
-            menuViewHolder.tvTitle.setText(menuItem.getTitle());
-            menuViewHolder.tvTitle1.setText(menuItem.getSubTitle());
-            menuViewHolder.tvTitle2.setText(menuItem.getSubTitle());
+            menuViewHolder.tvTitle.setText(meal.getTitle());
+            menuViewHolder.tvTitle1.setText(meal.getSubTitle());
+            menuViewHolder.tvTitle2.setText(meal.getSubTitle());
 
-            collapseMenu(menuViewHolder, menuItem);
+            loadMenu(menuViewHolder, meal);
             menuViewHolder.tbViewMore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked)
                     {
-                        openMenu(menuViewHolder, menuItem);
+
+                        HeightAnimation animation = new HeightAnimation(((ViewHolder) viewHolder).llMainLines,
+                                getHeightToAdd(((ViewHolder) viewHolder).llMainLines, true), true);
+                        animation.setDuration(300);
+                        ((ViewHolder) viewHolder).llMainLines.startAnimation(animation);
+                        HeightAnimation animation1 = new HeightAnimation(((ViewHolder) viewHolder).llInternationalCorner,
+                                getHeightToAdd(((ViewHolder) viewHolder).llInternationalCorner, true), true);
+                        animation1.setDuration(300);
+                        ((ViewHolder) viewHolder).llInternationalCorner.startAnimation(animation1);
+
                     }
                     else
                     {
-                        collapseMenu(menuViewHolder, menuItem);
+                        HeightAnimation animation = new HeightAnimation(((ViewHolder) viewHolder).llMainLines,
+                                getHeightToAdd(((ViewHolder) viewHolder).llMainLines, false), false);
+                        animation.setDuration(300);
+                        ((ViewHolder) viewHolder).llMainLines.startAnimation(animation);
+                        HeightAnimation animation1 = new HeightAnimation(((ViewHolder) viewHolder).llInternationalCorner,
+                                getHeightToAdd(((ViewHolder) viewHolder).llInternationalCorner, false), false);
+                        animation1.setDuration(300);
+                        ((ViewHolder) viewHolder).llInternationalCorner.startAnimation(animation1);
                     }
                 }
             });
@@ -444,35 +465,63 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
 
         }
 
-        private void collapseMenu(MenuAdapter.ViewHolder viewHolder, MenuItem menuItem) {
-            viewHolder.llMainLines.removeAllViews();
-            viewHolder.llInternationalCorner.removeAllViews();
-            int maxShortLength = menuItem.getMainLines().size() > 3 ? 3 : menuItem.getMainLines().size();
-            for (int i = 0; i < maxShortLength; i ++)
-            {
-                viewHolder.llMainLines.addView(createFoodItemView(menuItem.getMainLines().get(i)));
+        private void loadMenu(MenuAdapter.ViewHolder viewHolder, Meal meal) {
 
+            for (int i = 0; i < meal.getMainLineItems().size(); i++) {
+                viewHolder.llMainLines.addView(createFoodItemView(meal.getMainLineItems().get(i)));
             }
-            maxShortLength = menuItem.getInternationalCorner().size() > 3 ? 3 : menuItem.getInternationalCorner().size();
-            for (int i = 0; i < maxShortLength; i++)
-            {
-                viewHolder.llInternationalCorner.addView(createFoodItemView(menuItem.getInternationalCorner().get(i)));
+
+            setListViewHeightBasedOnChildren(viewHolder.llMainLines);
+
+            for (int i = 0; i < meal.getInternationalCornerItems().size(); i++) {
+                viewHolder.llInternationalCorner.addView(createFoodItemView(meal.getInternationalCornerItems().get(i)));
             }
+
+            setListViewHeightBasedOnChildren(viewHolder.llInternationalCorner);
         }
 
-        private void openMenu(MenuAdapter.ViewHolder viewHolder, MenuItem menuItem) {
-            viewHolder.llMainLines.removeAllViews();
-            for (String foodItem : menuItem.getMainLines())
-            {
-                viewHolder.llMainLines.addView(createFoodItemView(foodItem));
+        /**
+         *
+         */
+        public void setListViewHeightBasedOnChildren(LinearLayout linearLayout) {
+            if (linearLayout == null) {
+                // pre-condition
+                return;
             }
+            int starterHeight;
+            View listItem = linearLayout.getChildAt(0);
+            listItem.measure(0, 0);
+            int heightOfChild = listItem.getMeasuredHeight();
+            starterHeight = (linearLayout.getChildCount() < 3 ? linearLayout.getChildCount() : 3) * heightOfChild;
 
-            viewHolder.llInternationalCorner.removeAllViews();
-            for (String foodItem : menuItem.getInternationalCorner())
-            {
-                viewHolder.llInternationalCorner.addView(createFoodItemView(foodItem));
-            }
+            ViewGroup.LayoutParams params = linearLayout.getLayoutParams();
+            params.height = starterHeight;
+            linearLayout.setLayoutParams(params);
+            linearLayout.requestLayout();
+
         }
     }
+
+
+    private int getHeightToAdd(LinearLayout parent, boolean isExpand)
+    {
+        View listItem = parent.getChildAt(0);
+        listItem.measure(0, 0);
+        int heightOfChild = listItem.getMeasuredHeight();
+        if (parent.getChildCount() <= 3)
+            return 0;
+        else
+            return heightOfChild * (parent.getChildCount() - 3);
+
+
+    }
+
+    /*private class MySpinnerAdapter extends SpinnerAdapter {
+
+        public MySpinnerAdapter() {
+
+        }
+
+    }*/
 
 }
