@@ -20,10 +20,16 @@ public class SportsRssService extends IntentService {
 
     public static final String TAG = "RssApp";
 
-//    private static final String RSS_LINK = "http://hornets.kzoo.edu/sports/mbkb/2014-15/schedule?print=rss";
-    private static final String RSS_LINK = "https://reason.kzoo.edu/studentactivities/feeds/events";
-    public static final String ITEMS = "sportsRssItemList";
-    public static final String RECEIVER = "sportsReceiver";
+    /*private static final String RSS_LINK =
+            "http://hornets.kzoo.edu/sports/mbkb/2014-15/schedule?print=rss";*/
+//    public static final String ITEMS = "sportsRssItemList";
+//    public static final String RECEIVER = "sportsReceiver";
+
+    public String RSS_LINK = "gender_preference";
+
+    public String SPORT = "sport";
+    public String ITEMS;
+    public String RECEIVER;
 
     public SportsRssService() {
         super("RssService");
@@ -32,17 +38,37 @@ public class SportsRssService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(TAG, "Service started");
-        List<SportsRssItem> rssItems = null;
-        try {
-            SportsParser parser = new SportsParser();
-            rssItems = parser.parse(getInputStream(RSS_LINK));
-        } catch (Exception e) {
-            Log.w(e.getMessage(), e);
+        RSS_LINK = intent.getStringExtra("gender_preference");
+        SPORT = intent.getStringExtra("sport");
+        if (SPORT.equals("basketball")) {
+            ITEMS = "basketballRssItemList";
+            RECEIVER = "basketballReceiver";
+            List<BasketballRssItem> rssItems = null;
+            try {
+                BasketballParser parser = new BasketballParser();
+                rssItems = parser.parse(getInputStream(RSS_LINK));
+            } catch (Exception e) {
+                Log.w(e.getMessage(), e);
+            }
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ITEMS, (Serializable) rssItems);
+            ResultReceiver receiver = intent.getParcelableExtra(RECEIVER);
+            receiver.send(0, bundle);
+        } else if (SPORT.equals("cross_country")) {
+            ITEMS = "xcRssItemList";
+            RECEIVER = "xcReceiver";
+            List<CrossCountryRssItem> rssItems = null;
+            try {
+                CrossCountryParser parser = new CrossCountryParser();
+                rssItems = parser.parse(getInputStream(RSS_LINK));
+            } catch (Exception e) {
+                Log.w(e.getMessage(), e);
+            }
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ITEMS, (Serializable) rssItems);
+            ResultReceiver receiver = intent.getParcelableExtra(RECEIVER);
+            receiver.send(0, bundle);
         }
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ITEMS, (Serializable) rssItems);
-        ResultReceiver receiver = intent.getParcelableExtra(RECEIVER);
-        receiver.send(0, bundle);
         Log.d(TAG, "Service ended");
     }
 

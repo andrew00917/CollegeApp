@@ -99,6 +99,7 @@
     <string name="action_overflow">More</string>
     <string name="action_send">Send</string>
     <string name="action_reset_shared_prefs">Reset shared prefs</string>
+    <string name="scroll_to_bottom">Scroll to bottom</string>
 
     <!-- Maps action bar-->
     <string name="title_buildings_select">Buildings</string>
@@ -117,6 +118,8 @@
     <string name="title_activity_info">Campus Information</string>
     <string name="label_building_Hicks_Center">Hicks Center</string>
     <!-- Cafeteria(DetailedCafeteriaFragment) -->
+    <string name="open">OPEN</string>
+    <string name="closed">CLOSED</string>
     <string name="label_cafeteria_contact">Contact Us:</string>
     <string name="label_cafeteria_phone">(517) 763-1377</string>
     <string name="label_cafeteria_richardson">Richardson Cafe</string>
@@ -140,12 +143,14 @@
     <string name="men">MEN\'S</string>
     <string name="women">WOMEN\'S</string>
     <string name="view_more">VIEW MORE</string>
+    <string name="view_less">VIEW LESS</string>
 
         <!-- Game In Progress card-->
         <string name="game_in_progress">Game In Progress</string>
 
         <!-- Upcoming Games card -->
         <string name="upcoming_games">Upcoming Games</string>
+        <string name="upcoming_events">Upcoming Events</string>
 
         <!-- Team Roster card -->
         <string name="roster">Team Roster</string>

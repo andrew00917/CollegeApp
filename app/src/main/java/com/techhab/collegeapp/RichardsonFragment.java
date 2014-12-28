@@ -15,30 +15,39 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
-
-public class DetailCafeteriaFragment extends Fragment implements View.OnClickListener {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class RichardsonFragment extends Fragment implements View.OnClickListener {
     public static final String ARG_OBJECT = "object";
     // Buttons Cafeteria
     View v;
-    FoodStore cafeteriaStore;
+    FoodStore Richardson;
     TextView tvTimeInfo;
-    TextView tvTimeInfo1;
+    ImageView image;
     TextView tvTimeDetailInfo;
     RecyclerView rvMenu;
+    ImageButton ibExpandble;
+    LinearLayout llHeader;
     private boolean isBreakfastCollapse = true;
     RecyclerView.LayoutManager mLayoutManager;
+    int currentBarColor;
 
 
     private static final int RICHARDSON = 1;
 
     public static Fragment createNewIntace() {
-        DetailCafeteriaFragment fragment = new DetailCafeteriaFragment();
+        RichardsonFragment fragment = new RichardsonFragment();
         Bundle arg = new Bundle();
         fragment.setArguments(arg);
         return fragment;
@@ -49,31 +58,30 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_cafeteria, parent, false);
+        v = inflater.inflate(R.layout.fragment_richardson, parent, false);
         rvMenu = (RecyclerView) v.findViewById(R.id.fragment_cafeteria_rvMenu);
         tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
-        tvTimeInfo1 = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1);
         tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
-
+        ibExpandble = (ImageButton) v.findViewById(R.id.ibExpandable);
+        llHeader = (LinearLayout) v.findViewById(R.id.cafeteria_status_bar);
         tvTimeInfo.setOnClickListener(this);
-        //todo: fake data for cafe
-        cafeteriaStore = new FoodStore();
-        cafeteriaStore.setStoreName("Cafeteria");
-        cafeteriaStore.setOpenHour(4);
-        cafeteriaStore.setCloseHour(22);
-        MenuItem breakfast = new MenuItem();
-        breakfast.setTitle("Breakfast");
-        List<String> breakfastMainLines = new ArrayList<String>();
-        breakfastMainLines.add("Pancakes");
-        breakfastMainLines.add("Scrambled Eggs");
-        breakfastMainLines.add("Bacon");
-        breakfastMainLines.add("Kfc");
-        breakfastMainLines.add("Pate");
-        breakfast.setMainLines(breakfastMainLines);
-        List<String> breakfastInternationalCorner = new ArrayList<String>();
-        breakfastInternationalCorner.add("Pho soups");
-        breakfastInternationalCorner.add("Dumpling");
-        breakfast.setInternationalCorner(breakfastInternationalCorner);
+        //todo: fake data for Richardson
+        Richardson = new FoodStore();
+        Richardson.setStoreName("Richardson Room");
+        Richardson.setOpenHour(4);
+        Richardson.setCloseHour(15);
+        MenuItem Specials = new MenuItem();
+        Specials.setTitle("Specials");
+        Specials.setSubTitle("Sandwich");
+        List<String> specialSandwiches = new ArrayList<String>();
+        specialSandwiches.add("meat ball");
+        specialSandwiches.add("panini");
+        specialSandwiches.add("Tuna");
+        Specials.setMainLines(specialSandwiches);
+        List<String> specialSoups = new ArrayList<String>();
+        specialSoups.add("Tomato soups");
+        specialSoups.add("Cheddar Soup");
+        Specials.setInternationalCorner(specialSoups);
 
         MenuItem lunch = new MenuItem();
         lunch.setTitle("Lunch");
@@ -88,6 +96,7 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
         internationalCorner1.add("item1");
         internationalCorner1.add("item2");
         lunch.setInternationalCorner(internationalCorner1);
+
         MenuItem dinner = new MenuItem();
         dinner.setTitle("Dinner");
         List<String> mainLines2 = new ArrayList<String>();
@@ -103,23 +112,25 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
         dinner.setInternationalCorner(internationalCorner2);
 
         List<MenuItem> menuItems = new ArrayList<MenuItem>();
-        menuItems.add(breakfast);
+        menuItems.add(Specials);
         menuItems.add(lunch);
         menuItems.add(dinner);
-        cafeteriaStore.setMenuItemList(menuItems);
+        Richardson.setMenuItemList(menuItems);
         mLayoutManager = new LinearLayoutManager(getActivity());
         rvMenu.setLayoutManager(mLayoutManager);
         rvMenu.setAdapter(new MenuAdapter(getActivity(), menuItems));
-        if (isOpened(cafeteriaStore))
+        if (isOpened(Richardson))
         {
-            v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.green));
-            ((TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText("Open");
+            currentBarColor = R.color.green;
+           llHeader.setBackgroundColor(getResources().getColor(R.color.green));
+            ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
         }
         else
-        {
-            v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.red));
-            ((TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText("Closed");
-        }
+       {
+           currentBarColor = R.color.red;
+           llHeader.setBackgroundColor(getResources().getColor(R.color.red));
+           ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
+       }
         getRemainTime();
         return v;
     }
@@ -152,8 +163,8 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
 
     private void getRemainTime()
     {
-        long openMillis = getTimeOFDay(cafeteriaStore.getOpenHour(), cafeteriaStore.getOpenMinutes());
-        long closeMillis = getTimeOFDay(cafeteriaStore.getCloseHour(), cafeteriaStore.getCloseMinutes());
+        long openMillis = getTimeOFDay(Richardson.getOpenHour(), Richardson.getOpenMinutes());
+        long closeMillis = getTimeOFDay(Richardson.getCloseHour(), Richardson.getCloseMinutes());
         Time TimeNow = new Time();
         TimeNow.setToNow(); // set the date to Current Time
         TimeNow.normalize(true);
@@ -180,15 +191,37 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
                         * 86400) + (hours * 3600))) / 60);
                 int seconds = (int) ((millisUntilFinished / 1000) % 60);
 
-
-                tvTimeInfo.setText(
-                        " "+ "for " + hours + "hours and " + minutes + " minutes"
-                             );
+                if (isOpened(Richardson))
+                {
+                    if (hours == 0 && minutes <= 30 && currentBarColor != R.color.Yellow)
+                    {
+                        currentBarColor = R.color.Yellow;
+                        llHeader.setBackgroundColor(getResources().getColor(R.color.Yellow));
+                    }
+                    else if ((hours > 0 || minutes > 30) && currentBarColor != R.color.green)
+                    {
+                        currentBarColor = R.color.green;
+                        llHeader.setBackgroundColor(getResources().getColor(R.color.green));
+                    }
+                    tvTimeInfo.setText(
+                         "Closing in " + hours + " hours and " + minutes + " minutes"
+                );}
+                else
+                {
+                    if (currentBarColor != R.color.red)
+                    {
+                        currentBarColor = R.color.red;
+                        llHeader.setBackgroundColor(getResources().getColor(R.color.red));
+                    }
+                    tvTimeInfo.setText(
+                            "Opening in"+ " " + hours + "hours and " + minutes + " minutes");
+                }
 
             }
 
             public void onFinish() {
-                tvTimeInfo.setText("done");
+                getRemainTime();
+
             }
         }.start();
     }
@@ -198,9 +231,16 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
 
         switch (v.getId()) {
             case R.id.fragment_cafeteria_tvInfo:
-                tvTimeDetailInfo.setVisibility(tvTimeDetailInfo.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-
-
+                if (tvTimeDetailInfo.getVisibility() == View.VISIBLE)
+                {
+                    tvTimeDetailInfo.setVisibility(View.GONE);
+                    ibExpandble.setImageResource(R.drawable.ic_action_expand);
+                }
+                else
+                {
+                    tvTimeDetailInfo.setVisibility(View.VISIBLE);
+                    ibExpandble.setImageResource(R.drawable.ic_action_collapse);
+                }
 
         }
     }
@@ -284,6 +324,7 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
     private class MenuItem
     {
         String title;
+        String subTitle;
         private List<String> mainLines;
         private List<String> internationalCorner;
 
@@ -292,9 +333,17 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
             return title;
         }
 
+        public String getSubTitle()
+        {
+            return subTitle;
+        }
         public void setTitle(String title)
         {
             this.title = title;
+        }
+        public void setSubTitle(String subTitle)
+        {
+            this.subTitle = subTitle;
         }
 
         public List<String> getMainLines()
@@ -343,7 +392,8 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
             final MenuItem menuItem = menuList.get(i);
             final MenuAdapter.ViewHolder menuViewHolder = (ViewHolder) viewHolder;
             menuViewHolder.tvTitle.setText(menuItem.getTitle());
-            menuViewHolder.tvTitle.setText(menuItem.getTitle());
+            menuViewHolder.tvTitle1.setText(menuItem.getSubTitle());
+            menuViewHolder.tvTitle2.setText(menuItem.getSubTitle());
 
             collapseMenu(menuViewHolder, menuItem);
             menuViewHolder.tbViewMore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -375,6 +425,9 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public TextView tvTitle;
+            public TextView tvTitle1;
+            public TextView tvTitle2;
+
             public LinearLayout llMainLines;
             public LinearLayout llInternationalCorner;
             public ToggleButton tbViewMore;
@@ -382,6 +435,8 @@ public class DetailCafeteriaFragment extends Fragment implements View.OnClickLis
             public ViewHolder(View itemView) {
                 super(itemView);
                 tvTitle = (TextView) itemView.findViewById(R.id.menu_item_tvTitle);
+                tvTitle1 = (TextView) itemView.findViewById(R.id.fragment_cafeteria_tvMainLine);
+                tvTitle2 = (TextView) itemView.findViewById(R.id.fragment_cafeteria_tvInternationalCorner);
                 llMainLines = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llMainLine);
                 llInternationalCorner = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llInternationalCorner);
                 tbViewMore = (ToggleButton) itemView.findViewById(R.id.fragment_cafeteria_tbViewMore);

@@ -7,59 +7,76 @@
     tools:context="com.techhab.collegeapp.AthleticActivity" >
 
     <!-- The main content view -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
         <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <android.support.v4.view.ViewPager
+                android:id="@+id/pager"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/expanded_toolbar"
-                android:minHeight="@dimen/abc_action_bar_default_height_material"
-                android:background="@color/kzooOrange"
-                app:theme="@style/Toolbar"
-                app:popupTheme="@style/Theme.AppCompat.Light"
-                />
+                android:layout_height="match_parent"
+                android:paddingTop="@dimen/abc_action_bar_default_height_material"
+                tools:context=".AthleticActivity"/>
 
             <LinearLayout
-                android:id="@+id/genderSwitchLayout"
-                android:layout_width="wrap_content"
+                android:id="@+id/header"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginRight="10dp">
+                android:background="@color/kzooOrange"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/men_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:text="@string/men"/>
 
-                <android.support.v7.widget.SwitchCompat
-                    android:id="@+id/gender_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="3dp"
-                    android:layout_marginLeft="3dp"
-                    app:showText="false"/>
+                <FrameLayout
+                    android:id="@+id/toolbar_and_gender_switch"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/women_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:text="@string/women"/>
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/abc_action_bar_default_height_material"
+                        android:minHeight="@dimen/abc_action_bar_default_height_material"
+                        app:theme="@style/Toolbar"
+                        app:popupTheme="@style/Theme.AppCompat.Light"
+                        />
 
-            </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/gender_switch_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/abc_action_bar_default_height_material"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="10dp">
+
+                        <TextView
+                            android:id="@+id/men_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:text="@string/men"/>
+
+                        <android.support.v7.widget.SwitchCompat
+                            android:id="@+id/gender_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="3dp"
+                            android:layout_marginLeft="3dp"
+                            app:showText="false"/>
+
+                        <TextView
+                            android:id="@+id/women_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:text="@string/women"/>
+
+                        </LinearLayout>
+
+                    </FrameLayout>
 
             <com.techhab.collegeapp.PagerSlidingTabStrip
                 android:id="@+id/tabs"
@@ -71,15 +88,11 @@
                 android:clipToPadding="false"
                 app:pstsPaddingMiddle="true" />
 
+
+            </LinearLayout>
+
         </FrameLayout>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            tools:context=".AcademicActivity"/>
-
-    </LinearLayout>
 
     <!--Navigation Drawer-->
     <fragment android:id="@+id/home_navigation_drawer"

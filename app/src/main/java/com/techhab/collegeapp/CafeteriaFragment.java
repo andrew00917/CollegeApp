@@ -16,21 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class BookClubFragment extends Fragment implements View.OnClickListener {
+
+public class CafeteriaFragment extends Fragment implements View.OnClickListener {
     public static final String ARG_OBJECT = "object";
     // Buttons Cafeteria
     View v;
-    FoodStore Richardson;
+    FoodStore cafeteriaStore;
     TextView tvTimeInfo;
     TextView tvTimeInfo1;
     TextView tvTimeDetailInfo;
@@ -42,7 +39,7 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
     private static final int RICHARDSON = 1;
 
     public static Fragment createNewIntace() {
-        RichardsonFragment fragment = new RichardsonFragment();
+        CafeteriaFragment fragment = new CafeteriaFragment();
         Bundle arg = new Bundle();
         fragment.setArguments(arg);
         return fragment;
@@ -53,79 +50,80 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_richardson, parent, false);
+        v = inflater.inflate(R.layout.fragment_cafeteria, parent, false);
         rvMenu = (RecyclerView) v.findViewById(R.id.fragment_cafeteria_rvMenu);
         tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
+        //tvTimeInfo1 = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1);
         tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
 
         tvTimeInfo.setOnClickListener(this);
-        //todo: fake data for Richardson
-        Richardson = new FoodStore();
-        Richardson.setStoreName("Richardson Room");
-        Richardson.setOpenHour(4);
-        Richardson.setCloseHour(22);
-        MenuItem Specials = new MenuItem();
-        Specials.setTitle("Specials");
-        Specials.setSubTitle("Sandwich");
-        List<String> specialSandwiches = new ArrayList<String>();
-        specialSandwiches.add("meant ball mea");
-        specialSandwiches.add("");
-        specialSandwiches.add("Bacon");
-        Specials.setMainLines(specialSandwiches);
-        List<String> specialSoups = new ArrayList<String>();
-        specialSoups.add("Pho soups");
-        specialSoups.add("Dumpling");
-        Specials.setInternationalCorner(specialSoups);
+        //todo: fake data for cafe
+        cafeteriaStore = new FoodStore();
+        cafeteriaStore.setStoreName("Cafeteria");
+        cafeteriaStore.setOpenHour(4);
+        cafeteriaStore.setCloseHour(22);
+        Meal breakfast = new Meal();
+        breakfast.setMealTitle("Breakfast");
+        List<String> breakfastMainLines = new ArrayList<String>();
+        breakfastMainLines.add("Pancakes");
+        breakfastMainLines.add("Scrambled Eggs");
+        breakfastMainLines.add("Bacon");
+        breakfastMainLines.add("Kfc");
+        breakfastMainLines.add("Pate");
+        breakfast.setMainLineItems(breakfastMainLines);
+        List<String> breakfastInternationalCorner = new ArrayList<String>();
+        breakfastInternationalCorner.add("Pho soups");
+        breakfastInternationalCorner.add("Dumpling");
+        breakfast.setInternationalCornerItems(breakfastInternationalCorner);
 
-        MenuItem lunch = new MenuItem();
-        lunch.setTitle("Lunch");
+        Meal lunch = new Meal();
+        lunch.setMealTitle("Lunch");
         List<String> mainLines1 = new ArrayList<String>();
         mainLines1.add("item1");
         mainLines1.add("item2");
         mainLines1.add("item3");
         mainLines1.add("item4");
         mainLines1.add("item5");
-        lunch.setMainLines(mainLines1);
+        lunch.setMainLineItems(mainLines1);
         List<String> internationalCorner1 = new ArrayList<String>();
         internationalCorner1.add("item1");
         internationalCorner1.add("item2");
-        lunch.setInternationalCorner(internationalCorner1);
-
-        MenuItem dinner = new MenuItem();
-        dinner.setTitle("Dinner");
+        lunch.setInternationalCornerItems(internationalCorner1);
+        Meal dinner = new Meal();
+        dinner.setMealTitle("Dinner");
         List<String> mainLines2 = new ArrayList<String>();
         mainLines2.add("item1");
         mainLines2.add("item2");
         mainLines2.add("item3");
         mainLines2.add("item4");
         mainLines2.add("item5");
-        dinner.setMainLines(mainLines2);
+        dinner.setMainLineItems(mainLines2);
         List<String> internationalCorner2 = new ArrayList<String>();
         internationalCorner2.add("item1");
         internationalCorner2.add("item2");
-        dinner.setInternationalCorner(internationalCorner2);
+        dinner.setInternationalCornerItems(internationalCorner2);
 
-        List<MenuItem> menuItems = new ArrayList<MenuItem>();
-        menuItems.add(Specials);
-        menuItems.add(lunch);
-        menuItems.add(dinner);
-        Richardson.setMenuItemList(menuItems);
+        List<Meal> meals = new ArrayList<Meal>();
+        meals.add(breakfast);
+        meals.add(lunch);
+        meals.add(dinner);
+        cafeteriaStore.setMealList(meals);
         mLayoutManager = new LinearLayoutManager(getActivity());
         rvMenu.setLayoutManager(mLayoutManager);
-        rvMenu.setAdapter(new MenuAdapter(getActivity(), menuItems));
-//        if (isOpened(Richardson))
-//        {
-//            v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.green));
-//            ((TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText("Open");
-//        }
-//        else
-//        {
-//            v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.red));
-//            ((ImageView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText("Closed");
-//        }
-       getRemainTime();
-       return v;
-   }
+        rvMenu.setAdapter(new MenuAdapter(getActivity(), meals));
+        /*if (isOpened(cafeteriaStore))
+        {
+            v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.green));
+            ((TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText(R.string.open);
+        }
+        else
+        {
+            v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.red));
+            ((TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText(R.string.closed);
+        }*/
+        getRemainTime();
+        return v;
+    }
 
 
     private boolean isOpened(FoodStore foodStore)
@@ -155,8 +153,8 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
 
     private void getRemainTime()
     {
-        long openMillis = getTimeOFDay(Richardson.getOpenHour(), Richardson.getOpenMinutes());
-        long closeMillis = getTimeOFDay(Richardson.getCloseHour(), Richardson.getCloseMinutes());
+        long openMillis = getTimeOFDay(cafeteriaStore.getOpenHour(), cafeteriaStore.getOpenMinutes());
+        long closeMillis = getTimeOFDay(cafeteriaStore.getCloseHour(), cafeteriaStore.getCloseMinutes());
         Time TimeNow = new Time();
         TimeNow.setToNow(); // set the date to Current Time
         TimeNow.normalize(true);
@@ -185,8 +183,8 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
 
 
                 tvTimeInfo.setText(
-                        " "+ "for " + hours + "hours and " + minutes + " minutes"
-                );
+                        " "+ "for " + hours + " hours and " + minutes + " minutes"
+                             );
 
             }
 
@@ -232,7 +230,7 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
         int closeHour;
         int closeMinutes;
         String storeName;
-        List<MenuItem> menuItemList;
+        List<Meal> mealList;
         public int getOpenHour() {
             return openHour;
         }
@@ -273,70 +271,62 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
             this.storeName = storeName;
         }
 
-        public List<MenuItem> getMenuItemList()
+        public List<Meal> getMealList()
         {
-            return menuItemList;
+            return mealList;
         }
 
-        public void setMenuItemList(List<MenuItem> menuItemList)
+        public void setMealList(List<Meal> mealList)
         {
-            this.menuItemList = menuItemList;
+            this.mealList = mealList;
         }
     }
 
-    private class MenuItem
+    private class Meal
     {
-        String title;
-        String subTitle;
-        private List<String> mainLines;
-        private List<String> internationalCorner;
+        String mealTitle;
+        private List<String> mainLineItems;
+        private List<String> internationalCornerItems;
 
-        public String getTitle()
+        public String getMealTitle()
         {
-            return title;
-        }
-
-        public String getSubTitle()
-        {
-            return subTitle;
-        }
-        public void setTitle(String title)
-        {
-            this.title = title;
-        }
-        public void setSubTitle(String subTitle)
-        {
-            this.subTitle = subTitle;
+            return mealTitle;
         }
 
-        public List<String> getMainLines()
+        public void setMealTitle(String mealTitle)
         {
-            return mainLines;
+            this.mealTitle = mealTitle;
         }
 
-        public void setMainLines(List<String> mainLines)
+        public List<String> getMainLineItems()
         {
-            this.mainLines = mainLines;
+            return mainLineItems;
         }
 
-        public List<String> getInternationalCorner()
+        public void setMainLineItems(List<String> mainLineItems)
         {
-            return internationalCorner;
+            this.mainLineItems = mainLineItems;
         }
 
-        public void setInternationalCorner(List<String> internationalCorner)
+        public List<String> getInternationalCornerItems()
         {
-            this.internationalCorner = internationalCorner;
+            return internationalCornerItems;
+        }
+
+        public void setInternationalCornerItems(List<String> internationalCornerItems)
+        {
+            this.internationalCornerItems = internationalCornerItems;
         }
     }
     private class MenuAdapter extends RecyclerView.Adapter
     {
-        private List<MenuItem> menuList;
+        private List<Meal> mealList;
         private Context context;
-        private MenuAdapter(Context context, List<MenuItem> menuList)
+        private int heightToAdd;
+        private MenuAdapter(Context context, List<Meal> mealList)
         {
             this.context = context;
-            this.menuList = menuList;
+            this.mealList = mealList;
         }
 
         @Override
@@ -352,23 +342,29 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int i)
         {
-            final MenuItem menuItem = menuList.get(i);
+            final Meal meal = mealList.get(i);
             final MenuAdapter.ViewHolder menuViewHolder = (ViewHolder) viewHolder;
-            menuViewHolder.tvTitle.setText(menuItem.getTitle());
-            menuViewHolder.tvTitle1.setText(menuItem.getSubTitle());
-            menuViewHolder.tvTitle2.setText(menuItem.getSubTitle());
+            menuViewHolder.tvTitle.setText(meal.getMealTitle());
+            menuViewHolder.tvTitle.setText(meal.getMealTitle());
 
-            collapseMenu(menuViewHolder, menuItem);
+            loadMenu(menuViewHolder, meal);
+//            collapseMenu(menuViewHolder, meal);
             menuViewHolder.tbViewMore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked)
                     {
-                        openMenu(menuViewHolder, menuItem);
+                        HeightAnimation animation = new HeightAnimation(((ViewHolder) viewHolder).llMainLines,
+                                heightToAdd, true);
+                        animation.setDuration(300);
+                        ((ViewHolder) viewHolder).llMainLines.startAnimation(animation);
                     }
                     else
                     {
-                        collapseMenu(menuViewHolder, menuItem);
+                        HeightAnimation animation = new HeightAnimation(((ViewHolder) viewHolder).llMainLines,
+                                heightToAdd, false);
+                        animation.setDuration(300);
+                        ((ViewHolder) viewHolder).llMainLines.startAnimation(animation);
                     }
                 }
             });
@@ -383,14 +379,11 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
         @Override
         public int getItemCount()
         {
-            return menuList.size();
+            return mealList.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public TextView tvTitle;
-            public TextView tvTitle1;
-            public TextView tvTitle2;
-
             public LinearLayout llMainLines;
             public LinearLayout llInternationalCorner;
             public ToggleButton tbViewMore;
@@ -398,8 +391,6 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
             public ViewHolder(View itemView) {
                 super(itemView);
                 tvTitle = (TextView) itemView.findViewById(R.id.menu_item_tvTitle);
-                tvTitle1 = (TextView) itemView.findViewById(R.id.fragment_cafeteria_tvMainLine);
-                tvTitle2 = (TextView) itemView.findViewById(R.id.fragment_cafeteria_tvInternationalCorner);
                 llMainLines = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llMainLine);
                 llInternationalCorner = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llInternationalCorner);
                 tbViewMore = (ToggleButton) itemView.findViewById(R.id.fragment_cafeteria_tbViewMore);
@@ -407,35 +398,53 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
 
         }
 
-        private void collapseMenu(MenuAdapter.ViewHolder viewHolder, MenuItem menuItem) {
-            viewHolder.llMainLines.removeAllViews();
-            viewHolder.llInternationalCorner.removeAllViews();
-            int maxShortLength = menuItem.getMainLines().size() > 3 ? 3 : menuItem.getMainLines().size();
-            for (int i = 0; i < maxShortLength; i ++)
-            {
-                viewHolder.llMainLines.addView(createFoodItemView(menuItem.getMainLines().get(i)));
+        private void loadMenu(MenuAdapter.ViewHolder viewHolder, Meal meal) {
 
+            for (int i = 0; i < meal.getMainLineItems().size(); i++) {
+                viewHolder.llMainLines.addView(createFoodItemView(meal.getMainLineItems().get(i)));
             }
-            maxShortLength = menuItem.getInternationalCorner().size() > 3 ? 3 : menuItem.getInternationalCorner().size();
-            for (int i = 0; i < maxShortLength; i++)
-            {
-                viewHolder.llInternationalCorner.addView(createFoodItemView(menuItem.getInternationalCorner().get(i)));
-            }
+
+            setListViewHeightBasedOnChildren(viewHolder.llMainLines);
         }
 
-        private void openMenu(MenuAdapter.ViewHolder viewHolder, MenuItem menuItem) {
-            viewHolder.llMainLines.removeAllViews();
-            for (String foodItem : menuItem.getMainLines())
-            {
-                viewHolder.llMainLines.addView(createFoodItemView(foodItem));
+        /**
+         *
+         */
+        public void setListViewHeightBasedOnChildren(LinearLayout linearLayout) {
+            if (linearLayout == null) {
+                // pre-condition
+                return;
             }
 
-            viewHolder.llInternationalCorner.removeAllViews();
-            for (String foodItem : menuItem.getInternationalCorner())
-            {
-                viewHolder.llInternationalCorner.addView(createFoodItemView(foodItem));
-            }
+            //TODO check to see if the linearlayout has at least 3 children before any of this
+            //TODO code.
+
+            View listItem = linearLayout.getChildAt(0);
+            listItem.measure(0, 0);
+            int heightOfChild = listItem.getMeasuredHeight();
+
+            int starterHeight = (heightOfChild * 3);
+
+            heightToAdd = (heightOfChild) * (linearLayout.getChildCount() - 3);
+
+            /*for (int i = 0; i < 3; i++) {
+                listItem.measure(0, 0);
+                heightToAdd += listItem.getMeasuredHeight();
+            }*/
+
+            ViewGroup.LayoutParams params = linearLayout.getLayoutParams();
+            params.height = starterHeight;
+            linearLayout.setLayoutParams(params);
+            linearLayout.requestLayout();
         }
     }
+
+    /*private class MySpinnerAdapter extends SpinnerAdapter {
+
+        public MySpinnerAdapter() {
+
+        }
+
+    }*/
 
 }

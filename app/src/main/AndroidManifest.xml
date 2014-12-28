@@ -27,6 +27,8 @@
         <service
             android:name="com.techhab.rss.EventsRssService"
             android:exported="false" />
+        <service android:name="com.techhab.rss.SportsRssService"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -101,10 +103,6 @@
         <activity
             android:name="com.techhab.collegeapp.MapsActivity"
             android:label="@string/title_activity_maps" >
-        </activity>
-        <activity
-            android:name="com.techhab.collegeapp.CafeteriaActivity"
-            android:label="@string/title_activity_cafeteria" >
         </activity>
         <activity
             android:name="com.techhab.collegeapp.TermActivity"
