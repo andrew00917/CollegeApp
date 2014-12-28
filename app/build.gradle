@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.0.2'
+    buildToolsVersion '21.1.1'
 
     defaultConfig {
         applicationId "com.techhab.collegeapp"
@@ -31,7 +31,7 @@ dependencies {
     compile 'com.rengwuxian.materialedittext:library:1.7.1'
     compile 'org.jsoup:jsoup:1.8.1'
     compile project(':eventdialogbuilder')
+    compile project(':kcollegecustomviews')
     compile project(':rss')
     compile files('libs/gradle-bintray-plugin-1.0.jar')
-    compile project(':kcollegecustomviews')
 }
