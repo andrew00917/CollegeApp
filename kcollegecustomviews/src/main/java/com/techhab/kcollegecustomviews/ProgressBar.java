@@ -14,6 +14,8 @@ public class ProgressBar extends android.widget.ProgressBar {
         setIndeterminate(false);
         setProgressDrawable(getResources().getDrawable(R.drawable.custom_progress_bar_horizontal));
         setMinimumHeight(10);
+        setMax(100);
+        setProgress(0);
     }
 
     public ProgressBar(Context context, AttributeSet attrs) {
@@ -22,6 +24,8 @@ public class ProgressBar extends android.widget.ProgressBar {
         setIndeterminate(false);
         setProgressDrawable(getResources().getDrawable(R.drawable.custom_progress_bar_horizontal));
         setMinimumHeight(10);
+        setMax(100);
+        setProgress(0);
     }
 
     public ProgressBar(Context context, AttributeSet attrs, int defStyle) {
@@ -30,5 +34,7 @@ public class ProgressBar extends android.widget.ProgressBar {
         setIndeterminate(false);
         setProgressDrawable(getResources().getDrawable(R.drawable.custom_progress_bar_horizontal));
         setMinimumHeight(10);
+        setMax(100);
+        setProgress(0);
     }
 }

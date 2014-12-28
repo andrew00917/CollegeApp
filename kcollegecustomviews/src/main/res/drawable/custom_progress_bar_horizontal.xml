@@ -2,11 +2,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background" >
         <shape>
-            <!--<padding
-                android:bottom="2dip"
-                android:top="2dip"
-                android:left="2dip"
-                android:right="2dip" />-->
             <corners android:radius="5dip" />
             <gradient
                 android:startColor="#2a2b2f"

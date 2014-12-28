@@ -19,12 +19,15 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.techhab.eventdialogbuilder.EventDialogBuilder;
+import com.techhab.kcollegecustomviews.ProgressBar;
 
 
 public class EventsActivity extends ActionBarActivity
         implements NavigationDrawerCallbacks {
 
     private final Handler handler = new Handler();
+
+    private ProgressBar progressBar;
 
     private Toolbar toolbar;
     private PagerSlidingTabStrip tabs;
@@ -42,6 +45,8 @@ public class EventsActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
+
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -151,6 +156,14 @@ public class EventsActivity extends ActionBarActivity
         builder.onCreate();
 
         builder.showDialog(event, link);
+    }
+
+    public void updateProgressBar(int progress) {
+        progressBar.setProgress(progress);
+    }
+
+    public void dismissProgressBar() {
+        progressBar.setVisibility(ProgressBar.GONE);
     }
 
 

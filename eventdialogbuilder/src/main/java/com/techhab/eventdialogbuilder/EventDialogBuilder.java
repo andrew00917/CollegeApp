@@ -3,9 +3,11 @@ package com.techhab.eventdialogbuilder;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -30,6 +32,11 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
     private TextView content;
     private ImageView close;
 
+    private ImageButton campus;
+    private ImageButton map;
+    private ImageButton calendar;
+    private ImageButton check;
+
     private ProgressBar progressbar;
 
     public EventDialogBuilder(Context context) {
@@ -44,6 +51,46 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
     public void setCustomView(View layout) {
         this.layout = layout;
         customView(layout);
+
+        title = (TextView) layout.findViewById(R.id.title);
+        content = (TextView) layout.findViewById(R.id.content);
+        close = (ImageView) layout.findViewById(R.id.close);
+
+        campus = (ImageButton) layout.findViewById(R.id.campus_button);
+        map = (ImageButton) layout.findViewById(R.id.mapit_button);
+        calendar = (ImageButton) layout.findViewById(R.id.calendar_button);
+        check = (ImageButton) layout.findViewById(R.id.attending_button);
+    }
+
+    private void setOnClickListener(String building, String location, String date) {
+        final String b = building;
+        final String l = location;
+        final String d = date;
+
+        campus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, b, Toast.LENGTH_SHORT).show();
+            }
+        });
+        map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, l, Toast.LENGTH_SHORT).show();
+            }
+        });
+        calendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, d, Toast.LENGTH_SHORT).show();
+            }
+        });
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Attending", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void showDialog(String event, String link) {
@@ -52,12 +99,8 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
         }
         if (dialog.getCustomView() == null) {
             customView(R.layout.event_dialog_custom);
-            layout = dialog.getCustomView();
+            setCustomView(dialog.getCustomView());
         }
-
-        title = (TextView) layout.findViewById(R.id.title);
-        content = (TextView) layout.findViewById(R.id.content);
-        close = (ImageView) layout.findViewById(R.id.close);
 
         progressbar = (ProgressBar) layout.findViewById(R.id.progress_bar);
         progressbar.setMax(100);
@@ -87,10 +130,23 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
                 int progressInt = 50;
                 publishProgress(progressInt);
                 Elements elems = doc.select("p");
+
+                String building = "";
+                String location = "";
+                String date = "";
                 for (Element elem : elems) {
                     String className = elem.className();
-                    if (className.equals("date") || className.equals("time") || className.equals("duration")
-                            || className.equals("location") || className.equals("sponsor")) {
+                    if (className.equals("date")) {
+                        date = elem.text().split(": ")[1];
+                        buffer.append("\n" + elem.text() + "\n");
+                    } else if (className.equals("time")) {
+                        date += ", " + elem.text().split(": ")[1];
+                        buffer.append("\n" + elem.text() + "\n");
+                    } else if (className.equals("duration") || className.equals("sponsor")) {
+                        buffer.append("\n" + elem.text() + "\n");
+                    } else if (className.equals("location")) {
+                        building = elem.text().split(": ")[1];
+                        location = building;
                         buffer.append("\n" + elem.text() + "\n");
                     }
                     if (progressInt < 95) {
@@ -98,6 +154,7 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
                         publishProgress(progressInt);
                     }
                 }
+                setOnClickListener(building, location, date);
                 publishProgress(98);
                 return buffer.toString();
             } catch (IOException e) {

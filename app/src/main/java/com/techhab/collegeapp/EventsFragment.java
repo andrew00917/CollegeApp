@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.techhab.kcollegecustomviews.ProgressBar;
 import com.techhab.rss.EventsRssItem;
 import com.techhab.rss.EventsRssService;
 
@@ -78,6 +79,7 @@ public class EventsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_events, parent, false);
+
         mRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view);
 
         return v;
@@ -285,24 +287,45 @@ public class EventsFragment extends Fragment {
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             rssItemList = (List<EventsRssItem>) resultData.getSerializable(ITEMS);
             mAdapter.updateChange(rssItemList);
+            ((EventsActivity) getActivity()).dismissProgressBar();
         }
     }
 
     /**
      *  Background task to start service for Rss
      */
-    private class DownloadXmlTask extends AsyncTask<Void, Void, String> {
+    private class DownloadXmlTask extends AsyncTask<Void, Integer, String> {
+
+        int p = 0;
+
         @Override
         protected String doInBackground(Void...voids) {
+            publishProgress(p);
             try {
                 mServiceIntent.putExtra(RECEIVER, receiver);
                 // Starts the IntentService
                 getActivity().startService(mServiceIntent);
+                while (p < 90) {
+                    //Sleep for up to one second.
+                    try {
+                        Thread.sleep(2);
+                    } catch (InterruptedException ignore) {
+
+                    }
+                    p += 1;
+                    publishProgress(p);
+                }
                 return "Intent Service Started";
             } catch (Exception e) {
                 e.printStackTrace();
             }
             return "Error";
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer...progress) {
+            super.onProgressUpdate(progress);
+            ((EventsActivity) getActivity()).updateProgressBar(progress[0]);
         }
 
         @Override
