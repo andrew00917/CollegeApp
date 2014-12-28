@@ -27,7 +27,7 @@
             <com.techhab.collegeapp.PagerSlidingTabStrip
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="@dimen/abc_action_bar_default_height_material"
                 android:layout_gravity="bottom"
                 android:scrollbars="none"
                 android:fillViewport="true"

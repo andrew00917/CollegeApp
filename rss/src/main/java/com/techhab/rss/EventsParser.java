@@ -71,7 +71,11 @@ public class EventsParser {
             if (title != null && description != null && link != null) {
                 String[] dateAndEvent = title.split(" - ");
                 String[] placeAndTime = description.split(", ");
-                EventsRssItem item = new EventsRssItem(dateAndEvent[0], dateAndEvent[1]
+                String event = dateAndEvent[1];
+                if (dateAndEvent[1].contains("&amp;")) {
+                    event = dateAndEvent[1].replace("&amp;", "&");
+                }
+                EventsRssItem item = new EventsRssItem(dateAndEvent[0], event
                         , placeAndTime[0], placeAndTime[placeAndTime.length - 1], link);
                 items.add(item);
                 title = null;

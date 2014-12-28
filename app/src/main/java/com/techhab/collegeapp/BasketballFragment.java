@@ -1,7 +1,6 @@
 package com.techhab.collegeapp;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,57 +27,50 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.techhab.rss.SportsRssItem;
+import com.techhab.rss.BasketballRssItem;
 import com.techhab.rss.SportsRssService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link BasketballFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link BasketballFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class BasketballFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     public static final String ARG_SCROLL_Y = "ARG_SCROLL_Y";
+
+    public static final String GENDER = "gender";
+    public static final String SPORT = "sport";
 
     public static final String ARG_OBJECT = "object";
 
-    private static final String ITEMS = "sportsRssItemList";
-    public static final String RECEIVER = "sportsReceiver";
+    private static final String ITEMS = "basketballRssItemList";
+    public static final String RECEIVER = "basketballReceiver";
 
     private Intent mServiceIntent;
     private MyResultReceiver receiver;
+    private boolean gender;
 
-    private List<SportsRssItem> rssItemList;
+    private List<BasketballRssItem> rssItemList;
 
     // Commented out until later date
 //    private TableLayout rosterTableLayout;
 
     private ScrollView basketballScrollView;
 
-    private TableLayout scheduleTableLayout;
+    private TableLayout pastGamesTableLayout;
     private UpcomingGamesAdapter mUpcomingGamesAdapter;
     private ListView upcomingGamesListView;
 
-    private LinearLayout upcomingGamesViewMoreButtonLayout;
-    private Button upcomingGamesViewMoreButton;
+    private LinearLayout upcomingGamesViewMoreButtonLayout, resultsCardFooter;
+    private Button upcomingGamesViewMoreButton, pastGamesViewMoreButton;
     private CardView upcomingGamesCardView;
     private ProgressBar upcomingGamesProgressBar;
 
+    private static int pastGamesTableLayoutHeight;
     private static int upcomingGamesListViewHeight;
+    private int pastGamesRemainingToShow;
     private int upcomingGamesCount;
-    private List<SportsRssItem> upcomingGamesList = new ArrayList<>();
-    private List<SportsRssItem> pastGamesList = new ArrayList<>();
+    private int gameRowHeight;
+    private List<BasketballRssItem> upcomingGamesList = new ArrayList<>();
+    private List<BasketballRssItem> pastGamesList = new ArrayList<>();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -94,11 +87,12 @@ public class BasketballFragment extends Fragment {
      * @return A new instance of fragment BasketballFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static BasketballFragment newInstance(String param1, String param2) {
+    public static BasketballFragment newInstance(String param1, String param2,
+                                                 String genderPreference) {
         BasketballFragment fragment = new BasketballFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -111,10 +105,20 @@ public class BasketballFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
+            gender = getArguments().getBoolean(GENDER);
         }
+        Log.d("Basketball Fragment onCreate", "gender = " + gender);
         mServiceIntent = new Intent(getActivity(), SportsRssService.class);
+        if (gender) {
+            mServiceIntent.putExtra("gender_preference",
+                    "http://hornets.kzoo.edu/sports/mbkb/2014-15/schedule?print=rss");
+        } else {
+            mServiceIntent.putExtra("gender_preference",
+                    "http://hornets.kzoo.edu/sports/wbkb/2014-15/schedule?print=rss");
+        }
+        mServiceIntent.putExtra("sport", "basketball");
         receiver = new MyResultReceiver(new Handler());
         rssItemList = new ArrayList<>();
         new DownloadXmlTask().execute();
@@ -126,7 +130,6 @@ public class BasketballFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_basketball, container, false);
-        scheduleTableLayout = (TableLayout) rootView.findViewById(R.id.schedule_table_layout);
         upcomingGamesListView = (ListView) rootView.findViewById(R.id.upcoming_games_listview);
         upcomingGamesViewMoreButton = (Button) rootView.findViewById(
                 R.id.upcoming_games_view_more_button);
@@ -135,18 +138,16 @@ public class BasketballFragment extends Fragment {
                 R.id.upcoming_games_view_more_button_layout);
         upcomingGamesProgressBar = (ProgressBar) rootView.findViewById(
                 R.id.upcoming_games_progress_bar);
-        /*basketballScrollView = (ScrollView) rootView.findViewById(
-                R.id.basketball_fragment_scrollview);*/
-
+        pastGamesTableLayout = (TableLayout) rootView.findViewById(R.id.past_games_table_layout);
+        pastGamesViewMoreButton = (Button) rootView.findViewById(R.id.past_games_view_more_button);
+        resultsCardFooter = (LinearLayout) rootView.findViewById(R.id.results_card_footer);
         upcomingGamesListView.setEmptyView(upcomingGamesProgressBar);
 
         /**
-         *
          * BEGIN OBSERVABLE SCROLL VIEW
-         *
          */
 
-        final ObservableScrollView scrollView = (ObservableScrollView) rootView.findViewById(R.id.basketball_fragment_scrollview);
+        final ObservableScrollView scrollView = (ObservableScrollView) rootView.findViewById(R.id.scrollview);
         Activity parentActivity = getActivity();
 
         if (parentActivity instanceof ObservableScrollViewCallbacks) {
@@ -171,40 +172,36 @@ public class BasketballFragment extends Fragment {
         }
 
         /**
-         *
          * END OBSERVABLE SCROLL VIEW
-         *
          */
-
-
-
-
 
         upcomingGamesViewMoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HeightAnimation animation = new HeightAnimation(upcomingGamesListView,
                         upcomingGamesListViewHeight, true);
-                animation.setDuration(400);
+                animation.setDuration(300);
                 upcomingGamesCardView.startAnimation(animation);
                 if (upcomingGamesCount == upcomingGamesList.size()) {
                     upcomingGamesViewMoreButtonLayout.setVisibility(View.GONE);
                 }
-
                 updateUpcomingGamesCount();
                 // TODO: fix auto-scrolling
-//                basketballScrollView.scrollTo(0, upcomingGamesViewMoreButton.getBottom());
-
             }
         });
 
-        String[] dates = new String[] { "Nov. 9", "Nov. 15", "Dec. 20"};
+        pastGamesViewMoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HeightAnimation animation = new HeightAnimation(pastGamesTableLayout,
+                        getHeightToIncrease(), true);
+                animation.setDuration(300);
+                pastGamesTableLayout.startAnimation(animation);
 
-        String[] opponents = new String[] { "at Western Mich.", "at Bluffton",
-                "at Wis.-Whitewater"};
-
-
-
+                // TODO: fix auto-scrolling
+//                scrollView.scrollTo(0, pastGamesTableLayout.getBottom());
+            }
+        });
 
 //        populateTeamRosterTable(athleteNames, athleteNumbers);
 
@@ -222,30 +219,45 @@ public class BasketballFragment extends Fragment {
             upcomingGamesCount = upcomingGamesCount +
                     (upcomingGamesList.size() - upcomingGamesCount);
         } else {
-            upcomingGamesCount = upcomingGamesCount + 3;
+            upcomingGamesCount += 3;
         }
         mUpcomingGamesAdapter.notifyDataSetChanged();
     }
 
-    public void sortGames(List<SportsRssItem> list) {
-        SportsRssItem item;
-        for (int i = 0; i < list.size(); i++) {
-            item = list.get(i);
-            if ( item.isUpcoming()) {
-                upcomingGamesList.add(item);
-            } else {
-                pastGamesList.add(item);
-            }
-        }
-
-        // Set the initial value of upcomingGamesCount, so that mUpcomingGamesAdapter
-        // can initialize properly.
-        if ( upcomingGamesList.size() > 6 ) {
-            upcomingGamesCount = 6;
-        } else if (upcomingGamesList.size() > 3 ) {
-            upcomingGamesCount = 3;
+    public int getHeightToIncrease() {
+        if ( pastGamesRemainingToShow >= 3) {
+            pastGamesRemainingToShow -= 3;
+            return (gameRowHeight * 3);
         } else {
-            upcomingGamesCount = upcomingGamesList.size();
+            // Hide "View More" button
+            resultsCardFooter.setVisibility(View.GONE);
+            return gameRowHeight * pastGamesRemainingToShow;
+        }
+    }
+
+    public void sortGames(List<BasketballRssItem> list) {
+        BasketballRssItem item;
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                item = list.get(i);
+                if (item.isUpcoming()) {
+                    upcomingGamesList.add(item);
+                } else {
+                    pastGamesList.add(item);
+                }
+            }
+
+            // Set the initial value of upcomingGamesCount, so that mUpcomingGamesAdapter
+            // can initialize properly.
+            if (upcomingGamesList.size() > 6) {
+                upcomingGamesCount = 6;
+            } else if (upcomingGamesList.size() > 3) {
+                upcomingGamesCount = 3;
+            } else {
+                upcomingGamesCount = upcomingGamesList.size();
+            }
+        } catch (Exception e) {
+            Log.d("sortGames", "sortGames broke it!");
         }
     }
 
@@ -257,18 +269,23 @@ public class BasketballFragment extends Fragment {
     }
 
 
-    private void populateScheduleResultsTable(List<SportsRssItem> pastGamesList,
-                                              String[] results) {
-        for (int i = 0; i < 3; i ++) {
+    private void populateScheduleResultsTable(List<BasketballRssItem> pastGamesList) {
+        for (int i = pastGamesList.size() - 1; i >= 0; i --) {
+
+            // Since switching genders often cause this method to break the app, I put in a
+            // check to see if the activity was fully initialized before trying to generate a
+            // new table row. Probably not a good long term solution.
+            if (getActivity() == null) {
+                Log.d("popSched", "getActivity returned null!");
+                return;
+            }
             TableRow tableRow = new TableRow(getActivity());
             int tableRowHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12,
                     getResources().getDisplayMetrics());
-//            tableRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-//                    tableRowHeight, 10f));
             tableRow.setWeightSum(10f);
             tableRow.setPadding(0, 0, 0, tableRowHeight);
 
-            SportsRssItem item = pastGamesList.get(i);
+            BasketballRssItem item = pastGamesList.get(i);
 
             addViewToRow(item.getDatePast(), tableRow, 1.5f);
             if ( item.isAtHome() ) {
@@ -278,23 +295,18 @@ public class BasketballFragment extends Fragment {
             }
             addViewToRow(item.getResult(), tableRow, 2f);
 
-            scheduleTableLayout.addView(tableRow);
+            pastGamesTableLayout.addView(tableRow);
         }
     }
 
     private void addViewToRow(String text, TableRow tableRow, float rowWeight) {
-
         TextView newTextView = new TextView(getActivity());
-
         newTextView.setText(text);
-
         newTextView.setTextColor(getResources().getColor(
                 R.color.primary_text_default_material_light));
         newTextView.setTextSize(16);
-
         newTextView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.WRAP_CONTENT, rowWeight));
-
         tableRow.addView(newTextView);
     }
 
@@ -381,6 +393,48 @@ public class BasketballFragment extends Fragment {
         listView.requestLayout();
     }
 
+    public void setTableLayoutHeightBasedOnChildren(TableLayout tableLayout) {
+        if (tableLayout == null) {
+            return;
+        }
+
+        // Check to make sure there's at least one past game
+        if ( tableLayout.getChildAt(1) != null ) {
+            View headerRow = tableLayout.getChildAt(0);
+            headerRow.measure(0, 0);
+            int heightOfHeaderRow = headerRow.getMeasuredHeight();
+
+
+            View gameRow = tableLayout.getChildAt(1);
+            gameRow.measure(0, 0);
+            gameRowHeight = gameRow.getMeasuredHeight();
+
+            int starterCount;
+            if (pastGamesList.size() <= 3) {
+                starterCount = pastGamesList.size();
+            } else {
+                starterCount = 3;
+                pastGamesRemainingToShow = pastGamesList.size() - starterCount;
+            }
+
+            pastGamesTableLayoutHeight = (gameRowHeight * starterCount);
+
+
+            int starterHeight = pastGamesTableLayoutHeight + heightOfHeaderRow;
+
+            ViewGroup.LayoutParams params = tableLayout.getLayoutParams();
+            params.height = starterHeight;
+            tableLayout.setLayoutParams(params);
+            tableLayout.requestLayout();
+        }
+
+        /*for (int i = 0; i < 3; i++) {
+            listItem.measure(0, 0);
+            heightToAdd += listItem.getMeasuredHeight();
+        }
+        View listItem = linearLayout.getChildAt(0);*/
+    }
+
     /**
      * Adapter for the Upcoming Games card.
      */
@@ -389,16 +443,16 @@ public class BasketballFragment extends Fragment {
         int[] teamLogos = {R.drawable.western_michigan_broncos,
                 R.drawable.bluffton_beavers, R.drawable.wisconsin_whitewater};
 
-        private List<SportsRssItem> items;
+        private List<BasketballRssItem> items;
 
         private Context context;
 
-        public UpcomingGamesAdapter(Context context, List<SportsRssItem> items) {
+        public UpcomingGamesAdapter(Context context, List<BasketballRssItem> items) {
             this.context = context;
             this.items = items;
         }
 
-        public void updateChange(List<SportsRssItem> list) {
+        public void updateChange(List<BasketballRssItem> list) {
             if ( ! items.isEmpty()) {
                 items.clear();
             }
@@ -434,7 +488,7 @@ public class BasketballFragment extends Fragment {
             if (convertView == null) {
                 LayoutInflater inflater =
                         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.upcoming_games_row, parent, false);
+                convertView = inflater.inflate(R.layout.upcoming_basketball_games_row, parent, false);
 
                 viewHolder = new ViewHolder();
                 viewHolder.date = (TextView) convertView.findViewById(R.id.game_date);
@@ -445,7 +499,8 @@ public class BasketballFragment extends Fragment {
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
-            SportsRssItem item = items.get(position);
+            BasketballRssItem item = items.get(position);
+            Log.d("Basketball Fragment", "I've got items! " + item);
 
             viewHolder.date.setText(item.getDateAndTimeUpcoming());
             viewHolder.title.setText(item.getOpponent());
@@ -473,12 +528,13 @@ public class BasketballFragment extends Fragment {
         @SuppressWarnings("unchecked")
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-            rssItemList = (List<SportsRssItem>) resultData.getSerializable(ITEMS);
+            rssItemList = (List<BasketballRssItem>) resultData.getSerializable(ITEMS);
+            Log.d("onReceiveResult", "Fragment: " + this.getClass() + ". This is RssItemList = " + rssItemList);
             sortGames(rssItemList);
             mUpcomingGamesAdapter.updateChange(upcomingGamesList);
-            String[] results = new String[] { "L, 81-32", "L, 81-69", "W, 100-0"};
-            populateScheduleResultsTable(pastGamesList, results);
             setListViewHeightBasedOnChildren(upcomingGamesListView);
+            populateScheduleResultsTable(pastGamesList);
+            setTableLayoutHeightBasedOnChildren(pastGamesTableLayout);
         }
     }
 
@@ -487,15 +543,8 @@ public class BasketballFragment extends Fragment {
      */
     private class DownloadXmlTask extends AsyncTask<Void, Void, String> {
 
-        ProgressDialog progress;
-
         @Override
         protected void onPreExecute() {
-            /*progress = new ProgressDialog(getActivity());
-            progress.setMessage("loading games");
-            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progress.setIndeterminate(true);
-            progress.show();*/
         }
 
         @Override

@@ -1,7 +1,7 @@
 <com.techhab.collegeapp.ObservableScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/basketball_fragment_scrollview"
+    android:id="@+id/scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -10,8 +10,8 @@
     <!--android:layout_marginTop="@dimen/abc_action_bar_default_height_material"-->
 
     <LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <View xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
@@ -467,7 +467,7 @@
 
 
                 <TableLayout
-                    android:id="@+id/schedule_table_layout"
+                    android:id="@+id/past_games_table_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp">
@@ -506,17 +506,19 @@
                 <include layout="@layout/card_divider" />
 
                 <LinearLayout
+                    android:id="@+id/results_card_footer"
                     android:layout_width="fill_parent"
                     android:layout_height="50dp"
                     android:gravity="right|center_vertical"
                     android:orientation="horizontal">
 
                     <Button
+                        android:id="@+id/past_games_view_more_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/MaterialButtonFlat"
                         android:textColor="@color/kzooOrange"
-                        android:text="VIEW MORE"/>
+                        android:text="@string/view_more"/>
 
                     </LinearLayout>
 

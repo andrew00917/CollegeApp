@@ -15,6 +15,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -102,6 +104,13 @@ public class CampusBuildingsFragment extends Fragment {
         private String[] mDescription;
         private Drawable[] mDrawable;
 
+        private void toggleVisibility (TextView text) {
+            if (text.getVisibility() == View.GONE)
+                text.setVisibility(View.VISIBLE);
+            else
+                text.setVisibility(View.GONE);
+        }
+
         public RecyclerAdapter(String[] dataset, String[] description, Drawable[] drawable, Context context) {
             mDataset = dataset;
             mContext = context;
@@ -113,14 +122,19 @@ public class CampusBuildingsFragment extends Fragment {
         public class ViewHolder extends RecyclerView.ViewHolder {
 
             public TextView mTextView, mDescr;
-            public ImageView mBanner;
-            public Button button;
+            public FrameLayout mBanner;
+            public ImageButton button;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                mTextView = (TextView) itemView.findViewById(R.id.card_title);
+                mTextView = (TextView) itemView.findViewById(R.id.building_title);
+                mTextView.setOnClickListener(new View.OnClickListener(){
+                    public void onClick(View v) {
+                        toggleVisibility(mDescr);
+                    }
+                });
 
-                mDescr = (TextView) itemView.findViewById(R.id.card_description);
+                mDescr = (TextView) itemView.findViewById(R.id.building_description);
                 mDescr.setOnClickListener(new View.OnClickListener(){
                     public void onClick(View v) {
                         Toast.makeText(
@@ -129,28 +143,26 @@ public class CampusBuildingsFragment extends Fragment {
                     }
                 });
 
-                mBanner = (ImageView) itemView.findViewById(R.id.card_banner);
+                mBanner = (FrameLayout) itemView.findViewById(R.id.building_banner);
                 mBanner.setOnTouchListener(new View.OnTouchListener(){
                     public boolean onTouch(View v, MotionEvent event){
                         switch (event.getAction()) {
                             case MotionEvent.ACTION_DOWN:
-                                mBanner.setColorFilter(Color.GRAY, PorterDuff.Mode.DARKEN);
+                                mBanner.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.DARKEN);
                                 break;
                             case MotionEvent.ACTION_UP:
-                                mBanner.setColorFilter(null);
-                                Toast.makeText(
-                                        mContext,
-                                        "Text should expand!" , Toast.LENGTH_LONG).show();
+                                mBanner.getBackground().setColorFilter(null);
+                                toggleVisibility(mDescr);
                                 break;
                             case MotionEvent.ACTION_CANCEL:
-                                mBanner.setColorFilter(null);
+                                mBanner.getBackground().setColorFilter(null);
                                 break;
                             default: break;
                         }
                         return true;
                     }
                 });
-                button = (Button) itemView.findViewById(R.id.card_button);
+                button = (ImageButton) itemView.findViewById(R.id.mapit_button);
                 button.setOnClickListener(new View.OnClickListener(){
                     public void onClick(View v){
                         Intent activityChangeIntent = new Intent(getActivity(), MapsActivity.class);
@@ -176,12 +188,12 @@ public class CampusBuildingsFragment extends Fragment {
                 case "Hicks Center":
                     holder.mTextView.setText(currentPos);
                     holder.mDescr.setText(mDescription[position]);
-                    holder.mBanner.setImageDrawable(mDrawable[position]);
+                    holder.mBanner.setBackground(mDrawable[position]);
                     break;
                 default:
                     holder.mTextView.setText(currentPos);
                     holder.mDescr.setText(mDescription[position]);
-                    holder.mBanner.setImageDrawable(mDrawable[position]);
+                    holder.mBanner.setBackground(mDrawable[position]);
             }
 
 
@@ -190,7 +202,7 @@ public class CampusBuildingsFragment extends Fragment {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.recycle_item_with_buttons, parent, false);
+                    R.layout.buildings_recycle, parent, false);
             ViewHolder holder = new ViewHolder(view);
             return holder;
         }

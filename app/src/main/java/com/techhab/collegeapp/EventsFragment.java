@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.techhab.kcollegecustomviews.ProgressBar;
 import com.techhab.rss.EventsRssItem;
 import com.techhab.rss.EventsRssService;
 
@@ -78,6 +79,7 @@ public class EventsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_events, parent, false);
+
         mRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view);
 
         return v;
@@ -136,8 +138,7 @@ public class EventsFragment extends Fragment {
             public TextView date, event, place, time;
             public View divider;
             public LinearLayout buttonSection;
-            public ImageButton infoButton, campusButton, calendarButton, favoriteButton,
-                    attendButton, mapItButton;
+            public ImageButton infoButton, favoriteButton;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -152,11 +153,7 @@ public class EventsFragment extends Fragment {
                 buttonSection = (LinearLayout) itemView.findViewById(R.id.button_section);
 
                 infoButton = (ImageButton) itemView.findViewById(R.id.info_button);
-                campusButton = (ImageButton) itemView.findViewById(R.id.campus_button);
-                calendarButton = (ImageButton) itemView.findViewById(R.id.calendar_button);
                 favoriteButton = (ImageButton) itemView.findViewById(R.id.favorite_button);
-                attendButton = (ImageButton) itemView.findViewById(R.id.attending_button);
-                mapItButton = (ImageButton) itemView.findViewById(R.id.mapit_button);
             }
 
         }
@@ -167,10 +164,25 @@ public class EventsFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder h, int p) {
+        public void onBindViewHolder(ViewHolder h, int position) {
             final ViewHolder holder = h;
-            final int position = p;
             final EventsRssItem item = items.get(position);
+            String event = item.getEvent();
+            if (event.contains("Stress Free Zone")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.stree_free_zone));
+            } else if (event.contains("Tuesdays With")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.tuesdays_with));
+            } else if (event.contains("Wind Down Wednesday")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.wind_down_wed));
+            } else if (event.contains("Trivia Night")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.trivia_night));
+            } else if (event.contains("Zoo Flicks")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.zoo_flicks));
+            } else if (event.contains("Zoo After Dark")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.zoo_after_dark));
+            } else {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.banner));
+            }
             holder.date.setText(item.getDate());
             holder.event.setText(item.getEvent());
             holder.place.setText(item.getPlace());
@@ -241,90 +253,13 @@ public class EventsFragment extends Fragment {
                             break;
                         case MotionEvent.ACTION_UP:
                             ((EventsActivity) getActivity()).buttonReleased(v);
-                            Toast.makeText(context, item.getLink(), Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                    return true;
-                }
-            });
-            holder.campusButton.setOnTouchListener(new View.OnTouchListener(){
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            ((EventsActivity) getActivity()).buttonPressed(v);
-                            break;
-                        case MotionEvent.ACTION_CANCEL:
-                        case MotionEvent.ACTION_OUTSIDE:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            Toast.makeText(context, item.getPlace(), Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                    return true;
-                }
-            });
-            holder.calendarButton.setOnTouchListener(new View.OnTouchListener(){
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            ((EventsActivity) getActivity()).buttonPressed(v);
-                            break;
-                        case MotionEvent.ACTION_CANCEL:
-                        case MotionEvent.ACTION_OUTSIDE:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
+                            ((EventsActivity) getActivity()).showInfoDialog(item.getEvent(), item.getLink());
                             break;
                     }
                     return true;
                 }
             });
             holder.favoriteButton.setOnTouchListener(new View.OnTouchListener(){
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            ((EventsActivity) getActivity()).buttonPressed(v);
-                            break;
-                        case MotionEvent.ACTION_CANCEL:
-                        case MotionEvent.ACTION_OUTSIDE:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                    }
-                    return true;
-                }
-            });
-            holder.attendButton.setOnTouchListener(new View.OnTouchListener(){
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            ((EventsActivity) getActivity()).buttonPressed(v);
-                            break;
-                        case MotionEvent.ACTION_CANCEL:
-                        case MotionEvent.ACTION_OUTSIDE:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                    }
-                    return true;
-                }
-            });
-            holder.mapItButton.setOnTouchListener(new View.OnTouchListener(){
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -368,24 +303,45 @@ public class EventsFragment extends Fragment {
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             rssItemList = (List<EventsRssItem>) resultData.getSerializable(ITEMS);
             mAdapter.updateChange(rssItemList);
+            ((EventsActivity) getActivity()).dismissProgressBar();
         }
     }
 
     /**
      *  Background task to start service for Rss
      */
-    private class DownloadXmlTask extends AsyncTask<Void, Void, String> {
+    private class DownloadXmlTask extends AsyncTask<Void, Integer, String> {
+
+        int p = 0;
+
         @Override
         protected String doInBackground(Void...voids) {
+            publishProgress(p);
             try {
                 mServiceIntent.putExtra(RECEIVER, receiver);
                 // Starts the IntentService
                 getActivity().startService(mServiceIntent);
+                while (p < 90) {
+                    //Sleep for up to one second.
+                    try {
+                        Thread.sleep(2);
+                    } catch (InterruptedException ignore) {
+
+                    }
+                    p += 1;
+                    publishProgress(p);
+                }
                 return "Intent Service Started";
             } catch (Exception e) {
                 e.printStackTrace();
             }
             return "Error";
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer...progress) {
+            super.onProgressUpdate(progress);
+            ((EventsActivity) getActivity()).updateProgressBar(progress[0]);
         }
 
         @Override
