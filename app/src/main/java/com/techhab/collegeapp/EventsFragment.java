@@ -127,7 +127,9 @@ public class EventsFragment extends Fragment {
             if ( ! items.isEmpty()) {
                 items.clear();
             }
-            items.addAll(list);
+            if ( ! list.isEmpty()) {
+                items.addAll(list);
+            }
             this.notifyDataSetChanged();
         }
 
