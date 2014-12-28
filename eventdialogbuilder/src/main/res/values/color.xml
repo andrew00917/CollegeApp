@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#000000</color>
-
-    <!-- Kzoo College colors -->
-    <color name="kzooOrange">#E27226</color>
-    <color name="main00">#E27226</color>
-    <color name="main01">#E26526</color>
-    <color name="main10">#E25826</color>
-    <color name="main11">#E24B26</color>
-    <color name="main20">#E23E26</color>
-    <color name="main21">#E23126</color>
-    <color name="main00_trans">#50E27226</color>
-
 </resources>

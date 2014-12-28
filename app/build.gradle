@@ -33,4 +33,5 @@ dependencies {
     compile project(':eventdialogbuilder')
     compile project(':rss')
     compile files('libs/gradle-bintray-plugin-1.0.jar')
+    compile project(':kcollegecustomviews')
 }

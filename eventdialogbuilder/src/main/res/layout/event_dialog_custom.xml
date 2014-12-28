@@ -31,12 +31,11 @@
         android:textSize="14sp"
         android:textColor="@color/black" />
 
-    <ProgressBar
+    <com.techhab.kcollegecustomviews.ProgressBar
         android:id="@+id/progress_bar"
-        style="@style/CustomProgressBar"
         android:layout_width="fill_parent"
-        android:layout_height="15dp"
-        android:gravity="center" />
+        android:layout_height="8dp"
+        style="?android:attr/progressBarStyleHorizontal"/>
 
     <include layout="@layout/card_divider" />
 

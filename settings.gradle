@@ -1,1 +1,1 @@
-include ':app', ':rss', ':eventdialogbuilder', ':library'
+include ':app', ':rss', ':eventdialogbuilder', ':library', ':kcollegecustomviews'
