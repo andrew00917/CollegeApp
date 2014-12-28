@@ -72,9 +72,10 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
         check = (ImageButton) layout.findViewById(R.id.attending_button);
     }
 
-    private void setOnClickListener(String event, String building, String date) {
+    private void setOnClickListener(String event, String building, int duration, String date) {
         final String e = event;
         final String b = building;
+        final int d = duration;
 
         final String[] dateTime = formatDate(date);
 
@@ -121,9 +122,10 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
                     }
                     int minute = Integer.parseInt(dateTime[3].split(":")[1].split(" ")[0]);
 
-                    GregorianCalendar calDate = new GregorianCalendar(year, month, day, hour, minute);
-                    values.put(CalendarContract.Events.DTSTART, calDate.getTimeInMillis());
-                    values.put(CalendarContract.Events.DTEND, calDate.getTimeInMillis());
+                    GregorianCalendar calDateStart = new GregorianCalendar(year, month, day, hour, minute);
+                    GregorianCalendar calDateEnd = new GregorianCalendar(year, month, day, hour + d, minute);
+                    values.put(CalendarContract.Events.DTSTART, calDateStart.getTimeInMillis());
+                    values.put(CalendarContract.Events.DTEND, calDateEnd.getTimeInMillis());
                     values.put(CalendarContract.Events.EVENT_TIMEZONE, "America/Detroit");
                     values.put(CalendarContract.Events.HAS_ALARM, true);
 
@@ -217,6 +219,7 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
                 Elements elems = doc.select("p");
 
                 String building = "";
+                int duration = 1;
                 String date = "";
                 for (Element elem : elems) {
                     String className = elem.className();
@@ -226,7 +229,10 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
                     } else if (className.equals("time")) {
                         date += ", " + elem.text().split(": ")[1];
                         buffer.append("\n" + elem.text() + "\n");
-                    } else if (className.equals("duration") || className.equals("sponsor")) {
+                    } else if (className.equals("duration")) {
+                        duration = Integer.parseInt(elem.text().split(" ")[0]);
+                        buffer.append("\n" + elem.text() + "\n");
+                    } else if (className.equals("sponsor")) {
                         buffer.append("\n" + elem.text() + "\n");
                     } else if (className.equals("location")) {
                         building = elem.text().split(": ")[1];
@@ -237,7 +243,7 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
                         publishProgress(progressInt);
                     }
                 }
-                setOnClickListener(title.getText().toString(), building, date);
+                setOnClickListener(title.getText().toString(), building, duration, date);
                 publishProgress(100);
                 return buffer.toString();
             } catch (IOException e) {
