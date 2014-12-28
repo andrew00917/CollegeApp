@@ -191,8 +191,9 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
             }
         });
 
-        new MyAsyncTask().execute(link);
         dialog.show();
+
+        new MyAsyncTask().execute(link);
     }
 
     private class MyAsyncTask extends AsyncTask<String, Integer, String> {
@@ -230,7 +231,7 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
                         date += ", " + elem.text().split(": ")[1];
                         buffer.append("\n" + elem.text() + "\n");
                     } else if (className.equals("duration")) {
-                        duration = Integer.parseInt(elem.text().split(" ")[0]);
+                        duration = Integer.parseInt(elem.text().split(" ")[1]);
                         buffer.append("\n" + elem.text() + "\n");
                     } else if (className.equals("sponsor")) {
                         buffer.append("\n" + elem.text() + "\n");
