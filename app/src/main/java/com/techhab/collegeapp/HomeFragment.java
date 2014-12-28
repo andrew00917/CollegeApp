@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +21,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TextView;
 
 import com.techhab.collegeapp.application.CollegeApplication;
 
@@ -32,14 +36,19 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
 
     // Views
     private View v;
-    private ImageView main00;
-    private ImageView main01;
-    private ImageView main02;
-    private ImageView main10;
-    private ImageView main11;
-    private ImageView main12;
+    private LinearLayout mainContainer;
+    private ImageView mainExpand;
+    private boolean isExpanded;
+
+    private TextView main00;
+    private TextView main01;
+    private TextView main02;
+    private TextView main10;
+    private TextView main11;
+    private TextView main12;
 
     // View id
+    private static final int MAIN_EXPAND_ID = R.id.main_expand;
     private static final int MAIN_00_ID = R.id.main_menu_00;
     private static final int MAIN_01_ID = R.id.main_menu_01;
     private static final int MAIN_02_ID = R.id.main_menu_02;
@@ -78,17 +87,23 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
 
         progressContainer = (FrameLayout)v.findViewById(R.id.progress_container);
         // Hide the progressContainer
-        progressContainer.setVisibility(View.INVISIBLE);
+        progressContainer.setVisibility(FrameLayout.INVISIBLE);
 
         // Set banner image according to current time in timezone
 //        setBanner(v);
 
-        main00 = (ImageView) v.findViewById(R.id.main_menu_00);
-        main01 = (ImageView) v.findViewById(R.id.main_menu_01);
-        main02 = (ImageView) v.findViewById(R.id.main_menu_02);
-        main10 = (ImageView) v.findViewById(R.id.main_menu_10);
-        main11 = (ImageView) v.findViewById(R.id.main_menu_11);
-        main12 = (ImageView) v.findViewById(R.id.main_menu_12);
+        mainContainer = (LinearLayout) v.findViewById(R.id.main_container);
+        mainExpand = (ImageView) v.findViewById(R.id.main_expand);
+        isExpanded = false;
+
+        main00 = (TextView) v.findViewById(R.id.main_menu_00);
+        main01 = (TextView) v.findViewById(R.id.main_menu_01);
+        main02 = (TextView) v.findViewById(R.id.main_menu_02);
+        main10 = (TextView) v.findViewById(R.id.main_menu_10);
+        main11 = (TextView) v.findViewById(R.id.main_menu_11);
+        main12 = (TextView) v.findViewById(R.id.main_menu_12);
+
+        mainExpand.setOnTouchListener(this);
 
         main00.setOnTouchListener(this);
         main01.setOnTouchListener(this);
@@ -143,8 +158,32 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
                     case MAIN_12_ID:
                         intent = new Intent(getActivity(), NewsActivity.class);
                         break;
+                    case MAIN_EXPAND_ID:
+                        if (isExpanded) {
+                            mainContainer.setLayoutParams(new FrameLayout
+                                    .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT));
+                            mainContainer.setBackgroundColor(getResources().getColor(R.color.main00));
+                            setText();
+                            expandToolbar();
+                            mainExpand.setImageDrawable(getResources().getDrawable(R.drawable.main_expand_less));
+                            isExpanded = false;
+                        }
+                        else {
+                            mainContainer.setLayoutParams(new FrameLayout
+                                    .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                    mainExpand.getHeight() + main00.getHeight()));
+                            mainContainer.setBackgroundColor(getResources().getColor(R.color.main00_trans));
+                            nullifyText();
+                            lessToolbar();
+                            mainExpand.setImageDrawable(getResources().getDrawable(R.drawable.main_expand_more));
+                            isExpanded = true;
+                        }
+                        break;
                 }
-                getActivity().startActivity(intent);
+                if (intent != null) {
+                    getActivity().startActivity(intent);
+                }
                 break;
         }
         return true;
@@ -228,6 +267,32 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
     private void buttonReleased(View view) {
         Animation animation = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.button_released);
         view.startAnimation(animation);
+    }
+
+    private void nullifyText() {
+        main00.setText("");
+        main01.setText("");
+        main02.setText("");
+        main10.setText("");
+        main11.setText("");
+        main12.setText("");
+    }
+
+    private void setText() {
+        main00.setText(getResources().getString(R.string.main_menu_00));
+        main01.setText(getResources().getString(R.string.main_menu_01));
+        main02.setText(getResources().getString(R.string.main_menu_02));
+        main10.setText(getResources().getString(R.string.main_menu_10));
+        main11.setText(getResources().getString(R.string.main_menu_11));
+        main12.setText(getResources().getString(R.string.main_menu_12));
+    }
+
+    private void lessToolbar() {
+        ((HomeActivity) getActivity()).setActionBarLess();
+    }
+
+    private void expandToolbar() {
+        ((HomeActivity) getActivity()).setActionBarExpand();
     }
 
     /**

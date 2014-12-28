@@ -1,13 +1,14 @@
 package com.techhab.collegeapp;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,17 +20,21 @@ import com.google.android.gms.maps.model.MarkerOptions;
 /**
  * Created by Kevin on 11/9/2014.
  */
-public class MapsActivity extends FragmentActivity {
+public class MapsActivity extends ActionBarActivity {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private static boolean academicBuildings = false;
     private static boolean residentialHalls = false;
     private static boolean showAll = false;
     private static Menu mMenu;
+    private Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         setUpMapIfNeeded();
     }
 
@@ -56,6 +61,25 @@ public class MapsActivity extends FragmentActivity {
                     @Override
                     public void onSelection(MaterialDialog dialog, Integer[] which,
                                             CharSequence[] text) {
+                        Log.e("Choose buildings dialog on selection", which.toString());
+//                        if (which != null) {
+//                            for (int i : which) {
+//
+////                                if (i == 0) {
+////
+////                                }
+////                                if 0 {
+////                                    Academic
+////                                }
+////                                else if {
+////
+////                                }
+//                            }
+//                        }
+//                        else {
+//                            //none selected Error
+//
+//                        }
                     }
                 })
                 .positiveText("OK")
@@ -117,7 +141,7 @@ public class MapsActivity extends FragmentActivity {
         mMap.clear();
 
         //KCollege
-        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(42.290304, -85.601896), 17.0f) );
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(42.290304, -85.601896), 17.0f));
 //        CameraUpdateFactory.zoomTo(5);
 //        if (!(academicBuildings&&residentialHalls)) {
 //            showAll = true;

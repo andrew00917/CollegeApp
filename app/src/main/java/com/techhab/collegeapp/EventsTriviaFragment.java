@@ -15,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.techhab.rss.EventsRssItem;
@@ -138,12 +140,12 @@ public class EventsTriviaFragment extends Fragment {
         // Not use static
         public class ViewHolder extends RecyclerView.ViewHolder {
 
-            public ImageView image;
+            public FrameLayout image;
             public TextView date, event, place, time;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                image = (ImageView) itemView.findViewById(R.id.image);
+                image = (FrameLayout) itemView.findViewById(R.id.image);
                 date = (TextView) itemView.findViewById(R.id.date);
                 event = (TextView) itemView.findViewById(R.id.event);
                 place = (TextView) itemView.findViewById(R.id.place);

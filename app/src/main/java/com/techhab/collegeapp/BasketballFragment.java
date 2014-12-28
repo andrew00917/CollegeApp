@@ -1,8 +1,13 @@
 package com.techhab.collegeapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,11 +16,16 @@ import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.techhab.rss.SportsRssItem;
+import com.techhab.rss.SportsRssService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -34,7 +44,18 @@ public class BasketballFragment extends Fragment {
 
     public static final String ARG_OBJECT = "object";
 
-    private TableLayout rosterTableLayout, scheduleTableLayout;
+    private static final String ITEMS = "sportsRssItemList";
+    public static final String RECEIVER = "sportsReceiver";
+
+    private Intent mServiceIntent;
+    private MyResultReceiver receiver;
+
+    private List<SportsRssItem> rssItemList;
+
+    // Commented out until later date
+//    private TableLayout rosterTableLayout;
+
+    private TableLayout scheduleTableLayout;
     private UpcomingGamesAdapter mUpcomingGamesAdapter;
     private ListView upcomingGamesListView;
 
@@ -73,7 +94,25 @@ public class BasketballFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mServiceIntent = new Intent(getActivity(), SportsRssService.class);
+        receiver = new MyResultReceiver(new Handler());
+        rssItemList = new ArrayList<>();
+        new DownloadXmlTask().execute();
+        Log.d("onCreate", "I created everything!!");
 
+    }
+
+    public List<SportsRssItem> getUpcomingGames(List<SportsRssItem> list) {
+        List<SportsRssItem> ret = new ArrayList<>();
+        SportsRssItem item;
+        for (int i = 0; i < list.size(); i++) {
+            item = list.get(i);
+            Log.d("Upcoming games", "title and score: " + item.getTitleAndScore());
+//            if ( !item.getTitleAndScore().contains("Final")) {
+                ret.add(item);
+//            }
+        }
+        return ret;
     }
 
     @Override
@@ -81,16 +120,16 @@ public class BasketballFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_basketball, container, false);
-        rosterTableLayout = (TableLayout) rootView.findViewById(R.id.roster_table_layout);
+//        rosterTableLayout = (TableLayout) rootView.findViewById(R.id.roster_table_layout);
         scheduleTableLayout = (TableLayout) rootView.findViewById(R.id.schedule_table_layout);
         upcomingGamesListView = (ListView) rootView.findViewById(R.id.upcoming_games_listview);
 
         // I'm too lazy to make a custom class for player objects, so i'm just gonna have
         // two strings for two diff types of data.
-        String[] athleteNumbers = new String[] { "4", "10", "12",
-                "15", "17", "19", "20" };
-        String[] athleteNames = new String[] { "Cam Schwartz", "Stephen Oliphant", "Matt Jong",
-                "Mike Oravetz", "Charlie Carson", "Aaron Schoenfeldt", "Roger Hood" };
+        /*String[] athleteNumbers = new String[] { "4", "10", "12",
+                "15", "17", "19", "20" };*/
+        /*String[] athleteNames = new String[] { "Cam Schwartz", "Stephen Oliphant", "Matt Jong",
+                "Mike Oravetz", "Charlie Carson", "Aaron Schoenfeldt", "Roger Hood" };*/
 
         String[] dates = new String[] { "Nov. 9", "Nov. 15", "Dec. 20"};
 
@@ -100,13 +139,18 @@ public class BasketballFragment extends Fragment {
         String[] results = new String[] { "L, 81-32", "L, 81-69", "W, 100-0"};
 
 
-        populateTeamRosterTable(athleteNames, athleteNumbers);
+//        populateTeamRosterTable(athleteNames, athleteNumbers);
         populateScheduleResultsTable(dates, opponents, results);
 
-        mUpcomingGamesAdapter = new UpcomingGamesAdapter(getActivity());
-        upcomingGamesListView.setAdapter(mUpcomingGamesAdapter);
-        setListViewHeightBasedOnChildren(upcomingGamesListView);
+//        setListViewHeightBasedOnChildren(upcomingGamesListView);
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mUpcomingGamesAdapter = new UpcomingGamesAdapter(getActivity(), rssItemList);
+        upcomingGamesListView.setAdapter(mUpcomingGamesAdapter);
     }
 
     private void populateScheduleResultsTable(String[] dates, String[] opponents,
@@ -156,7 +200,8 @@ public class BasketballFragment extends Fragment {
     }
 
 
-    private void populateTeamRosterTable(String[] athleteNames, String[] athleteNumbers) {
+    // Commented out for future usage
+    /*private void populateTeamRosterTable(String[] athleteNames, String[] athleteNumbers) {
         for (int i = 0; i < athleteNames.length; i ++) {
             TableRow tableRow = new TableRow(getActivity());
             int tableRowHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12,
@@ -192,14 +237,7 @@ public class BasketballFragment extends Fragment {
             rosterTableLayout.addView(tableRow);
         }
 
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+    }*/
 
     /**
      * This interface must be implemented by activities that contain this
@@ -240,28 +278,53 @@ public class BasketballFragment extends Fragment {
 
         // ULTIMATELY I WILL USE COMPLEX DATA OBJECTS TO POPULATE THE DIFFERENT VIEWS,
         // BUT FOR NOW I WILL USE SIMPLE ARRAYS
-        String[] dates = new String[] { "Nov. 9, 2:00PM", "Nov. 15, 6:00PM", "Dec. 20, 8:30PM"};
-
-        String[] opponents = new String[] { "at Western Mich.", "at Bluffton",
-                "at Wis.-Whitewater"};
+//        String[] dates = new String[] { "Nov. 9, 2:00PM", "Nov. 15, 6:00PM", "Dec. 20, 8:30PM"};
+//
+//        String[] opponents = new String[] { "at Western Mich.", "at Bluffton",
+//                "at Wis.-Whitewater"};
 
         int[] teamLogos = {R.drawable.western_michigan_broncos,
                 R.drawable.bluffton_beavers, R.drawable.wisconsin_whitewater};
 
+        private List<SportsRssItem> items;
+
         private Context context;
 
-        public UpcomingGamesAdapter(Context context) {
+        public UpcomingGamesAdapter(Context context, List<SportsRssItem> items) {
             this.context = context;
+            this.items = items;
+        }
+
+        public void updateChange(List<SportsRssItem> list) {
+            if ( ! items.isEmpty()) {
+                items.clear();
+            }
+            items.addAll(list);
+            this.notifyDataSetChanged();
+        }
+
+        // Not use static
+        public class ViewHolder {
+
+            public TextView date, title;
+
+            /*public ViewHolder(View itemView) {
+                super(itemView);
+                date = (TextView) itemView.findViewById(R.id.game_date);
+                title = (TextView) itemView.findViewById(R.id.opponent_title);
+            }*/
         }
 
         @Override
         public int getCount() {
-            return 3;
+//            return items.size() > 0 ? 3 : 0;
+            Log.d("getCount", "items.size: " + items.size());
+            return items.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return opponents[position];
+            return items.get(position);
         }
 
         @Override
@@ -269,24 +332,99 @@ public class BasketballFragment extends Fragment {
             return position;
         }
 
+//        @Override
+//        public void onBindViewHolder(ViewHolder holder, int position) {
+//            SportsRssItem item = items.get(position);
+//            holder.date.setText(item.getDateAndTime());
+//            holder.title.setText(item.getTitleAndScore());
+//        }
+
+        /*@Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.upcoming_games_row, parent, false);
+            return new ViewHolder(view);
+        }*/
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View row = null;
+            ViewHolder viewHolder;
+//            View row = null;
             if (convertView == null) {
                 LayoutInflater inflater =
                         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                row = inflater.inflate(R.layout.upcoming_games_row, parent, false);
-            } else {
-                row = convertView;
-            }
-            ImageView opponentLogo = (ImageView) row.findViewById(R.id.opponent_logo);
-            TextView opponentTitle = (TextView) row.findViewById(R.id.opponent_title);
-            TextView gameDate = (TextView) row.findViewById(R.id.game_date);
+                convertView = inflater.inflate(R.layout.upcoming_games_row, parent, false);
 
-            opponentLogo.setImageResource(teamLogos[position]);
-            opponentTitle.setText(opponents[position]);
-            gameDate.setText(dates[position]);
-            return row;
+                viewHolder = new ViewHolder();
+                viewHolder.date = (TextView) convertView.findViewById(R.id.game_date);
+                viewHolder.title = (TextView) convertView.findViewById(R.id.opponent_title);
+
+                convertView.setTag(viewHolder);
+
+//                row = inflater.inflate(R.layout.upcoming_games_row, parent, false);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+//                row = convertView;
+            }
+//            ImageView opponentLogo = (ImageView) row.findViewById(R.id.opponent_logo);
+//            TextView opponentTitle = (TextView) row.findViewById(R.id.opponent_title);
+//            TextView gameDate = (TextView) row.findViewById(R.id.game_date);
+//
+            SportsRssItem item = items.get(position);
+//
+//            opponentLogo.setImageResource(teamLogos[position]);
+//            opponentTitle.setText(item.getTitleAndScore());
+//            gameDate.setText(item.getDateAndTime());
+
+            viewHolder.date.setText(item.getDateAndTime());
+            viewHolder.title.setText(item.getTitleAndScore());
+
+            return convertView;
+        }
+    }
+
+
+    /**
+     * Rss Receiver
+     */
+    public class MyResultReceiver extends ResultReceiver {
+
+        public MyResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            Log.d("onReceiveResult", "onReceiveResult is runniNG!!");
+            rssItemList = (List<SportsRssItem>) resultData.getSerializable(ITEMS);
+//            rssItemList = getUpcomingGames(rssItemList);
+            Log.d("rssItemList", "rss: " + rssItemList.size());
+            mUpcomingGamesAdapter.updateChange(rssItemList);
+        }
+    }
+
+    /**
+     *  Background task to start service for Rss
+     */
+    private class DownloadXmlTask extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void...voids) {
+            try {
+                mServiceIntent.putExtra(RECEIVER, receiver);
+                // Starts the IntentService
+                getActivity().startService(mServiceIntent);
+                Log.d("doInBackground", "Intent Service started");
+                return "Intent Service Started";
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "Error";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
         }
     }
 }
