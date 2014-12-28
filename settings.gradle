@@ -1,1 +1,1 @@
-include ':app', ':rss'
+include ':app', ':rss', ':eventdialogbuilder', ':library'

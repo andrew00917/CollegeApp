@@ -136,8 +136,7 @@ public class EventsFragment extends Fragment {
             public TextView date, event, place, time;
             public View divider;
             public LinearLayout buttonSection;
-            public ImageButton infoButton, campusButton, calendarButton, favoriteButton,
-                    attendButton, mapItButton;
+            public ImageButton infoButton, favoriteButton;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -152,11 +151,7 @@ public class EventsFragment extends Fragment {
                 buttonSection = (LinearLayout) itemView.findViewById(R.id.button_section);
 
                 infoButton = (ImageButton) itemView.findViewById(R.id.info_button);
-                campusButton = (ImageButton) itemView.findViewById(R.id.campus_button);
-                calendarButton = (ImageButton) itemView.findViewById(R.id.calendar_button);
                 favoriteButton = (ImageButton) itemView.findViewById(R.id.favorite_button);
-                attendButton = (ImageButton) itemView.findViewById(R.id.attending_button);
-                mapItButton = (ImageButton) itemView.findViewById(R.id.mapit_button);
             }
 
         }
@@ -167,9 +162,8 @@ public class EventsFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder h, int p) {
+        public void onBindViewHolder(ViewHolder h, int position) {
             final ViewHolder holder = h;
-            final int position = p;
             final EventsRssItem item = items.get(position);
             holder.date.setText(item.getDate());
             holder.event.setText(item.getEvent());
@@ -241,90 +235,13 @@ public class EventsFragment extends Fragment {
                             break;
                         case MotionEvent.ACTION_UP:
                             ((EventsActivity) getActivity()).buttonReleased(v);
-                            Toast.makeText(context, item.getLink(), Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                    return true;
-                }
-            });
-            holder.campusButton.setOnTouchListener(new View.OnTouchListener(){
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            ((EventsActivity) getActivity()).buttonPressed(v);
-                            break;
-                        case MotionEvent.ACTION_CANCEL:
-                        case MotionEvent.ACTION_OUTSIDE:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            Toast.makeText(context, item.getPlace(), Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                    return true;
-                }
-            });
-            holder.calendarButton.setOnTouchListener(new View.OnTouchListener(){
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            ((EventsActivity) getActivity()).buttonPressed(v);
-                            break;
-                        case MotionEvent.ACTION_CANCEL:
-                        case MotionEvent.ACTION_OUTSIDE:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
+                            ((EventsActivity) getActivity()).showInfoDialog(item.getEvent(), item.getLink());
                             break;
                     }
                     return true;
                 }
             });
             holder.favoriteButton.setOnTouchListener(new View.OnTouchListener(){
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            ((EventsActivity) getActivity()).buttonPressed(v);
-                            break;
-                        case MotionEvent.ACTION_CANCEL:
-                        case MotionEvent.ACTION_OUTSIDE:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                    }
-                    return true;
-                }
-            });
-            holder.attendButton.setOnTouchListener(new View.OnTouchListener(){
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            ((EventsActivity) getActivity()).buttonPressed(v);
-                            break;
-                        case MotionEvent.ACTION_CANCEL:
-                        case MotionEvent.ACTION_OUTSIDE:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                    }
-                    return true;
-                }
-            });
-            holder.mapItButton.setOnTouchListener(new View.OnTouchListener(){
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {

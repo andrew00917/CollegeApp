@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_layout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:contentDescription="@string/content_description"
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:padding="8dp"
+        android:src="@drawable/ic_close"
+        android:clickable="true" />
+
+    <include layout="@layout/card_divider" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/primary_text_default_material_light"/>
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/black" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/CustomProgressBar"
+        android:layout_width="fill_parent"
+        android:layout_height="15dp"
+        android:gravity="center" />
+
+    <include layout="@layout/card_divider" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end" >
+
+        <ImageButton
+            android:contentDescription="@string/content_description"
+            android:id="@+id/campus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center_horizontal"
+            android:src="@drawable/ic_campus"
+            android:background="@android:color/transparent" />
+
+        <ImageButton
+            android:contentDescription="@string/content_description"
+            android:id="@+id/mapit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center_horizontal"
+            android:src="@drawable/ic_mapit"
+            android:background="@android:color/transparent" />
+
+        <ImageButton
+            android:contentDescription="@string/content_description"
+            android:id="@+id/calendar_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center_horizontal"
+            android:src="@drawable/ic_calendar"
+            android:background="@android:color/transparent" />
+
+        <ImageButton
+            android:contentDescription="@string/content_description"
+            android:id="@+id/attending_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center_horizontal"
+            android:src="@drawable/ic_check"
+            android:background="@android:color/transparent" />
+
+    </LinearLayout>
+
+</LinearLayout>
