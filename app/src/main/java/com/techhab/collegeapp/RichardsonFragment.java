@@ -14,16 +14,21 @@ import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,6 +46,7 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
     LinearLayout llHeader;
     private boolean isBreakfastCollapse = true;
     RecyclerView.LayoutManager mLayoutManager;
+    Spinner spinner;
     int currentBarColor;
 
 
@@ -64,6 +70,20 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
         tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
         ibExpandble = (ImageButton) v.findViewById(R.id.ibExpandable);
         llHeader = (LinearLayout) v.findViewById(R.id.richardson_status_bar);
+        spinner = (Spinner) v.findViewById(R.id.richardson_spinner);
+        List<String> days = new ArrayList<>();
+        days.add("Today");
+        days.add("Tomorrow");
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
+        gregorianCalendar.add(Calendar.DATE, 2);
+        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
+        String nextDay = dayFormat.format(gregorianCalendar.getTime());
+        days.add(nextDay);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_item, days);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
+
         tvTimeInfo.setOnClickListener(this);
         //todo: fake data for Richardson
         Richardson = new FoodStore();
