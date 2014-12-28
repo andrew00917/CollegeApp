@@ -8,11 +8,11 @@
 
 
     <LinearLayout
-        android:orientation="vertical"
         android:id="@+id/panel_side_cafeteria"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:showDividers="middle"
+        android:orientation="vertical"
         android:divider="?android:dividerHorizontal">
         <LinearLayout android:id="@+id/richardson_status_bar"
             android:layout_width="match_parent"
@@ -24,12 +24,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <ImageView
-                    android:id="@+id/fragment_cafeteria_image"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_margin="5dp"
-                    android:src="@drawable/open_sign"/>
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/fragment_cafeteria_image"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/open_sign"/>
+
+                </FrameLayout>
                 <TextView android:id="@+id/fragment_cafeteria_tvInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -40,36 +45,39 @@
                     android:text="Closes in 2 hours"
                     />
 
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:src="@drawable/ic_action_expand"
-                    android:id="@+id/ibExpandable"
-                    android:layout_gravity="center_vertical"
-                    />
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent">
 
+                    <ImageButton
+                        android:id="@+id/ibExpandable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:src="@drawable/ic_action_expand"
+                        android:layout_marginRight="12dp"
+                        android:layout_gravity="center_vertical|right"
+                        />
+                </FrameLayout>
             </LinearLayout>
 
             <TextView android:id="@+id/fragment_cafeteria_tvTimeDetail"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:textSize="16dp"
-                android:visibility="gone"
                 android:paddingTop="4dp"
-                android:animateLayoutChanges="true"
                 android:textColor="@color/abc_secondary_text_material_dark"
                 android:layout_marginLeft="70dp"
                 android:text="Monday-Friday 8:00-10:00pm\nSaturdays 12:00-6:00pm\nSundays 10-7pm"
                 />
-
 
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fragment_cafeteria_rvMenu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            />
 
     </LinearLayout>
 

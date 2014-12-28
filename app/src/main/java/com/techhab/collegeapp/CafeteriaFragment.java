@@ -70,9 +70,6 @@ public class CafeteriaFragment extends Fragment {
 
 
 
-        /*ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.cafeteria_value));
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
 
         tvTimeInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,10 +98,14 @@ public class CafeteriaFragment extends Fragment {
         days.add("Today");
         days.add("Tomorrow");
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
+        GregorianCalendar gregorianCalendar1 = new GregorianCalendar();
         gregorianCalendar.add(Calendar.DATE, 2);
+        gregorianCalendar1.add(Calendar.DATE, 3);
         SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
-        String nextDay = dayFormat.format(gregorianCalendar.getTime());
-        days.add(nextDay);
+        String thirdDay = dayFormat.format(gregorianCalendar.getTime());
+        String forthDay = dayFormat.format(gregorianCalendar1.getTime());
+        days.add(thirdDay);
+        days.add(forthDay);
         CustomAdapter spinnerAdapter = new CustomAdapter(getActivity(), android.R.layout.simple_spinner_item, days);
 //        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         cafeteriaSpinner.setAdapter(spinnerAdapter);
@@ -541,8 +542,6 @@ public class CafeteriaFragment extends Fragment {
             this.context = context;
             this.days = days;
 
-            Log.d("CustomAdapter", "days = " + this.days);
-
             /***********  Layout inflator to call external xml layout () **********************/
             inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -561,7 +560,6 @@ public class CafeteriaFragment extends Fragment {
         // This funtion called for each row ( Called data.size() times )
         public View getCustomView(int position, View convertView, ViewGroup parent) {
 
-            Log.d("CustomAdapter", "getCustomView is called!");
             /********** Inflate spinner_rows.xml file for each row ( Defined below ) ************/
             View row = inflater.inflate(R.layout.cafeteria_spinner_rows, parent, false);
 
@@ -570,7 +568,6 @@ public class CafeteriaFragment extends Fragment {
 
             label.setText(days.get(position));
 
-            Log.d("CustomAdapter", "days.get(position)" + days.get(position));
 
             return row;
         }

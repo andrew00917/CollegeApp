@@ -47,11 +47,12 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
     private boolean isBreakfastCollapse = true;
     RecyclerView.LayoutManager mLayoutManager;
     int currentBarColor;
+    private boolean isExpanded = false;
 
 
     private static final int RICHARDSON = 1;
 
-    public static Fragment createNewIntace() {
+    public static Fragment createNewInstance() {
         RichardsonFragment fragment = new RichardsonFragment();
         Bundle arg = new Bundle();
         fragment.setArguments(arg);
@@ -69,8 +70,24 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
         tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
         ibExpandble = (ImageButton) v.findViewById(R.id.ibExpandable);
         llHeader = (LinearLayout) v.findViewById(R.id.richardson_status_bar);
-
-        tvTimeInfo.setOnClickListener(this);
+        tvTimeInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isExpanded) { // Expand
+                    HeightAnimation animation = new HeightAnimation(tvTimeDetailInfo, 300, true);
+                    animation.setDuration(300);
+                    llHeader.startAnimation(animation);
+                    ibExpandble.setImageResource(R.drawable.ic_action_expand);
+                    isExpanded = !isExpanded;
+                } else { // Collapse
+                    HeightAnimation animation = new HeightAnimation(tvTimeDetailInfo, 300, false);
+                    animation.setDuration(300);
+                    llHeader.startAnimation(animation);
+                    ibExpandble.setImageResource(R.drawable.ic_action_collapse);
+                    isExpanded = !isExpanded;
+                }
+            }
+        });
         //todo: fake data for Richardson
         Richardson = new FoodStore();
         Richardson.setStoreName("Richardson Room");
