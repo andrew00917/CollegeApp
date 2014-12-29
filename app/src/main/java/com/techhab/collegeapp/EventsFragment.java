@@ -142,7 +142,7 @@ public class EventsFragment extends Fragment {
             public View divider;
             public LinearLayout buttonSection;
             public ImageButton infoButton;
-            public ImageView favoriteButton;
+            public ImageView favoriteButton, buildingButton, calendarButton, attendButton;
             public boolean cardExpanded = false;
             public boolean buttonExpanded = false;
 
@@ -162,6 +162,9 @@ public class EventsFragment extends Fragment {
 
                 infoButton = (ImageButton) v.findViewById(R.id.info_button);
                 favoriteButton = (ImageView) v.findViewById(R.id.favorite_button);
+                buildingButton = (ImageView) v.findViewById(R.id.building_button);
+                calendarButton = (ImageView) v.findViewById(R.id.calendar_button);
+                attendButton = (ImageView) v.findViewById(R.id.attending_button);
             }
 
         }
@@ -214,28 +217,47 @@ public class EventsFragment extends Fragment {
                             HeightAnimation animation;
                             if (holder.cardExpanded) {
                                 animation = new HeightAnimation(holder.place
-                                        , holder.buttonSection.getHeight(), false);
+                                        , holder.event.getHeight(), false);
                                 holder.cardExpanded = false;
                             } else {
                                 animation = new HeightAnimation(holder.place
-                                        , holder.buttonSection.getHeight(), true);
+                                        , holder.event.getHeight(), true);
                                 holder.cardExpanded = true;
                             }
                             animation.setDuration(300);
                             holder.place.startAnimation(animation);
 
                             WidthAnimation widthAnimation;
+                            int width = holder.buttonSection.getHeight();
                             if (holder.buttonExpanded) {
-                                widthAnimation = new WidthAnimation(holder.favoriteButton
-                                        , holder.infoButton.getWidth(), false);
+                                widthAnimation = new WidthAnimation(holder.favoriteButton, width, false);
+                                widthAnimation.setDuration(300);
+                                holder.favoriteButton.startAnimation(widthAnimation);
+                                widthAnimation = new WidthAnimation(holder.buildingButton, width, false);
+                                widthAnimation.setDuration(300);
+                                holder.buildingButton.startAnimation(widthAnimation);
+                                widthAnimation = new WidthAnimation(holder.calendarButton, width, false);
+                                widthAnimation.setDuration(300);
+                                holder.calendarButton.startAnimation(widthAnimation);
+                                widthAnimation = new WidthAnimation(holder.attendButton, width, false);
+                                widthAnimation.setDuration(300);
+                                holder.attendButton.startAnimation(widthAnimation);
                                 holder.buttonExpanded = false;
                             } else {
-                                widthAnimation = new WidthAnimation(holder.favoriteButton
-                                        , holder.infoButton.getWidth(), true);
+                                widthAnimation = new WidthAnimation(holder.favoriteButton, width, true);
+                                widthAnimation.setDuration(300);
+                                holder.favoriteButton.startAnimation(widthAnimation);
+                                widthAnimation = new WidthAnimation(holder.buildingButton, width, true);
+                                widthAnimation.setDuration(300);
+                                holder.buildingButton.startAnimation(widthAnimation);
+                                widthAnimation = new WidthAnimation(holder.calendarButton, width, true);
+                                widthAnimation.setDuration(300);
+                                holder.calendarButton.startAnimation(widthAnimation);
+                                widthAnimation = new WidthAnimation(holder.attendButton, width, true);
+                                widthAnimation.setDuration(300);
+                                holder.attendButton.startAnimation(widthAnimation);
                                 holder.buttonExpanded = true;
                             }
-                            widthAnimation.setDuration(300);
-                            holder.favoriteButton.startAnimation(widthAnimation);
                             break;
                     }
                     return true;

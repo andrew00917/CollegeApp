@@ -17,7 +17,7 @@ public class WidthAnimation extends Animation {
         this.view = view;
         this.widthToAddOrSubtract = widthToAddOrSubtract;
         this.grow = grow;
-        width = view.getWidth();
+        this.width = view.getWidth();
     }
 
     @Override
