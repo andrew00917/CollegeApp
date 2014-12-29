@@ -61,7 +61,6 @@ public class CrossCountryParser {
 
                     if (n.equals("title")) {
                         titleAndScore = readTitle(parser);
-                        Log.d("CrossCountryParser", "titleAndScore = " + titleAndScore);
                     } else if (n.equals("link")) {
                         link = readLink(parser);
                     } else if (n.equals("description")) {
@@ -75,7 +74,6 @@ public class CrossCountryParser {
             if (titleAndScore != null && link != null) {
                 CrossCountryRssItem item = new CrossCountryRssItem(titleAndScore, link, description);
                 items.add(item);
-                Log.d("CrossCountryParser", "item added!" + item);
                 titleAndScore = null;
                 link = null;
                 description = null;

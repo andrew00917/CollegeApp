@@ -151,6 +151,7 @@
     <string name="women">WOMEN\'S</string>
     <string name="view_more">VIEW MORE</string>
     <string name="view_less">VIEW LESS</string>
+    <string name="collapse_list">COLLAPSE LIST</string>
 
         <!-- Game In Progress card-->
         <string name="game_in_progress">Game In Progress</string>

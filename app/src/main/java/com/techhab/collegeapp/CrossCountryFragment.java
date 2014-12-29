@@ -113,7 +113,6 @@ public class CrossCountryFragment extends Fragment {
 //            mParam2 = getArguments().getString(ARG_PARAM2);
             gender = getArguments().getBoolean(GENDER);
         }
-        Log.d("CrossCountry Fragment onCreate", "gender = " + gender);
         mServiceIntent = new Intent(getActivity(), SportsRssService.class);
         if (gender) {
             mServiceIntent.putExtra("gender_preference",
@@ -522,7 +521,6 @@ public class CrossCountryFragment extends Fragment {
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             rssItemList = (List<CrossCountryRssItem>) resultData.getSerializable(ITEMS);
-            Log.d("onReceiveResult", "Fragment: " + this.getClass() + ". This is RssItemList = " + rssItemList);
             sortGames(rssItemList);
             mUpcomingGamesAdapter.updateChange(upcomingGamesList);
             setListViewHeightBasedOnChildren(upcomingEventsListView);

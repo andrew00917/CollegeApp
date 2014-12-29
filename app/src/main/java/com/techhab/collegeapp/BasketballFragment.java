@@ -15,7 +15,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.app.Fragment;
 import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -33,7 +32,7 @@ import com.techhab.rss.SportsRssService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BasketballFragment extends Fragment {
+public class BasketballFragment extends GenericSportsFragment {
     public static final String ARG_SCROLL_Y = "ARG_SCROLL_Y";
 
     public static final String GENDER = "gender";
@@ -66,9 +65,13 @@ public class BasketballFragment extends Fragment {
 
     private static int pastGamesTableLayoutHeight;
     private static int upcomingGamesListViewHeight;
+    private int upcomingGamesItemHeight;
+    private int upcomingGamesHeightToAdd;
+    private int upcomingGamesHeightAdded;
     private int pastGamesRemainingToShow;
-    private int upcomingGamesCount;
-    private int gameRowHeight;
+    private int upcomingGamesCount; // Count to keep track of how many items to
+    // load in the adapter
+    private int pastGamesItemHeight;
     private List<BasketballRssItem> upcomingGamesList = new ArrayList<>();
     private List<BasketballRssItem> pastGamesList = new ArrayList<>();
 
@@ -105,11 +108,8 @@ public class BasketballFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
             gender = getArguments().getBoolean(GENDER);
         }
-        Log.d("Basketball Fragment onCreate", "gender = " + gender);
         mServiceIntent = new Intent(getActivity(), SportsRssService.class);
         if (gender) {
             mServiceIntent.putExtra("gender_preference",
@@ -139,15 +139,20 @@ public class BasketballFragment extends Fragment {
         upcomingGamesProgressBar = (ProgressBar) rootView.findViewById(
                 R.id.upcoming_games_progress_bar);
         pastGamesTableLayout = (TableLayout) rootView.findViewById(R.id.past_games_table_layout);
-        pastGamesViewMoreButton = (Button) rootView.findViewById(R.id.past_games_view_more_button);
+        pastGamesViewMoreButton = (Button) rootView.findViewById(
+                R.id.past_games_view_more_button);
         resultsCardFooter = (LinearLayout) rootView.findViewById(R.id.results_card_footer);
         upcomingGamesListView.setEmptyView(upcomingGamesProgressBar);
+
+        mUpcomingGamesAdapter = new UpcomingGamesAdapter(getActivity(), rssItemList);
+        upcomingGamesListView.setAdapter(mUpcomingGamesAdapter);
 
         /**
          * BEGIN OBSERVABLE SCROLL VIEW
          */
 
-        final ObservableScrollView scrollView = (ObservableScrollView) rootView.findViewById(R.id.scrollview);
+        final ObservableScrollView scrollView =
+                (ObservableScrollView) rootView.findViewById(R.id.scrollview);
         Activity parentActivity = getActivity();
 
         if (parentActivity instanceof ObservableScrollViewCallbacks) {
@@ -175,20 +180,38 @@ public class BasketballFragment extends Fragment {
          * END OBSERVABLE SCROLL VIEW
          */
 
-        upcomingGamesViewMoreButton.setOnClickListener(new View.OnClickListener() {
+        setButtonOnClickListener(upcomingGamesViewMoreButton);
+
+        /*upcomingGamesViewMoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HeightAnimation animation = new HeightAnimation(upcomingGamesListView,
-                        upcomingGamesListViewHeight, true);
-                animation.setDuration(300);
-                upcomingGamesCardView.startAnimation(animation);
-                if (upcomingGamesCount == upcomingGamesList.size()) {
-                    upcomingGamesViewMoreButtonLayout.setVisibility(View.GONE);
+                if (upcomingGamesViewMoreButton.getText().equals("VIEW MORE")) {
+                    // Sometimes the height to add variable doesn't get set, so check to make
+                    // sure it has a value.
+                    if (upcomingGamesHeightToAdd == 0 ) {
+                        initializeUpcomingGamesCount();
+                    }
+                    HeightAnimation animation = new HeightAnimation(upcomingGamesListView,
+                            upcomingGamesHeightToAdd, true);
+                    animation.setDuration(300);
+                    upcomingGamesCardView.startAnimation(animation);
+                    if (upcomingGamesCount == upcomingGamesList.size()) {
+                        upcomingGamesViewMoreButton.setText(R.string.collapse_list);
+                    }
+                    upcomingGamesHeightAdded += upcomingGamesHeightToAdd;
+                    updateUpcomingGamesCount();
+                } else {
+                    HeightAnimation animation = new HeightAnimation(upcomingGamesListView,
+                            upcomingGamesHeightAdded, false);
+                    animation.setDuration(300);
+                    upcomingGamesCardView.startAnimation(animation);
+                    upcomingGamesHeightAdded = 0;
+                    initializeUpcomingGamesCount();
+                    upcomingGamesViewMoreButton.setText(R.string.view_more);
                 }
-                updateUpcomingGamesCount();
                 // TODO: fix auto-scrolling
             }
-        });
+        });*/
 
         pastGamesViewMoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,28 +233,32 @@ public class BasketballFragment extends Fragment {
 
     /**
      * Updates the upcomingGamesCount for the mUpcomingGamesAdapter. This way, the
-     * adapter knows how many more ListView items to load before the user hits "View More"
+     * adapter knows how many more ListView items to load before the user hits "View More".
      */
     public void updateUpcomingGamesCount() {
         // If upcoming games list does not have 3 more items to add, just add however many
         // are remaining.
-        if ( (upcomingGamesList.size() - upcomingGamesCount) < 3 ) {
-            upcomingGamesCount = upcomingGamesCount +
-                    (upcomingGamesList.size() - upcomingGamesCount);
+        int upcomingGamesRemaining = upcomingGamesList.size() - upcomingGamesCount;
+        if ( upcomingGamesRemaining < 3 ) {
+            upcomingGamesCount += upcomingGamesRemaining;
+            upcomingGamesHeightToAdd = upcomingGamesRemaining * upcomingGamesItemHeight;
         } else {
             upcomingGamesCount += 3;
+            upcomingGamesHeightToAdd = 3 * upcomingGamesItemHeight;
         }
+
+
         mUpcomingGamesAdapter.notifyDataSetChanged();
     }
 
     public int getHeightToIncrease() {
         if ( pastGamesRemainingToShow >= 3) {
             pastGamesRemainingToShow -= 3;
-            return (gameRowHeight * 3);
+            return (pastGamesItemHeight * 3);
         } else {
             // Hide "View More" button
             resultsCardFooter.setVisibility(View.GONE);
-            return gameRowHeight * pastGamesRemainingToShow;
+            return pastGamesItemHeight * pastGamesRemainingToShow;
         }
     }
 
@@ -240,32 +267,40 @@ public class BasketballFragment extends Fragment {
         try {
             for (int i = 0; i < list.size(); i++) {
                 item = list.get(i);
-                if (item.isUpcoming()) {
+                if ( item.isUpcoming() ) {
                     upcomingGamesList.add(item);
                 } else {
                     pastGamesList.add(item);
                 }
             }
 
+            initializeUpcomingGamesCount();
+
             // Set the initial value of upcomingGamesCount, so that mUpcomingGamesAdapter
             // can initialize properly.
-            if (upcomingGamesList.size() > 6) {
-                upcomingGamesCount = 6;
-            } else if (upcomingGamesList.size() > 3) {
-                upcomingGamesCount = 3;
-            } else {
-                upcomingGamesCount = upcomingGamesList.size();
-            }
         } catch (Exception e) {
             Log.d("sortGames", "sortGames broke it!");
+        }
+    }
+
+    private void initializeUpcomingGamesCount() {
+        if ( upcomingGamesList.size() > 6 ) {
+            upcomingGamesCount = 6;
+            upcomingGamesHeightToAdd = 3 * upcomingGamesItemHeight;
+        } else if ( upcomingGamesList.size() > 3 ){
+            upcomingGamesCount = upcomingGamesList.size();
+            upcomingGamesHeightToAdd = (upcomingGamesCount - 3) * upcomingGamesItemHeight;
+        } else {
+            upcomingGamesCount = upcomingGamesList.size();
+            upcomingGamesHeightToAdd = 0;
         }
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mUpcomingGamesAdapter = new UpcomingGamesAdapter(getActivity(), rssItemList);
-        upcomingGamesListView.setAdapter(mUpcomingGamesAdapter);
+        /*mUpcomingGamesAdapter = new UpcomingGamesAdapter(getActivity(), rssItemList);
+        upcomingGamesListView.setAdapter(mUpcomingGamesAdapter);*/
     }
 
 
@@ -298,18 +333,6 @@ public class BasketballFragment extends Fragment {
             pastGamesTableLayout.addView(tableRow);
         }
     }
-
-    private void addViewToRow(String text, TableRow tableRow, float rowWeight) {
-        TextView newTextView = new TextView(getActivity());
-        newTextView.setText(text);
-        newTextView.setTextColor(getResources().getColor(
-                R.color.primary_text_default_material_light));
-        newTextView.setTextSize(16);
-        newTextView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-                TableRow.LayoutParams.WRAP_CONTENT, rowWeight));
-        tableRow.addView(newTextView);
-    }
-
 
     // Commented out for future usage
     /*private void populateTeamRosterTable(String[] athleteNames, String[] athleteNumbers) {
@@ -372,7 +395,7 @@ public class BasketballFragment extends Fragment {
      *
      * @param listView - the ListView to have its height set
      */
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
+    public void setListViewHeightBasedOnChildren(ListView listView) {
         UpcomingGamesAdapter listAdapter = (UpcomingGamesAdapter) listView.getAdapter();
         if (listAdapter == null) {
             // pre-condition
@@ -383,12 +406,12 @@ public class BasketballFragment extends Fragment {
         for (int i = 0; i < 3; i++) {
             View listItem = listAdapter.getView(i, null, listView);
             listItem.measure(0, 0);
+            upcomingGamesItemHeight = listItem.getMeasuredHeight() + listView.getDividerHeight();
             totalHeight += listItem.getMeasuredHeight();
         }
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = upcomingGamesListViewHeight = totalHeight +
-                (listView.getDividerHeight() * (3));
+        params.height = totalHeight + (listView.getDividerHeight() * (3));
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
@@ -407,7 +430,7 @@ public class BasketballFragment extends Fragment {
 
             View gameRow = tableLayout.getChildAt(1);
             gameRow.measure(0, 0);
-            gameRowHeight = gameRow.getMeasuredHeight();
+            pastGamesItemHeight = gameRow.getMeasuredHeight();
 
             int starterCount;
             if (pastGamesList.size() <= 3) {
@@ -417,7 +440,7 @@ public class BasketballFragment extends Fragment {
                 pastGamesRemainingToShow = pastGamesList.size() - starterCount;
             }
 
-            pastGamesTableLayoutHeight = (gameRowHeight * starterCount);
+            pastGamesTableLayoutHeight = (pastGamesItemHeight * starterCount);
 
 
             int starterHeight = pastGamesTableLayoutHeight + heightOfHeaderRow;
@@ -500,7 +523,6 @@ public class BasketballFragment extends Fragment {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             BasketballRssItem item = items.get(position);
-            Log.d("Basketball Fragment", "I've got items! " + item);
 
             viewHolder.date.setText(item.getDateAndTimeUpcoming());
             viewHolder.title.setText(item.getOpponent());
@@ -529,7 +551,6 @@ public class BasketballFragment extends Fragment {
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             rssItemList = (List<BasketballRssItem>) resultData.getSerializable(ITEMS);
-            Log.d("onReceiveResult", "Fragment: " + this.getClass() + ". This is RssItemList = " + rssItemList);
             sortGames(rssItemList);
             mUpcomingGamesAdapter.updateChange(upcomingGamesList);
             setListViewHeightBasedOnChildren(upcomingGamesListView);
