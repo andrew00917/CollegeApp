@@ -215,13 +215,12 @@ public class EventsFragment extends Fragment {
                             ((EventsActivity) getActivity()).buttonReleased(v);
                             // TODO: fix auto-scrolling
                             HeightAnimation animation;
+                            int height = holder.buttonSection.getHeight() + 15;
                             if (holder.cardExpanded) {
-                                animation = new HeightAnimation(holder.place
-                                        , holder.event.getHeight(), false);
+                                animation = new HeightAnimation(holder.place, height, false);
                                 holder.cardExpanded = false;
                             } else {
-                                animation = new HeightAnimation(holder.place
-                                        , holder.event.getHeight(), true);
+                                animation = new HeightAnimation(holder.place, height, true);
                                 holder.cardExpanded = true;
                             }
                             animation.setDuration(300);
