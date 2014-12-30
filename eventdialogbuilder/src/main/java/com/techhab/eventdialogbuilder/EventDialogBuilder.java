@@ -25,8 +25,10 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * Created by jhchoe on 12/27/14.
@@ -94,63 +96,7 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
         calendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ContentResolver cr = context.getContentResolver();
-                ContentValues values = new ContentValues();
-                // 1 is default calendar id - e.g. "My Calendar"
-                values.put(CalendarContract.Events.CALENDAR_ID, 1);
-                values.put(CalendarContract.Events.TITLE, e);
-                values.put(CalendarContract.Events.EVENT_LOCATION, b);
 
-                Calendar cal = Calendar.getInstance();
-                try {
-                    int year = Integer.parseInt(dateTime[2]);
-
-                    cal.setTime(new SimpleDateFormat("MMMM").parse(dateTime[1].split(" ")[0]));
-                    int month = cal.get(Calendar.MONTH);
-                    int day = 0;
-
-                    String dayString = dateTime[1].split(" ")[1];
-                    if (dayString.length() < 4) {
-                        day = Integer.parseInt("" + dayString.charAt(0));
-                    } else {
-                        day = Integer.parseInt("" + dayString.charAt(0) + dayString.charAt(1));
-                    }
-
-                    int hour = Integer.parseInt(dateTime[3].split(":")[0]);
-                    if ( ! dateTime[3].split(":")[1].split(" ")[1].equals("am")) {
-                        hour += 12;
-                    }
-                    int minute = Integer.parseInt(dateTime[3].split(":")[1].split(" ")[0]);
-
-                    GregorianCalendar calDateStart = new GregorianCalendar(year, month, day, hour, minute);
-                    GregorianCalendar calDateEnd = new GregorianCalendar(year, month, day, hour + d, minute);
-                    values.put(CalendarContract.Events.DTSTART, calDateStart.getTimeInMillis());
-                    values.put(CalendarContract.Events.DTEND, calDateEnd.getTimeInMillis());
-                    values.put(CalendarContract.Events.EVENT_TIMEZONE, "America/Detroit");
-                    values.put(CalendarContract.Events.HAS_ALARM, true);
-
-                    values.put(CalendarContract.Events.ACCESS_LEVEL, CalendarContract.Events.ACCESS_PRIVATE);
-                    values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
-
-                    Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
-
-                    long eventID = Long.parseLong(uri.getLastPathSegment());
-
-                    /* Add Reminder to CalendarContract.Reminders */
-                    values = new ContentValues();
-                    values.put(CalendarContract.Reminders.EVENT_ID, eventID);
-                    values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
-                    values.put(CalendarContract.Reminders.MINUTES, 15);
-
-                    // updating uri with reminder values
-                    uri = cr.insert(CalendarContract.Reminders.CONTENT_URI, values);
-
-                    // notify the user that the event is now added to their private calendar.
-                    Toast.makeText(context, "Event added to the calendar successfully", Toast.LENGTH_SHORT).show();
-                } catch (ParseException p) {
-                    p.printStackTrace();
-                    Toast.makeText(context, "ParseException: formating error.", Toast.LENGTH_SHORT).show();
-                }
             }
         });
         check.setOnClickListener(new View.OnClickListener() {
@@ -200,22 +146,22 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
 
         @Override
         protected String doInBackground(String...link) {
-            int progressInt = 0;
+//            int progressInt = 0;
             try {
                 StringBuffer buffer = new StringBuffer();
-                while (progressInt < 40) {
-                    //Sleep for up to one second.
-                    try {
-                        Thread.sleep(2);
-                    } catch (InterruptedException ignore) {
-
-                    }
-                    progressInt += 1;
-                    publishProgress(progressInt);
-                }
+//                while (progressInt < 40) {
+//                    //Sleep for up to one second.
+//                    try {
+//                        Thread.sleep(2);
+//                    } catch (InterruptedException ignore) {
+//
+//                    }
+//                    progressInt += 1;
+//                    publishProgress(progressInt);
+//                }
                 Document doc = Jsoup.connect(link[0]).get();
-                progressInt = 60;
-                publishProgress(progressInt);
+//                progressInt = 60;
+//                publishProgress(progressInt);
 
                 Elements elems = doc.select("p");
 
@@ -239,13 +185,13 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
                         building = elem.text().split(": ")[1];
                         buffer.append("\n" + elem.text() + "\n");
                     }
-                    if (progressInt < 95) {
-                        progressInt += 10;
-                        publishProgress(progressInt);
-                    }
+//                    if (progressInt < 95) {
+//                        progressInt += 10;
+//                        publishProgress(progressInt);
+//                    }
                 }
                 setOnClickListener(title.getText().toString(), building, duration, date);
-                publishProgress(100);
+//                publishProgress(100);
                 return buffer.toString();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -255,13 +201,13 @@ public class EventDialogBuilder extends MaterialDialog.Builder {
 
         @Override
         protected void onProgressUpdate(Integer...progress) {
-            progressbar.setProgress(progress[0]);
+//            progressbar.setProgress(progress[0]);
         }
 
         @Override
         protected void onPostExecute(String result) {
             content.setText(result);
-            progressbar.setVisibility(ProgressBar.GONE);
+//            progressbar.setVisibility(ProgressBar.GONE);
         }
     }
 }

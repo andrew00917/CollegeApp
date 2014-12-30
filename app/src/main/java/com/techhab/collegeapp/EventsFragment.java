@@ -2,6 +2,7 @@ package com.techhab.collegeapp;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,7 +11,6 @@ import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.techhab.kcollegecustomviews.ProgressBar;
+import com.techhab.rss.EventsDom;
 import com.techhab.rss.EventsRssItem;
 import com.techhab.rss.EventsRssService;
 
@@ -117,6 +118,8 @@ public class EventsFragment extends Fragment {
 
         private Context context;
         private List<EventsRssItem> items;
+        private int expandedPosition = -1;
+        private ViewHolder expandedHolder;
 
         public RssAdapter(Context context, List<EventsRssItem> items) {
             this.context = context;
@@ -134,17 +137,16 @@ public class EventsFragment extends Fragment {
         }
 
         // Not use static
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
             public View v;
             public FrameLayout image;
-            public TextView date, event, place, time;
+            public TextView date, event, description, time;
+            public ProgressBar progress;
             public View divider;
             public LinearLayout buttonSection;
             public ImageButton infoButton;
             public ImageView favoriteButton, buildingButton, calendarButton, attendButton;
-            public boolean cardExpanded = false;
-            public boolean buttonExpanded = false;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -153,8 +155,10 @@ public class EventsFragment extends Fragment {
                 image = (FrameLayout) v.findViewById(R.id.image);
                 date = (TextView) v.findViewById(R.id.date);
                 event = (TextView) v.findViewById(R.id.event);
-                place = (TextView) v.findViewById(R.id.place);
+                description = (TextView) v.findViewById(R.id.place);
                 time = (TextView) v.findViewById(R.id.time);
+
+                progress = (ProgressBar) v.findViewById(R.id.progress_bar);
 
                 divider = v.findViewById(R.id.divider);
 
@@ -167,6 +171,42 @@ public class EventsFragment extends Fragment {
                 attendButton = (ImageView) v.findViewById(R.id.attending_button);
             }
 
+            public int getButtonSectionHeight() {
+                return buttonSection.getHeight();
+            }
+
+            @Override
+            public void onClick(View view) {
+                ViewHolder holder = (ViewHolder) view.getTag();
+
+                switch (view.getId()) {
+                    case R.id.info_button:
+                        // Check for an expanded view, collapse if you find one
+                        if (expandedPosition >= 0) {
+                            ViewHolder prev = expandedHolder;
+                            collapseCard(prev);
+                        }
+                        // Set the current position to "expanded"
+                        expandedPosition = holder.getPosition();
+                        expandCard(holder);
+                        setDescription(holder, items.get(expandedPosition).getLink());
+                        expandedHolder = holder;
+                        break;
+                }
+                Toast.makeText(context, "Holder on click " + holder.getPosition(), Toast.LENGTH_SHORT).show();
+            }
+
+            /**
+             *  Generate jsoup DOM to set description of the event's cards and set calendar
+             *  button on click listener
+             *
+             * @param h
+             * @param link
+             */
+            private void setDescription(ViewHolder h, String link) {
+                new EventsDom(getActivity(), h.event.getText().toString(), h.description,
+                        h.calendarButton, link, h.progress);
+            }
         }
 
         @Override
@@ -175,138 +215,62 @@ public class EventsFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder h, int position) {
-            final ViewHolder holder = h;
-            final EventsRssItem item = items.get(position);
-            String event = item.getEvent();
-            if (event.contains("Stress Free Zone")) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
+//            final ViewHolder holder = h;
+            final EventsRssItem item;
+            if (position < items.size()) {
+                item = items.get(position);
+            } else {
+                return;
+            }
+            String[] event = item.getEvent().split(" ");
+
+            if (event[0].equals("Stress")) {
                 holder.image.setBackground(getResources().getDrawable(R.drawable.stree_free_zone));
-            } else if (event.contains("Tuesdays With")) {
+            } else if (event[0].equals("Tuesdays")) {
                 holder.image.setBackground(getResources().getDrawable(R.drawable.tuesdays_with));
-            } else if (event.contains("Wind Down Wednesday")) {
+            } else if (event[0].equals("Wind")) {
                 holder.image.setBackground(getResources().getDrawable(R.drawable.wind_down_wed));
-            } else if (event.contains("Trivia Night")) {
+            } else if (event[0].equals("Trivia")) {
                 holder.image.setBackground(getResources().getDrawable(R.drawable.trivia_night));
-            } else if (event.contains("Zoo Flicks")) {
+            } else if (event[1].equals("Flicks")) {
                 holder.image.setBackground(getResources().getDrawable(R.drawable.zoo_flicks));
-            } else if (event.contains("Zoo After Dark")) {
+            } else if (event[1].equals("After")) {
                 holder.image.setBackground(getResources().getDrawable(R.drawable.zoo_after_dark));
             } else {
                 holder.image.setBackground(getResources().getDrawable(R.drawable.banner));
             }
             holder.date.setText(item.getDate());
             holder.event.setText(item.getEvent());
-            holder.place.setText(item.getPlace());
             holder.time.setText(item.getTime());
 
-            holder.image.setOnTouchListener(new View.OnTouchListener() {
+            if (position == expandedPosition) {
+                expandCard(holder);
+            } else {
+                collapseCard(holder);
+            }
 
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            ((EventsActivity) getActivity()).buttonPressed(v);
-                            break;
-                        case MotionEvent.ACTION_CANCEL:
-                        case MotionEvent.ACTION_OUTSIDE:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            // TODO: fix auto-scrolling
-                            HeightAnimation animation;
-                            int height = holder.buttonSection.getHeight() + 15;
-                            if (holder.cardExpanded) {
-                                animation = new HeightAnimation(holder.place, height, false);
-                                holder.cardExpanded = false;
-                            } else {
-                                animation = new HeightAnimation(holder.place, height, true);
-                                holder.cardExpanded = true;
-                            }
-                            animation.setDuration(300);
-                            holder.place.startAnimation(animation);
+//            holder.infoButton.setOnTouchListener(new View.OnTouchListener() {
+//
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    switch (event.getAction()) {
+//                        case MotionEvent.ACTION_DOWN:
+//                            ((EventsActivity) getActivity()).buttonPressed(v);
+//                            break;
+//                        case MotionEvent.ACTION_CANCEL:
+//                        case MotionEvent.ACTION_OUTSIDE:
+//                            ((EventsActivity) getActivity()).buttonReleased(v);
+//                            break;
+//                        case MotionEvent.ACTION_UP:
+//                            ((EventsActivity) getActivity()).buttonReleased(v);
+//                            // TODO: fix auto-scrolling
+//                            break;
+//                    }
+//                    return true;
+//                }
+//            });
 
-                            WidthAnimation widthAnimation;
-                            int width = holder.buttonSection.getHeight();
-                            if (holder.buttonExpanded) {
-                                widthAnimation = new WidthAnimation(holder.favoriteButton, width, false);
-                                widthAnimation.setDuration(300);
-                                holder.favoriteButton.startAnimation(widthAnimation);
-                                widthAnimation = new WidthAnimation(holder.buildingButton, width, false);
-                                widthAnimation.setDuration(300);
-                                holder.buildingButton.startAnimation(widthAnimation);
-                                widthAnimation = new WidthAnimation(holder.calendarButton, width, false);
-                                widthAnimation.setDuration(300);
-                                holder.calendarButton.startAnimation(widthAnimation);
-                                widthAnimation = new WidthAnimation(holder.attendButton, width, false);
-                                widthAnimation.setDuration(300);
-                                holder.attendButton.startAnimation(widthAnimation);
-                                holder.buttonExpanded = false;
-                            } else {
-                                widthAnimation = new WidthAnimation(holder.favoriteButton, width, true);
-                                widthAnimation.setDuration(300);
-                                holder.favoriteButton.startAnimation(widthAnimation);
-                                widthAnimation = new WidthAnimation(holder.buildingButton, width, true);
-                                widthAnimation.setDuration(300);
-                                holder.buildingButton.startAnimation(widthAnimation);
-                                widthAnimation = new WidthAnimation(holder.calendarButton, width, true);
-                                widthAnimation.setDuration(300);
-                                holder.calendarButton.startAnimation(widthAnimation);
-                                widthAnimation = new WidthAnimation(holder.attendButton, width, true);
-                                widthAnimation.setDuration(300);
-                                holder.attendButton.startAnimation(widthAnimation);
-                                holder.buttonExpanded = true;
-                            }
-                            break;
-                    }
-                    return true;
-                }
-            });
-            holder.place.setOnTouchListener(new View.OnTouchListener() {
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            ((EventsActivity) getActivity()).buttonPressed(v);
-                            break;
-                        case MotionEvent.ACTION_CANCEL:
-                        case MotionEvent.ACTION_OUTSIDE:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            if (holder.buttonSection.getVisibility() == LinearLayout.GONE) {
-                                holder.buttonSection.setVisibility(LinearLayout.VISIBLE);
-                            } else {
-                                holder.buttonSection.setVisibility(LinearLayout.GONE);
-                            }
-                            break;
-                    }
-                    return true;
-                }
-            });
-
-            holder.infoButton.setOnTouchListener(new View.OnTouchListener() {
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            ((EventsActivity) getActivity()).buttonPressed(v);
-                            break;
-                        case MotionEvent.ACTION_CANCEL:
-                        case MotionEvent.ACTION_OUTSIDE:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            ((EventsActivity) getActivity()).showInfoDialog(item.getEvent(), item.getLink());
-                            break;
-                    }
-                    return true;
-                }
-            });
             holder.favoriteButton.setOnTouchListener(new View.OnTouchListener(){
 
                 @Override
@@ -334,6 +298,70 @@ public class EventsFragment extends Fragment {
                     R.layout.events_recycle, parent, false);
             return new ViewHolder(view);
         }
+
+        /**
+         *  Collapse card with description and buttons
+         *
+         * @param h
+         */
+        private void collapseCard(ViewHolder h) {
+            HeightAnimation animation;
+            int height = h.getButtonSectionHeight() * 5;
+
+            animation = new HeightAnimation(h.description, height, false);
+            animation.setDuration(300);
+            h.description.startAnimation(animation);
+
+            WidthAnimation widthAnimation;
+            int width = h.buttonSection.getHeight();
+
+            widthAnimation = new WidthAnimation(h.favoriteButton, width, false);
+            widthAnimation.setDuration(300);
+            h.favoriteButton.startAnimation(widthAnimation);
+            widthAnimation = new WidthAnimation(h.buildingButton, width, false);
+            widthAnimation.setDuration(300);
+            h.buildingButton.startAnimation(widthAnimation);
+            widthAnimation = new WidthAnimation(h.calendarButton, width, false);
+            widthAnimation.setDuration(300);
+            h.calendarButton.startAnimation(widthAnimation);
+            widthAnimation = new WidthAnimation(h.attendButton, width, false);
+            widthAnimation.setDuration(300);
+            h.attendButton.startAnimation(widthAnimation);
+        }
+
+        /**
+         *  Expand card with description and buttons
+         *
+         * @param h
+         */
+        private void expandCard(ViewHolder h) {
+            HeightAnimation animation;
+            int height = h.getButtonSectionHeight() * 5;
+
+            animation = new HeightAnimation(h.progress,
+                    ((EventsActivity) getActivity()).getProgressBarHeight(), true);
+            animation.setDuration(300);
+            h.progress.startAnimation(animation);
+            animation = new HeightAnimation(h.description, height, true);
+            animation.setDuration(300);
+            h.description.startAnimation(animation);
+
+            WidthAnimation widthAnimation;
+            int width = h.buttonSection.getHeight();
+
+            widthAnimation = new WidthAnimation(h.favoriteButton, width, true);
+            widthAnimation.setDuration(300);
+            h.favoriteButton.startAnimation(widthAnimation);
+            widthAnimation = new WidthAnimation(h.buildingButton, width, true);
+            widthAnimation.setDuration(300);
+            h.buildingButton.startAnimation(widthAnimation);
+            widthAnimation = new WidthAnimation(h.calendarButton, width, true);
+            widthAnimation.setDuration(300);
+            h.calendarButton.startAnimation(widthAnimation);
+            widthAnimation = new WidthAnimation(h.attendButton, width, true);
+            widthAnimation.setDuration(300);
+            h.attendButton.startAnimation(widthAnimation);
+        }
     }
 
 
@@ -349,9 +377,9 @@ public class EventsFragment extends Fragment {
         @SuppressWarnings("unchecked")
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
+            ((EventsActivity) getActivity()).dismissProgressBar();
             rssItemList = (List<EventsRssItem>) resultData.getSerializable(ITEMS);
             mAdapter.updateChange(rssItemList);
-            ((EventsActivity) getActivity()).dismissProgressBar();
         }
     }
 
@@ -360,36 +388,17 @@ public class EventsFragment extends Fragment {
      */
     private class DownloadXmlTask extends AsyncTask<Void, Integer, String> {
 
-        int p = 0;
-
         @Override
         protected String doInBackground(Void...voids) {
-            publishProgress(p);
             try {
                 mServiceIntent.putExtra(RECEIVER, receiver);
                 // Starts the IntentService
                 getActivity().startService(mServiceIntent);
-                while (p < 90) {
-                    //Sleep for up to one second.
-                    try {
-                        Thread.sleep(2);
-                    } catch (InterruptedException ignore) {
-
-                    }
-                    p += 1;
-                    publishProgress(p);
-                }
                 return "Intent Service Started";
             } catch (Exception e) {
                 e.printStackTrace();
             }
             return "Error";
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer...progress) {
-            super.onProgressUpdate(progress);
-            ((EventsActivity) getActivity()).updateProgressBar(progress[0]);
         }
 
         @Override

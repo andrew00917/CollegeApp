@@ -28,6 +28,7 @@ public class EventsActivity extends ActionBarActivity
     private final Handler handler = new Handler();
 
     private ProgressBar progressBar;
+    private int progressBarHeight;
 
     private Toolbar toolbar;
     private PagerSlidingTabStrip tabs;
@@ -55,7 +56,7 @@ public class EventsActivity extends ActionBarActivity
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setTitle(getResources().getString(R.string.main_menu_11));
 
         adapter = new MyPagerAdapter(getSupportFragmentManager());
 
@@ -95,7 +96,7 @@ public class EventsActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.home) {
+        if (id == android.R.id.home) {
             onBackPressed();
             return true;
         }
@@ -151,24 +152,17 @@ public class EventsActivity extends ActionBarActivity
         view.startAnimation(animation);
     }
 
-    public void showInfoDialog(String event, String link) {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.event_dialog_custom, (ViewGroup) findViewById(R.id.root_layout));
-
-        EventDialogBuilder builder = new EventDialogBuilder(this);
-        builder.setCustomView(layout);
-
-        builder.onCreate();
-
-        builder.showDialog(event, link);
-    }
-
-    public void updateProgressBar(int progress) {
-        progressBar.setProgress(progress);
+    public int getProgressBarHeight() {
+        return progressBarHeight;
     }
 
     public void dismissProgressBar() {
-        progressBar.setVisibility(ProgressBar.GONE);
+        if (progressBar.getHeight() != 0) {
+            progressBarHeight = progressBar.getHeight();
+        }
+        HeightAnimation animation = new HeightAnimation(progressBar, progressBarHeight, false);
+        animation.setDuration(300);
+        progressBar.startAnimation(animation);
     }
 
 

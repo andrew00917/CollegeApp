@@ -56,6 +56,15 @@
 
         </FrameLayout>
 
+        <com.techhab.kcollegecustomviews.ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:gravity="center"
+            style="@android:style/Widget.ProgressBar.Small" />
+
         <TextView
             android:id="@+id/place"
             android:layout_width="fill_parent"
