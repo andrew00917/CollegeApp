@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Griffin on 12/19/2014.
  */
-public class CrossCountryRssItem {
+public class CrossCountryRssItem extends GenericSportsRssItem {
 
     private final String link;
     private final boolean isUpcoming;
@@ -22,14 +22,20 @@ public class CrossCountryRssItem {
     private String result;
 
     public CrossCountryRssItem(String titleAndScore, String link, String description) {
-        this.isUpcoming = true;
 
         this.link = link;
-        this.event = parseEvent(titleAndScore);
         this.dateAndTimeUpcoming = parseDateAndTimeUpcoming(description);
+        this.isUpcoming = parseIsUpcoming(description);
+        this.event = parseEvent(titleAndScore);
+        this.location = parseLocation(description);
         this.datePast = parseDatePast(this.dateAndTimeUpcoming);
         this.result = parseResult(titleAndScore);
-        this.location = parseLocation(description);
+    }
+
+    private boolean parseIsUpcoming(String description) {
+        int timeEndIndex = description.indexOf(dateAndTimeUpcoming) + dateAndTimeUpcoming.length();
+
+        return !(description.length() > timeEndIndex);
     }
 
     private String parseResult(String titleAndScore) {
@@ -52,8 +58,14 @@ public class CrossCountryRssItem {
     }
 
     private String parseDateAndTimeUpcoming(String description) {
-        /*int dateStartIndex = description.indexOf("on ") + 3;
-        int dateEndIndex = description.indexOf(": at");
+        int timeStartIndex = description.indexOf("), ") + 3;
+        int timeEndIndex = description.indexOf(", ", timeStartIndex);
+
+        String time = description.substring(timeStartIndex, timeEndIndex);
+
+        int dateStartIndex = description.indexOf("on ") + 3;
+        int dateEndIndex = description.indexOf(": ", dateStartIndex);
+
         String date = description.substring(dateStartIndex, dateEndIndex);
 
         Date parsedDate = null;
@@ -73,21 +85,31 @@ public class CrossCountryRssItem {
 
         String dayOfTheWeek = new SimpleDateFormat("EE").format(parsedDate);
 
-        int timeStartIndex = description.indexOf("), ") + 3;
-        int timeEndIndex = description.indexOf("m,");
-        String time = description.substring(timeStartIndex, timeEndIndex);
+        String finalDateAndTime = dayOfTheWeek + ", " +
+                date.substring(0, date.length() - 6) + " at " + time;
 
-        String finalDateAndTime = dayOfTheWeek + ", " + date.substring(0, date.length() - 6) + " at " + time;*/
-
-//        return finalDateAndTime;
-        return "Today!";
+        return finalDateAndTime;
     }
 
     private String parseDatePast(String parsedDate) {
-//        return parsedDate.substring(5, 11);
-        return "Yesterday!";
+        return parsedDate.substring(5, 11);
     }
 
+    public String getOpponentOrEvent() {
+        return event;
+    }
+
+    public String getOpponentOrEventWithPrefix() {
+        return event;
+    }
+
+    public boolean isAtHome() {
+        return true;
+    }
+
+    public String getLocation() {
+        return location;
+    }
 
     public String getResult() {
         return result;
@@ -103,10 +125,6 @@ public class CrossCountryRssItem {
 
     public boolean isUpcoming() {
         return isUpcoming;
-    }
-
-    public String getEvent() {
-        return event;
     }
 
     public String getLink() {

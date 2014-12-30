@@ -21,15 +21,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -565,24 +561,49 @@ public class AthleticActivity extends ActionBarActivity
                             fragment = new HomeGamesFragment();
                             args.putInt(HomeGamesFragment.ARG_OBJECT, position + 1);
                             fragment.setArguments(args);
-                            break;
-                        case 1:
-                            fragment = new HomeGamesFragment();
-                            args.putInt(HomeGamesFragment.ARG_OBJECT, position + 1);
-                            fragment.setArguments(args);
                             break;*/
+                        case 1:
+                            fragment = new BaseballAndSoftballFragment();
+                            args.putInt(BaseballAndSoftballFragment.ARG_SCROLL_Y, mScrollY);
+                            args.putBoolean(BaseballAndSoftballFragment.GENDER, true);
+                            fragment.setArguments(args);
+                            break;
                         case 2:
-                            Log.d("pagerAdapter", "I'm getting reconstructed! (In the boys section");
                             fragment = new BasketballFragment();
                             args.putInt(BasketballFragment.ARG_SCROLL_Y, mScrollY);
                             args.putBoolean(BasketballFragment.GENDER, application.getSportsGenderPreference());
-                            args.putString(BasketballFragment.SPORT, "basketball");
                             fragment.setArguments(args);
                             break;
                         case 3:
                             fragment = new CrossCountryFragment();
                             args.putInt(CrossCountryFragment.ARG_SCROLL_Y, mScrollY);
                             args.putBoolean(CrossCountryFragment.GENDER, application.getSportsGenderPreference());
+                            fragment.setArguments(args);
+                            break;
+                        case 4:
+                            fragment = new FootballFragment();
+                            args.putInt(FootballFragment.ARG_SCROLL_Y, mScrollY);
+                            args.putBoolean(FootballFragment.GENDER, true);
+                            fragment.setArguments(args);
+                            break;
+                        case 5:
+                            fragment = new GolfFragment();
+                            args.putInt(GolfFragment.ARG_SCROLL_Y, mScrollY);
+                            args.putBoolean(GolfFragment.GENDER, true);
+                            fragment.setArguments(args);
+                            break;
+                        case 6:
+                            fragment = new SoccerFragment();
+                            args.putInt(SoccerFragment.ARG_SCROLL_Y, mScrollY);
+                            args.putBoolean(SoccerFragment.GENDER, application.getSportsGenderPreference());
+                            fragment.setArguments(args);
+                            break;
+
+
+                        case 8:
+                            fragment = new TennisFragment();
+                            args.putInt(TennisFragment.ARG_SCROLL_Y, mScrollY);
+                            args.putBoolean(TennisFragment.GENDER, application.getSportsGenderPreference());
                             fragment.setArguments(args);
                             break;
                         default:
@@ -596,8 +617,45 @@ public class AthleticActivity extends ActionBarActivity
                     return fragment;
                 } else {
                     switch (position) {
+                        case 1:
+                            fragment = new BasketballFragment();
+                            args.putInt(BasketballFragment.ARG_SCROLL_Y, mScrollY);
+                            args.putBoolean(BasketballFragment.GENDER, application.getSportsGenderPreference());
+                            fragment.setArguments(args);
+                            break;
+                        case 2:
+                            fragment = new CrossCountryFragment();
+                            args.putInt(CrossCountryFragment.ARG_SCROLL_Y, mScrollY);
+                            args.putBoolean(CrossCountryFragment.GENDER, application.getSportsGenderPreference());
+                            fragment.setArguments(args);
+                            break;
+                        case 3:
+                            fragment = new GolfFragment();
+                            args.putInt(GolfFragment.ARG_SCROLL_Y, mScrollY);
+                            args.putBoolean(GolfFragment.GENDER, true);
+                            fragment.setArguments(args);
+                            break;
+                        case 4:
+                            fragment = new SoccerFragment();
+                            args.putInt(SoccerFragment.ARG_SCROLL_Y, mScrollY);
+                            args.putBoolean(SoccerFragment.GENDER, application.getSportsGenderPreference());
+                            fragment.setArguments(args);
+                            break;
+                        case 5:
+                            fragment = new BaseballAndSoftballFragment();
+                            args.putInt(BaseballAndSoftballFragment.ARG_SCROLL_Y, mScrollY);
+                            args.putBoolean(BaseballAndSoftballFragment.GENDER, false);
+                            fragment.setArguments(args);
+                            break;
+
+
+                        case 7:
+                            fragment = new TennisFragment();
+                            args.putInt(TennisFragment.ARG_SCROLL_Y, mScrollY);
+                            args.putBoolean(TennisFragment.GENDER, application.getSportsGenderPreference());
+                            fragment.setArguments(args);
+                            break;
                         default:
-                            Log.d("pagerAdapter", "I'm getting reconstructed! (In the girls section");
                             fragment = new BasketballFragment();
                             args.putInt(BasketballFragment.ARG_SCROLL_Y, mScrollY);
                             args.putBoolean(BasketballFragment.GENDER, application.getSportsGenderPreference());

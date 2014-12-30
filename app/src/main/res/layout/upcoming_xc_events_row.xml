@@ -7,59 +7,37 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="26dp"
         android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <!--<ImageView
-            android:id="@+id/opponent_logo"
-            android:layout_width="65dp"
+        <TextView
+            android:id="@+id/event_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/western_michigan_broncos"/>-->
+            android:textSize="16sp"
+            android:textColor="@color/primary_text_default_material_light"
+            android:text="Western Mich." />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:orientation="vertical" >
+        <TextView
+            android:id="@+id/event_date"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondary_text_default_material_light"
+            android:text="Tue, Dec 20 at 8:30PM"
+            />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/event_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@color/primary_text_default_material_light"
-                    android:text="Western Mich." />
-
-                <TextView
-                    android:id="@+id/event_date"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/secondary_text_default_material_light"
-                    android:text="Tue, Dec 20 at 8:30PM"
-                    />
-
-                </LinearLayout>
-
-            <TextView
-                android:id="@+id/event_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/secondary_text_default_material_light"
-                android:layout_marginTop="2dp"
-                android:text="(Gainey Athletic Fields, Grand Rapids, Mich.)"/>
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/event_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondary_text_default_material_light"
+            android:layout_marginTop="2dp"
+            android:text="Gainey Athletic Fields, Grand Rapids, Mich."/>
 
     </LinearLayout>
 

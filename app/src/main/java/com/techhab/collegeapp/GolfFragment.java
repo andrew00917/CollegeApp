@@ -9,55 +9,49 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.support.v7.widget.CardView;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.techhab.rss.CrossCountryRssItem;
 import com.techhab.rss.GenericSportsRssItem;
 import com.techhab.rss.SportsRssService;
+import com.techhab.rss.StandardSportRssItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Griffin on 12/26/2014.
+ * Created by Griffin on 12/30/2014.
  */
-public class CrossCountryFragment extends GenericSportsFragment {
+public class GolfFragment extends GenericSportsFragment {
     public static final String ARG_SCROLL_Y = "ARG_SCROLL_Y";
 
     public static final String GENDER = "gender";
-
-    public static final String SPORT = "cross_country";
+    public static final String SPORT = "sport";
 
     public static final String ARG_OBJECT = "object";
 
-    private static final String ITEMS = "xcRssItemList";
-    public static final String RECEIVER = "xcReceiver";
+    private static final String ITEMS = "standardRssItemList";
+    public static final String RECEIVER = "standardReceiver";
 
     private Intent mServiceIntent;
     private MyResultReceiver receiver;
     private boolean gender;
 
-    private List<CrossCountryRssItem> rssItemList;
+    private List<StandardSportRssItem> rssItemList;
 
     // Commented out until later date
 //    private TableLayout rosterTableLayout;
 
-    private TableLayout pastEventsTableLayout;
-    private ListView upcomingEventsListView;
+    private GolfUpcomingGamesAdapter mGolfUpcomingGamesAdapter;
+    private ListView upcomingGamesListView;
+    private ProgressBar upcomingGamesProgressBar;
+    private TableLayout pastGamesTableLayout;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -71,18 +65,18 @@ public class CrossCountryFragment extends GenericSportsFragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment BasketballFragment.
+     * @return A new instance of fragment GolfFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CrossCountryFragment newInstance(String param1, String param2,
-                                                 String genderPreference) {
-        CrossCountryFragment fragment = new CrossCountryFragment();
+    public static GolfFragment newInstance(String param1, String param2,
+                                             String genderPreference) {
+        GolfFragment fragment = new GolfFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
 
-    public CrossCountryFragment() {
+    public GolfFragment() {
         // Required empty public constructor
     }
 
@@ -95,12 +89,12 @@ public class CrossCountryFragment extends GenericSportsFragment {
         mServiceIntent = new Intent(getActivity(), SportsRssService.class);
         if (gender) {
             mServiceIntent.putExtra("gender_preference",
-                    "http://hornets.kzoo.edu/sports/mxc/2014-15/schedule?print=rss");
+                    "http://hornets.kzoo.edu/sports/mgolf/2014-15/schedule?print=rss");
         } else {
             mServiceIntent.putExtra("gender_preference",
-                    "http://hornets.kzoo.edu/sports/wxc/2014-15/schedule?print=rss");
+                    "http://hornets.kzoo.edu/sports/wgolf/2014-15/schedule?print=rss");
         }
-        mServiceIntent.putExtra("sport", "cross_country");
+        mServiceIntent.putExtra(SPORT, "standard");
         receiver = new MyResultReceiver(new Handler());
         rssItemList = new ArrayList<>();
         new DownloadXmlTask().execute();
@@ -111,9 +105,13 @@ public class CrossCountryFragment extends GenericSportsFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_cross_country, container, false);
-        upcomingEventsListView = (ListView) rootView.findViewById(R.id.upcoming_events_listview);
-        pastEventsTableLayout = (TableLayout) rootView.findViewById(R.id.past_events_table_layout);
+        View rootView = inflater.inflate(R.layout.fragment_standard_sport, container, false);
+        upcomingGamesListView = (ListView) rootView.findViewById(R.id.upcoming_events_listview);
+        upcomingGamesProgressBar = (ProgressBar) rootView.findViewById(
+                R.id.upcoming_games_progress_bar);
+        pastGamesTableLayout = (TableLayout) rootView.findViewById(R.id.past_events_table_layout);
+
+        upcomingGamesListView.setEmptyView(upcomingGamesProgressBar);
 
         initializeGenericOnCreateView(rootView);
 
@@ -121,7 +119,8 @@ public class CrossCountryFragment extends GenericSportsFragment {
          * BEGIN OBSERVABLE SCROLL VIEW
          */
 
-        final ObservableScrollView scrollView = (ObservableScrollView) rootView.findViewById(R.id.scrollview);
+        final ObservableScrollView scrollView =
+                (ObservableScrollView) rootView.findViewById(R.id.scrollview);
         Activity parentActivity = getActivity();
 
         if (parentActivity instanceof ObservableScrollViewCallbacks) {
@@ -208,23 +207,28 @@ public class CrossCountryFragment extends GenericSportsFragment {
         public void onFragmentInteraction(Uri uri);
     }
 
-    public class CrossCountryUpcomingEventsAdapter extends UpcomingGamesAdapter {
+    /**
+     * Fragment-specific upcoming games adapter, which basically just overrides the
+     * "getView" method of its superclass. getView() is responsible for how each ListView item
+     * is layed out and such.
+     */
+    public class GolfUpcomingGamesAdapter extends GenericSportsFragment.UpcomingGamesAdapter {
 
-        public CrossCountryUpcomingEventsAdapter(Context context, List<GenericSportsRssItem> items) {
+        public GolfUpcomingGamesAdapter(Context context, List<GenericSportsRssItem> items) {
             super(context, items);
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
-            if (convertView == null) {
+            if (convertView == null && context != null) {
                 LayoutInflater inflater =
                         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.upcoming_xc_events_row, parent, false);
+                convertView = inflater.inflate(R.layout.upcoming_team_games_row, parent, false);
 
                 viewHolder = new ViewHolder();
-                viewHolder.date = (TextView) convertView.findViewById(R.id.event_date);
-                viewHolder.title = (TextView) convertView.findViewById(R.id.event_title);
-                viewHolder.location = (TextView) convertView.findViewById(R.id.event_location);
+                viewHolder.date = (TextView) convertView.findViewById(R.id.game_date);
+                viewHolder.title = (TextView) convertView.findViewById(R.id.opponent_title);
+                viewHolder.location = (TextView) convertView.findViewById(R.id.home_away);
 
                 convertView.setTag(viewHolder);
             } else {
@@ -234,7 +238,12 @@ public class CrossCountryFragment extends GenericSportsFragment {
 
             viewHolder.date.setText(item.getDateAndTimeUpcoming());
             viewHolder.title.setText(item.getOpponentOrEvent());
-            viewHolder.location.setText(item.getLocation());
+
+            if (item.isAtHome()) {
+                viewHolder.location.setText("HOME");
+            } else {
+                viewHolder.location.setText("AWAY");
+            }
 
             return convertView;
         }
@@ -253,19 +262,19 @@ public class CrossCountryFragment extends GenericSportsFragment {
         @SuppressWarnings("unchecked")
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-            rssItemList = (List<CrossCountryRssItem>) resultData.getSerializable(ITEMS);
+            rssItemList = (List<StandardSportRssItem>) resultData.getSerializable(ITEMS);
             sortGames(rssItemList);
-            CrossCountryUpcomingEventsAdapter mUpcomingGamesAdapter =
-                    new CrossCountryUpcomingEventsAdapter(getActivity(),upcomingEventsList);
-            upcomingEventsListView.setAdapter(mUpcomingGamesAdapter);
-            setListViewHeightBasedOnChildren(upcomingEventsListView);
+            mGolfUpcomingGamesAdapter = new GolfUpcomingGamesAdapter(getActivity(),
+                    upcomingEventsList);
+            upcomingGamesListView.setAdapter(mGolfUpcomingGamesAdapter);
+            setListViewHeightBasedOnChildren(upcomingGamesListView);
             populateResultsTable(pastEventsList);
-            setTableLayoutHeightBasedOnChildren(pastEventsTableLayout);
+            setTableLayoutHeightBasedOnChildren(pastGamesTableLayout);
         }
     }
 
     /**
-     *  Background task to start service for Rss
+     * Background task to start service for Rss
      */
     private class DownloadXmlTask extends AsyncTask<Void, Void, String> {
 
@@ -274,7 +283,7 @@ public class CrossCountryFragment extends GenericSportsFragment {
         }
 
         @Override
-        protected String doInBackground(Void...voids) {
+        protected String doInBackground(Void... voids) {
             try {
                 mServiceIntent.putExtra(RECEIVER, receiver);
                 // Starts the IntentService

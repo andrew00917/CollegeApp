@@ -75,7 +75,7 @@
                             android:text="09:26"/>
 
 
-                        </LinearLayout>
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -112,7 +112,7 @@
                             android:text="Broncos"
                             />
 
-                        </LinearLayout>
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="fill_parent"
@@ -188,7 +188,7 @@
 
             </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
         <!-- Upcoming Games card -->
         <android.support.v7.widget.CardView
@@ -205,18 +205,18 @@
                 android:descendantFocusability="blocksDescendants"
                 android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
-                android:layout_margin="16dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/upcoming_games"
-                    style="@style/CardTitle" />
+                    android:descendantFocusability="blocksDescendants"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/upcoming_games"
+                        style="@style/CardTitle" />
 
                 </LinearLayout>
 
@@ -263,13 +263,13 @@
                         android:textColor="@color/kzooOrange"
                         android:text="@string/view_more"/>
 
-                    </LinearLayout>
+                </LinearLayout>
 
             </LinearLayout>
 
 
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
         <!-- Schedule/Results Card -->
         <android.support.v7.widget.CardView
@@ -285,231 +285,241 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:orientation="vertical">
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/results"
-                    style="@style/CardTitle" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    style="@style/CardSubtitle"
-                    android:text="2014-2015 Season"/>
-
-                <TableLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
+                    android:descendantFocusability="blocksDescendants"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:orientation="vertical">
 
-                    <TableRow
-                        android:id="@+id/schedule_table_header"
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:weightSum="1">
+                        android:text="@string/results"
+                        style="@style/CardTitle" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.25"
-                            android:gravity="center"
-                            android:text="Overall" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.25"
-                            android:gravity="center"
-                            android:text="Pct." />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.25"
-                            android:gravity="center"
-                            android:text="Conf." />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.25"
-                            android:gravity="center"
-                            android:text="Pct." />
-
-                    </TableRow>
-
-                    <TableRow
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="6dp"
-                        android:weightSum="1">
+                        android:layout_marginTop="8dp"
+                        style="@style/CardSubtitle"
+                        android:text="2014-2015 Season"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/primary_text_default_material_light"
-                            android:layout_weight="0.25"
-                            android:textSize="16sp"
-                            android:gravity="center"
-                            android:text="4-3" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/primary_text_default_material_light"
-                            android:layout_weight="0.25"
-                            android:textSize="16sp"
-                            android:gravity="center"
-                            android:text=".571" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/primary_text_default_material_light"
-                            android:layout_weight="0.25"
-                            android:textSize="16sp"
-                            android:gravity="center"
-                            android:text="0-0" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/primary_text_default_material_light"
-                            android:layout_weight="0.25"
-                            android:textSize="16sp"
-                            android:gravity="center"
-                            android:text=".000" />
-
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="wrap_content"
+                    <TableLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:weightSum="1">
+                        android:layout_marginTop="5dp">
 
-                        <TextView
+                        <TableRow
+                            android:id="@+id/schedule_table_header"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.25"
-                            android:gravity="center"
-                            android:text="Streak" />
+                            android:weightSum="1">
 
-                        <TextView
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="Overall" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="Pct." />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="Conf." />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="Pct." />
+
+                        </TableRow>
+
+                        <TableRow
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.25"
-                            android:gravity="center"
-                            android:text="Home" />
+                            android:paddingBottom="6dp"
+                            android:weightSum="1">
 
-                        <TextView
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="16sp"
+                                android:gravity="center"
+                                android:text="4-3" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="16sp"
+                                android:gravity="center"
+                                android:text=".571" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="16sp"
+                                android:gravity="center"
+                                android:text="0-0" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="16sp"
+                                android:gravity="center"
+                                android:text=".000" />
+
+                        </TableRow>
+
+                        <TableRow
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.25"
-                            android:gravity="center"
-                            android:text="Away" />
+                            android:weightSum="1">
 
-                        <TextView
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="Streak" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="Home" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="Away" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="Neutral" />
+
+                        </TableRow>
+
+                        <TableRow
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.25"
-                            android:gravity="center"
-                            android:text="Neutral" />
+                            android:paddingBottom="6dp"
+                            android:weightSum="1">
 
-                    </TableRow>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="16sp"
+                                android:gravity="center"
+                                android:text="Lost 1" />
 
-                    <TableRow
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="6dp"
-                        android:weightSum="1">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="16sp"
+                                android:gravity="center"
+                                android:text="1-1" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/primary_text_default_material_light"
-                            android:layout_weight="0.25"
-                            android:textSize="16sp"
-                            android:gravity="center"
-                            android:text="Lost 1" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="16sp"
+                                android:gravity="center"
+                                android:text="2-2" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/primary_text_default_material_light"
-                            android:layout_weight="0.25"
-                            android:textSize="16sp"
-                            android:gravity="center"
-                            android:text="1-1" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="16sp"
+                                android:gravity="center"
+                                android:text="1-0" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/primary_text_default_material_light"
-                            android:layout_weight="0.25"
-                            android:textSize="16sp"
-                            android:gravity="center"
-                            android:text="2-2" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/primary_text_default_material_light"
-                            android:layout_weight="0.25"
-                            android:textSize="16sp"
-                            android:gravity="center"
-                            android:text="1-0" />
-
-                    </TableRow>
+                        </TableRow>
 
 
                     </TableLayout>
 
 
-                <TableLayout
-                    android:id="@+id/past_events_table_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
-
-
-                    <TableRow
-                        android:layout_width="wrap_content"
+                    <TableLayout
+                        android:id="@+id/past_events_table_layout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:weightSum="1">
+                        android:layout_marginTop="8dp">
 
 
-                        <TextView
+                        <TableRow
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.15"
-                            android:text="@string/date" />
+                            android:weightSum="1">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.65"
-                            android:text="@string/opponent" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.2"
-                            android:text="@string/result" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.15"
+                                android:text="@string/date" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.65"
+                                android:text="@string/opponent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.2"
+                                android:text="@string/result" />
 
                         </TableRow>
 
                     </TableLayout>
+
+                    <TextView
+                        android:id="@+id/past_events_no_events_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/no_past_events"
+                        android:layout_gravity="center"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
 
@@ -531,10 +541,10 @@
                         android:textColor="@color/kzooOrange"
                         android:text="@string/view_more"/>
 
-                    </LinearLayout>
+                </LinearLayout>
 
 
-        </LinearLayout>
+            </LinearLayout>
 
 
         </android.support.v7.widget.CardView>
@@ -662,6 +672,6 @@
 
 
 
-        </LinearLayout>
+    </LinearLayout>
 
-    </com.techhab.collegeapp.ObservableScrollView>
+</com.techhab.collegeapp.ObservableScrollView>

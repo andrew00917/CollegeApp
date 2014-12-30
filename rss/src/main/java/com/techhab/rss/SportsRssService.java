@@ -40,12 +40,12 @@ public class SportsRssService extends IntentService {
         Log.d(TAG, "Service started");
         RSS_LINK = intent.getStringExtra("gender_preference");
         SPORT = intent.getStringExtra("sport");
-        if (SPORT.equals("basketball")) {
-            ITEMS = "basketballRssItemList";
-            RECEIVER = "basketballReceiver";
-            List<BasketballRssItem> rssItems = null;
+        if (SPORT.equals("standard")) {
+            ITEMS = "standardRssItemList";
+            RECEIVER = "standardReceiver";
+            List<StandardSportRssItem> rssItems = null;
             try {
-                BasketballParser parser = new BasketballParser();
+                StandardSportParser parser = new StandardSportParser();
                 rssItems = parser.parse(getInputStream(RSS_LINK));
             } catch (Exception e) {
                 Log.w(e.getMessage(), e);
@@ -68,7 +68,21 @@ public class SportsRssService extends IntentService {
             bundle.putSerializable(ITEMS, (Serializable) rssItems);
             ResultReceiver receiver = intent.getParcelableExtra(RECEIVER);
             receiver.send(0, bundle);
-        }
+        } /*else if (SPORT.equals("football")) {
+            ITEMS = "footballRssItemList";
+            RECEIVER = "footballReceiver";
+            List<StandardSportRssItem> rssItems = null;
+            try {
+                StandardSportParser parser = new StandardSportParser();
+                rssItems = parser.parse(getInputStream(RSS_LINK));
+            } catch (Exception e) {
+                Log.w(e.getMessage(), e);
+            }
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ITEMS, (Serializable) rssItems);
+            ResultReceiver receiver = intent.getParcelableExtra(RECEIVER);
+            receiver.send(0, bundle);
+        }*/
         Log.d(TAG, "Service ended");
     }
 

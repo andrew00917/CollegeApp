@@ -9,24 +9,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.support.v7.widget.CardView;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.techhab.rss.BasketballRssItem;
+import com.techhab.rss.GenericSportsRssItem;
+import com.techhab.rss.StandardSportRssItem;
 import com.techhab.rss.SportsRssService;
 
 import java.util.ArrayList;
@@ -40,40 +33,22 @@ public class BasketballFragment extends GenericSportsFragment {
 
     public static final String ARG_OBJECT = "object";
 
-    private static final String ITEMS = "basketballRssItemList";
-    public static final String RECEIVER = "basketballReceiver";
+    private static final String ITEMS = "standardRssItemList";
+    public static final String RECEIVER = "standardReceiver";
 
     private Intent mServiceIntent;
     private MyResultReceiver receiver;
     private boolean gender;
 
-    private List<BasketballRssItem> rssItemList;
+    private List<StandardSportRssItem> rssItemList;
 
     // Commented out until later date
 //    private TableLayout rosterTableLayout;
 
-    private ScrollView basketballScrollView;
-
-    private TableLayout pastGamesTableLayout;
-    private UpcomingGamesAdapter mUpcomingGamesAdapter;
+    private BasketballUpcomingGamesAdapter mBasketballUpcomingGamesAdapter;
     private ListView upcomingGamesListView;
-
-    private LinearLayout upcomingGamesViewMoreButtonLayout, resultsCardFooter;
-    private Button upcomingGamesViewMoreButton, pastGamesViewMoreButton;
-    private CardView upcomingGamesCardView;
     private ProgressBar upcomingGamesProgressBar;
-
-    private static int pastGamesTableLayoutHeight;
-    private static int upcomingGamesListViewHeight;
-    private int upcomingGamesItemHeight;
-    private int upcomingGamesHeightToAdd;
-    private int upcomingGamesHeightAdded;
-    private int pastGamesRemainingToShow;
-    private int upcomingGamesCount; // Count to keep track of how many items to
-    // load in the adapter
-    private int pastGamesItemHeight;
-    private List<BasketballRssItem> upcomingGamesList = new ArrayList<>();
-    private List<BasketballRssItem> pastGamesList = new ArrayList<>();
+    private TableLayout pastGamesTableLayout;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -94,8 +69,6 @@ public class BasketballFragment extends GenericSportsFragment {
                                                  String genderPreference) {
         BasketballFragment fragment = new BasketballFragment();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -118,7 +91,7 @@ public class BasketballFragment extends GenericSportsFragment {
             mServiceIntent.putExtra("gender_preference",
                     "http://hornets.kzoo.edu/sports/wbkb/2014-15/schedule?print=rss");
         }
-        mServiceIntent.putExtra("sport", "basketball");
+        mServiceIntent.putExtra("sport", "standard");
         receiver = new MyResultReceiver(new Handler());
         rssItemList = new ArrayList<>();
         new DownloadXmlTask().execute();
@@ -129,23 +102,15 @@ public class BasketballFragment extends GenericSportsFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_basketball, container, false);
-        upcomingGamesListView = (ListView) rootView.findViewById(R.id.upcoming_games_listview);
-        upcomingGamesViewMoreButton = (Button) rootView.findViewById(
-                R.id.upcoming_games_view_more_button);
-        upcomingGamesCardView = (CardView) rootView.findViewById(R.id.upcoming_games_card);
-        upcomingGamesViewMoreButtonLayout = (LinearLayout) rootView.findViewById(
-                R.id.upcoming_games_view_more_button_layout);
+        View rootView = inflater.inflate(R.layout.fragment_standard_sport, container, false);
+        upcomingGamesListView = (ListView) rootView.findViewById(R.id.upcoming_events_listview);
         upcomingGamesProgressBar = (ProgressBar) rootView.findViewById(
                 R.id.upcoming_games_progress_bar);
-        pastGamesTableLayout = (TableLayout) rootView.findViewById(R.id.past_games_table_layout);
-        pastGamesViewMoreButton = (Button) rootView.findViewById(
-                R.id.past_games_view_more_button);
-        resultsCardFooter = (LinearLayout) rootView.findViewById(R.id.results_card_footer);
+        pastGamesTableLayout = (TableLayout) rootView.findViewById(R.id.past_events_table_layout);
+
         upcomingGamesListView.setEmptyView(upcomingGamesProgressBar);
 
-        mUpcomingGamesAdapter = new UpcomingGamesAdapter(getActivity(), rssItemList);
-        upcomingGamesListView.setAdapter(mUpcomingGamesAdapter);
+        initializeGenericOnCreateView(rootView);
 
         /**
          * BEGIN OBSERVABLE SCROLL VIEW
@@ -180,158 +145,9 @@ public class BasketballFragment extends GenericSportsFragment {
          * END OBSERVABLE SCROLL VIEW
          */
 
-        setButtonOnClickListener(upcomingGamesViewMoreButton);
-
-        /*upcomingGamesViewMoreButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (upcomingGamesViewMoreButton.getText().equals("VIEW MORE")) {
-                    // Sometimes the height to add variable doesn't get set, so check to make
-                    // sure it has a value.
-                    if (upcomingGamesHeightToAdd == 0 ) {
-                        initializeUpcomingGamesCount();
-                    }
-                    HeightAnimation animation = new HeightAnimation(upcomingGamesListView,
-                            upcomingGamesHeightToAdd, true);
-                    animation.setDuration(300);
-                    upcomingGamesCardView.startAnimation(animation);
-                    if (upcomingGamesCount == upcomingGamesList.size()) {
-                        upcomingGamesViewMoreButton.setText(R.string.collapse_list);
-                    }
-                    upcomingGamesHeightAdded += upcomingGamesHeightToAdd;
-                    updateUpcomingGamesCount();
-                } else {
-                    HeightAnimation animation = new HeightAnimation(upcomingGamesListView,
-                            upcomingGamesHeightAdded, false);
-                    animation.setDuration(300);
-                    upcomingGamesCardView.startAnimation(animation);
-                    upcomingGamesHeightAdded = 0;
-                    initializeUpcomingGamesCount();
-                    upcomingGamesViewMoreButton.setText(R.string.view_more);
-                }
-                // TODO: fix auto-scrolling
-            }
-        });*/
-
-        pastGamesViewMoreButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HeightAnimation animation = new HeightAnimation(pastGamesTableLayout,
-                        getHeightToIncrease(), true);
-                animation.setDuration(300);
-                pastGamesTableLayout.startAnimation(animation);
-
-                // TODO: fix auto-scrolling
-//                scrollView.scrollTo(0, pastGamesTableLayout.getBottom());
-            }
-        });
-
 //        populateTeamRosterTable(athleteNames, athleteNumbers);
 
         return rootView;
-    }
-
-    /**
-     * Updates the upcomingGamesCount for the mUpcomingGamesAdapter. This way, the
-     * adapter knows how many more ListView items to load before the user hits "View More".
-     */
-    public void updateUpcomingGamesCount() {
-        // If upcoming games list does not have 3 more items to add, just add however many
-        // are remaining.
-        int upcomingGamesRemaining = upcomingGamesList.size() - upcomingGamesCount;
-        if ( upcomingGamesRemaining < 3 ) {
-            upcomingGamesCount += upcomingGamesRemaining;
-            upcomingGamesHeightToAdd = upcomingGamesRemaining * upcomingGamesItemHeight;
-        } else {
-            upcomingGamesCount += 3;
-            upcomingGamesHeightToAdd = 3 * upcomingGamesItemHeight;
-        }
-
-
-        mUpcomingGamesAdapter.notifyDataSetChanged();
-    }
-
-    public int getHeightToIncrease() {
-        if ( pastGamesRemainingToShow >= 3) {
-            pastGamesRemainingToShow -= 3;
-            return (pastGamesItemHeight * 3);
-        } else {
-            // Hide "View More" button
-            resultsCardFooter.setVisibility(View.GONE);
-            return pastGamesItemHeight * pastGamesRemainingToShow;
-        }
-    }
-
-    public void sortGames(List<BasketballRssItem> list) {
-        BasketballRssItem item;
-        try {
-            for (int i = 0; i < list.size(); i++) {
-                item = list.get(i);
-                if ( item.isUpcoming() ) {
-                    upcomingGamesList.add(item);
-                } else {
-                    pastGamesList.add(item);
-                }
-            }
-
-            initializeUpcomingGamesCount();
-
-            // Set the initial value of upcomingGamesCount, so that mUpcomingGamesAdapter
-            // can initialize properly.
-        } catch (Exception e) {
-            Log.d("sortGames", "sortGames broke it!");
-        }
-    }
-
-    private void initializeUpcomingGamesCount() {
-        if ( upcomingGamesList.size() > 6 ) {
-            upcomingGamesCount = 6;
-            upcomingGamesHeightToAdd = 3 * upcomingGamesItemHeight;
-        } else if ( upcomingGamesList.size() > 3 ){
-            upcomingGamesCount = upcomingGamesList.size();
-            upcomingGamesHeightToAdd = (upcomingGamesCount - 3) * upcomingGamesItemHeight;
-        } else {
-            upcomingGamesCount = upcomingGamesList.size();
-            upcomingGamesHeightToAdd = 0;
-        }
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        /*mUpcomingGamesAdapter = new UpcomingGamesAdapter(getActivity(), rssItemList);
-        upcomingGamesListView.setAdapter(mUpcomingGamesAdapter);*/
-    }
-
-
-    private void populateScheduleResultsTable(List<BasketballRssItem> pastGamesList) {
-        for (int i = pastGamesList.size() - 1; i >= 0; i --) {
-
-            // Since switching genders often cause this method to break the app, I put in a
-            // check to see if the activity was fully initialized before trying to generate a
-            // new table row. Probably not a good long term solution.
-            if (getActivity() == null) {
-                Log.d("popSched", "getActivity returned null!");
-                return;
-            }
-            TableRow tableRow = new TableRow(getActivity());
-            int tableRowHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12,
-                    getResources().getDisplayMetrics());
-            tableRow.setWeightSum(10f);
-            tableRow.setPadding(0, 0, 0, tableRowHeight);
-
-            BasketballRssItem item = pastGamesList.get(i);
-
-            addViewToRow(item.getDatePast(), tableRow, 1.5f);
-            if ( item.isAtHome() ) {
-                addViewToRow("vs. " + item.getOpponent(), tableRow, 6.5f);
-            } else {
-                addViewToRow("at " + item.getOpponent(), tableRow, 6.5f);
-            }
-            addViewToRow(item.getResult(), tableRow, 2f);
-
-            pastGamesTableLayout.addView(tableRow);
-        }
     }
 
     // Commented out for future usage
@@ -389,129 +205,22 @@ public class BasketballFragment extends GenericSportsFragment {
     }
 
     /**
-     * Sets the ListView height based on the height of it's currently showing children. Right
-     * now, the height is calculated using 3 children, due to the expanding nature of the
-     * CardView that the ListView is in.
-     *
-     * @param listView - the ListView to have its height set
+     * Fragment-specific upcoming games adapter, which basically just overrides the
+     * "getView" method of its superclass. getView() is responsible for how each ListView item
+     * is layed out and such.
      */
-    public void setListViewHeightBasedOnChildren(ListView listView) {
-        UpcomingGamesAdapter listAdapter = (UpcomingGamesAdapter) listView.getAdapter();
-        if (listAdapter == null) {
-            // pre-condition
-            return;
+    public class BasketballUpcomingGamesAdapter extends UpcomingGamesAdapter {
+
+        public BasketballUpcomingGamesAdapter(Context context, List<GenericSportsRssItem> items) {
+            super(context, items);
         }
 
-        int totalHeight = 0;
-        for (int i = 0; i < 3; i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(0, 0);
-            upcomingGamesItemHeight = listItem.getMeasuredHeight() + listView.getDividerHeight();
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (3));
-        listView.setLayoutParams(params);
-        listView.requestLayout();
-    }
-
-    public void setTableLayoutHeightBasedOnChildren(TableLayout tableLayout) {
-        if (tableLayout == null) {
-            return;
-        }
-
-        // Check to make sure there's at least one past game
-        if ( tableLayout.getChildAt(1) != null ) {
-            View headerRow = tableLayout.getChildAt(0);
-            headerRow.measure(0, 0);
-            int heightOfHeaderRow = headerRow.getMeasuredHeight();
-
-
-            View gameRow = tableLayout.getChildAt(1);
-            gameRow.measure(0, 0);
-            pastGamesItemHeight = gameRow.getMeasuredHeight();
-
-            int starterCount;
-            if (pastGamesList.size() <= 3) {
-                starterCount = pastGamesList.size();
-            } else {
-                starterCount = 3;
-                pastGamesRemainingToShow = pastGamesList.size() - starterCount;
-            }
-
-            pastGamesTableLayoutHeight = (pastGamesItemHeight * starterCount);
-
-
-            int starterHeight = pastGamesTableLayoutHeight + heightOfHeaderRow;
-
-            ViewGroup.LayoutParams params = tableLayout.getLayoutParams();
-            params.height = starterHeight;
-            tableLayout.setLayoutParams(params);
-            tableLayout.requestLayout();
-        }
-
-        /*for (int i = 0; i < 3; i++) {
-            listItem.measure(0, 0);
-            heightToAdd += listItem.getMeasuredHeight();
-        }
-        View listItem = linearLayout.getChildAt(0);*/
-    }
-
-    /**
-     * Adapter for the Upcoming Games card.
-     */
-    private class UpcomingGamesAdapter extends BaseAdapter {
-
-        int[] teamLogos = {R.drawable.western_michigan_broncos,
-                R.drawable.bluffton_beavers, R.drawable.wisconsin_whitewater};
-
-        private List<BasketballRssItem> items;
-
-        private Context context;
-
-        public UpcomingGamesAdapter(Context context, List<BasketballRssItem> items) {
-            this.context = context;
-            this.items = items;
-        }
-
-        public void updateChange(List<BasketballRssItem> list) {
-            if ( ! items.isEmpty()) {
-                items.clear();
-            }
-            items.addAll(list);
-            this.notifyDataSetChanged();
-        }
-
-        // Not use static
-        public class ViewHolder {
-            public TextView date, title, location;
-        }
-
-        // Get the items to show at first. If the list is larger than 3 items, only show
-        // the first 3. If it's not, show all of them.
-        @Override
-        public int getCount() {
-            return upcomingGamesCount;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return items.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
-            if (convertView == null) {
+            if (convertView == null && context != null) {
                 LayoutInflater inflater =
                         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.upcoming_basketball_games_row, parent, false);
+                convertView = inflater.inflate(R.layout.upcoming_team_games_row, parent, false);
 
                 viewHolder = new ViewHolder();
                 viewHolder.date = (TextView) convertView.findViewById(R.id.game_date);
@@ -522,10 +231,10 @@ public class BasketballFragment extends GenericSportsFragment {
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
-            BasketballRssItem item = items.get(position);
+            GenericSportsRssItem item = items.get(position);
 
             viewHolder.date.setText(item.getDateAndTimeUpcoming());
-            viewHolder.title.setText(item.getOpponent());
+            viewHolder.title.setText(item.getOpponentOrEvent());
 
             if ( item.isAtHome() ) {
                 viewHolder.location.setText("HOME");
@@ -550,11 +259,13 @@ public class BasketballFragment extends GenericSportsFragment {
         @SuppressWarnings("unchecked")
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-            rssItemList = (List<BasketballRssItem>) resultData.getSerializable(ITEMS);
+            rssItemList = (List<StandardSportRssItem>) resultData.getSerializable(ITEMS);
             sortGames(rssItemList);
-            mUpcomingGamesAdapter.updateChange(upcomingGamesList);
+            mBasketballUpcomingGamesAdapter = new BasketballUpcomingGamesAdapter(getActivity(),
+                    upcomingEventsList);
+            upcomingGamesListView.setAdapter(mBasketballUpcomingGamesAdapter);
             setListViewHeightBasedOnChildren(upcomingGamesListView);
-            populateScheduleResultsTable(pastGamesList);
+            populateResultsTable(pastEventsList);
             setTableLayoutHeightBasedOnChildren(pastGamesTableLayout);
         }
     }
