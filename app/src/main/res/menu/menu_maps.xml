@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_buildings_select"
-        android:title="@string/title_buildings_select" />
-    <item
-        android:id="@+id/action_residential_halls"
-        android:title="@string/title_action_residential_halls" />
-    </group>
+        android:id="@+id/action_choose_buildings"
+        android:title="@string/title_buildings_select"
+        android:icon="@drawable/ic_action_refresh"
+        app:showAsAction="ifRoom"/>
 </menu>

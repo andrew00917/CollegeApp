@@ -1,6 +1,5 @@
 package com.techhab.rss;
 
-import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -14,11 +13,11 @@ import java.util.List;
 /**
  * Created by Griffin on 12/19/2014.
  */
-public class CrossCountryParser {
+public class SportsParser {
     // We don't use namespaces
     private final String ns = null;
 
-    public List<CrossCountryRssItem> parse(InputStream inputStream) throws XmlPullParserException,
+    public List<SportsRssItem> parse(InputStream inputStream) throws XmlPullParserException,
             IOException {
         try {
             XmlPullParser parser = Xml.newPullParser();
@@ -33,13 +32,13 @@ public class CrossCountryParser {
         }
     }
 
-    private List<CrossCountryRssItem> readFeed(XmlPullParser parser) throws XmlPullParserException,
+    private List<SportsRssItem> readFeed(XmlPullParser parser) throws XmlPullParserException,
             IOException {
         parser.require(XmlPullParser.START_TAG, null, "rss");
         String titleAndScore = null;
         String link = null;
         String description = null;
-        List<CrossCountryRssItem> items = new ArrayList<CrossCountryRssItem>();
+        List<SportsRssItem> items = new ArrayList<SportsRssItem>();
         while (parser.next() != XmlPullParser.END_DOCUMENT) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
@@ -61,7 +60,6 @@ public class CrossCountryParser {
 
                     if (n.equals("title")) {
                         titleAndScore = readTitle(parser);
-                        Log.d("CrossCountryParser", "titleAndScore = " + titleAndScore);
                     } else if (n.equals("link")) {
                         link = readLink(parser);
                     } else if (n.equals("description")) {
@@ -73,9 +71,8 @@ public class CrossCountryParser {
                 }
             }
             if (titleAndScore != null && link != null) {
-                CrossCountryRssItem item = new CrossCountryRssItem(titleAndScore, link, description);
+                SportsRssItem item = new SportsRssItem(titleAndScore, link, description);
                 items.add(item);
-                Log.d("CrossCountryParser", "item added!" + item);
                 titleAndScore = null;
                 link = null;
                 description = null;

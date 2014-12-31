@@ -3,6 +3,7 @@ package com.techhab.collegeapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -11,34 +12,44 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-public class CafeteriaFragment extends Fragment implements View.OnClickListener {
+public class CafeteriaFragment extends Fragment {
     public static final String ARG_OBJECT = "object";
     // Buttons Cafeteria
-    View v;
-    FoodStore cafeteriaStore;
-    TextView tvTimeInfo;
-    TextView tvTimeInfo1;
-    TextView tvTimeDetailInfo;
-    RecyclerView rvMenu;
+    private View v;
+    private FoodStore cafeteriaStore;
+    private TextView tvTimeInfo;
+    private ImageView image;
+    private TextView tvTimeDetailInfo;
+    private RecyclerView rvMenu;
+    private ImageButton ibExpandble;
+    private LinearLayout statusBar;
     private boolean isBreakfastCollapse = true;
-    RecyclerView.LayoutManager mLayoutManager;
-
+    private RecyclerView.LayoutManager mLayoutManager;
+    private Spinner cafeteriaSpinner;
+    private int currentBarColor;
+    private boolean isExpanded = false;
 
     private static final int RICHARDSON = 1;
 
-    public static Fragment createNewIntace() {
+    public static Fragment createNewInstance() {
         CafeteriaFragment fragment = new CafeteriaFragment();
         Bundle arg = new Bundle();
         fragment.setArguments(arg);
@@ -53,10 +64,52 @@ public class CafeteriaFragment extends Fragment implements View.OnClickListener 
         v = inflater.inflate(R.layout.fragment_cafeteria, parent, false);
         rvMenu = (RecyclerView) v.findViewById(R.id.fragment_cafeteria_rvMenu);
         tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
-        //tvTimeInfo1 = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1);
         tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
+        ibExpandble = (ImageButton) v.findViewById(R.id.ibExpandable);
+        statusBar = (LinearLayout) v.findViewById(R.id.cafeteria_status_bar);
 
-        tvTimeInfo.setOnClickListener(this);
+
+
+
+        tvTimeInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isExpanded) { // Expand
+                    HeightAnimation animation = new HeightAnimation(tvTimeDetailInfo, 300, true);
+                    animation.setDuration(300);
+                    statusBar.startAnimation(animation);
+                    ibExpandble.setImageResource(R.drawable.ic_action_expand);
+                    isExpanded = !isExpanded;
+                } else { // Collapse
+                    HeightAnimation animation = new HeightAnimation(tvTimeDetailInfo, 300, false);
+                    animation.setDuration(300);
+                    statusBar.startAnimation(animation);
+                    ibExpandble.setImageResource(R.drawable.ic_action_collapse);
+                    isExpanded = !isExpanded;
+                }
+            }
+        });
+
+        cafeteriaSpinner = (Spinner) v.findViewById(R.id.fragment_cafeteria_spinner);
+        ArrayList<String> days = new ArrayList<>();
+        // TODO populate the days arraylist with 4 entries. The first two will always be
+        // "Today" and "Tomorrow", but the last 2 entries must be programmatically determined
+        // using the current date.
+        days.add("Today");
+        days.add("Tomorrow");
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
+        GregorianCalendar gregorianCalendar1 = new GregorianCalendar();
+        gregorianCalendar.add(Calendar.DATE, 2);
+        gregorianCalendar1.add(Calendar.DATE, 3);
+        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
+        String thirdDay = dayFormat.format(gregorianCalendar.getTime());
+        String forthDay = dayFormat.format(gregorianCalendar1.getTime());
+        days.add(thirdDay);
+        days.add(forthDay);
+        CustomAdapter spinnerAdapter = new CustomAdapter(getActivity(), android.R.layout.simple_spinner_item, days);
+//        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        cafeteriaSpinner.setAdapter(spinnerAdapter);
+
         //todo: fake data for cafe
         cafeteriaStore = new FoodStore();
         cafeteriaStore.setStoreName("Cafeteria");
@@ -65,15 +118,13 @@ public class CafeteriaFragment extends Fragment implements View.OnClickListener 
         Meal breakfast = new Meal();
         breakfast.setMealTitle("Breakfast");
         List<String> breakfastMainLines = new ArrayList<String>();
-        breakfastMainLines.add("Pancakes");
-        breakfastMainLines.add("Scrambled Eggs");
-        breakfastMainLines.add("Bacon");
-        breakfastMainLines.add("Kfc");
-        breakfastMainLines.add("Pate");
+        breakfastMainLines.add("item 1");
         breakfast.setMainLineItems(breakfastMainLines);
         List<String> breakfastInternationalCorner = new ArrayList<String>();
-        breakfastInternationalCorner.add("Pho soups");
-        breakfastInternationalCorner.add("Dumpling");
+        breakfastInternationalCorner.add("1");
+        breakfastInternationalCorner.add("2");
+        breakfastInternationalCorner.add("3");
+        breakfastInternationalCorner.add("4");
         breakfast.setInternationalCornerItems(breakfastInternationalCorner);
 
         Meal lunch = new Meal();
@@ -84,10 +135,15 @@ public class CafeteriaFragment extends Fragment implements View.OnClickListener 
         mainLines1.add("item3");
         mainLines1.add("item4");
         mainLines1.add("item5");
+        mainLines1.add("item6");
+        mainLines1.add("item7");
+
         lunch.setMainLineItems(mainLines1);
         List<String> internationalCorner1 = new ArrayList<String>();
         internationalCorner1.add("item1");
         internationalCorner1.add("item2");
+        internationalCorner1.add("item3");
+        internationalCorner1.add("item4");
         lunch.setInternationalCornerItems(internationalCorner1);
         Meal dinner = new Meal();
         dinner.setMealTitle("Dinner");
@@ -101,6 +157,10 @@ public class CafeteriaFragment extends Fragment implements View.OnClickListener 
         List<String> internationalCorner2 = new ArrayList<String>();
         internationalCorner2.add("item1");
         internationalCorner2.add("item2");
+        internationalCorner2.add("item3");
+        internationalCorner2.add("item4");
+        internationalCorner2.add("item5");
+        internationalCorner2.add("item6");
         dinner.setInternationalCornerItems(internationalCorner2);
 
         List<Meal> meals = new ArrayList<Meal>();
@@ -111,19 +171,22 @@ public class CafeteriaFragment extends Fragment implements View.OnClickListener 
         mLayoutManager = new LinearLayoutManager(getActivity());
         rvMenu.setLayoutManager(mLayoutManager);
         rvMenu.setAdapter(new MenuAdapter(getActivity(), meals));
-        /*if (isOpened(cafeteriaStore))
+        if (isOpened(cafeteriaStore))
         {
-            v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.green));
-            ((TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText(R.string.open);
+            currentBarColor = R.color.green;
+            statusBar.setBackgroundColor(getResources().getColor(R.color.green));
+            ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
         }
         else
         {
-            v.findViewById(R.id.fragment_careteria_llHeader).setBackgroundColor(getResources().getColor(R.color.red));
-            ((TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo1)).setText(R.string.closed);
-        }*/
+            currentBarColor = R.color.red;
+            statusBar.setBackgroundColor(getResources().getColor(R.color.red));
+            ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
+        }
         getRemainTime();
         return v;
     }
+
 
 
     private boolean isOpened(FoodStore foodStore)
@@ -182,31 +245,40 @@ public class CafeteriaFragment extends Fragment implements View.OnClickListener 
                 int seconds = (int) ((millisUntilFinished / 1000) % 60);
 
 
-                tvTimeInfo.setText(
-                        " "+ "for " + hours + " hours and " + minutes + " minutes"
-                             );
+                if (isOpened(cafeteriaStore))
+                {
+                    if (hours == 0 && minutes <= 30 && currentBarColor != R.color.Yellow)
+                    {
+                        currentBarColor = R.color.Yellow;
+                        statusBar.setBackgroundColor(getResources().getColor(R.color.Yellow));
+                    }
+                    else if ((hours > 0 || minutes > 30) && currentBarColor != R.color.green)
+                    {
+                        currentBarColor = R.color.green;
+                        statusBar.setBackgroundColor(getResources().getColor(R.color.green));
+                    }
+                    tvTimeInfo.setText(
+                            "Closing in " + hours + " hours and " + minutes + " minutes"
+                    );}
+                else
+                {
+                    if (currentBarColor != R.color.red)
+                    {
+                        currentBarColor = R.color.red;
+                        statusBar.setBackgroundColor(getResources().getColor(R.color.red));
+                    }
+                    tvTimeInfo.setText(
+                            "Opening in"+ " " + hours + "hours and " + minutes + " minutes");
+                }
 
             }
 
             public void onFinish() {
-                tvTimeInfo.setText("done");
+                getRemainTime();
+
             }
         }.start();
     }
-
-    @Override
-    public void onClick(View v) {
-
-        switch (v.getId()) {
-            case R.id.fragment_cafeteria_tvInfo:
-                tvTimeDetailInfo.setVisibility(tvTimeDetailInfo.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-
-
-
-        }
-    }
-
-
 
     private void PhoneCall(String phoneNumber) {
         Intent phoneIntent = new Intent(Intent.ACTION_CALL);
@@ -355,16 +427,25 @@ public class CafeteriaFragment extends Fragment implements View.OnClickListener 
                     if (isChecked)
                     {
                         HeightAnimation animation = new HeightAnimation(((ViewHolder) viewHolder).llMainLines,
-                                heightToAdd, true);
+                                getHeightToAdd(((ViewHolder) viewHolder).llMainLines, true), true);
                         animation.setDuration(300);
                         ((ViewHolder) viewHolder).llMainLines.startAnimation(animation);
+                        HeightAnimation animation1 = new HeightAnimation(((ViewHolder) viewHolder).llInternationalCorner,
+                                getHeightToAdd(((ViewHolder) viewHolder).llInternationalCorner, true), true);
+                        animation1.setDuration(300);
+                        ((ViewHolder) viewHolder).llInternationalCorner.startAnimation(animation1);
+
                     }
                     else
                     {
                         HeightAnimation animation = new HeightAnimation(((ViewHolder) viewHolder).llMainLines,
-                                heightToAdd, false);
+                                getHeightToAdd(((ViewHolder) viewHolder).llMainLines, false), false);
                         animation.setDuration(300);
                         ((ViewHolder) viewHolder).llMainLines.startAnimation(animation);
+                        HeightAnimation animation1 = new HeightAnimation(((ViewHolder) viewHolder).llInternationalCorner,
+                                getHeightToAdd(((ViewHolder) viewHolder).llInternationalCorner, false), false);
+                        animation1.setDuration(300);
+                        ((ViewHolder) viewHolder).llInternationalCorner.startAnimation(animation1);
                     }
                 }
             });
@@ -405,6 +486,12 @@ public class CafeteriaFragment extends Fragment implements View.OnClickListener 
             }
 
             setListViewHeightBasedOnChildren(viewHolder.llMainLines);
+
+            for (int i = 0; i < meal.getInternationalCornerItems().size(); i++) {
+                viewHolder.llInternationalCorner.addView(createFoodItemView(meal.getInternationalCornerItems().get(i)));
+            }
+
+            setListViewHeightBasedOnChildren(viewHolder.llInternationalCorner);
         }
 
         /**
@@ -415,36 +502,76 @@ public class CafeteriaFragment extends Fragment implements View.OnClickListener 
                 // pre-condition
                 return;
             }
-
-            //TODO check to see if the linearlayout has at least 3 children before any of this
-            //TODO code.
-
+            int starterHeight;
             View listItem = linearLayout.getChildAt(0);
             listItem.measure(0, 0);
             int heightOfChild = listItem.getMeasuredHeight();
-
-            int starterHeight = (heightOfChild * 3);
-
-            heightToAdd = (heightOfChild) * (linearLayout.getChildCount() - 3);
-
-            /*for (int i = 0; i < 3; i++) {
-                listItem.measure(0, 0);
-                heightToAdd += listItem.getMeasuredHeight();
-            }*/
+            starterHeight = (linearLayout.getChildCount() < 3 ? linearLayout.getChildCount() : 3) * heightOfChild;
 
             ViewGroup.LayoutParams params = linearLayout.getLayoutParams();
             params.height = starterHeight;
             linearLayout.setLayoutParams(params);
             linearLayout.requestLayout();
+
         }
     }
 
-    /*private class MySpinnerAdapter extends SpinnerAdapter {
 
-        public MySpinnerAdapter() {
+    private int getHeightToAdd(LinearLayout parent, boolean isExpand)
+    {
+        View listItem = parent.getChildAt(0);
+        listItem.measure(0, 0);
+        int heightOfChild = listItem.getMeasuredHeight();
+        if (parent.getChildCount() <= 3)
+            return 0;
+        else
+            return heightOfChild * (parent.getChildCount() - 3);
+
+
+    }
+
+    private class CustomAdapter extends ArrayAdapter<String> {
+
+        private ArrayList<String> days;
+        private LayoutInflater inflater;
+        private Context context;
+
+        /*************  CustomAdapter Constructor *****************/
+        public CustomAdapter(Context context, int rowResourceLayout, ArrayList<String> days ) {
+            super(context, rowResourceLayout, days);
+            this.context = context;
+            this.days = days;
+
+            /***********  Layout inflator to call external xml layout () **********************/
+            inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         }
 
-    }*/
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            return getCustomView(position, convertView, parent);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return getCustomView(position, convertView, parent);
+        }
+
+        // This funtion called for each row ( Called data.size() times )
+        public View getCustomView(int position, View convertView, ViewGroup parent) {
+
+            /********** Inflate spinner_rows.xml file for each row ( Defined below ) ************/
+            View row = inflater.inflate(R.layout.cafeteria_spinner_rows, parent, false);
+
+
+            TextView label = (TextView)row.findViewById(R.id.day);
+
+            label.setText(days.get(position));
+
+
+            return row;
+        }
+
+    }
 
 }
