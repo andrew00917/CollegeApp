@@ -86,6 +86,10 @@ public class AthleticActivity extends ActionBarActivity
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         menText = (TextView) findViewById(R.id.men_text);
         womenText = (TextView) findViewById(R.id.women_text);
+        genderSwitch = (SwitchCompat) findViewById(R.id.gender_switch);
+
+        genderSwitch.measure(0, 0);
+        Log.d("genderSwitch height", "genderSwitch Height =" + genderSwitch.getMeasuredHeight());
 
         ViewCompat.setElevation(header, getResources().getDimension(R.dimen.toolbar_elevation));
 
@@ -97,7 +101,6 @@ public class AthleticActivity extends ActionBarActivity
 //        getSupportActionBar().hide();
 
         // Handle Boys/Girls toggle switch
-        genderSwitch = (SwitchCompat) findViewById(R.id.gender_switch);
         // Set a custom track drawable to keep it from "highlighting" upon selection
         Drawable genderSwitchTrack = getResources().getDrawable(
                 R.drawable.abc_switch_track_mtrl_alpha);
@@ -335,7 +338,7 @@ public class AthleticActivity extends ActionBarActivity
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                onBackPressed();
                 return true;
             case R.id.action_reset_shared_prefs:
                 application.setSportsFirstTime(true);
