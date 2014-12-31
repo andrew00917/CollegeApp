@@ -183,7 +183,13 @@ public class EventsFragment extends Fragment {
                     case R.id.info_button:
                         // TODO: fix auto-scrolling
                         // Check for an expanded view, collapse if you find one
-                        if (expandedPosition == holder.getPosition() || expandedPosition >= 0) {
+                        if (expandedPosition >= 0 && expandedPosition != holder.getPosition()) {
+                            collapseCard(expandedHolder);
+                            expandedPosition = -1;
+                            expandedHolder = null;
+                        }
+
+                        if (expandedPosition == holder.getPosition()) {
                             collapseCard(holder);
                             expandedPosition = -1;
                             expandedHolder = null;
@@ -218,28 +224,26 @@ public class EventsFragment extends Fragment {
              */
             private void collapseCard(ViewHolder h) {
                 HeightAnimation animation;
-                int height = h.description.getHeight();
+                h.description.measure(0, 0);
+                int height = h.description.getMeasuredHeight();
                 animation = new HeightAnimation(h.description, height, false);
                 animation.setDuration(300);
                 h.description.startAnimation(animation);
 
 
                 WidthAnimation widthAnimation;
-                int width = h.buttonSection.getHeight();
-                widthAnimation = new WidthAnimation(h.favoriteButton
-                        , width, false);
+                h.buttonSection.measure(0, 0);
+                int width = h.buttonSection.getMeasuredHeight();
+                widthAnimation = new WidthAnimation(h.favoriteButton, width, false);
                 widthAnimation.setDuration(300);
                 h.favoriteButton.startAnimation(widthAnimation);
-                widthAnimation = new WidthAnimation(h.buildingButton
-                        , width, false);
+                widthAnimation = new WidthAnimation(h.buildingButton, width, false);
                 widthAnimation.setDuration(300);
                 h.buildingButton.startAnimation(widthAnimation);
-                widthAnimation = new WidthAnimation(h.calendarButton
-                        , width, false);
+                widthAnimation = new WidthAnimation(h.calendarButton, width, false);
                 widthAnimation.setDuration(300);
                 h.calendarButton.startAnimation(widthAnimation);
-                widthAnimation = new WidthAnimation(h.attendButton
-                        , width, false);
+                widthAnimation = new WidthAnimation(h.attendButton, width, false);
                 widthAnimation.setDuration(300);
                 h.attendButton.startAnimation(widthAnimation);
             }
@@ -251,7 +255,9 @@ public class EventsFragment extends Fragment {
              */
             private void expandCard(ViewHolder h) {
                 HeightAnimation animation;
-                int height = h.buttonSection.getHeight() * 5;
+                h.buttonSection.measure(0, 0);
+                int width = h.buttonSection.getMeasuredHeight();
+                int height = width * 5;
 
                 animation = new HeightAnimation(h.progress,
                         ((EventsActivity) getActivity()).getProgressBarHeight(), true);
@@ -262,8 +268,6 @@ public class EventsFragment extends Fragment {
                 h.description.startAnimation(animation);
 
                 WidthAnimation widthAnimation;
-                int width = h.buttonSection.getHeight();
-
                 widthAnimation = new WidthAnimation(h.favoriteButton, width, true);
                 widthAnimation.setDuration(300);
                 h.favoriteButton.startAnimation(widthAnimation);
