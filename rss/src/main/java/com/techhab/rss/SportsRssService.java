@@ -20,10 +20,15 @@ public class SportsRssService extends IntentService {
 
     public static final String TAG = "RssApp";
 
-//    private static final String RSS_LINK = "http://hornets.kzoo.edu/sports/mbkb/2014-15/schedule?print=rss";
-    private static final String RSS_LINK = "https://reason.kzoo.edu/studentactivities/feeds/events";
+    /*private static final String RSS_LINK =
+            "http://hornets.kzoo.edu/sports/mbkb/2014-15/schedule?print=rss";*/
     public static final String ITEMS = "sportsRssItemList";
     public static final String RECEIVER = "sportsReceiver";
+
+    public String RSS_LINK;
+
+   /* public String ITEMS;
+    public String RECEIVER;*/
 
     public SportsRssService() {
         super("RssService");
@@ -32,6 +37,9 @@ public class SportsRssService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(TAG, "Service started");
+        RSS_LINK = intent.getStringExtra("gender_preference");
+        /*ITEMS = "standardRssItemList";
+        RECEIVER = "standardReceiver";*/
         List<SportsRssItem> rssItems = null;
         try {
             SportsParser parser = new SportsParser();

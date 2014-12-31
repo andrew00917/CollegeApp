@@ -3,5 +3,7 @@
         <service
             android:name=".EventsRssService"
             android:exported="false" />
+        <service android:name=".SportsRssService"
+            android:exported="false" />
     </application>
 </manifest>

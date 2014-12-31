@@ -10,17 +10,24 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
+import com.techhab.eventdialogbuilder.EventDialogBuilder;
+import com.techhab.kcollegecustomviews.ProgressBar;
 
 
 public class EventsActivity extends ActionBarActivity
         implements NavigationDrawerCallbacks {
 
     private final Handler handler = new Handler();
+
+    private ProgressBar progressBar;
 
     private Toolbar toolbar;
     private PagerSlidingTabStrip tabs;
@@ -38,6 +45,8 @@ public class EventsActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
+
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -85,6 +94,11 @@ public class EventsActivity extends ActionBarActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        if (id == R.id.home) {
+            onBackPressed();
+            return true;
+        }
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
@@ -135,6 +149,26 @@ public class EventsActivity extends ActionBarActivity
     public void buttonReleased(View view) {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.button_released);
         view.startAnimation(animation);
+    }
+
+    public void showInfoDialog(String event, String link) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.event_dialog_custom, (ViewGroup) findViewById(R.id.root_layout));
+
+        EventDialogBuilder builder = new EventDialogBuilder(this);
+        builder.setCustomView(layout);
+
+        builder.onCreate();
+
+        builder.showDialog(event, link);
+    }
+
+    public void updateProgressBar(int progress) {
+        progressBar.setProgress(progress);
+    }
+
+    public void dismissProgressBar() {
+        progressBar.setVisibility(ProgressBar.GONE);
     }
 
 
@@ -215,6 +249,5 @@ public class EventsActivity extends ActionBarActivity
             return fragment;
         }
     }
-
 
 }

@@ -1,6 +1,5 @@
 package com.techhab.rss;
 
-import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -37,15 +36,14 @@ public class SportsParser {
             IOException {
         parser.require(XmlPullParser.START_TAG, null, "rss");
         String titleAndScore = null;
-        String pubDate = null;
         String link = null;
+        String description = null;
         List<SportsRssItem> items = new ArrayList<SportsRssItem>();
         while (parser.next() != XmlPullParser.END_DOCUMENT) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
             String name = parser.getName();
-            Log.d("readFeed name", "name: " + name);
             if (name.equals("channel")) {
                 continue;
             }
@@ -62,22 +60,22 @@ public class SportsParser {
 
                     if (n.equals("title")) {
                         titleAndScore = readTitle(parser);
-                    } else if (n.equals("pubDate")) {
-                        pubDate = readPubDate(parser);
                     } else if (n.equals("link")) {
                         link = readLink(parser);
+                    } else if (n.equals("description")) {
+                        description = readDescription(parser);
+                    } else {
+                        parser.next();
+                        parser.nextTag();
                     }
                 }
             }
-            if (titleAndScore != null && pubDate != null && link != null) {
-//                String[] dateAndEvent = titleAndScore.split(" - ");
-//                String[] placeAndTime = description.split(", ");
-
-                SportsRssItem item = new SportsRssItem(pubDate, titleAndScore, link);
+            if (titleAndScore != null && link != null) {
+                SportsRssItem item = new SportsRssItem(titleAndScore, link, description);
                 items.add(item);
-                pubDate = null;
                 titleAndScore = null;
                 link = null;
+                description = null;
             }
         }
         return items;
@@ -122,15 +120,6 @@ public class SportsParser {
         String title = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "title");
         return title;
-    }
-
-    private String readPubDate(XmlPullParser parser) throws XmlPullParserException,
-            IOException {
-        parser.require(XmlPullParser.START_TAG, ns, "pubDate");
-        String pubDate = readText(parser);
-        Log.d("pubDate", "pubDate: " + pubDate);
-        parser.require(XmlPullParser.END_TAG, ns, "pubDate");
-        return pubDate;
     }
 
     // For the tags title and link, extract their text values.

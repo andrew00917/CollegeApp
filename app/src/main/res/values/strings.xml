@@ -85,6 +85,13 @@
         <item>Campus Map</item>
     </string-array>
 
+    <string-array name="cafeteria_value">
+        <item>Today</item>
+        <item>Tomorrow</item>
+        <item>Day 3</item>
+        <item>Day 4</item>
+    </string-array>
+
     <!-- Login fragment -->
     <string name="k_email">K Email</string>
     <string name="k_password">K Password</string>
@@ -99,6 +106,7 @@
     <string name="action_overflow">More</string>
     <string name="action_send">Send</string>
     <string name="action_reset_shared_prefs">Reset shared prefs</string>
+    <string name="scroll_to_bottom">Scroll to bottom</string>
 
     <!-- Maps action bar-->
     <string name="title_buildings_select">Buildings</string>
@@ -117,6 +125,8 @@
     <string name="title_activity_info">Campus Information</string>
     <string name="label_building_Hicks_Center">Hicks Center</string>
     <!-- Cafeteria(DetailedCafeteriaFragment) -->
+    <string name="open">OPEN</string>
+    <string name="closed">CLOSED</string>
     <string name="label_cafeteria_contact">Contact Us:</string>
     <string name="label_cafeteria_phone">(517) 763-1377</string>
     <string name="label_cafeteria_richardson">Richardson Cafe</string>
@@ -140,12 +150,17 @@
     <string name="men">MEN\'S</string>
     <string name="women">WOMEN\'S</string>
     <string name="view_more">VIEW MORE</string>
+    <string name="view_less">VIEW LESS</string>
+    <string name="collapse_list">COLLAPSE LIST</string>
 
         <!-- Game In Progress card-->
         <string name="game_in_progress">Game In Progress</string>
 
         <!-- Upcoming Games card -->
         <string name="upcoming_games">Upcoming Games</string>
+        <string name="upcoming_events">Upcoming Events</string>
+        <string name="no_upcoming_events">No upcoming events</string>
+        <string name="no_past_events">No past events</string>
 
         <!-- Team Roster card -->
         <string name="roster">Team Roster</string>
@@ -164,6 +179,26 @@
         <string name="date">Date</string>
         <string name="opponent">Opponent</string>
         <string name="result">Result</string>
+
+
+        <!-- Sports RSS URLS -->
+        <string name="mens_baseball">http://hornets.kzoo.edu/sports/bsb/2014-15/schedule?print=rss</string>
+        <string name="womens_softball">http://hornets.kzoo.edu/sports/sball/2014-15/schedule?print=rss</string>
+        <string name="mens_basketball">http://hornets.kzoo.edu/sports/mbkb/2014-15/schedule?print=rss</string>
+        <string name="womens_basketball">http://hornets.kzoo.edu/sports/wbkb/2014-15/schedule?print=rss</string>
+        <string name="mens_cross_country">http://hornets.kzoo.edu/sports/mxc/2014-15/schedule?print=rss</string>
+        <string name="womens_cross_country">http://hornets.kzoo.edu/sports/wxc/2014-15/schedule?print=rss</string>
+        <string name="mens_football">http://hornets.kzoo.edu/sports/fball/2014-15/schedule?print=rss</string>
+        <string name="mens_golf">http://hornets.kzoo.edu/sports/mgolf/2014-15/schedule?print=rss</string>
+        <string name="womens_golf">http://hornets.kzoo.edu/sports/wgolf/2014-15/schedule?print=rss</string>
+        <string name="mens_soccer">http://hornets.kzoo.edu/sports/msoc/2014-15/schedule?print=rss</string>
+        <string name="womens_soccer">http://hornets.kzoo.edu/sports/wsoc/2014-15/schedule?print=rss</string>
+        <string name="mens_swim_dive">http://hornets.kzoo.edu/sports/mswimdive/2014-15/schedule?print=rss</string>
+        <string name="womens_swim_dive">http://hornets.kzoo.edu/sports/wswimdive/2014-15/schedule?print=rss</string>
+        <string name="mens_tennis">http://hornets.kzoo.edu/sports/mten/2014-15/schedule?print=rss</string>
+        <string name="womens_tennis">http://hornets.kzoo.edu/sports/wten/2014-15/schedule?print=rss</string>
+        <string name="womens_volleyball">http://hornets.kzoo.edu/sports/wvball/2014-15/schedule?print=rss</string>
+        <string name="womens_lacrosse">http://hornets.kzoo.edu/sports/wlax/2014-15/schedule?print=rss</string>
 
 
 
