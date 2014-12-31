@@ -25,7 +25,6 @@ public class MapsActivity extends ActionBarActivity {
     private static boolean academicBuildings = false;
     private static boolean residentialHalls = false;
     private static boolean showAll = false;
-    private static Menu mMenu;
     private Toolbar toolbar;
 
 
@@ -34,55 +33,49 @@ public class MapsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
+        //Menu
+        toolbar.inflateMenu(R.menu.menu_maps);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+
+                switch (menuItem.getItemId()){
+                    case R.id.action_choose_buildings:
+                        Toast.makeText(getApplicationContext(),"Choose Buildings",Toast.LENGTH_SHORT).show();
+                        chooseBuildings();
+                        return true;
+                }
+
+                return false;
+            }
+        });
+
+
         setUpMapIfNeeded();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setUpMapIfNeeded();
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar
-        mMenu = menu;
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_maps, mMenu);
-        return super.onCreateOptionsMenu(mMenu);
-    }
     public void chooseBuildings() {
         new MaterialDialog.Builder(this)
                 .title("View Buildings")
-                .items(new String[]{"Academic", "Residential", "Offices",
-                                        "Recreational", "Other", "All"})
-                .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMulti() {
+                .items(new CharSequence[]{"Academic", "Residential", "Offices",
+                        "Recreational", "Other", "All"})
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallback() {
                     @Override
-                    public void onSelection(MaterialDialog dialog, Integer[] which,
-                                            CharSequence[] text) {
-                        Log.e("Choose buildings dialog on selection", which.toString());
-//                        if (which != null) {
-//                            for (int i : which) {
-//
-////                                if (i == 0) {
-////
-////                                }
-////                                if 0 {
-////                                    Academic
-////                                }
-////                                else if {
-////
-////                                }
-//                            }
-//                        }
-//                        else {
-//                            //none selected Error
-//
-//                        }
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        if (which == 0) {
+                            academicBuildings = true;
+                            setUpMap();
+                        }
+                        else if (which == 1) {
+                            residentialHalls = true;
+                            setUpMap();
+                        }
+
                     }
                 })
-                .positiveText("OK")
+                .positiveText("Choose")
                 .positiveColor(getResources().getColor(R.color.kzooOrange))
                 .negativeText("Cancel")
                 .autoDismiss(false)
@@ -91,15 +84,11 @@ public class MapsActivity extends ActionBarActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_buildings_select:
-                chooseBuildings();
-                return true;
-            default:
-                return true;
-        }
+    protected void onResume() {
+        super.onResume();
+        setUpMapIfNeeded();
     }
+
 
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
