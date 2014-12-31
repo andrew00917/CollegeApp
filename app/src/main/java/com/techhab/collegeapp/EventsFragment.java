@@ -114,7 +114,7 @@ public class EventsFragment extends Fragment {
     /**
      * Adapter for recycler view
      */
-    public class RssAdapter extends RecyclerView.Adapter<RssAdapter.ViewHolder> {
+    public class RssAdapter extends RecyclerView.Adapter<RssAdapter.ViewHolder> implements View.OnClickListener {
 
         private Context context;
         private List<EventsRssItem> items;
@@ -136,8 +136,29 @@ public class EventsFragment extends Fragment {
             this.notifyDataSetChanged();
         }
 
+        @Override
+        public void onClick(View v) {
+            ViewHolder holder = (ViewHolder) v.getTag();
+
+            switch (v.getId()) {
+                case R.id.info_button:
+                    // Check for an expanded view, collapse if you find one
+                    if (expandedPosition >= 0) {
+                        ViewHolder prev = expandedHolder;
+                        collapseCard(prev);
+                    }
+                    // Set the current position to "expanded"
+                    expandedPosition = holder.getPosition();
+                    expandCard(holder);
+                    setDescription(holder, items.get(expandedPosition).getLink());
+                    expandedHolder = holder;
+                    break;
+            }
+            Toast.makeText(context, "Holder on click " + holder.getPosition(), Toast.LENGTH_SHORT).show();
+        }
+
         // Not use static
-        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
             public View v;
             public FrameLayout image;
@@ -173,39 +194,6 @@ public class EventsFragment extends Fragment {
 
             public int getButtonSectionHeight() {
                 return buttonSection.getHeight();
-            }
-
-            @Override
-            public void onClick(View view) {
-                ViewHolder holder = (ViewHolder) view.getTag();
-
-                switch (view.getId()) {
-                    case R.id.info_button:
-                        // Check for an expanded view, collapse if you find one
-                        if (expandedPosition >= 0) {
-                            ViewHolder prev = expandedHolder;
-                            collapseCard(prev);
-                        }
-                        // Set the current position to "expanded"
-                        expandedPosition = holder.getPosition();
-                        expandCard(holder);
-                        setDescription(holder, items.get(expandedPosition).getLink());
-                        expandedHolder = holder;
-                        break;
-                }
-                Toast.makeText(context, "Holder on click " + holder.getPosition(), Toast.LENGTH_SHORT).show();
-            }
-
-            /**
-             *  Generate jsoup DOM to set description of the event's cards and set calendar
-             *  button on click listener
-             *
-             * @param h
-             * @param link
-             */
-            private void setDescription(ViewHolder h, String link) {
-                new EventsDom(getActivity(), h.event.getText().toString(), h.description,
-                        h.calendarButton, link, h.progress);
             }
         }
 
@@ -297,6 +285,18 @@ public class EventsFragment extends Fragment {
             View view = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.events_recycle, parent, false);
             return new ViewHolder(view);
+        }
+
+        /**
+         *  Generate jsoup DOM to set description of the event's cards and set calendar
+         *  button on click listener
+         *
+         * @param h
+         * @param link
+         */
+        private void setDescription(ViewHolder h, String link) {
+            new EventsDom(getActivity(), h.event.getText().toString(), h.description,
+                    h.calendarButton, link, h.progress);
         }
 
         /**
