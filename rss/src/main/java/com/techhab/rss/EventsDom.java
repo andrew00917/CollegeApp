@@ -43,6 +43,7 @@ public class EventsDom {
             new MyAsyncTask().execute(link);
         } else {
             progress.setVisibility(ProgressBar.GONE);
+            setOnClickListenerForCalendar();
         }
     }
 

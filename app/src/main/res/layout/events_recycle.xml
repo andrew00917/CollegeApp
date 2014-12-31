@@ -62,8 +62,7 @@
             android:layout_height="0dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            android:gravity="center"
-            style="@android:style/Widget.ProgressBar.Small" />
+            android:gravity="center" />
 
         <TextView
             android:id="@+id/place"

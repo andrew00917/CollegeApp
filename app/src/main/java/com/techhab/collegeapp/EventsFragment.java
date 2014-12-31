@@ -167,16 +167,12 @@ public class EventsFragment extends Fragment {
                 buttonSection = (LinearLayout) v.findViewById(R.id.button_section);
 
                 infoButton = (ImageButton) v.findViewById(R.id.info_button);
-                infoButton.setOnClickListener(this);
                 infoButton.setTag(this);
+                infoButton.setOnClickListener(this);
                 favoriteButton = (ImageView) v.findViewById(R.id.favorite_button);
                 buildingButton = (ImageView) v.findViewById(R.id.building_button);
                 calendarButton = (ImageView) v.findViewById(R.id.calendar_button);
                 attendButton = (ImageView) v.findViewById(R.id.attending_button);
-            }
-
-            public int getButtonSectionHeight() {
-                return buttonSection.getHeight();
             }
 
             @Override
@@ -185,26 +181,101 @@ public class EventsFragment extends Fragment {
 
                 switch (v.getId()) {
                     case R.id.info_button:
+                        // TODO: fix auto-scrolling
                         // Check for an expanded view, collapse if you find one
-                        if (expandedPosition >= 0) {
-                            ViewHolder prev = expandedHolder;
-                            collapseCard(prev);
-                        }
-
-                        if (expandedPosition == holder.getPosition()) {
+                        if (expandedPosition == holder.getPosition() || expandedPosition >= 0) {
                             collapseCard(holder);
                             expandedPosition = -1;
                             expandedHolder = null;
                         } else {
                             // Set the current position to "expanded"
-                            expandedPosition = holder.getPosition();
                             expandCard(holder);
+                            expandedPosition = holder.getPosition();
                             setDescription(holder, items.get(expandedPosition).getLink());
                             expandedHolder = holder;
                         }
                         break;
                 }
                 Toast.makeText(context, "Holder on click " + holder.getPosition(), Toast.LENGTH_SHORT).show();
+            }
+
+            /**
+             *  Generate jsoup DOM to set description of the event's cards and set calendar
+             *  button on click listener
+             *
+             * @param h
+             * @param link
+             */
+            private void setDescription(ViewHolder h, String link) {
+                new EventsDom(getActivity(), h.event.getText().toString(), h.description,
+                        h.calendarButton, link, h.progress);
+            }
+
+            /**
+             *  Collapse card with description and buttons
+             *
+             * @param h
+             */
+            private void collapseCard(ViewHolder h) {
+                HeightAnimation animation;
+                int height = h.description.getHeight();
+                animation = new HeightAnimation(h.description, height, false);
+                animation.setDuration(300);
+                h.description.startAnimation(animation);
+
+
+                WidthAnimation widthAnimation;
+                int width = h.buttonSection.getHeight();
+                widthAnimation = new WidthAnimation(h.favoriteButton
+                        , width, false);
+                widthAnimation.setDuration(300);
+                h.favoriteButton.startAnimation(widthAnimation);
+                widthAnimation = new WidthAnimation(h.buildingButton
+                        , width, false);
+                widthAnimation.setDuration(300);
+                h.buildingButton.startAnimation(widthAnimation);
+                widthAnimation = new WidthAnimation(h.calendarButton
+                        , width, false);
+                widthAnimation.setDuration(300);
+                h.calendarButton.startAnimation(widthAnimation);
+                widthAnimation = new WidthAnimation(h.attendButton
+                        , width, false);
+                widthAnimation.setDuration(300);
+                h.attendButton.startAnimation(widthAnimation);
+            }
+
+            /**
+             *  Expand card with description and buttons
+             *
+             * @param h
+             */
+            private void expandCard(ViewHolder h) {
+                HeightAnimation animation;
+                int height = h.buttonSection.getHeight() * 5;
+
+                animation = new HeightAnimation(h.progress,
+                        ((EventsActivity) getActivity()).getProgressBarHeight(), true);
+                animation.setDuration(300);
+                h.progress.startAnimation(animation);
+                animation = new HeightAnimation(h.description, height, true);
+                animation.setDuration(300);
+                h.description.startAnimation(animation);
+
+                WidthAnimation widthAnimation;
+                int width = h.buttonSection.getHeight();
+
+                widthAnimation = new WidthAnimation(h.favoriteButton, width, true);
+                widthAnimation.setDuration(300);
+                h.favoriteButton.startAnimation(widthAnimation);
+                widthAnimation = new WidthAnimation(h.buildingButton, width, true);
+                widthAnimation.setDuration(300);
+                h.buildingButton.startAnimation(widthAnimation);
+                widthAnimation = new WidthAnimation(h.calendarButton, width, true);
+                widthAnimation.setDuration(300);
+                h.calendarButton.startAnimation(widthAnimation);
+                widthAnimation = new WidthAnimation(h.attendButton, width, true);
+                widthAnimation.setDuration(300);
+                h.attendButton.startAnimation(widthAnimation);
             }
         }
 
@@ -243,33 +314,6 @@ public class EventsFragment extends Fragment {
             holder.event.setText(item.getEvent());
             holder.time.setText(item.getTime());
 
-            if (position == expandedPosition) {
-                expandCard(holder);
-            } else {
-                collapseCard(holder);
-            }
-
-//            holder.infoButton.setOnTouchListener(new View.OnTouchListener() {
-//
-//                @Override
-//                public boolean onTouch(View v, MotionEvent event) {
-//                    switch (event.getAction()) {
-//                        case MotionEvent.ACTION_DOWN:
-//                            ((EventsActivity) getActivity()).buttonPressed(v);
-//                            break;
-//                        case MotionEvent.ACTION_CANCEL:
-//                        case MotionEvent.ACTION_OUTSIDE:
-//                            ((EventsActivity) getActivity()).buttonReleased(v);
-//                            break;
-//                        case MotionEvent.ACTION_UP:
-//                            ((EventsActivity) getActivity()).buttonReleased(v);
-//                            // TODO: fix auto-scrolling
-//                            break;
-//                    }
-//                    return true;
-//                }
-//            });
-
             holder.favoriteButton.setOnTouchListener(new View.OnTouchListener(){
 
                 @Override
@@ -296,82 +340,6 @@ public class EventsFragment extends Fragment {
             View view = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.events_recycle, parent, false);
             return new ViewHolder(view);
-        }
-
-        /**
-         *  Generate jsoup DOM to set description of the event's cards and set calendar
-         *  button on click listener
-         *
-         * @param h
-         * @param link
-         */
-        private void setDescription(ViewHolder h, String link) {
-            new EventsDom(getActivity(), h.event.getText().toString(), h.description,
-                    h.calendarButton, link, h.progress);
-        }
-
-        /**
-         *  Collapse card with description and buttons
-         *
-         * @param h
-         */
-        private void collapseCard(ViewHolder h) {
-            HeightAnimation animation;
-            int height = h.getButtonSectionHeight() * 5;
-
-            animation = new HeightAnimation(h.description, height, false);
-            animation.setDuration(300);
-            h.description.startAnimation(animation);
-
-            WidthAnimation widthAnimation;
-            int width = h.buttonSection.getHeight();
-
-            widthAnimation = new WidthAnimation(h.favoriteButton, width, false);
-            widthAnimation.setDuration(300);
-            h.favoriteButton.startAnimation(widthAnimation);
-            widthAnimation = new WidthAnimation(h.buildingButton, width, false);
-            widthAnimation.setDuration(300);
-            h.buildingButton.startAnimation(widthAnimation);
-            widthAnimation = new WidthAnimation(h.calendarButton, width, false);
-            widthAnimation.setDuration(300);
-            h.calendarButton.startAnimation(widthAnimation);
-            widthAnimation = new WidthAnimation(h.attendButton, width, false);
-            widthAnimation.setDuration(300);
-            h.attendButton.startAnimation(widthAnimation);
-        }
-
-        /**
-         *  Expand card with description and buttons
-         *
-         * @param h
-         */
-        private void expandCard(ViewHolder h) {
-            HeightAnimation animation;
-            int height = h.getButtonSectionHeight() * 5;
-
-            animation = new HeightAnimation(h.progress,
-                    ((EventsActivity) getActivity()).getProgressBarHeight(), true);
-            animation.setDuration(300);
-            h.progress.startAnimation(animation);
-            animation = new HeightAnimation(h.description, height, true);
-            animation.setDuration(300);
-            h.description.startAnimation(animation);
-
-            WidthAnimation widthAnimation;
-            int width = h.buttonSection.getHeight();
-
-            widthAnimation = new WidthAnimation(h.favoriteButton, width, true);
-            widthAnimation.setDuration(300);
-            h.favoriteButton.startAnimation(widthAnimation);
-            widthAnimation = new WidthAnimation(h.buildingButton, width, true);
-            widthAnimation.setDuration(300);
-            h.buildingButton.startAnimation(widthAnimation);
-            widthAnimation = new WidthAnimation(h.calendarButton, width, true);
-            widthAnimation.setDuration(300);
-            h.calendarButton.startAnimation(widthAnimation);
-            widthAnimation = new WidthAnimation(h.attendButton, width, true);
-            widthAnimation.setDuration(300);
-            h.attendButton.startAnimation(widthAnimation);
         }
     }
 
