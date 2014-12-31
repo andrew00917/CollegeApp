@@ -148,7 +148,7 @@ public class MapsActivity extends ActionBarActivity {
                     .position(new LatLng(42.290056, -85.60088))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                     .title("Mandelle Hall")
-                    .snippet("Is great place. nine-outta-seven."));
+                    .snippet("Is great description. nine-outta-seven."));
 
             mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(42.29006, -85.6007))

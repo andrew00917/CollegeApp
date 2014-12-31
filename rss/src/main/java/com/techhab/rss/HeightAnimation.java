@@ -1,34 +1,34 @@
-package com.techhab.collegeapp;
+package com.techhab.rss;
 
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
 /**
- * Created by jhchoe on 12/28/14.
+ * Created by Griffin on 12/25/2014.
  */
-public class WidthAnimation extends Animation {
-    private final int widthToAddOrSubtract;
+public class HeightAnimation extends Animation {
+    private final int heightToAddOrSubtract;
     private final View view;
     private final boolean grow;
-    private final int width;
+    private final int height;
 
-    public WidthAnimation(View view, int widthToAddOrSubtract, boolean grow) {
+    public HeightAnimation(View view, int heightToAddOrSubtract, boolean grow) {
         this.view = view;
-        this.widthToAddOrSubtract = widthToAddOrSubtract;
+        this.heightToAddOrSubtract = heightToAddOrSubtract;
         this.grow = grow;
-        this.width = view.getWidth();
+        height = view.getHeight();
     }
 
     @Override
     protected void applyTransformation(float interpolatedTime, Transformation t) {
-        int newWidth;
+        int newHeight;
         if (grow) {
-            newWidth = (int) (width + (widthToAddOrSubtract * interpolatedTime));
+            newHeight = (int) (height + (heightToAddOrSubtract * interpolatedTime));
         } else {
-            newWidth = (int) (width + (-widthToAddOrSubtract * interpolatedTime));
+            newHeight = (int) (height + (-heightToAddOrSubtract * interpolatedTime));
         }
-        view.getLayoutParams().width = newWidth;
+        view.getLayoutParams().height = newHeight;
 
         view.requestLayout();
     }

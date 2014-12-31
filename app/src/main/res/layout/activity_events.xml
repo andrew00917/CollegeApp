@@ -11,16 +11,17 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/main20" >
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/expanded_toolbar"
+                android:layout_height="@dimen/abc_action_bar_default_height_material"
                 android:minHeight="@dimen/abc_action_bar_default_height_material"
-                android:background="@color/main20"
                 app:theme="@style/Toolbar"
                 app:popupTheme="@style/Theme.AppCompat.Light" />
 
@@ -34,14 +35,16 @@
                 android:clipToPadding="false"
                 app:pstsPaddingMiddle="true" />
 
-            <com.techhab.kcollegecustomviews.ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="fill_parent"
-                android:layout_height="8dp"
-                android:layout_gravity="bottom"
-                style="@android:style/Widget.ProgressBar.Horizontal" />
+        </LinearLayout>
 
-        </FrameLayout>
+        <com.techhab.kcollegecustomviews.ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:gravity="center"
+            style="@android:style/Widget.ProgressBar.Small" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"

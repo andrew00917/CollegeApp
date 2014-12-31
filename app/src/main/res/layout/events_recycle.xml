@@ -56,13 +56,22 @@
 
         </FrameLayout>
 
+        <com.techhab.kcollegecustomviews.ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:gravity="center"
+            style="@android:style/Widget.ProgressBar.Small" />
+
         <TextView
             android:id="@+id/place"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:gravity="center_vertical"
             android:padding="16dp"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/primary_text_default_material_light" />
 
         <include layout="@layout/card_divider"
@@ -79,8 +88,8 @@
             <ImageButton
                 android:contentDescription="@string/content_description"
                 android:id="@+id/info_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:padding="8dp"
                 android:gravity="center_horizontal"
                 android:src="@drawable/ic_info_outline"
@@ -94,6 +103,39 @@
                 android:padding="8dp"
                 android:gravity="center_horizontal"
                 android:src="@drawable/ic_favorite_outline"
+                android:background="@android:color/transparent"
+                android:clickable="true" />
+
+            <ImageView
+                android:contentDescription="@string/content_description"
+                android:id="@+id/building_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:gravity="center_horizontal"
+                android:src="@drawable/ic_campus"
+                android:background="@android:color/transparent"
+                android:clickable="true" />
+
+            <ImageView
+                android:contentDescription="@string/content_description"
+                android:id="@+id/calendar_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:gravity="center_horizontal"
+                android:src="@drawable/ic_calendar"
+                android:background="@android:color/transparent"
+                android:clickable="true" />
+
+            <ImageView
+                android:contentDescription="@string/content_description"
+                android:id="@+id/attending_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:gravity="center_horizontal"
+                android:src="@drawable/ic_check"
                 android:background="@android:color/transparent"
                 android:clickable="true" />
 
