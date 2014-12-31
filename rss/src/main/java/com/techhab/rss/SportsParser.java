@@ -13,11 +13,11 @@ import java.util.List;
 /**
  * Created by Griffin on 12/19/2014.
  */
-public class StandardSportParser {
+public class SportsParser {
     // We don't use namespaces
     private final String ns = null;
 
-    public List<StandardSportRssItem> parse(InputStream inputStream) throws XmlPullParserException,
+    public List<SportsRssItem> parse(InputStream inputStream) throws XmlPullParserException,
             IOException {
         try {
             XmlPullParser parser = Xml.newPullParser();
@@ -32,13 +32,13 @@ public class StandardSportParser {
         }
     }
 
-    private List<StandardSportRssItem> readFeed(XmlPullParser parser) throws XmlPullParserException,
+    private List<SportsRssItem> readFeed(XmlPullParser parser) throws XmlPullParserException,
             IOException {
         parser.require(XmlPullParser.START_TAG, null, "rss");
         String titleAndScore = null;
         String link = null;
         String description = null;
-        List<StandardSportRssItem> items = new ArrayList<StandardSportRssItem>();
+        List<SportsRssItem> items = new ArrayList<SportsRssItem>();
         while (parser.next() != XmlPullParser.END_DOCUMENT) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
@@ -71,7 +71,7 @@ public class StandardSportParser {
                 }
             }
             if (titleAndScore != null && link != null) {
-                StandardSportRssItem item = new StandardSportRssItem(titleAndScore, link, description);
+                SportsRssItem item = new SportsRssItem(titleAndScore, link, description);
                 items.add(item);
                 titleAndScore = null;
                 link = null;

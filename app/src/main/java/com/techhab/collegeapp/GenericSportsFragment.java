@@ -2,7 +2,6 @@ package com.techhab.collegeapp;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -16,13 +15,13 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.techhab.rss.GenericSportsRssItem;
+import com.techhab.rss.SportsRssItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Generic sports fragment that holds functions used by most or all sports fragments.
+ * Generic sports fragment that holds functions used by StandardSportsFragment fragments.
  *
  * Created by Griffin on 12/29/2014.
  */
@@ -33,7 +32,6 @@ public abstract class GenericSportsFragment extends Fragment {
     private int upcomingEventsItemHeight;
     private int upcomingEventsCount;
 
-    private int pastEventsItemHeight;
     private int pastEventsHeightAdded;
     private int pastEventsRemainingToShow;
 
@@ -44,8 +42,8 @@ public abstract class GenericSportsFragment extends Fragment {
     private TableLayout pastEventsTableLayout;
     private ProgressBar upcomingEventsProgressBar;
 
-    public List<GenericSportsRssItem> upcomingEventsList = new ArrayList<>();
-    public List<GenericSportsRssItem> pastEventsList = new ArrayList<>();
+    public List<SportsRssItem> upcomingEventsList = new ArrayList<>();
+    public List<SportsRssItem> pastEventsList = new ArrayList<>();
 
     public GenericSportsFragment() {
 
@@ -161,6 +159,21 @@ public abstract class GenericSportsFragment extends Fragment {
         }
     }
 
+    //TODO set up Game in Progress Card
+    public void initializeGameInProgress(SportsRssItem item) {
+        /*TextView inProgressDate = (TextView) rootView.findViewById(R.id.in_progress_date);
+        TextView inProgressOpponent = (TextView) rootView.findViewById(R.id.in_progress_opponent_title);
+        TextView inProgressOpponentScore = (TextView) rootView.findViewById(R.id.in_progress_opponent_score);
+        TextView inProgressKzooScore = (TextView) rootView.findViewById(R.id.in_progress_kzoo_score);
+        TextView inProgressTimeRemaining = (TextView) rootView.findViewById(R.id.in_progress_time_remaining);
+
+        inProgressDate.setText(item.getDatePast());
+        inProgressOpponent.setText(item.getOpponentOrEvent());
+        inProgressOpponentScore.setText(item.getScoreAsString(false));
+        inProgressKzooScore.setText(item.getScoreAsString(true));
+        inProgressTimeRemaining.setText(item.getInProgressTimeRemaining());*/
+    }
+
     /**
      * Sets the ListView height based on the height of it's currently showing children. Right
      * now, the height is calculated using 3 children, due to the expanding nature of the
@@ -184,8 +197,7 @@ public abstract class GenericSportsFragment extends Fragment {
                 totalHeight += listItem.getMeasuredHeight();
             }
         } catch (Exception e) {
-            Log.d("setListViewHeight",
-                    "Failed (probably due to the activity not being fully constructed");
+            e.printStackTrace();
         }
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
@@ -198,8 +210,8 @@ public abstract class GenericSportsFragment extends Fragment {
         return upcomingEventsCount;
     }
 
-    public void sortGames(List<? extends GenericSportsRssItem> list) {
-        GenericSportsRssItem item;
+    public void sortGames(List<SportsRssItem> list) {
+        SportsRssItem item;
         try {
             for (int i = 0; i < list.size(); i++) {
                 item = list.get(i);
@@ -207,6 +219,9 @@ public abstract class GenericSportsFragment extends Fragment {
                     upcomingEventsList.add(item);
                 } else {
                     pastEventsList.add(item);
+                }
+                if ( item.isInProgress() ) {
+                    initializeGameInProgress(item);
                 }
             }
 
@@ -222,7 +237,7 @@ public abstract class GenericSportsFragment extends Fragment {
             // Set the initial value of upcomingEventsCount, so that mUpcomingGamesAdapter
             // can initialize properly.
         } catch (Exception e) {
-            Log.d("sortGames", "sortGames broke it!");
+            e.printStackTrace();
         }
     }
 
@@ -249,7 +264,7 @@ public abstract class GenericSportsFragment extends Fragment {
         noUpcomingPastGamesText.setVisibility(View.VISIBLE);
     }
 
-    public void populateResultsTable(List<GenericSportsRssItem> pastGamesList) {
+    public void populateResultsTable(List<SportsRssItem> pastGamesList) {
         for (int i = pastGamesList.size() - 1; i >= 0; i --) {
 
             // Since switching genders often cause this method to break the app, I put in a
@@ -265,7 +280,7 @@ public abstract class GenericSportsFragment extends Fragment {
             tableRow.setWeightSum(10f);
             tableRow.setPadding(0, 0, 0, tableRowHeight);
 
-            GenericSportsRssItem item = pastGamesList.get(i);
+            SportsRssItem item = pastGamesList.get(i);
 
             addViewToRow(item.getDatePast(), tableRow, 1.5f);
             addViewToRow(item.getOpponentOrEventWithPrefix(), tableRow, 6.5f);
@@ -289,7 +304,7 @@ public abstract class GenericSportsFragment extends Fragment {
 
             View gameRow = tableLayout.getChildAt(1);
             gameRow.measure(0, 0);
-            pastEventsItemHeight = gameRow.getMeasuredHeight();
+            int pastEventsItemHeight = gameRow.getMeasuredHeight();
 
             int starterCount;
             if (pastEventsList.size() <= 3) {
@@ -311,7 +326,6 @@ public abstract class GenericSportsFragment extends Fragment {
     }
 
     public int getPastEventsTableHeightToIncrease() {
-        Log.d("getPastGames", "pastEventsRemainingToShow: " + pastEventsRemainingToShow);
         if ( pastEventsRemainingToShow >= 3) {
             int ret = measurePastEventsTableRows(3, pastEventsTableLayout);
             pastEventsRemainingToShow -= 3;
@@ -345,16 +359,16 @@ public abstract class GenericSportsFragment extends Fragment {
         int[] teamLogos = {R.drawable.western_michigan_broncos,
                 R.drawable.bluffton_beavers, R.drawable.wisconsin_whitewater};
 
-        public List<GenericSportsRssItem> items;
+        public List<SportsRssItem> items;
 
         public Context context;
 
-        public UpcomingGamesAdapter(Context context, List<GenericSportsRssItem> items) {
+        public UpcomingGamesAdapter(Context context, List<SportsRssItem> items) {
             this.context = context;
             this.items = items;
         }
 
-        public void updateChange(List<GenericSportsRssItem> list) {
+        public void updateChange(List<SportsRssItem> list) {
             if ( ! items.isEmpty()) {
                 items.clear();
             }

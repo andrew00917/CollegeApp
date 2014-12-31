@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Griffin on 12/19/2014.
  */
-public class CrossCountryRssItem extends GenericSportsRssItem {
+public class CrossCountryRssItem {
 
     private final String link;
     private final boolean isUpcoming;
@@ -129,6 +129,18 @@ public class CrossCountryRssItem extends GenericSportsRssItem {
 
     public String getLink() {
         return link;
+    }
+
+    public String getScoreAsString(boolean kzooScore) {
+        return "N/A";
+    }
+
+    public boolean isInProgress() {
+        return false;
+    }
+
+    public String getInProgressTimeRemaining() {
+        return "N/A";
     }
 
 }
