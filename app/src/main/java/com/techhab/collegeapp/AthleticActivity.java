@@ -260,16 +260,13 @@ public class AthleticActivity extends ActionBarActivity
         } else {
             application.setSportsGenderPreference(false);
         }
-        mPagerAdapter.TITLES = titleArray;
-        mPagerAdapter.notifyDataSetChanged();
-        mPagerSlidingTabStrip.notifyDataSetChanged();
-
         if ( isLoading ) {
             mViewPager.setCurrentItem(application.getSportPreference());
             isLoading = false;
         } else {
             mViewPager.setCurrentItem(convertPage(pageIndexPreSwitch));
         }
+        mPagerAdapter.TITLES = titleArray;
         mPagerSlidingTabStrip.notifyDataSetChanged();
         mPagerAdapter.notifyDataSetChanged();
 
