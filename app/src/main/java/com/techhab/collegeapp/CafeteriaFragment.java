@@ -9,11 +9,13 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -107,7 +109,7 @@ public class CafeteriaFragment extends Fragment {
         days.add(thirdDay);
         days.add(forthDay);
         CustomAdapter spinnerAdapter = new CustomAdapter(getActivity(), android.R.layout.simple_spinner_item, days);
-//        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         cafeteriaSpinner.setAdapter(spinnerAdapter);
 
         //todo: fake data for cafe
@@ -407,6 +409,7 @@ public class CafeteriaFragment extends Fragment {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.food_wells_menu_item, viewGroup, false);
+
             return new ViewHolder(rowView);
         }
 
@@ -421,6 +424,20 @@ public class CafeteriaFragment extends Fragment {
 
             loadMenu(menuViewHolder, meal);
 //            collapseMenu(menuViewHolder, meal);
+            menuViewHolder.cvRoot.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    HeightAnimation animation = new HeightAnimation(((ViewHolder) viewHolder).llMainLines,
+                            getHeightToAdd(((ViewHolder) viewHolder).llMainLines, false), false);
+                    animation.setDuration(300);
+                    ((ViewHolder) viewHolder).llMainLines.startAnimation(animation);
+                    HeightAnimation animation1 = new HeightAnimation(((ViewHolder) viewHolder).llInternationalCorner,
+                            getHeightToAdd(((ViewHolder) viewHolder).llInternationalCorner, false), false);
+                    animation1.setDuration(300);
+                    ((ViewHolder) viewHolder).llInternationalCorner.startAnimation(animation1);
+                }
+            });
+
             menuViewHolder.tbViewMore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -468,6 +485,7 @@ public class CafeteriaFragment extends Fragment {
             public LinearLayout llMainLines;
             public LinearLayout llInternationalCorner;
             public ToggleButton tbViewMore;
+            public CardView cvRoot;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -475,6 +493,7 @@ public class CafeteriaFragment extends Fragment {
                 llMainLines = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llMainLine);
                 llInternationalCorner = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llInternationalCorner);
                 tbViewMore = (ToggleButton) itemView.findViewById(R.id.fragment_cafeteria_tbViewMore);
+                cvRoot = (CardView) itemView.findViewById(R.id.food_wells_menu_item_cvRoot);
             }
 
         }

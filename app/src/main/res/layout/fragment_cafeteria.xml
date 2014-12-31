@@ -89,15 +89,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+
+
                 android:id="@+id/fragment_cafeteria_spinner"
                 android:drawSelectorOnTop="true"
-                android:layout_below="@+id/cafeteria_status_bar"/>
+                style="@style/SpinnerStyle"
+                android:layout_below="@+id/cafeteria_status_bar"
+                />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/fragment_cafeteria_rvMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/fragment_cafeteria_spinner"/>
+                android:layout_below="@+id/fragment_cafeteria_spinner"
+                android:descendantFocusability="afterDescendants"
+                />
 
         </RelativeLayout>
 
