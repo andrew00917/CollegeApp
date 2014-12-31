@@ -78,7 +78,7 @@ public class MapsActivity extends ActionBarActivity {
                 .positiveText("Choose")
                 .positiveColor(getResources().getColor(R.color.kzooOrange))
                 .negativeText("Cancel")
-                .autoDismiss(false)
+                .autoDismiss(true)
                 .negativeColor(getResources().getColor(R.color.gray))
                 .show();
     }
