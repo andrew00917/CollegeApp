@@ -114,7 +114,7 @@ public class EventsFragment extends Fragment {
     /**
      * Adapter for recycler view
      */
-    public class RssAdapter extends RecyclerView.Adapter<RssAdapter.ViewHolder> implements View.OnClickListener {
+    public class RssAdapter extends RecyclerView.Adapter<RssAdapter.ViewHolder> {
 
         private Context context;
         private List<EventsRssItem> items;
@@ -136,29 +136,10 @@ public class EventsFragment extends Fragment {
             this.notifyDataSetChanged();
         }
 
-        @Override
-        public void onClick(View v) {
-            ViewHolder holder = (ViewHolder) v.getTag();
 
-            switch (v.getId()) {
-                case R.id.info_button:
-                    // Check for an expanded view, collapse if you find one
-                    if (expandedPosition >= 0) {
-                        ViewHolder prev = expandedHolder;
-                        collapseCard(prev);
-                    }
-                    // Set the current position to "expanded"
-                    expandedPosition = holder.getPosition();
-                    expandCard(holder);
-                    setDescription(holder, items.get(expandedPosition).getLink());
-                    expandedHolder = holder;
-                    break;
-            }
-            Toast.makeText(context, "Holder on click " + holder.getPosition(), Toast.LENGTH_SHORT).show();
-        }
 
         // Not use static
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
             public View v;
             public FrameLayout image;
@@ -186,6 +167,8 @@ public class EventsFragment extends Fragment {
                 buttonSection = (LinearLayout) v.findViewById(R.id.button_section);
 
                 infoButton = (ImageButton) v.findViewById(R.id.info_button);
+                infoButton.setOnClickListener(this);
+                infoButton.setTag(this);
                 favoriteButton = (ImageView) v.findViewById(R.id.favorite_button);
                 buildingButton = (ImageView) v.findViewById(R.id.building_button);
                 calendarButton = (ImageView) v.findViewById(R.id.calendar_button);
@@ -194,6 +177,34 @@ public class EventsFragment extends Fragment {
 
             public int getButtonSectionHeight() {
                 return buttonSection.getHeight();
+            }
+
+            @Override
+            public void onClick(View v) {
+                ViewHolder holder = (ViewHolder) v.getTag();
+
+                switch (v.getId()) {
+                    case R.id.info_button:
+                        // Check for an expanded view, collapse if you find one
+                        if (expandedPosition >= 0) {
+                            ViewHolder prev = expandedHolder;
+                            collapseCard(prev);
+                        }
+
+                        if (expandedPosition == holder.getPosition()) {
+                            collapseCard(holder);
+                            expandedPosition = -1;
+                            expandedHolder = null;
+                        } else {
+                            // Set the current position to "expanded"
+                            expandedPosition = holder.getPosition();
+                            expandCard(holder);
+                            setDescription(holder, items.get(expandedPosition).getLink());
+                            expandedHolder = holder;
+                        }
+                        break;
+                }
+                Toast.makeText(context, "Holder on click " + holder.getPosition(), Toast.LENGTH_SHORT).show();
             }
         }
 
