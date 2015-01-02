@@ -27,7 +27,7 @@ public class SportsRssItem {
 
     public SportsRssItem(String titleAndScore, String link, String description) {
         this.isUpcoming = determineIfUpcoming(description);
-        this.isTeamSport = isTeamSport(description);
+        this.isTeamSport = determineIfTeamSport(description);
         this.link = link;
         this.isInProgress = isInProgress(description);
         this.titleAndScore = titleAndScore;
@@ -41,6 +41,8 @@ public class SportsRssItem {
             this.result = "N/A";
         } else if ( description.contains("Golf") ) {
             this.result = parseGolfResult(description);
+        } else if ( description.contains("Swimming") ) {
+            this.result = parseSwimmingResult(titleAndScore);
         }
 
         if ( description.contains("Golf") ) {
@@ -51,6 +53,43 @@ public class SportsRssItem {
 
         this.dateAndTimeUpcoming = getFullDateWithTime(description);
         this.datePast = parseDatePast(this.dateAndTimeUpcoming);
+    }
+
+    private String parseSwimmingResult(String titleAndScore) {
+        if ( ! isUpcoming ) {
+            // Check to see if the title contains "Unscored"
+            String titleAndScoreLowerCase = titleAndScore.toLowerCase();
+            if ( titleAndScoreLowerCase.contains("unscored") ) {
+                return "Unscored";
+            }
+
+            Pattern resultPattern = Pattern.compile("(, [WLT])");
+            Matcher m = resultPattern.matcher(titleAndScore);
+
+            String resultString = "";
+            if ( m.find() ) {
+                resultString = titleAndScore.substring(m.start() + 2);
+            } else {
+                // Code for place finish
+                Pattern placeFinishPattern = Pattern.compile("(, \\d[tsrn][htd])",
+                        Pattern.CASE_INSENSITIVE);
+                Matcher placeMatcher = placeFinishPattern.matcher(titleAndScore);
+
+                if ( placeMatcher.find() ) {
+                    return titleAndScore.substring(placeMatcher.start() + 2);
+                }
+                return "N/A";
+            }
+
+            if ( resultString.contains("W") ) {
+                return "W, " + resultString.substring(1);
+            } else if ( resultString.contains("L") ) {
+                return "L, " + resultString.substring(1);
+            } else {
+                return resultString;
+            }
+        }
+        return "N/A";
     }
 
     public String getEventDate(String description) {
@@ -242,7 +281,7 @@ public class SportsRssItem {
         return "N/A";
     }
 
-    private boolean isTeamSport(String description) {
+    private boolean determineIfTeamSport(String description) {
         description = description.toLowerCase();
         String[] teamSports = new String[] {
                 "baseball",
@@ -328,7 +367,7 @@ public class SportsRssItem {
         Pattern numbersPattern = Pattern.compile("(\\d+)");
         int opponentStartIndex;
         int opponentEndIndex;
-        if ( !isUpcoming ) {
+        if ( ! isUpcoming ) {
             if (titleAndScore.startsWith("Kalamazoo")) {
                 isAtHome = false;
                 opponentStartIndex = titleAndScore.indexOf(", ") + 2;
@@ -427,6 +466,10 @@ public class SportsRssItem {
 
     public String getInProgressTimeRemaining() {
         return inProgressTimeRemaining;
+    }
+
+    public boolean isTeamSport() {
+        return isTeamSport;
     }
 
 

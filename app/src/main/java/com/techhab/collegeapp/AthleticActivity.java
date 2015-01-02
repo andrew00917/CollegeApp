@@ -2,6 +2,7 @@ package com.techhab.collegeapp;
 
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -95,10 +96,12 @@ public class AthleticActivity extends ActionBarActivity
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Sports");
+        getSupportActionBar().setTitle(getResources().getString(R.string.main_menu_10));
         mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.kzooOrange));
 
-//        getSupportActionBar().hide();
+        /*String strColor = String.format("#%06X", 0xff9e501b);
+        Log.d("strColor", strColor);*/
+
 
         // Handle Boys/Girls toggle switch
         // Set a custom track drawable to keep it from "highlighting" upon selection
@@ -126,17 +129,41 @@ public class AthleticActivity extends ActionBarActivity
         menText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                if ( genderSwitch.isChecked() ) {
-                    genderSwitch.setChecked(false);
-                }
+                menText.setClickable(false);
+                final TransitionDrawable transition = (TransitionDrawable) menText.getBackground();
+                transition.startTransition(25);
+
+                menText.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        transition.reverseTransition(200);
+                        if ( genderSwitch.isChecked() ) {
+                            genderSwitch.setChecked(false);
+                        }
+                    menText.setClickable(true);
+                    }
+                }, 25); // after transition
+
             }
         });
         womenText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                if ( !genderSwitch.isChecked() ) {
-                    genderSwitch.setChecked(true);
-                }
+                womenText.setClickable(false);
+
+                final TransitionDrawable transition = (TransitionDrawable) womenText.getBackground();
+                transition.startTransition(25);
+
+                womenText.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        transition.reverseTransition(200);
+                        if ( !genderSwitch.isChecked() ) {
+                            genderSwitch.setChecked(true);
+                        }
+                        womenText.setClickable(true);
+                    }
+                }, 25); // after transition
             }
         });
 
@@ -260,15 +287,15 @@ public class AthleticActivity extends ActionBarActivity
         } else {
             application.setSportsGenderPreference(false);
         }
+        mPagerAdapter.updateTitlesArray(titleArray);
         if ( isLoading ) {
             mViewPager.setCurrentItem(application.getSportPreference());
             isLoading = false;
         } else {
             mViewPager.setCurrentItem(convertPage(pageIndexPreSwitch));
         }
-        mPagerAdapter.TITLES = titleArray;
         mPagerSlidingTabStrip.notifyDataSetChanged();
-        mPagerAdapter.notifyDataSetChanged();
+
 
     }
     @Override
@@ -522,6 +549,11 @@ public class AthleticActivity extends ActionBarActivity
             mScrollY = scrollY;
         }
 
+        public void updateTitlesArray(String[] newTitleArray) {
+            this.TITLES = newTitleArray;
+            this.notifyDataSetChanged();
+        }
+
         @Override
         public CharSequence getPageTitle(int position) {
             return TITLES[position];
@@ -553,45 +585,25 @@ public class AthleticActivity extends ActionBarActivity
         public Fragment getItem(int position) {
             Fragment fragment;
             Bundle args = new Bundle();
-            if (application.getSportsGenderPreference()) {
-                switch (position) {
-                    case 0:
-                        fragment = new HomeGamesFragment();
-                        args.putInt(HomeGamesFragment.ARG_OBJECT, position + 1);
-                        fragment.setArguments(args);
-                        break;
-                    default:
-                        fragment = new StandardSportsFragment();
-                        if (0 <= mScrollY) {
-                            args.putInt(StandardSportsFragment.ARG_SCROLL_Y, mScrollY);
-                        }
-                        args.putString(StandardSportsFragment.SPORT_TITLE, TITLES[position]);
-                        args.putBoolean(StandardSportsFragment.GENDER, application.getSportsGenderPreference());
-                        fragment.setArguments(args);
-                        break;
-                }
-                mPages.put(position, fragment);
-                return fragment;
-            } else {
-                switch (position) {
-                    case 0:
-                        fragment = new HomeGamesFragment();
-                        args.putInt(HomeGamesFragment.ARG_OBJECT, position + 1);
-                        fragment.setArguments(args);
-                        break;
-                    default:
-                        fragment = new StandardSportsFragment();
-                        if (0 <= mScrollY) {
-                            args.putInt(StandardSportsFragment.ARG_SCROLL_Y, mScrollY);
-                        }
-                        args.putString(StandardSportsFragment.SPORT_TITLE, TITLES[position]);
-                        args.putBoolean(StandardSportsFragment.GENDER, application.getSportsGenderPreference());
-                        fragment.setArguments(args);
-                        break;
-                }
-                mPages.put(position, fragment);
-                return fragment;
+            switch (position) {
+                case 0:
+                    fragment = new HomeGamesFragment();
+                    args.putInt(HomeGamesFragment.ARG_OBJECT, position + 1);
+                    fragment.setArguments(args);
+                    break;
+                default:
+                    fragment = new StandardSportsFragment();
+                    if (0 <= mScrollY) {
+                        args.putInt(StandardSportsFragment.ARG_SCROLL_Y, mScrollY);
+                    }
+                    args.putString(StandardSportsFragment.SPORT_TITLE, TITLES[position]);
+                    args.putBoolean(StandardSportsFragment.GENDER, application.getSportsGenderPreference());
+                    fragment.setArguments(args);
+                    break;
             }
+            mPages.put(position, fragment);
+            return fragment;
+
             /*Fragment f = new BasketballFragment();
             if (0 <= mScrollY) {
                 Bundle args = new Bundle();
