@@ -11,6 +11,7 @@ import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -120,6 +121,8 @@ public class EventsFragment extends Fragment {
         private List<EventsRssItem> items;
         private int expandedPosition = -1;
         private ViewHolder expandedHolder;
+        private int width = -1;
+        private int height = -1;
 
         public RssAdapter(Context context, List<EventsRssItem> items) {
             this.context = context;
@@ -136,10 +139,74 @@ public class EventsFragment extends Fragment {
             this.notifyDataSetChanged();
         }
 
+        @Override
+        public int getItemCount() {
+            return items.size();
+        }
 
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            final EventsRssItem item;
+            if (position < items.size()) {
+                item = items.get(position);
+            } else {
+                return;
+            }
+            String[] event = item.getEvent().split(" ");
 
-        // Not use static
+            if (event[0].equals("Stress")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.stree_free_zone));
+            } else if (event[0].equals("Tuesdays")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.tuesdays_with));
+            } else if (event[0].equals("Wind")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.wind_down_wed));
+            } else if (event[0].equals("Trivia")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.trivia_night));
+            } else if (event[1].equals("Flicks")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.zoo_flicks));
+            } else if (event[1].equals("After")) {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.zoo_after_dark));
+            } else {
+                holder.image.setBackground(getResources().getDrawable(R.drawable.banner));
+            }
+            holder.date.setText(item.getDate());
+            holder.event.setText(item.getEvent());
+            holder.time.setText(item.getTime());
+
+//            holder.favoriteButton.setOnTouchListener(new View.OnTouchListener(){
+//
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    switch (event.getAction()) {
+//                        case MotionEvent.ACTION_DOWN:
+//                            ((EventsActivity) getActivity()).buttonPressed(v);
+//                            break;
+//                        case MotionEvent.ACTION_CANCEL:
+//                        case MotionEvent.ACTION_OUTSIDE:
+//                            ((EventsActivity) getActivity()).buttonReleased(v);
+//                            break;
+//                        case MotionEvent.ACTION_UP:
+//                            ((EventsActivity) getActivity()).buttonReleased(v);
+//                            break;
+//                    }
+//                    return true;
+//                }
+//            });
+        }
+
+        @Override
+        public RssAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.events_recycle, parent, false);
+
+            ViewHolder vh = new ViewHolder(context, view);
+
+            return vh;
+        }
+
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+            public Context context;
 
             public View v;
             public FrameLayout image;
@@ -150,8 +217,11 @@ public class EventsFragment extends Fragment {
             public ImageButton infoButton;
             public ImageView favoriteButton, buildingButton, calendarButton, attendButton;
 
-            public ViewHolder(View itemView) {
+            public ViewHolder(Context context, View itemView) {
                 super(itemView);
+
+                this.context = context;
+
                 v = itemView;
 
                 image = (FrameLayout) v.findViewById(R.id.image);
@@ -213,7 +283,7 @@ public class EventsFragment extends Fragment {
              * @param link
              */
             private void setDescription(ViewHolder h, String link) {
-                new EventsDom(getActivity(), h.event.getText().toString(), h.description,
+                new EventsDom(context, h.event.getText().toString(), h.description,
                         h.calendarButton, link, h.progress);
             }
 
@@ -224,16 +294,18 @@ public class EventsFragment extends Fragment {
              */
             private void collapseCard(ViewHolder h) {
                 HeightAnimation animation;
-                h.description.measure(0, 0);
-                int height = h.description.getMeasuredHeight();
+                if (width == -1 && height == -1) {
+//                    h.buttonSection.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                    width = h.buttonSection.getLayoutParams().height;
+                    height = width * 5;
+                }
                 animation = new HeightAnimation(h.description, height, false);
                 animation.setDuration(300);
                 h.description.startAnimation(animation);
 
 
                 WidthAnimation widthAnimation;
-                h.buttonSection.measure(0, 0);
-                int width = h.buttonSection.getMeasuredHeight();
+
                 widthAnimation = new WidthAnimation(h.favoriteButton, width, false);
                 widthAnimation.setDuration(300);
                 h.favoriteButton.startAnimation(widthAnimation);
@@ -255,12 +327,15 @@ public class EventsFragment extends Fragment {
              */
             private void expandCard(ViewHolder h) {
                 HeightAnimation animation;
-                h.buttonSection.measure(0, 0);
-                int width = h.buttonSection.getMeasuredHeight();
-                int height = width * 5;
+
+                if (width == -1 && height == -1) {
+//                    h.buttonSection.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                    width = h.buttonSection.getLayoutParams().height;
+                    height = width * 5;
+                }
 
                 animation = new HeightAnimation(h.progress,
-                        ((EventsActivity) getActivity()).getProgressBarHeight(), true);
+                        ((EventsActivity) context).getProgressBarHeight(), true);
                 animation.setDuration(300);
                 h.progress.startAnimation(animation);
                 animation = new HeightAnimation(h.description, height, true);
@@ -281,69 +356,6 @@ public class EventsFragment extends Fragment {
                 widthAnimation.setDuration(300);
                 h.attendButton.startAnimation(widthAnimation);
             }
-        }
-
-        @Override
-        public int getItemCount() {
-            return items.size();
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-//            final ViewHolder holder = h;
-            final EventsRssItem item;
-            if (position < items.size()) {
-                item = items.get(position);
-            } else {
-                return;
-            }
-            String[] event = item.getEvent().split(" ");
-
-            if (event[0].equals("Stress")) {
-                holder.image.setBackground(getResources().getDrawable(R.drawable.stree_free_zone));
-            } else if (event[0].equals("Tuesdays")) {
-                holder.image.setBackground(getResources().getDrawable(R.drawable.tuesdays_with));
-            } else if (event[0].equals("Wind")) {
-                holder.image.setBackground(getResources().getDrawable(R.drawable.wind_down_wed));
-            } else if (event[0].equals("Trivia")) {
-                holder.image.setBackground(getResources().getDrawable(R.drawable.trivia_night));
-            } else if (event[1].equals("Flicks")) {
-                holder.image.setBackground(getResources().getDrawable(R.drawable.zoo_flicks));
-            } else if (event[1].equals("After")) {
-                holder.image.setBackground(getResources().getDrawable(R.drawable.zoo_after_dark));
-            } else {
-                holder.image.setBackground(getResources().getDrawable(R.drawable.banner));
-            }
-            holder.date.setText(item.getDate());
-            holder.event.setText(item.getEvent());
-            holder.time.setText(item.getTime());
-
-            holder.favoriteButton.setOnTouchListener(new View.OnTouchListener(){
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            ((EventsActivity) getActivity()).buttonPressed(v);
-                            break;
-                        case MotionEvent.ACTION_CANCEL:
-                        case MotionEvent.ACTION_OUTSIDE:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                    }
-                    return true;
-                }
-            });
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.events_recycle, parent, false);
-            return new ViewHolder(view);
         }
     }
 
