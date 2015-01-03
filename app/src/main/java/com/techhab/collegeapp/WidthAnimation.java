@@ -17,7 +17,9 @@ public class WidthAnimation extends Animation {
         this.view = view;
         this.widthToAddOrSubtract = widthToAddOrSubtract;
         this.grow = grow;
-        this.width = view.getWidth();
+
+//        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        this.width = view.getLayoutParams().width;
     }
 
     @Override
@@ -26,16 +28,17 @@ public class WidthAnimation extends Animation {
         if (grow) {
             newWidth = (int) (width + (widthToAddOrSubtract * interpolatedTime));
         } else {
-            newWidth = (int) (width + (-widthToAddOrSubtract * interpolatedTime));
+            newWidth = (int) (width - (widthToAddOrSubtract * interpolatedTime));
         }
-        view.getLayoutParams().width = newWidth;
+        if (newWidth >= 0) {
+            view.getLayoutParams().width = newWidth;
+        }
 
         view.requestLayout();
     }
 
     @Override
-    public void initialize(int width, int height, int parentWidth,
-                           int parentHeight) {
+    public void initialize(int width, int height, int parentWidth, int parentHeight) {
         super.initialize(width, height, parentWidth, parentHeight);
     }
 
