@@ -11,6 +11,7 @@ import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -120,6 +121,8 @@ public class EventsFragment extends Fragment {
         private List<EventsRssItem> items;
         private int expandedPosition = -1;
         private ViewHolder expandedHolder;
+        private int width = -1;
+        private int height = -1;
 
         public RssAdapter(Context context, List<EventsRssItem> items) {
             this.context = context;
@@ -136,78 +139,6 @@ public class EventsFragment extends Fragment {
             this.notifyDataSetChanged();
         }
 
-
-
-        // Not use static
-        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-            public View v;
-            public FrameLayout image;
-            public TextView date, event, description, time;
-            public ProgressBar progress;
-            public View divider;
-            public LinearLayout buttonSection;
-            public ImageButton infoButton;
-            public ImageView favoriteButton, buildingButton, calendarButton, attendButton;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                v = itemView;
-
-                image = (FrameLayout) v.findViewById(R.id.image);
-                date = (TextView) v.findViewById(R.id.date);
-                event = (TextView) v.findViewById(R.id.event);
-                description = (TextView) v.findViewById(R.id.place);
-                time = (TextView) v.findViewById(R.id.time);
-
-                progress = (ProgressBar) v.findViewById(R.id.progress_bar);
-
-                divider = v.findViewById(R.id.divider);
-
-                buttonSection = (LinearLayout) v.findViewById(R.id.button_section);
-
-                infoButton = (ImageButton) v.findViewById(R.id.info_button);
-                infoButton.setOnClickListener(this);
-                infoButton.setTag(this);
-                favoriteButton = (ImageView) v.findViewById(R.id.favorite_button);
-                buildingButton = (ImageView) v.findViewById(R.id.building_button);
-                calendarButton = (ImageView) v.findViewById(R.id.calendar_button);
-                attendButton = (ImageView) v.findViewById(R.id.attending_button);
-            }
-
-            public int getButtonSectionHeight() {
-                return buttonSection.getHeight();
-            }
-
-            @Override
-            public void onClick(View v) {
-                ViewHolder holder = (ViewHolder) v.getTag();
-
-                switch (v.getId()) {
-                    case R.id.info_button:
-                        // Check for an expanded view, collapse if you find one
-                        if (expandedPosition >= 0) {
-                            ViewHolder prev = expandedHolder;
-                            collapseCard(prev);
-                        }
-
-                        if (expandedPosition == holder.getPosition()) {
-                            collapseCard(holder);
-                            expandedPosition = -1;
-                            expandedHolder = null;
-                        } else {
-                            // Set the current position to "expanded"
-                            expandedPosition = holder.getPosition();
-                            expandCard(holder);
-                            setDescription(holder, items.get(expandedPosition).getLink());
-                            expandedHolder = holder;
-                        }
-                        break;
-                }
-                Toast.makeText(context, "Holder on click " + holder.getPosition(), Toast.LENGTH_SHORT).show();
-            }
-        }
-
         @Override
         public int getItemCount() {
             return items.size();
@@ -215,7 +146,6 @@ public class EventsFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-//            final ViewHolder holder = h;
             final EventsRssItem item;
             if (position < items.size()) {
                 item = items.get(position);
@@ -243,13 +173,7 @@ public class EventsFragment extends Fragment {
             holder.event.setText(item.getEvent());
             holder.time.setText(item.getTime());
 
-            if (position == expandedPosition) {
-                expandCard(holder);
-            } else {
-                collapseCard(holder);
-            }
-
-//            holder.infoButton.setOnTouchListener(new View.OnTouchListener() {
+//            holder.favoriteButton.setOnTouchListener(new View.OnTouchListener(){
 //
 //                @Override
 //                public boolean onTouch(View v, MotionEvent event) {
@@ -263,115 +187,175 @@ public class EventsFragment extends Fragment {
 //                            break;
 //                        case MotionEvent.ACTION_UP:
 //                            ((EventsActivity) getActivity()).buttonReleased(v);
-//                            // TODO: fix auto-scrolling
 //                            break;
 //                    }
 //                    return true;
 //                }
 //            });
-
-            holder.favoriteButton.setOnTouchListener(new View.OnTouchListener(){
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            ((EventsActivity) getActivity()).buttonPressed(v);
-                            break;
-                        case MotionEvent.ACTION_CANCEL:
-                        case MotionEvent.ACTION_OUTSIDE:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            ((EventsActivity) getActivity()).buttonReleased(v);
-                            break;
-                    }
-                    return true;
-                }
-            });
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RssAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.events_recycle, parent, false);
-            return new ViewHolder(view);
+
+            ViewHolder vh = new ViewHolder(context, view);
+
+            return vh;
         }
 
-        /**
-         *  Generate jsoup DOM to set description of the event's cards and set calendar
-         *  button on click listener
-         *
-         * @param h
-         * @param link
-         */
-        private void setDescription(ViewHolder h, String link) {
-            new EventsDom(getActivity(), h.event.getText().toString(), h.description,
-                    h.calendarButton, link, h.progress);
-        }
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        /**
-         *  Collapse card with description and buttons
-         *
-         * @param h
-         */
-        private void collapseCard(ViewHolder h) {
-            HeightAnimation animation;
-            int height = h.getButtonSectionHeight() * 5;
+            public Context context;
 
-            animation = new HeightAnimation(h.description, height, false);
-            animation.setDuration(300);
-            h.description.startAnimation(animation);
+            public View v;
+            public FrameLayout image;
+            public TextView date, event, description, time;
+            public ProgressBar progress;
+            public View divider;
+            public LinearLayout buttonSection;
+            public ImageButton infoButton;
+            public ImageView favoriteButton, buildingButton, calendarButton, attendButton;
 
-            WidthAnimation widthAnimation;
-            int width = h.buttonSection.getHeight();
+            public ViewHolder(Context context, View itemView) {
+                super(itemView);
 
-            widthAnimation = new WidthAnimation(h.favoriteButton, width, false);
-            widthAnimation.setDuration(300);
-            h.favoriteButton.startAnimation(widthAnimation);
-            widthAnimation = new WidthAnimation(h.buildingButton, width, false);
-            widthAnimation.setDuration(300);
-            h.buildingButton.startAnimation(widthAnimation);
-            widthAnimation = new WidthAnimation(h.calendarButton, width, false);
-            widthAnimation.setDuration(300);
-            h.calendarButton.startAnimation(widthAnimation);
-            widthAnimation = new WidthAnimation(h.attendButton, width, false);
-            widthAnimation.setDuration(300);
-            h.attendButton.startAnimation(widthAnimation);
-        }
+                this.context = context;
 
-        /**
-         *  Expand card with description and buttons
-         *
-         * @param h
-         */
-        private void expandCard(ViewHolder h) {
-            HeightAnimation animation;
-            int height = h.getButtonSectionHeight() * 5;
+                v = itemView;
 
-            animation = new HeightAnimation(h.progress,
-                    ((EventsActivity) getActivity()).getProgressBarHeight(), true);
-            animation.setDuration(300);
-            h.progress.startAnimation(animation);
-            animation = new HeightAnimation(h.description, height, true);
-            animation.setDuration(300);
-            h.description.startAnimation(animation);
+                image = (FrameLayout) v.findViewById(R.id.image);
+                date = (TextView) v.findViewById(R.id.date);
+                event = (TextView) v.findViewById(R.id.event);
+                description = (TextView) v.findViewById(R.id.place);
+                time = (TextView) v.findViewById(R.id.time);
 
-            WidthAnimation widthAnimation;
-            int width = h.buttonSection.getHeight();
+                progress = (ProgressBar) v.findViewById(R.id.progress_bar);
 
-            widthAnimation = new WidthAnimation(h.favoriteButton, width, true);
-            widthAnimation.setDuration(300);
-            h.favoriteButton.startAnimation(widthAnimation);
-            widthAnimation = new WidthAnimation(h.buildingButton, width, true);
-            widthAnimation.setDuration(300);
-            h.buildingButton.startAnimation(widthAnimation);
-            widthAnimation = new WidthAnimation(h.calendarButton, width, true);
-            widthAnimation.setDuration(300);
-            h.calendarButton.startAnimation(widthAnimation);
-            widthAnimation = new WidthAnimation(h.attendButton, width, true);
-            widthAnimation.setDuration(300);
-            h.attendButton.startAnimation(widthAnimation);
+                divider = v.findViewById(R.id.divider);
+
+                buttonSection = (LinearLayout) v.findViewById(R.id.button_section);
+
+                infoButton = (ImageButton) v.findViewById(R.id.info_button);
+                infoButton.setTag(this);
+                infoButton.setOnClickListener(this);
+                favoriteButton = (ImageView) v.findViewById(R.id.favorite_button);
+                buildingButton = (ImageView) v.findViewById(R.id.building_button);
+                calendarButton = (ImageView) v.findViewById(R.id.calendar_button);
+                attendButton = (ImageView) v.findViewById(R.id.attending_button);
+            }
+
+            @Override
+            public void onClick(View v) {
+                ViewHolder holder = (ViewHolder) v.getTag();
+
+                switch (v.getId()) {
+                    case R.id.info_button:
+                        // TODO: fix auto-scrolling
+                        // Check for an expanded view, collapse if you find one
+                        if (expandedPosition >= 0 && expandedPosition != holder.getPosition()) {
+                            collapseCard(expandedHolder);
+                            expandedPosition = -1;
+                            expandedHolder = null;
+                        }
+
+                        if (expandedPosition == holder.getPosition()) {
+                            collapseCard(holder);
+                            expandedPosition = -1;
+                            expandedHolder = null;
+                        } else {
+                            // Set the current position to "expanded"
+                            expandCard(holder);
+                            expandedPosition = holder.getPosition();
+                            setDescription(holder, items.get(expandedPosition).getLink());
+                            expandedHolder = holder;
+                        }
+                        break;
+                }
+                Toast.makeText(context, "Holder on click " + holder.getPosition(), Toast.LENGTH_SHORT).show();
+            }
+
+            /**
+             *  Generate jsoup DOM to set description of the event's cards and set calendar
+             *  button on click listener
+             *
+             * @param h
+             * @param link
+             */
+            private void setDescription(ViewHolder h, String link) {
+                new EventsDom(context, h.event.getText().toString(), h.description,
+                        h.calendarButton, link, h.progress);
+            }
+
+            /**
+             *  Collapse card with description and buttons
+             *
+             * @param h
+             */
+            private void collapseCard(ViewHolder h) {
+                HeightAnimation animation;
+                if (width == -1 && height == -1) {
+//                    h.buttonSection.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                    width = h.buttonSection.getLayoutParams().height;
+                    height = width * 5;
+                }
+                animation = new HeightAnimation(h.description, height, false);
+                animation.setDuration(300);
+                h.description.startAnimation(animation);
+
+
+                WidthAnimation widthAnimation;
+
+                widthAnimation = new WidthAnimation(h.favoriteButton, width, false);
+                widthAnimation.setDuration(300);
+                h.favoriteButton.startAnimation(widthAnimation);
+                widthAnimation = new WidthAnimation(h.buildingButton, width, false);
+                widthAnimation.setDuration(300);
+                h.buildingButton.startAnimation(widthAnimation);
+                widthAnimation = new WidthAnimation(h.calendarButton, width, false);
+                widthAnimation.setDuration(300);
+                h.calendarButton.startAnimation(widthAnimation);
+                widthAnimation = new WidthAnimation(h.attendButton, width, false);
+                widthAnimation.setDuration(300);
+                h.attendButton.startAnimation(widthAnimation);
+            }
+
+            /**
+             *  Expand card with description and buttons
+             *
+             * @param h
+             */
+            private void expandCard(ViewHolder h) {
+                HeightAnimation animation;
+
+                if (width == -1 && height == -1) {
+//                    h.buttonSection.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                    width = h.buttonSection.getLayoutParams().height;
+                    height = width * 5;
+                }
+
+                animation = new HeightAnimation(h.progress,
+                        ((EventsActivity) context).getProgressBarHeight(), true);
+                animation.setDuration(300);
+                h.progress.startAnimation(animation);
+                animation = new HeightAnimation(h.description, height, true);
+                animation.setDuration(300);
+                h.description.startAnimation(animation);
+
+                WidthAnimation widthAnimation;
+                widthAnimation = new WidthAnimation(h.favoriteButton, width, true);
+                widthAnimation.setDuration(300);
+                h.favoriteButton.startAnimation(widthAnimation);
+                widthAnimation = new WidthAnimation(h.buildingButton, width, true);
+                widthAnimation.setDuration(300);
+                h.buildingButton.startAnimation(widthAnimation);
+                widthAnimation = new WidthAnimation(h.calendarButton, width, true);
+                widthAnimation.setDuration(300);
+                h.calendarButton.startAnimation(widthAnimation);
+                widthAnimation = new WidthAnimation(h.attendButton, width, true);
+                widthAnimation.setDuration(300);
+                h.attendButton.startAnimation(widthAnimation);
+            }
         }
     }
 
