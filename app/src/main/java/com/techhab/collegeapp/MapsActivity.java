@@ -61,7 +61,7 @@ public class MapsActivity extends ActionBarActivity {
                 .title("View Buildings")
                 .items(new CharSequence[]{"Academic", "Residential", "Offices",
                         "Recreational", "Other", "All"})
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallback() {
+                /*.itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         if (which == 0) {
@@ -73,6 +73,12 @@ public class MapsActivity extends ActionBarActivity {
                             setUpMap();
                         }
 
+                    }
+                })*/
+                .itemsCallbackMultiChoice(new Integer[] { 2, 5 }, new MaterialDialog.ListCallbackMulti() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                        academicBuildings = true;
                     }
                 })
                 .positiveText("Choose")
