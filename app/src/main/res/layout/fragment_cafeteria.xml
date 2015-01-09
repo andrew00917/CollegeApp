@@ -53,23 +53,12 @@
                             android:gravity="center_vertical"
                             android:layout_gravity="center_vertical"
                             android:text="Closes in 2 hours"
+                            android:singleLine="true"
+                            android:drawableRight="@drawable/ic_action_expand"
+                            android:drawablePadding="3dp"
+                            android:layout_marginRight="5dp"
                             />
 
-                    <FrameLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageButton
-                            android:id="@+id/ibExpandable"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:src="@drawable/ic_action_expand"
-                            android:layout_marginRight="12dp"
-                            android:layout_gravity="center_vertical|right"
-                            />
-
-                        </FrameLayout>
 
                     </LinearLayout>
 
@@ -89,15 +78,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+
+
                 android:id="@+id/fragment_cafeteria_spinner"
                 android:drawSelectorOnTop="true"
-                android:layout_below="@+id/cafeteria_status_bar"/>
+                style="@style/SpinnerStyle"
+                android:layout_below="@+id/cafeteria_status_bar"
+                />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/fragment_cafeteria_rvMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/fragment_cafeteria_spinner"/>
+                android:layout_below="@+id/fragment_cafeteria_spinner"
+                android:descendantFocusability="afterDescendants"
+                />
 
         </RelativeLayout>
 

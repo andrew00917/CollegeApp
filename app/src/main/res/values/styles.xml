@@ -30,6 +30,7 @@
         <item name="windowActionBar">false</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:fitsSystemWindows">true</item>
+        <item name="android:dropDownListViewStyle">@style/SpinnerStyle</item>
         <!--<item name="android:buttonStyle">@style/MaterialButton</item>-->
     </style>
 
@@ -96,6 +97,14 @@
         <item name="android:background">@drawable/material_button</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
+    </style>
+
+    <style name="SpinnerStyle" parent="android:style/Widget.ListView.DropDown">
+        <item name="android:divider">@color/silver</item>
+        <item name="android:dividerHeight">1dp</item>
+
+
+
     </style>
 
 </resources>

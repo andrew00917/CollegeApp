@@ -3,26 +3,25 @@ package com.techhab.collegeapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.DataSetObserver;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -32,6 +31,7 @@ import java.util.*;
 
 public class CafeteriaFragment extends Fragment {
     public static final String ARG_OBJECT = "object";
+    private static int selectedPosition = 0;
     // Buttons Cafeteria
     private View v;
     private FoodStore cafeteriaStore;
@@ -39,13 +39,13 @@ public class CafeteriaFragment extends Fragment {
     private ImageView image;
     private TextView tvTimeDetailInfo;
     private RecyclerView rvMenu;
-    private ImageButton ibExpandble;
     private LinearLayout statusBar;
     private boolean isBreakfastCollapse = true;
     private RecyclerView.LayoutManager mLayoutManager;
     private Spinner cafeteriaSpinner;
     private int currentBarColor;
     private boolean isExpanded = false;
+    private long mLastClickTime;
 
     private static final int RICHARDSON = 1;
 
@@ -65,7 +65,6 @@ public class CafeteriaFragment extends Fragment {
         rvMenu = (RecyclerView) v.findViewById(R.id.fragment_cafeteria_rvMenu);
         tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
         tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
-        ibExpandble = (ImageButton) v.findViewById(R.id.ibExpandable);
         statusBar = (LinearLayout) v.findViewById(R.id.cafeteria_status_bar);
 
 
@@ -73,26 +72,45 @@ public class CafeteriaFragment extends Fragment {
 
         tvTimeInfo.setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View v) {
+                // to make sure when user double clicks on the status bar, it wouldn't expand more than it should
+                tvTimeInfo.setEnabled(false);
+
+                // animation for expanding/collapsing the status bar
                 if (!isExpanded) { // Expand
                     HeightAnimation animation = new HeightAnimation(tvTimeDetailInfo, 300, true);
                     animation.setDuration(300);
                     statusBar.startAnimation(animation);
-                    ibExpandble.setImageResource(R.drawable.ic_action_expand);
+                    AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.arrow_expand);
+                    animationDrawable.setOneShot(true);
+                    tvTimeInfo.setCompoundDrawablesWithIntrinsicBounds(null, null, animationDrawable, null);
+                    animationDrawable.start();
                     isExpanded = !isExpanded;
                 } else { // Collapse
                     HeightAnimation animation = new HeightAnimation(tvTimeDetailInfo, 300, false);
                     animation.setDuration(300);
                     statusBar.startAnimation(animation);
-                    ibExpandble.setImageResource(R.drawable.ic_action_collapse);
+                    AnimationDrawable animationDrawable1 = (AnimationDrawable) getResources().getDrawable(R.drawable.arrow_collapse);
+                    animationDrawable1.setOneShot(true);
+                    tvTimeInfo.setCompoundDrawablesWithIntrinsicBounds(null, null, animationDrawable1, null);
+                    animationDrawable1.start();
                     isExpanded = !isExpanded;
                 }
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvTimeInfo.setEnabled(true);
+                    }
+                }, 300);
             }
         });
 
         cafeteriaSpinner = (Spinner) v.findViewById(R.id.fragment_cafeteria_spinner);
         ArrayList<String> days = new ArrayList<>();
-        // TODO populate the days arraylist with 4 entries. The first two will always be
+        // populate the days arraylist with 4 entries. The first two will always be
         // "Today" and "Tomorrow", but the last 2 entries must be programmatically determined
         // using the current date.
         days.add("Today");
@@ -107,7 +125,27 @@ public class CafeteriaFragment extends Fragment {
         days.add(thirdDay);
         days.add(forthDay);
         CustomAdapter spinnerAdapter = new CustomAdapter(getActivity(), android.R.layout.simple_spinner_item, days);
-//        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        cafeteriaSpinner.setSelection(0, false);
+        cafeteriaSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+            @Override
+            // after the item is selected in the spinner it should refresh the fragment
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (selectedPosition  != position)
+                {
+                    selectedPosition = position;
+                    reloadFragment();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         cafeteriaSpinner.setAdapter(spinnerAdapter);
 
         //todo: fake data for cafe
@@ -171,14 +209,15 @@ public class CafeteriaFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         rvMenu.setLayoutManager(mLayoutManager);
         rvMenu.setAdapter(new MenuAdapter(getActivity(), meals));
+
+       // for changing the color of the status bar based on the time, as well as the image for open/close sign
         if (isOpened(cafeteriaStore))
         {
             currentBarColor = R.color.green;
             statusBar.setBackgroundColor(getResources().getColor(R.color.green));
             ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
-        }
-        else
-        {
+
+        } else {
             currentBarColor = R.color.red;
             statusBar.setBackgroundColor(getResources().getColor(R.color.red));
             ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
@@ -227,9 +266,7 @@ public class CafeteriaFragment extends Fragment {
         {
             millisset = closeMillis - nowMillis;
 
-        }
-        else
-        {
+        } else {
             millisset = openMillis - nowMillis > 0 ? openMillis - nowMillis : openMillis - nowMillis + 86400*1000;
 
         }
@@ -259,9 +296,7 @@ public class CafeteriaFragment extends Fragment {
                     }
                     tvTimeInfo.setText(
                             "Closing in " + hours + " hours and " + minutes + " minutes"
-                    );}
-                else
-                {
+                    );} else {
                     if (currentBarColor != R.color.red)
                     {
                         currentBarColor = R.color.red;
@@ -390,6 +425,14 @@ public class CafeteriaFragment extends Fragment {
             this.internationalCornerItems = internationalCornerItems;
         }
     }
+
+    private void reloadFragment()
+    {
+            getFragmentManager().beginTransaction().detach(this)
+                    .attach(this)
+                    .commit();
+    }
+
     private class MenuAdapter extends RecyclerView.Adapter
     {
         private List<Meal> mealList;
@@ -407,6 +450,7 @@ public class CafeteriaFragment extends Fragment {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.food_wells_menu_item, viewGroup, false);
+
             return new ViewHolder(rowView);
         }
 
@@ -420,36 +464,54 @@ public class CafeteriaFragment extends Fragment {
             menuViewHolder.tvTitle.setText(meal.getMealTitle());
 
             loadMenu(menuViewHolder, meal);
-//            collapseMenu(menuViewHolder, meal);
-            menuViewHolder.tbViewMore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked)
-                    {
-                        HeightAnimation animation = new HeightAnimation(((ViewHolder) viewHolder).llMainLines,
-                                getHeightToAdd(((ViewHolder) viewHolder).llMainLines, true), true);
-                        animation.setDuration(300);
-                        ((ViewHolder) viewHolder).llMainLines.startAnimation(animation);
-                        HeightAnimation animation1 = new HeightAnimation(((ViewHolder) viewHolder).llInternationalCorner,
-                                getHeightToAdd(((ViewHolder) viewHolder).llInternationalCorner, true), true);
-                        animation1.setDuration(300);
-                        ((ViewHolder) viewHolder).llInternationalCorner.startAnimation(animation1);
 
-                    }
-                    else
+            menuViewHolder.tbViewMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menuViewHolder.tbViewMore.setEnabled(false);
+
+                    if (menuViewHolder.tbViewMore.isChecked())
                     {
-                        HeightAnimation animation = new HeightAnimation(((ViewHolder) viewHolder).llMainLines,
-                                getHeightToAdd(((ViewHolder) viewHolder).llMainLines, false), false);
-                        animation.setDuration(300);
-                        ((ViewHolder) viewHolder).llMainLines.startAnimation(animation);
-                        HeightAnimation animation1 = new HeightAnimation(((ViewHolder) viewHolder).llInternationalCorner,
-                                getHeightToAdd(((ViewHolder) viewHolder).llInternationalCorner, false), false);
-                        animation1.setDuration(300);
-                        ((ViewHolder) viewHolder).llInternationalCorner.startAnimation(animation1);
+                        expandCardView((ViewHolder) viewHolder);
+
+                    } else {
+                        collapseCardView((ViewHolder) viewHolder);
                     }
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            menuViewHolder.tbViewMore.setEnabled(true);
+                        }
+                    }, 500);
+
                 }
             });
+
         }
+
+        private void expandCardView(ViewHolder viewHolder) {
+            HeightAnimation animation = new HeightAnimation(viewHolder.llMainLines,
+                    getHeightToAdd(viewHolder.llMainLines, true), true);
+            animation.setDuration(300);
+            viewHolder.llMainLines.startAnimation(animation);
+            HeightAnimation animation1 = new HeightAnimation(viewHolder.llInternationalCorner,
+                    getHeightToAdd(viewHolder.llInternationalCorner, true), true);
+            animation1.setDuration(300);
+            viewHolder.llInternationalCorner.startAnimation(animation1);
+        }
+
+        private void collapseCardView(ViewHolder viewHolder) {
+            HeightAnimation animation = new HeightAnimation(viewHolder.llMainLines,
+                    getHeightToAdd(viewHolder.llMainLines, false), false);
+            animation.setDuration(300);
+            viewHolder.llMainLines.startAnimation(animation);
+            HeightAnimation animation1 = new HeightAnimation(viewHolder.llInternationalCorner,
+                    getHeightToAdd(viewHolder.llInternationalCorner, false), false);
+            animation1.setDuration(300);
+            viewHolder.llInternationalCorner.startAnimation(animation1);
+        }
+
 
         @Override
         public long getItemId(int position)
@@ -468,6 +530,7 @@ public class CafeteriaFragment extends Fragment {
             public LinearLayout llMainLines;
             public LinearLayout llInternationalCorner;
             public ToggleButton tbViewMore;
+            public CardView cvRoot;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -475,6 +538,7 @@ public class CafeteriaFragment extends Fragment {
                 llMainLines = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llMainLine);
                 llInternationalCorner = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llInternationalCorner);
                 tbViewMore = (ToggleButton) itemView.findViewById(R.id.fragment_cafeteria_tbViewMore);
+                cvRoot = (CardView) itemView.findViewById(R.id.food_wells_menu_item_cvRoot);
             }
 
         }
@@ -530,6 +594,7 @@ public class CafeteriaFragment extends Fragment {
 
     }
 
+// setting up a custom adapter for spinner
     private class CustomAdapter extends ArrayAdapter<String> {
 
         private ArrayList<String> days;
