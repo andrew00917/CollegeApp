@@ -3,31 +3,25 @@ package com.techhab.collegeapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.DataSetObserver;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -45,7 +39,6 @@ public class CafeteriaFragment extends Fragment {
     private ImageView image;
     private TextView tvTimeDetailInfo;
     private RecyclerView rvMenu;
-    private ImageButton ibExpandble;
     private LinearLayout statusBar;
     private boolean isBreakfastCollapse = true;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -72,7 +65,6 @@ public class CafeteriaFragment extends Fragment {
         rvMenu = (RecyclerView) v.findViewById(R.id.fragment_cafeteria_rvMenu);
         tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
         tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
-        ibExpandble = (ImageButton) v.findViewById(R.id.ibExpandable);
         statusBar = (LinearLayout) v.findViewById(R.id.cafeteria_status_bar);
 
 
@@ -83,25 +75,36 @@ public class CafeteriaFragment extends Fragment {
 
             public void onClick(View v) {
                 // to make sure when user double clicks on the status bar, it wouldn't expand more than it should
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 350){
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
+                tvTimeInfo.setEnabled(false);
 
                 // animation for expanding/collapsing the status bar
                 if (!isExpanded) { // Expand
                     HeightAnimation animation = new HeightAnimation(tvTimeDetailInfo, 300, true);
                     animation.setDuration(300);
                     statusBar.startAnimation(animation);
-                    ibExpandble.setImageResource(R.drawable.ic_action_expand);
+                    AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.arrow_expand);
+                    animationDrawable.setOneShot(true);
+                    tvTimeInfo.setCompoundDrawablesWithIntrinsicBounds(null, null, animationDrawable, null);
+                    animationDrawable.start();
                     isExpanded = !isExpanded;
                 } else { // Collapse
                     HeightAnimation animation = new HeightAnimation(tvTimeDetailInfo, 300, false);
                     animation.setDuration(300);
                     statusBar.startAnimation(animation);
-                    ibExpandble.setImageResource(R.drawable.ic_action_collapse);
+                    AnimationDrawable animationDrawable1 = (AnimationDrawable) getResources().getDrawable(R.drawable.arrow_collapse);
+                    animationDrawable1.setOneShot(true);
+                    tvTimeInfo.setCompoundDrawablesWithIntrinsicBounds(null, null, animationDrawable1, null);
+                    animationDrawable1.start();
                     isExpanded = !isExpanded;
                 }
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvTimeInfo.setEnabled(true);
+                    }
+                }, 300);
             }
         });
 
