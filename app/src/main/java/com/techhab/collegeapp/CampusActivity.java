@@ -177,21 +177,21 @@ public class CampusActivity extends ActionBarActivity
         // Not use static
         public class ViewHolder extends RecyclerView.ViewHolder {
 
-            public TextView mTextView, mDescr, mExpandTextView;
+            public TextView mTextView, mExpandTextView;
             public FrameLayout mBanner;
-            public Button button;
-            public FrameLayout mExpandingFrame;
+            public Button button, readButton;
 
             public ViewHolder(View itemView) {
                 super(itemView);
 
                 mTextView = (TextView) itemView.findViewById(R.id.building_title);
 
-                mExpandingFrame = (FrameLayout) itemView.findViewById(R.id.expand_frame);
+                mExpandTextView = (TextView) itemView.findViewById(R.id.building_description);
+                readButton = (Button) itemView.findViewById(R.id.read_more_button);
 
 
-                mDescr = (TextView) itemView.findViewById(R.id.building_description);
-                mDescr.setOnClickListener(new View.OnClickListener(){
+                mExpandTextView = (TextView) itemView.findViewById(R.id.building_description);
+                mExpandTextView.setOnClickListener(new View.OnClickListener(){
                     public void onClick(View v) {
                         Toast.makeText(
                                 mContext,
@@ -208,7 +208,7 @@ public class CampusActivity extends ActionBarActivity
                                 break;
                             case MotionEvent.ACTION_UP:
                                 mBanner.getBackground().setColorFilter(null);
-                                toggleVisibility(mDescr);
+                                toggleVisibility(mExpandTextView);
                                 break;
                             case MotionEvent.ACTION_CANCEL:
                                 mBanner.getBackground().setColorFilter(null);
@@ -239,36 +239,37 @@ public class CampusActivity extends ActionBarActivity
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             String currentPos = mDataset[position];
-
+            final int heightToExpand;
+            final TextView tempExpandTextView = holder.mExpandTextView;
             switch (currentPos) {
                 case "Hicks Center":
                     holder.mTextView.setText(currentPos);
-                    holder.mDescr.setText(mDescription[position]);
+                    tempExpandTextView.setText(mDescription[position]);
                     holder.mBanner.setBackground(mDrawable[position]);
                     break;
                 default:
                     holder.mTextView.setText(currentPos);
-                    holder.mDescr.setText(mDescription[position]);
+                    tempExpandTextView.setText(mDescription[position]);
                     holder.mBanner.setBackground(mDrawable[position]);
             }
 
-            holder.mDescr.measure(0, 0);
-            final int heightToExpand = holder.mDescr.getMeasuredHeight();
+            tempExpandTextView.measure(0, 0);
+            heightToExpand = tempExpandTextView.getMeasuredHeight();
 
-            final FrameLayout standIn = holder.mExpandingFrame;
+            tempExpandTextView.setHeight(0);
 
-            holder.mTextView.setOnClickListener(new View.OnClickListener(){
+            holder.readButton.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View v) {
                     if ( ! isExpanded ) {
                         Log.d("onClick", "heightToExpand: " + heightToExpand );
-                        HeightAnimation animation = new HeightAnimation(standIn,
+                        HeightAnimation animation = new HeightAnimation(tempExpandTextView,
                                 heightToExpand, true);
                         animation.setDuration(300);
                         v.startAnimation(animation);
                         isExpanded = !isExpanded;
                     } else {
                         Log.d("onClick", "heightToExpand: " + heightToExpand );
-                        HeightAnimation animation = new HeightAnimation(standIn,
+                        HeightAnimation animation = new HeightAnimation(tempExpandTextView,
                                 heightToExpand, false);
                         animation.setDuration(300);
                         v.startAnimation(animation);
@@ -285,13 +286,6 @@ public class CampusActivity extends ActionBarActivity
             View view = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.buildings_recycle, parent, false);
             ViewHolder holder = new ViewHolder(view);
-
-            final TextView mTextView = (TextView) view.findViewById(R.id.building_title);
-
-            final TextView mExpandTextView = (TextView) view.findViewById(R.id.building_description);
-
-
-
 
             return holder;
         }
