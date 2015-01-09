@@ -18,6 +18,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Kevin on 11/9/2014.
@@ -56,10 +58,25 @@ public class MapsActivity extends ActionBarActivity {
         setUpMapIfNeeded();
     }
 
+    private Integer[] constructIntArray() {
+        Object[] integerArray = new Object[1];
+        ArrayList<Object> temp = new ArrayList<Object>(Arrays.asList(integerArray));
+
+        if ( academicBuildings ) {
+            temp.add(0);
+        }
+        if ( residentialHalls ) {
+            temp.add(1);
+        }
+
+        Object[] objectArray = temp.toArray();
+        Integer[] finIntegerArray = Arrays.copyOf(objectArray, objectArray.length, Integer[].class);
+        return finIntegerArray;
+    }
 
     public void chooseBuildings() {
         new MaterialDialog.Builder(this)
-                .title("View Buildings")
+                .title("Choose Buildings")
                 .items(new CharSequence[]{"Academic", "Residential", "Offices",
                         "Recreational", "Other"})
                 /*.itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallback() {
@@ -76,7 +93,7 @@ public class MapsActivity extends ActionBarActivity {
 
                     }
                 })*/
-                .itemsCallbackMultiChoice(new Integer[] { 0, 1, 2, 3, 4 }, new MaterialDialog.ListCallbackMulti() {
+                .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMulti() {
                     @Override
                     public void onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
                         String parse = "";
