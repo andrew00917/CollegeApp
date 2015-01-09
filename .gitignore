@@ -45,3 +45,6 @@ Thumbs.db
 # iml files
 CollegeApp.iml
 app/app.iml
+
+# Emulator Files
+.VirtualBox/

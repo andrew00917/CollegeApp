@@ -25,6 +25,7 @@
 
         <!-- Material Button Raised pressed background color -->
         <color name="kzooOrangePressed">#c66421</color>
+        <color name="kzooOrangePressedDark">#FF9E501B</color>
 
         <!-- Material Button Flat pressed background color -->
         <color name="material_button_flat_pressed_color">#29999999</color>
@@ -35,6 +36,8 @@
     <color name="holo_blue_light">#ff33b5e5</color>
     <!-- Sliding Tab Strip -->
     <color name="background_tab_pressed">#6633B5E5</color>
+
+    <!--<color name="kzooOrangePressed">0xff9e501b</color>-->
 
     <color name="white">#FFFFFF</color>
     <color name="yellow">#FFFF00</color>

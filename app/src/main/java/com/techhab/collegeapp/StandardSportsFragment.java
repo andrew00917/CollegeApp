@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ public class StandardSportsFragment extends GenericSportsFragment {
     private ListView upcomingGamesListView;
     private ProgressBar upcomingGamesProgressBar;
     private TableLayout pastGamesTableLayout;
+    private TextView upcomingEventsCardTitle;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -100,11 +102,17 @@ public class StandardSportsFragment extends GenericSportsFragment {
         idSuffix = idSuffix.replace(" ", "_");
         idSuffix = idSuffix.replace("/", "_");
         String id;
+
+        Log.d("getRssUrl", "gender = " + gender );
+
         if ( gender ) {
             id = "mens_" + idSuffix;
         } else {
             id = "womens_" + idSuffix;
         }
+
+        Log.d("getRssUrl", "id = " + id );
+
         int finalID = getActivity().getResources().getIdentifier(id, "string", getActivity().getPackageName());
 
 //        return getResources().getString(R.string.mens_golf);
@@ -121,8 +129,18 @@ public class StandardSportsFragment extends GenericSportsFragment {
         upcomingGamesProgressBar = (ProgressBar) rootView.findViewById(
                 R.id.upcoming_games_progress_bar);
         pastGamesTableLayout = (TableLayout) rootView.findViewById(R.id.past_events_table_layout);
+        upcomingEventsCardTitle = (TextView) rootView.findViewById(
+                R.id.upcoming_events_card_title);
+
+        if ( isTeamSport(sportTitle) ) {
+            upcomingEventsCardTitle.setText(getResources().getString(R.string.upcoming_games));
+        } else {
+            upcomingEventsCardTitle.setText(getResources().getString(R.string.upcoming_events));
+        }
 
         upcomingGamesListView.setEmptyView(upcomingGamesProgressBar);
+
+
 
         initializeGenericOnCreateView(rootView);
 
@@ -162,6 +180,25 @@ public class StandardSportsFragment extends GenericSportsFragment {
 //        populateTeamRosterTable(athleteNames, athleteNumbers);
 
         return rootView;
+    }
+
+    private boolean isTeamSport(String sportTitle) {
+        sportTitle = sportTitle.toLowerCase();
+        String[] teamSports = new String[] {
+                "baseball",
+                "softball",
+                "basketball",
+                "football",
+                "soccer",
+                "volleyball",
+                "lacrosse"
+        };
+        for (int i = 0; i < teamSports.length; i ++) {
+            if (sportTitle.contains(teamSports[i]) ) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // Commented out for future usage
@@ -235,7 +272,7 @@ public class StandardSportsFragment extends GenericSportsFragment {
 
                 LayoutInflater inflater =
                         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                if (sportTitle.equalsIgnoreCase("Cross") ) {
+                if (sportTitle.equalsIgnoreCase("cross country") ) {
                     convertView = inflater.inflate(R.layout.upcoming_xc_events_row, parent, false);
                 } else {
                     convertView = inflater.inflate(R.layout.upcoming_team_games_row, parent, false);
@@ -255,10 +292,12 @@ public class StandardSportsFragment extends GenericSportsFragment {
             viewHolder.date.setText(item.getDateAndTimeUpcoming());
             viewHolder.title.setText(item.getOpponentOrEvent());
 
-            if (item.isAtHome()) {
-                viewHolder.location.setText("HOME");
-            } else {
-                viewHolder.location.setText("AWAY");
+            if ( item.isTeamSport() ) {
+                if (item.isAtHome()) {
+                    viewHolder.location.setText("HOME");
+                } else {
+                    viewHolder.location.setText("AWAY");
+                }
             }
 
             return convertView;
