@@ -30,22 +30,21 @@ public class Animation extends android.view.animation.Animation {
 //        }
         if (grow) {
             view.getLayoutParams().width = (int) (view.getLayoutParams().width
-                    + (width - view.getLayoutParams().width) * interpolatedTime);
+                    + ((width - view.getLayoutParams().width) * interpolatedTime));
             view.getLayoutParams().height = (int) (view.getLayoutParams().height
-                    + (height - view.getLayoutParams().height) * interpolatedTime);
+                    + ((height - view.getLayoutParams().height) * interpolatedTime));
         } else {
             view.getLayoutParams().width = (int) (view.getLayoutParams().width
-                    - (view.getLayoutParams().width - width) * interpolatedTime);
+                    - ((view.getLayoutParams().width - width) * interpolatedTime));
             view.getLayoutParams().height = (int) (view.getLayoutParams().height
-                    - (view.getLayoutParams().height - height) * interpolatedTime);
+                    - ((view.getLayoutParams().height - height) * interpolatedTime));
         }
 
         view.requestLayout();
     }
 
     @Override
-    public void initialize(int width, int height, int parentWidth,
-                           int parentHeight) {
+    public void initialize(int width, int height, int parentWidth, int parentHeight) {
         super.initialize(width, height, parentWidth, parentHeight);
     }
 

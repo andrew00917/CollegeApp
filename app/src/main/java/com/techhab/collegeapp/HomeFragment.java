@@ -160,8 +160,10 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
                         break;
                     case MAIN_EXPAND_ID:
                         if (isExpanded) {
-                            com.techhab.collegeapp.Animation animation = new com.techhab.collegeapp.Animation(mainContainer
-                                    , ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+                            com.techhab.collegeapp.Animation animation
+                                    = new com.techhab.collegeapp.Animation(mainContainer
+                                    , ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+                                    , true);
                             animation.setDuration(300);
                             mainContainer.startAnimation(animation);
 //                            mainContainer.setLayoutParams(new FrameLayout
@@ -173,8 +175,10 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
                             mainExpand.setImageDrawable(getResources().getDrawable(R.drawable.main_expand_less));
                             isExpanded = false;
                         } else {
-                            com.techhab.collegeapp.Animation animation = new com.techhab.collegeapp.Animation(mainContainer
-                                    , ViewGroup.LayoutParams.MATCH_PARENT, mainExpand.getHeight() + main00.getHeight(), false);
+                            com.techhab.collegeapp.Animation animation
+                                    = new com.techhab.collegeapp.Animation(mainContainer
+                                    , ViewGroup.LayoutParams.MATCH_PARENT, mainExpand.getHeight() + main00.getHeight()
+                                    , false);
                             animation.setDuration(300);
                             mainContainer.startAnimation(animation);
 //                            mainContainer.setLayoutParams(new FrameLayout
