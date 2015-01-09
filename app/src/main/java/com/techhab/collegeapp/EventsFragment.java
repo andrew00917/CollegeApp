@@ -153,7 +153,6 @@ public class EventsFragment extends Fragment {
                 return;
             }
             String[] event = item.getEvent().split(" ");
-            Log.d("Event", item.getEvent());
 
             if (event[0].toLowerCase().equals("stress")) {
                 holder.image.setBackground(getResources().getDrawable(R.drawable.stree_free_zone));
@@ -228,13 +227,13 @@ public class EventsFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                ViewHolder holder = (ViewHolder) v.getTag();
+//                ViewHolder holder = (ViewHolder) v.getTag();
 
                 switch (v.getId()) {
                     case R.id.info_button:
                         // TODO: fix auto-scrolling
                         // Check for an expanded view, collapse if you find one
-                        if (expandedPosition >= 0 && expandedPosition != holder.getPosition()) {
+                        if (expandedPosition >= 0 && expandedPosition != this.getPosition()) {
                             collapseCard(expandedHolder);
                             expandedPosition = -1;
                             expandedHolder = null;
@@ -253,6 +252,7 @@ public class EventsFragment extends Fragment {
                         }
                         break;
                 }
+                Log.d("Holder clicked: ", this.toString());
                 Toast.makeText(context, "Holder on click " + this.getPosition(), Toast.LENGTH_SHORT).show();
             }
 
