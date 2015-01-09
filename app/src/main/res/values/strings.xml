@@ -56,7 +56,7 @@
     <string name="main_menu_00">Academic</string>
     <string name="main_menu_01">Campus</string>
     <string name="main_menu_02">Dining</string>
-    <string name="main_menu_10">Athletic</string>
+    <string name="main_menu_10">Sports</string>
     <string name="main_menu_11">Events</string>
     <string name="main_menu_12">Map</string>
     <string name="image_description_name">Seung Yoon Hong 15\'</string>
@@ -159,8 +159,9 @@
         <string name="game_in_progress">Game In Progress</string>
 
         <!-- Upcoming Games card -->
-        <string name="upcoming_games">Upcoming Games</string>
+        <string name="upcoming_events_default_text">Upcoming</string>
         <string name="upcoming_events">Upcoming Events</string>
+        <string name="upcoming_games">Upcoming Games</string>
         <string name="no_upcoming_events">No upcoming events</string>
         <string name="no_past_events">No past events</string>
 

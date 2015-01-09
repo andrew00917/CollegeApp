@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transition xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- The drawables used here can be solid colors, gradients, shapes, images, etc. -->
+    <item android:drawable="@drawable/clear_drawable" />
+    <item android:drawable="@drawable/athletic_gender_button_new_background" />
+    <item android:drawable="@drawable/clear_drawable" />
+</transition>

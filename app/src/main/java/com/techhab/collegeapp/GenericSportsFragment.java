@@ -230,6 +230,8 @@ public abstract class GenericSportsFragment extends Fragment {
             }
             if ( pastEventsList.isEmpty() ) {
                 setPastEventsCardToEmpty();
+            } else if ( ! pastEventsList.get(0).isTeamSport() ) {
+                condensePastEvents();
             }
 
             initializeUpcomingGamesCount();
@@ -239,6 +241,15 @@ public abstract class GenericSportsFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void condensePastEvents() {
+
+        // Check each item in list...temporarily save the event, check to see if it matches
+        // the next event. If it does, save that first item's date and start a counter
+        // and keep iterating. When the next item doesn't match, remove the last counter - 1 items,
+        // set the date of the last item to the new fancy, multi-day date.
+
     }
 
     public void setUpcomingEventsCardToEmpty() {

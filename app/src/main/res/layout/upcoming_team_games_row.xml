@@ -52,8 +52,7 @@
             android:textColor="@color/secondary_text_default_material_light"
             android:alpha="0.75"
             android:textStyle="bold"
-            android:gravity="center_vertical|right"
-            android:text="AWAY"/>
+            android:gravity="center_vertical|right"/>
 
     </LinearLayout>
 
