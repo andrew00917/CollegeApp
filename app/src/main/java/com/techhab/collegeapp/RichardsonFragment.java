@@ -15,21 +15,15 @@ import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,8 +62,8 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
         v = inflater.inflate(R.layout.fragment_richardson, parent, false);
         rvMenu = (RecyclerView) v.findViewById(R.id.fragment_cafeteria_rvMenu);
         tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
-        tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
-        ibExpandble = (ImageButton) v.findViewById(R.id.ibExpandable);
+        tvTimeDetailInfo = (TextView) v.findViewById(R.id.status_bar_extended_info);
+        ibExpandble = (ImageButton) v.findViewById(R.id.status_bar_arrow);
         llHeader = (LinearLayout) v.findViewById(R.id.richardson_status_bar);
         tvTimeInfo.setOnClickListener(new View.OnClickListener() {
             @Override

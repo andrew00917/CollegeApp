@@ -3,7 +3,6 @@ package com.techhab.collegeapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -17,8 +16,12 @@ import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -36,8 +39,8 @@ public class CafeteriaFragment extends Fragment {
     private View v;
     private FoodStore cafeteriaStore;
     private TextView tvTimeInfo;
-    private ImageView image;
-    private TextView tvTimeDetailInfo;
+    private ImageView statusBarArrow;
+    private LinearLayout statusBarExtendedInfoFrame;
     private RecyclerView rvMenu;
     private LinearLayout statusBar;
     private boolean isBreakfastCollapse = true;
@@ -64,13 +67,33 @@ public class CafeteriaFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_cafeteria, parent, false);
         rvMenu = (RecyclerView) v.findViewById(R.id.fragment_cafeteria_rvMenu);
         tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
-        tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
+        statusBarExtendedInfoFrame = (LinearLayout) v.findViewById(R.id.status_bar_extended_info_frame);
         statusBar = (LinearLayout) v.findViewById(R.id.cafeteria_status_bar);
 
 
+        statusBar.setClickable(true);
+
+        statusBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                statusBar.setClickable(false);
+                expandStatusBar();
+
+                statusBar.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        statusBar.setClickable(true);
+                    }
+                }, 300);
+            }
+        });
+
+        String statusBarExtendedInfoString = "";
 
 
-        tvTimeInfo.setOnClickListener(new View.OnClickListener() {
+
+
+        /*tvTimeInfo.setOnClickListener(new View.OnClickListener() {
             @Override
 
             public void onClick(View v) {
@@ -79,7 +102,7 @@ public class CafeteriaFragment extends Fragment {
 
                 // animation for expanding/collapsing the status bar
                 if (!isExpanded) { // Expand
-                    HeightAnimation animation = new HeightAnimation(tvTimeDetailInfo, 300, true);
+                    HeightAnimation animation = new HeightAnimation(statusBarExtendedInfoFrame, 300, true);
                     animation.setDuration(300);
                     statusBar.startAnimation(animation);
                     AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.arrow_expand);
@@ -88,7 +111,7 @@ public class CafeteriaFragment extends Fragment {
                     animationDrawable.start();
                     isExpanded = !isExpanded;
                 } else { // Collapse
-                    HeightAnimation animation = new HeightAnimation(tvTimeDetailInfo, 300, false);
+                    HeightAnimation animation = new HeightAnimation(statusBarExtendedInfoFrame, 300, false);
                     animation.setDuration(300);
                     statusBar.startAnimation(animation);
                     AnimationDrawable animationDrawable1 = (AnimationDrawable) getResources().getDrawable(R.drawable.arrow_collapse);
@@ -106,7 +129,7 @@ public class CafeteriaFragment extends Fragment {
                     }
                 }, 300);
             }
-        });
+        });*/
 
         cafeteriaSpinner = (Spinner) v.findViewById(R.id.fragment_cafeteria_spinner);
         ArrayList<String> days = new ArrayList<>();
@@ -224,6 +247,57 @@ public class CafeteriaFragment extends Fragment {
         }
         getRemainTime();
         return v;
+    }
+
+    private void expandStatusBar() {
+        if ( ! isExpanded ) { // Expand
+            // Rotate the drawer arrow
+            statusBarArrow = (ImageView) v.findViewById(R.id.status_bar_arrow);
+
+            AnimationSet animSet = new AnimationSet(true);
+            animSet.setInterpolator(new DecelerateInterpolator());
+            animSet.setFillAfter(true);
+            animSet.setFillEnabled(true);
+
+            final RotateAnimation animRotate = new RotateAnimation(0.0f, -180.0f,
+                    RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+                    RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+
+            animRotate.setDuration(300);
+            animRotate.setFillAfter(true);
+            animSet.addAnimation(animRotate);
+
+            statusBarArrow.startAnimation(animSet);
+
+            HeightAnimation animation = new HeightAnimation(statusBarExtendedInfoFrame, 300, true);
+            animation.setDuration(300);
+            statusBar.startAnimation(animation);
+            isExpanded = !isExpanded;
+        } else { // Collapse
+            // Rotate the drawer arrow
+            statusBarArrow = (ImageView) v.findViewById(R.id.status_bar_arrow);
+
+            AnimationSet animSet = new AnimationSet(true);
+            animSet.setInterpolator(new DecelerateInterpolator());
+            animSet.setFillAfter(true);
+            animSet.setFillEnabled(true);
+
+            final RotateAnimation animRotate = new RotateAnimation(-180.0f, 0.0f,
+                    RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+                    RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+
+            animRotate.setDuration(300);
+            animRotate.setFillAfter(true);
+            animSet.addAnimation(animRotate);
+
+            statusBarArrow.startAnimation(animSet);
+            HeightAnimation animation = new HeightAnimation(statusBarExtendedInfoFrame, 300, false);
+            animation.setDuration(300);
+            statusBar.startAnimation(animation);
+            isExpanded = !isExpanded;
+        }
+
+
     }
 
 

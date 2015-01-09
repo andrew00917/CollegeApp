@@ -124,6 +124,7 @@
     <!-- Campus Info -->
     <string name="title_activity_info">Campus Information</string>
     <string name="label_building_Hicks_Center">Hicks Center</string>
+
     <!-- Cafeteria(DetailedCafeteriaFragment) -->
     <string name="open">OPEN</string>
     <string name="closed">CLOSED</string>
@@ -137,14 +138,14 @@
     <string name="label_cafeteria_breakfast">BreakFast</string>
     <string name="label_cafeteria_lunch">Lunch</string>
     <string name="label_cafeteria_dinner">Dinner</string>
-    <!-- Cafeteria(GroceryFragment) -->
-    <string name="label_grocery_walgreens">Walgreens</string>
-    <string name="label_grocery_meijers">Meijers</string>
-    <string name="label_grocery_farmersMarket">Farmers Market</string>
-    <string name="label_grocery_hardingsMarkets">Hardings Markets</string>
-    <string name="label_grocery_irvingMarket">Irving Market</string>
-    <string name="label_grocery_laMexicanaMarket">La Mexicana Market</string>
-    <string name="label_grocery_pacificRimFoods">Pacific Rim Foods</string>
+
+    <string name="monday_friday">Monday - Friday</string>
+    <string name="mealtimes_mf">Breakfast: 7:30 - 10am\nLunch: 11 - 1:30pm\nDinner: 5 - 7:30pm</string>
+    <string name="lunch_mf">Lunch: 11 - 1:30pm</string>
+    <string name="dinner_mf">Dinner: 5 - 7:30pm</string>
+
+    <string name="saturday">Saturday</string>
+
 
     <!-- Athletic Activity -->
     <string name="men">MEN\'S</string>
