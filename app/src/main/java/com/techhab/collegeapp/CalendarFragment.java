@@ -3,25 +3,49 @@ package com.techhab.collegeapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class CalendarFragment extends Fragment {
     public static final String ARG_OBJECT = "object";
+
+    // @formatter:off
+    private static final int[] CONTENT = new int[] {
+            R.array.Fall,
+            R.array.Winter,
+            R.array.Spring
+    };
+    private static final int[] DATE_2014 = new int[]{
+            R.array.Fall_2014,
+            R.array.Winter_2014,
+            R.array.Spring_2014
+    };
+    // @formatter:on
 
     View v;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private Spinner spinner;
+    private int selectedPosition = 0;
 
     public CalendarFragment() {
         // Required Empty Constructor
@@ -43,7 +67,9 @@ public class CalendarFragment extends Fragment {
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
+//        mRecyclerView.setHasFixedSize(true);
+
+        spinner = (Spinner) v.findViewById(R.id.year_spinner);
 
         return v;
     }
@@ -58,17 +84,51 @@ public class CalendarFragment extends Fragment {
         mRecyclerView.setLayoutManager(layoutManager);
 
         String[] dataset = new String[3];
-        dataset[0] = "2014-15";
-        dataset[1] = "2015-16";
-        dataset[2] = "2016-17";
+        dataset[0] = "Fall";
+        dataset[1] = "Winter";
+        dataset[2] = "Spring";
 
         RecyclerAdapter mAdapter = new RecyclerAdapter(dataset, getActivity());
         mRecyclerView.setAdapter(mAdapter);
+
+        ArrayList<String> years = new ArrayList<>();
+        years.add("2014-15");
+        years.add("2015-16");
+        years.add("2016-17");
+
+        CustomAdapter spinnerAdapter = new CustomAdapter(getActivity(), android.R.layout.simple_spinner_item, years);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setSelection(0, false);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            // after the item is selected in the spinner it should refresh the fragment
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (selectedPosition  != position)
+                {
+                    selectedPosition = position;
+                    reloadFragment();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinner.setAdapter(spinnerAdapter);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    private void reloadFragment() {
+        getFragmentManager().beginTransaction().detach(this)
+                .attach(this)
+                .commit();
     }
 
     public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
@@ -84,33 +144,12 @@ public class CalendarFragment extends Fragment {
         public class ViewHolder extends RecyclerView.ViewHolder {
 
             public TextView mTextView;
+            public TableLayout tableView;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                mTextView = (TextView) itemView.findViewById(R.id.year);
-                mTextView.setOnTouchListener(new View.OnTouchListener(){
-
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        switch (event.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-                                ((AcademicActivity) getActivity()).buttonPressed(v);
-                                break;
-                            case MotionEvent.ACTION_CANCEL:
-                            case MotionEvent.ACTION_OUTSIDE:
-                                ((AcademicActivity) getActivity()).buttonReleased(v);
-                                break;
-                            case MotionEvent.ACTION_UP:
-                                ((AcademicActivity) getActivity()).buttonReleased(v);
-                                Intent intent = new Intent(mContext, TermActivity.class);
-                                String[] year = mTextView.getText().toString().split("-");
-                                intent.putExtra("year", year[0]);
-                                startActivity(intent);
-                                break;
-                        }
-                        return true;
-                    }
-                });
+                mTextView = (TextView) itemView.findViewById(R.id.term);
+                tableView = (TableLayout) itemView.findViewById(R.id.table_layout);
             }
         }
 
@@ -122,6 +161,58 @@ public class CalendarFragment extends Fragment {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             holder.mTextView.setText(mDataset[position]);
+            final TableLayout table = holder.tableView;
+
+            String[] content = getActivity().getResources().getStringArray(CONTENT[position]);
+
+            String[] date;
+            switch (selectedPosition) {
+                case 0:
+                    date  = getActivity().getResources().getStringArray(DATE_2014[position]);
+                    break;
+                case 1:
+                    date  = getActivity().getResources().getStringArray(DATE_2014[position]);
+                    break;
+                case 2:
+                    date  = getActivity().getResources().getStringArray(DATE_2014[position]);
+                    break;
+                default:
+                    date  = getActivity().getResources().getStringArray(DATE_2014[position]);
+                    break;
+            }
+
+            TableRow.LayoutParams rowParam = new TableRow.LayoutParams();
+            rowParam.setMargins(1, 1, 1, 1);
+//            rowParam.weight = 1;
+
+            TextView text;
+            for (int i = 0; i < (content.length >= date.length ? content.length : date.length); i++) {
+                TableRow row = new TableRow(getActivity());
+
+                for (int j= 0; j < 2; j++) {
+                    text = new TextView(getActivity());
+                    text.setTextColor(getResources().getColor(R.color.abc_primary_text_material_light));
+                    text.setTextSize(14f);
+                    text.setSingleLine();
+//                    text.setGravity(Gravity.START);
+//                    if (i % 2 == 1) {
+//                        text.setBackgroundColor(getResources().getColor(R.color.Tan));
+//                    }
+                    if (j == 0) {
+                        text.setPadding(16, 8, 8, 8);
+                        text.setGravity(Gravity.START);
+                        text.setTypeface(null, Typeface.BOLD);
+                        text.setText(content[i]);
+                    }
+                    else {
+                        text.setPadding(8, 8, 0, 8);
+                        text.setGravity(Gravity.START);
+                        text.setText(date[i]);
+                    }
+                    row.addView(text, rowParam);
+                }
+                table.addView(row);
+            }
         }
 
         @Override
@@ -129,6 +220,47 @@ public class CalendarFragment extends Fragment {
             View view = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.academic_calendar_recycle, parent, false);
             return new ViewHolder(view);
+        }
+    }
+
+    /**
+     *  CustomAdapter for spinner
+     */
+    private class CustomAdapter extends ArrayAdapter<String> {
+
+        private ArrayList<String> years;
+        private LayoutInflater inflater;
+        private Context context;
+
+        public CustomAdapter(Context context, int rowResourceLayout, ArrayList<String> years) {
+            super(context, rowResourceLayout, years);
+            this.context = context;
+            this.years = years;
+
+            inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            return getCustomView(position, convertView, parent);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return getCustomView(position, convertView, parent);
+        }
+
+        // This funtion called for each row ( Called data.size() times )
+        public View getCustomView(int position, View convertView, ViewGroup parent) {
+
+            View row = inflater.inflate(R.layout.cafeteria_spinner_rows, parent, false);
+
+            TextView label = (TextView)row.findViewById(R.id.day);
+
+            label.setText(years.get(position));
+
+            return row;
         }
     }
 }

@@ -124,6 +124,8 @@
     <!-- Campus Info -->
     <string name="title_activity_info">Campus Information</string>
     <string name="label_building_Hicks_Center">Hicks Center</string>
+    <string name="map_it">MAP IT</string>
+    <string name="read_more">READ MORE</string>
 
     <!-- Cafeteria(DetailedCafeteriaFragment) -->
     <string name="open">OPEN</string>
