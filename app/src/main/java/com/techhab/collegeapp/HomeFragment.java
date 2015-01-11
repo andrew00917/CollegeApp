@@ -160,19 +160,30 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
                         break;
                     case MAIN_EXPAND_ID:
                         if (isExpanded) {
-                            mainContainer.setLayoutParams(new FrameLayout
-                                    .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                    ViewGroup.LayoutParams.MATCH_PARENT));
+                            com.techhab.collegeapp.Animation animation
+                                    = new com.techhab.collegeapp.Animation(mainContainer
+                                    , ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+                                    , true);
+                            animation.setDuration(300);
+                            mainContainer.startAnimation(animation);
+//                            mainContainer.setLayoutParams(new FrameLayout
+//                                    .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                                    ViewGroup.LayoutParams.MATCH_PARENT));
                             mainContainer.setBackgroundColor(getResources().getColor(R.color.main00));
                             setText();
                             expandToolbar();
                             mainExpand.setImageDrawable(getResources().getDrawable(R.drawable.main_expand_less));
                             isExpanded = false;
-                        }
-                        else {
-                            mainContainer.setLayoutParams(new FrameLayout
-                                    .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                    mainExpand.getHeight() + main00.getHeight()));
+                        } else {
+                            com.techhab.collegeapp.Animation animation
+                                    = new com.techhab.collegeapp.Animation(mainContainer
+                                    , ViewGroup.LayoutParams.MATCH_PARENT, mainExpand.getHeight() + main00.getHeight()
+                                    , false);
+                            animation.setDuration(300);
+                            mainContainer.startAnimation(animation);
+//                            mainContainer.setLayoutParams(new FrameLayout
+//                                    .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                                    mainExpand.getHeight() + main00.getHeight()));
                             mainContainer.setBackgroundColor(getResources().getColor(R.color.main00_trans));
                             nullifyText();
                             lessToolbar();

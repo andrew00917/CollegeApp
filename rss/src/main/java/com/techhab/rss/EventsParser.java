@@ -71,7 +71,7 @@ public class EventsParser {
             if (title != null && description != null && link != null) {
                 String[] dateAndEvent = title.split(" - ");
                 String[] placeAndTime = description.split(", ");
-                String event = dateAndEvent[1];
+                String event = dateAndEvent.length == 3 ? dateAndEvent[2] + " - " + dateAndEvent[1] : dateAndEvent[1];
                 if (dateAndEvent[1].contains("&amp;")) {
                     event = dateAndEvent[1].replace("&amp;", "&");
                 }
