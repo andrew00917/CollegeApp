@@ -13,6 +13,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,13 +29,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
 
 
 public class CafeteriaFragment extends Fragment {
     public static final String ARG_OBJECT = "object";
     private static int selectedPosition = 0;
+    private static final int MF_INDEX = 0;
+    private static final int SATURDAY_INDEX = 1;
+    private static final int SUNDAY_INDEX = 2;
     // Buttons Cafeteria
     private View v;
     private FoodStore cafeteriaStore;
@@ -88,48 +95,6 @@ public class CafeteriaFragment extends Fragment {
             }
         });
 
-        String statusBarExtendedInfoString = "";
-
-
-
-
-        /*tvTimeInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-
-            public void onClick(View v) {
-                // to make sure when user double clicks on the status bar, it wouldn't expand more than it should
-                tvTimeInfo.setEnabled(false);
-
-                // animation for expanding/collapsing the status bar
-                if (!isExpanded) { // Expand
-                    HeightAnimation animation = new HeightAnimation(statusBarExtendedInfoFrame, 300, true);
-                    animation.setDuration(300);
-                    statusBar.startAnimation(animation);
-                    AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.arrow_expand);
-                    animationDrawable.setOneShot(true);
-                    tvTimeInfo.setCompoundDrawablesWithIntrinsicBounds(null, null, animationDrawable, null);
-                    animationDrawable.start();
-                    isExpanded = !isExpanded;
-                } else { // Collapse
-                    HeightAnimation animation = new HeightAnimation(statusBarExtendedInfoFrame, 300, false);
-                    animation.setDuration(300);
-                    statusBar.startAnimation(animation);
-                    AnimationDrawable animationDrawable1 = (AnimationDrawable) getResources().getDrawable(R.drawable.arrow_collapse);
-                    animationDrawable1.setOneShot(true);
-                    tvTimeInfo.setCompoundDrawablesWithIntrinsicBounds(null, null, animationDrawable1, null);
-                    animationDrawable1.start();
-                    isExpanded = !isExpanded;
-                }
-
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvTimeInfo.setEnabled(true);
-                    }
-                }, 300);
-            }
-        });*/
 
         cafeteriaSpinner = (Spinner) v.findViewById(R.id.fragment_cafeteria_spinner);
         ArrayList<String> days = new ArrayList<>();
@@ -171,6 +136,45 @@ public class CafeteriaFragment extends Fragment {
 
         cafeteriaSpinner.setAdapter(spinnerAdapter);
 
+        setupData();
+        mapDataToView(v);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        rvMenu.setLayoutManager(mLayoutManager);
+        rvMenu.setAdapter(new MenuAdapter(getActivity(), cafeteriaStore.getMealList()));
+
+       // for changing the color of the status bar based on the time, as well as the image for open/close sign
+        long remainTime = getRemainTime();
+        if (remainTime >= 0)
+        {
+            currentBarColor = R.color.green;
+            statusBar.setBackgroundColor(getResources().getColor(R.color.green));
+            ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
+
+        } else {
+            currentBarColor = R.color.red;
+            statusBar.setBackgroundColor(getResources().getColor(R.color.red));
+            ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
+        }
+        displayStatusBar(remainTime);
+        return v;
+    }
+
+    private void mapDataToView(View view) {
+        List<TimeOfDay> breakfastOpenTimes = cafeteriaStore.getMealList().get(0).getOpenTimes();
+        List<TimeOfDay> breakfastCloseTimes = cafeteriaStore.getMealList().get(0).getEndTimes();
+        if (breakfastOpenTimes != null && breakfastCloseTimes != null)
+        {
+            String breakfastTimeMF = breakfastOpenTimes.get(MF_INDEX) == null ? "-" : breakfastOpenTimes.get(MF_INDEX).getTime() + "-" + breakfastCloseTimes.get(MF_INDEX).getTime();
+            ((TextView)view.findViewById(R.id.cafeteria_mF_tvBreakfastTime)).setText(breakfastTimeMF);
+            String breakfastTimeSat = breakfastOpenTimes.get(SATURDAY_INDEX) == null ? "-" : breakfastOpenTimes.get(SATURDAY_INDEX).getTime() + "-" + breakfastCloseTimes.get(SATURDAY_INDEX).getTime();
+            ((TextView)view.findViewById(R.id.cafeteria_saturday_tvBreakfastTime)).setText(breakfastTimeSat);
+            String breakfastTimeSun = breakfastOpenTimes.get(SUNDAY_INDEX) == null ? "-" : breakfastOpenTimes.get(SUNDAY_INDEX).getTime() + "-" + breakfastCloseTimes.get(SUNDAY_INDEX).getTime();
+            ((TextView)view.findViewById(R.id.cafeteria_sunday_tvBreakfastTime)).setText(breakfastTimeSun);
+
+        }
+    }
+
+    private void setupData() {
         //todo: fake data for cafe
         cafeteriaStore = new FoodStore();
         cafeteriaStore.setStoreName("Cafeteria");
@@ -181,31 +185,22 @@ public class CafeteriaFragment extends Fragment {
         List<String> breakfastMainLines = new ArrayList<String>();
         breakfastMainLines.add("item 1");
         breakfast.setMainLineItems(breakfastMainLines);
-        List<String> breakfastInternationalCorner = new ArrayList<String>();
-        breakfastInternationalCorner.add("1");
-        breakfastInternationalCorner.add("2");
-        breakfastInternationalCorner.add("3");
-        breakfastInternationalCorner.add("4");
-        breakfast.setInternationalCornerItems(breakfastInternationalCorner);
+        breakfast.setInternationalCornerItems(Arrays.asList("1", "2", "3", "4"));
+        breakfast.setOpenTimes(Arrays.asList(new TimeOfDay(7, 0), new TimeOfDay(9, 30), null));
+        breakfast.setEndTimes(Arrays.asList(new TimeOfDay(10, 0), new TimeOfDay(11, 0), null));
 
         Meal lunch = new Meal();
         lunch.setMealTitle("Lunch");
-        List<String> mainLines1 = new ArrayList<String>();
-        mainLines1.add("item1");
-        mainLines1.add("item2");
-        mainLines1.add("item3");
-        mainLines1.add("item4");
-        mainLines1.add("item5");
-        mainLines1.add("item6");
-        mainLines1.add("item7");
 
-        lunch.setMainLineItems(mainLines1);
+        lunch.setMainLineItems(Arrays.asList("item1","item2","item3","item4","item5","item6","item7"));
         List<String> internationalCorner1 = new ArrayList<String>();
         internationalCorner1.add("item1");
         internationalCorner1.add("item2");
         internationalCorner1.add("item3");
         internationalCorner1.add("item4");
         lunch.setInternationalCornerItems(internationalCorner1);
+        lunch.setOpenTimes(Arrays.asList(new TimeOfDay(11, 0), null, null));
+        lunch.setEndTimes(Arrays.asList(new TimeOfDay(13, 30), null, null));
         Meal dinner = new Meal();
         dinner.setMealTitle("Dinner");
         List<String> mainLines2 = new ArrayList<String>();
@@ -223,30 +218,16 @@ public class CafeteriaFragment extends Fragment {
         internationalCorner2.add("item5");
         internationalCorner2.add("item6");
         dinner.setInternationalCornerItems(internationalCorner2);
+        dinner.setOpenTimes(Arrays.asList(new TimeOfDay(17, 0), new TimeOfDay(17, 0), new TimeOfDay(17, 0)));
+        dinner.setEndTimes(Arrays.asList(new TimeOfDay(19, 30), new TimeOfDay(19, 0), new TimeOfDay(19, 0)));
 
         List<Meal> meals = new ArrayList<Meal>();
         meals.add(breakfast);
         meals.add(lunch);
         meals.add(dinner);
+
+
         cafeteriaStore.setMealList(meals);
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        rvMenu.setLayoutManager(mLayoutManager);
-        rvMenu.setAdapter(new MenuAdapter(getActivity(), meals));
-
-       // for changing the color of the status bar based on the time, as well as the image for open/close sign
-        if (isOpened(cafeteriaStore))
-        {
-            currentBarColor = R.color.green;
-            statusBar.setBackgroundColor(getResources().getColor(R.color.green));
-            ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
-
-        } else {
-            currentBarColor = R.color.red;
-            statusBar.setBackgroundColor(getResources().getColor(R.color.red));
-            ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
-        }
-        getRemainTime();
-        return v;
     }
 
     private void expandStatusBar() {
@@ -269,7 +250,7 @@ public class CafeteriaFragment extends Fragment {
 
             statusBarArrow.startAnimation(animSet);
 
-            HeightAnimation animation = new HeightAnimation(statusBarExtendedInfoFrame, 300, true);
+            HeightAnimation animation = new HeightAnimation(statusBarExtendedInfoFrame, convertToPixel(120), true);
             animation.setDuration(300);
             statusBar.startAnimation(animation);
             isExpanded = !isExpanded;
@@ -291,7 +272,9 @@ public class CafeteriaFragment extends Fragment {
             animSet.addAnimation(animRotate);
 
             statusBarArrow.startAnimation(animSet);
-            HeightAnimation animation = new HeightAnimation(statusBarExtendedInfoFrame, 300, false);
+            // why you set 300 into HeightAnimation
+
+            HeightAnimation animation = new HeightAnimation(statusBarExtendedInfoFrame, convertToPixel(120), false);
             animation.setDuration(300);
             statusBar.startAnimation(animation);
             isExpanded = !isExpanded;
@@ -302,18 +285,43 @@ public class CafeteriaFragment extends Fragment {
 
 
 
-    private boolean isOpened(FoodStore foodStore)
+    private long getRemainTime()
     {
-        Long currentTime = System.currentTimeMillis();
-        long openTime = getTimeOFDay(foodStore.getOpenHour(), foodStore.getOpenMinutes());
-        Calendar closeCalendar = Calendar.getInstance();
-        closeCalendar.set(Calendar.HOUR_OF_DAY, foodStore.getCloseHour());
-        closeCalendar.set(Calendar.MINUTE, foodStore.getCloseMinutes());
-        closeCalendar.set(Calendar.SECOND, 0);
-        long closedTIme = getTimeOFDay(foodStore.getCloseHour(), foodStore.getCloseMinutes());
-        if (currentTime >= openTime && currentTime <= closedTIme)
-            return true;
-        return false;
+        Calendar currentTime = Calendar.getInstance();
+        int dayOfWeek = currentTime.get(Calendar.DAY_OF_WEEK);
+        switch (dayOfWeek)
+        {
+            case Calendar.SUNDAY:
+                return countRemainTime(currentTime.getTimeInMillis(), SUNDAY_INDEX);
+            case Calendar.SATURDAY:
+                return countRemainTime(currentTime.getTimeInMillis(), SATURDAY_INDEX);
+            default:
+                return countRemainTime(currentTime.getTimeInMillis(), MF_INDEX);
+        }
+
+    }
+
+    private long  countRemainTime(long currentTime, int dayIndex)
+    {
+        long openTime = 0;
+        for (Meal meal : cafeteriaStore.getMealList())
+        {
+           if (meal.getOpenTimes().get(dayIndex) != null)
+           {
+               long openTimeInMillis = meal.getOpenTimes().get(dayIndex).getTimeInMillis();
+               if (openTime == 0)
+               {
+                   openTime = openTimeInMillis;
+               }
+               long closeTimeInMillis = meal.getEndTimes().get(dayIndex).getTimeInMillis();
+               if (currentTime >= openTimeInMillis && currentTime <= closeTimeInMillis)
+                   return closeTimeInMillis - currentTime;
+               if (currentTime < openTimeInMillis)
+                   return currentTime - openTimeInMillis;
+           }
+
+        }
+        return currentTime - openTime - 86400*1000;
     }
 
     private long getTimeOFDay(int hour, int minute)
@@ -327,25 +335,10 @@ public class CafeteriaFragment extends Fragment {
 
 
 
-    private void getRemainTime()
+    private void displayStatusBar(final long remainTime)
     {
-        long openMillis = getTimeOFDay(cafeteriaStore.getOpenHour(), cafeteriaStore.getOpenMinutes());
-        long closeMillis = getTimeOFDay(cafeteriaStore.getCloseHour(), cafeteriaStore.getCloseMinutes());
-        Time TimeNow = new Time();
-        TimeNow.setToNow(); // set the date to Current Time
-        TimeNow.normalize(true);
-        long nowMillis = TimeNow.toMillis(true);
-        long millisset = 0;
-        if (nowMillis >= openMillis && nowMillis <= closeMillis)
-        {
-            millisset = closeMillis - nowMillis;
 
-        } else {
-            millisset = openMillis - nowMillis > 0 ? openMillis - nowMillis : openMillis - nowMillis + 86400*1000;
-
-        }
-
-        new CountDownTimer(millisset, 1000) {
+        new CountDownTimer(Math.abs(remainTime), 1000) {
             public void onTick(long millisUntilFinished) {
 
                 int days = (int) ((millisUntilFinished / 1000) / 86400);
@@ -356,7 +349,7 @@ public class CafeteriaFragment extends Fragment {
                 int seconds = (int) ((millisUntilFinished / 1000) % 60);
 
 
-                if (isOpened(cafeteriaStore))
+                if (remainTime >= 0)
                 {
                     if (hours == 0 && minutes <= 30 && currentBarColor != R.color.Yellow)
                     {
@@ -383,7 +376,7 @@ public class CafeteriaFragment extends Fragment {
             }
 
             public void onFinish() {
-                getRemainTime();
+                displayStatusBar(getRemainTime());
 
             }
         }.start();
@@ -468,6 +461,8 @@ public class CafeteriaFragment extends Fragment {
         String mealTitle;
         private List<String> mainLineItems;
         private List<String> internationalCornerItems;
+        private List<TimeOfDay> openTimes;
+        private List<TimeOfDay> endTimes;
 
         public String getMealTitle()
         {
@@ -497,6 +492,60 @@ public class CafeteriaFragment extends Fragment {
         public void setInternationalCornerItems(List<String> internationalCornerItems)
         {
             this.internationalCornerItems = internationalCornerItems;
+        }
+
+        public List<TimeOfDay> getOpenTimes() {
+            return openTimes;
+        }
+
+        public void setOpenTimes(List<TimeOfDay> openTimes) {
+            this.openTimes = openTimes;
+        }
+
+        public List<TimeOfDay> getEndTimes() {
+            return endTimes;
+        }
+
+        public void setEndTimes(List<TimeOfDay> endTimes) {
+            this.endTimes = endTimes;
+        }
+    }
+
+    private class TimeOfDay
+    {
+        int hour;
+        int minutes;
+
+        public TimeOfDay(int hour, int minutes)
+        {
+            this.hour = hour;
+            this.minutes = minutes;
+        }
+        public int getHour() {
+            return hour;
+        }
+
+        public void setHour(int hour) {
+            this.hour = hour;
+        }
+
+        public int getMinutes() {
+            return minutes;
+        }
+
+        public void setMinutes(int minutes) {
+            this.minutes = minutes;
+        }
+
+        public String getTime()
+        {
+            NumberFormat formatter = new DecimalFormat("00");
+            return hour + ":" + formatter.format(minutes);
+        }
+
+        public long getTimeInMillis()
+        {
+            return getTimeOFDay(hour, minutes);
         }
     }
 
@@ -711,6 +760,11 @@ public class CafeteriaFragment extends Fragment {
             return row;
         }
 
+    }
+
+    private int convertToPixel(int dp)
+    {
+      return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 
 }
