@@ -214,50 +214,119 @@
             <item>Spring 2014</item>
         </string-array>
 
-        <string name="subject_prompt">Subject</string>
-        <string-array name="subject_array">
+        <string-array name="category_array">
+            <item>Fine Arts</item>
+            <item>Humanities</item>
+            <item>Interdisciplinary</item>
+            <item>Modern/Classical Lang. &amp; Lit.</item>
+            <item>Natural Sciences &amp; Math.</item>
+            <item>Physical Education</item>
+            <item>Social Sciences</item>
+        </string-array>
+
+        <string-array name="fine_arts">
+            <item>Art and Art History</item>
+            <item>Music</item>
+            <item>Theatre Arts</item>
+        </string-array>
+
+        <string-array name="humanities">
+            <item>English</item>
+            <item>History</item>
+            <item>Philosophy</item>
+            <item>Religion</item>
+        </string-array>
+
+        <string-array name="interdisciplinary">
             <item>African Studies</item>
             <item>American Studies</item>
-            <item>Anthropology/Sociology</item>
-            <item>Art</item>
-            <item>Biology</item>
-            <item>Community &amp; Global Health</item>
-            <item>Chemistry</item>
+            <item>Community and Global Health</item>
+            <item>Critical Theory Concentration</item>
+            <item>East Asian Studies</item>
+            <item>Environmental Studies</item>
+            <item>International and Area Studies</item>
+            <item>Jewish Studies</item>
+            <item>Media Studies</item>
+            <item>Neuroscience</item>
+            <item>Public Policy and Urban Affairs</item>
+            <item>Women, Gender, and Sexuality</item>
+        </string-array>
+
+        <string-array name="modern_classical_lang_lit">
             <item>Chinese</item>
             <item>Classics</item>
-            <item>Computer Science</item>
-            <item>Critical Theory &amp; Soc Justice</item>
-            <item>Economics &amp; Business</item>
-            <item>Education</item>
-            <item>English</item>
-            <item>Environmental Studies</item>
-            <item>French</item>
-            <item>German</item>
-            <item>Greek</item>
-            <item>Human Dev. &amp; Social Rel.</item>
-            <item>Hebrew Language</item>
-            <item>History</item>
-            <item>Health Sciences</item>
-            <item>Intn\'l &amp; Area Studies</item>
-            <item>Interdisciplinary</item>
+            <item>French Lang. &amp; Lit.</item>
+            <item>German Studies</item>
             <item>Japanese</item>
-            <item>Language</item>
-            <item>Latin</item>
+            <item>Spanish LLang. &amp; Lit.</item>
+        </string-array>
+
+        <string-array name="science_math">
+            <item>3/2 Engineering Program</item>
+            <item>Biochemistry &amp; Molecular Bio.</item>
+            <item>Biological Physics</item>
+            <item>Biology</item>
+            <item>Chemistry</item>
+            <item>Computer Science</item>
             <item>Mathematics</item>
-            <item>Music</item>
-            <item>Physical Education</item>
-            <item>Philosophy</item>
             <item>Physics</item>
+        </string-array>
+
+        <string-array name="physical_education">
+            <item>Physical Education</item>
+        </string-array>
+
+        <string-array name="social_science">
+            <item>Anthropology and Sociology</item>
+            <item>Economics and Business</item>
             <item>Political Science</item>
             <item>Psychology</item>
-            <item>Religion</item>
-            <item>Shared Passages Seminars</item>
-            <item>Senior Individualized Project</item>
-            <item>Spanish</item>
-            <item>Theatre Arts</item>
-            <item>Women, Gender, and Sexuality</item>
-            <item>Women\'s Studies</item>
         </string-array>
+
+        <string name="subject_prompt">Subject</string>
+        <!--<string-array name="subject_array">-->
+            <!--<item>African Studies</item>-->
+            <!--<item>American Studies</item>-->
+            <!--<item>Anthropology/Sociology</item>-->
+            <!--<item>Art</item>-->
+            <!--<item>Biology</item>-->
+            <!--<item>Community &amp; Global Health</item>-->
+            <!--<item>Chemistry</item>-->
+            <!--<item>Chinese</item>-->
+            <!--<item>Classics</item>-->
+            <!--<item>Computer Science</item>-->
+            <!--<item>Critical Theory &amp; Soc Justice</item>-->
+            <!--<item>Economics &amp; Business</item>-->
+            <!--<item>Education</item>-->
+            <!--<item>English</item>-->
+            <!--<item>Environmental Studies</item>-->
+            <!--<item>French</item>-->
+            <!--<item>German</item>-->
+            <!--<item>Greek</item>-->
+            <!--<item>Human Dev. &amp; Social Rel.</item>-->
+            <!--<item>Hebrew Language</item>-->
+            <!--<item>History</item>-->
+            <!--<item>Health Sciences</item>-->
+            <!--<item>Intn\'l &amp; Area Studies</item>-->
+            <!--<item>Interdisciplinary</item>-->
+            <!--<item>Japanese</item>-->
+            <!--<item>Language</item>-->
+            <!--<item>Latin</item>-->
+            <!--<item>Mathematics</item>-->
+            <!--<item>Music</item>-->
+            <!--<item>Physical Education</item>-->
+            <!--<item>Philosophy</item>-->
+            <!--<item>Physics</item>-->
+            <!--<item>Political Science</item>-->
+            <!--<item>Psychology</item>-->
+            <!--<item>Religion</item>-->
+            <!--<item>Shared Passages Seminars</item>-->
+            <!--<item>Senior Individualized Project</item>-->
+            <!--<item>Spanish</item>-->
+            <!--<item>Theatre Arts</item>-->
+            <!--<item>Women, Gender, and Sexuality</item>-->
+            <!--<item>Women\'s Studies</item>-->
+        <!--</string-array>-->
 
         <string name="course_level_prompt">Course Level</string>
         <string-array name="course_level_array">
