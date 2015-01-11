@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.techhab.eventdialogbuilder.EventDialogBuilder;
 import com.techhab.kcollegecustomviews.ProgressBar;
 
 

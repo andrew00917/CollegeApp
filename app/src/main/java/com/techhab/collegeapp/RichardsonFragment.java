@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -424,35 +425,51 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
             menuViewHolder.tvTitle2.setText(meal.getSubTitle());
 
             loadMenu(menuViewHolder, meal);
-            menuViewHolder.tbViewMore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            menuViewHolder.tbViewMore.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked)
-                    {
+                public void onClick(View v) {
+                    menuViewHolder.tbViewMore.setEnabled(false);
 
-                        HeightAnimation animation = new HeightAnimation(((ViewHolder) viewHolder).llMainLines,
-                                getHeightToAdd(((ViewHolder) viewHolder).llMainLines, true), true);
-                        animation.setDuration(300);
-                        ((ViewHolder) viewHolder).llMainLines.startAnimation(animation);
-                        HeightAnimation animation1 = new HeightAnimation(((ViewHolder) viewHolder).llInternationalCorner,
-                                getHeightToAdd(((ViewHolder) viewHolder).llInternationalCorner, true), true);
-                        animation1.setDuration(300);
-                        ((ViewHolder) viewHolder).llInternationalCorner.startAnimation(animation1);
-
-                    }
-                    else
+                    if (menuViewHolder.tbViewMore.isChecked())
                     {
-                        HeightAnimation animation = new HeightAnimation(((ViewHolder) viewHolder).llMainLines,
-                                getHeightToAdd(((ViewHolder) viewHolder).llMainLines, false), false);
-                        animation.setDuration(300);
-                        ((ViewHolder) viewHolder).llMainLines.startAnimation(animation);
-                        HeightAnimation animation1 = new HeightAnimation(((ViewHolder) viewHolder).llInternationalCorner,
-                                getHeightToAdd(((ViewHolder) viewHolder).llInternationalCorner, false), false);
-                        animation1.setDuration(300);
-                        ((ViewHolder) viewHolder).llInternationalCorner.startAnimation(animation1);
+                        expandCardView((ViewHolder) viewHolder);
+
+                    } else {
+                        collapseCardView((ViewHolder) viewHolder);
                     }
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            menuViewHolder.tbViewMore.setEnabled(true);
+                        }
+                    }, 500);
+
                 }
             });
+
+        }
+
+        private void expandCardView(ViewHolder viewHolder) {
+            HeightAnimation animation = new HeightAnimation(viewHolder.llMainLines,
+                    getHeightToAdd(viewHolder.llMainLines, true), true);
+            animation.setDuration(300);
+            viewHolder.llMainLines.startAnimation(animation);
+            HeightAnimation animation1 = new HeightAnimation(viewHolder.llInternationalCorner,
+                    getHeightToAdd(viewHolder.llInternationalCorner, true), true);
+            animation1.setDuration(300);
+            viewHolder.llInternationalCorner.startAnimation(animation1);
+        }
+
+        private void collapseCardView(ViewHolder viewHolder) {
+            HeightAnimation animation = new HeightAnimation(viewHolder.llMainLines,
+                    getHeightToAdd(viewHolder.llMainLines, false), false);
+            animation.setDuration(300);
+            viewHolder.llMainLines.startAnimation(animation);
+            HeightAnimation animation1 = new HeightAnimation(viewHolder.llInternationalCorner,
+                    getHeightToAdd(viewHolder.llInternationalCorner, false), false);
+            animation1.setDuration(300);
+            viewHolder.llInternationalCorner.startAnimation(animation1);
         }
 
         @Override
@@ -539,12 +556,5 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
 
     }
 
-    /*private class MySpinnerAdapter extends SpinnerAdapter {
-
-        public MySpinnerAdapter() {
-
-        }
-
-    }*/
 
 }

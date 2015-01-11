@@ -17,14 +17,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by Kevin on 11/9/2014.
  */
 public class MapsActivity extends ActionBarActivity {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-    private static boolean academicBuildings = false;
-    private static boolean residentialHalls = false;
-    private static boolean showAll = false;
+    private static boolean academicBuildings = true;
+    private static boolean residentialHalls = true;
     private Toolbar toolbar;
 
 
@@ -36,6 +39,7 @@ public class MapsActivity extends ActionBarActivity {
 //        setSupportActionBar(toolbar);
         //Menu
         toolbar.inflateMenu(R.menu.menu_maps);
+        toolbar.setTitle(getResources().getString(R.string.main_menu_12));
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -51,17 +55,31 @@ public class MapsActivity extends ActionBarActivity {
             }
         });
 
-
         setUpMapIfNeeded();
     }
 
+    private Integer[] constructIntArray() {
+        Object[] integerArray = new Object[1];
+        ArrayList<Object> temp = new ArrayList<Object>(Arrays.asList(integerArray));
+
+        if ( academicBuildings ) {
+            temp.add(0);
+        }
+        if ( residentialHalls ) {
+            temp.add(1);
+        }
+
+        Object[] objectArray = temp.toArray();
+        Integer[] finIntegerArray = Arrays.copyOf(objectArray, objectArray.length, Integer[].class);
+        return finIntegerArray;
+    }
 
     public void chooseBuildings() {
         new MaterialDialog.Builder(this)
-                .title("View Buildings")
+                .title("Choose Buildings")
                 .items(new CharSequence[]{"Academic", "Residential", "Offices",
-                        "Recreational", "Other", "All"})
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallback() {
+                        "Recreational", "Other"})
+                /*.itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         if (which == 0) {
@@ -73,6 +91,29 @@ public class MapsActivity extends ActionBarActivity {
                             setUpMap();
                         }
 
+                    }
+                })*/
+                .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMulti() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                        String parse = "";
+                        for ( int i: which ) {
+                            parse += parse + i;
+                        }
+                        if ( parse.contains("0") ) {
+                            academicBuildings = true;
+                        }
+                        else {
+                            academicBuildings = false;
+                        }
+                        if ( parse.contains("1") ) {
+                            residentialHalls = true;
+                        }
+                        else {
+                            residentialHalls = false;
+                        }
+                        setUpMap();
+                        dialog.dismiss();
                     }
                 })
                 .positiveText("Choose")
@@ -136,13 +177,13 @@ public class MapsActivity extends ActionBarActivity {
 //            showAll = true;
 //        }
 //        else showAll = false;
-        if (academicBuildings || showAll) {
+        if (academicBuildings) {
             mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(42.290304, -85.601896))
                     .title("Kalamazoo College")
                     .snippet("Here lies the hopes and dreams of thousands.Buried."));
         }
-        if (residentialHalls || showAll) {
+        if (residentialHalls) {
             //Mandelle Hall
             mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(42.290056, -85.60088))

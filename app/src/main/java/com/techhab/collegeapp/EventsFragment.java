@@ -154,17 +154,17 @@ public class EventsFragment extends Fragment {
             }
             String[] event = item.getEvent().split(" ");
 
-            if (event[0].equals("Stress")) {
+            if (event[0].toLowerCase().equals("stress")) {
                 holder.image.setBackground(getResources().getDrawable(R.drawable.stree_free_zone));
-            } else if (event[0].equals("Tuesdays")) {
+            } else if (event[0].toLowerCase().equals("tuesdays")) {
                 holder.image.setBackground(getResources().getDrawable(R.drawable.tuesdays_with));
-            } else if (event[0].equals("Wind")) {
+            } else if (event[0].toLowerCase().equals("wind")) {
                 holder.image.setBackground(getResources().getDrawable(R.drawable.wind_down_wed));
-            } else if (event[0].equals("Trivia")) {
+            } else if (event[0].toLowerCase().equals("trivia")) {
                 holder.image.setBackground(getResources().getDrawable(R.drawable.trivia_night));
-            } else if (event[1].equals("Flicks")) {
+            } else if (event[1].toLowerCase().equals("flicks")) {
                 holder.image.setBackground(getResources().getDrawable(R.drawable.zoo_flicks));
-            } else if (event[1].equals("After")) {
+            } else if (event[1].toLowerCase().equals("after")) {
                 holder.image.setBackground(getResources().getDrawable(R.drawable.zoo_after_dark));
             } else {
                 holder.image.setBackground(getResources().getDrawable(R.drawable.banner));
@@ -172,26 +172,6 @@ public class EventsFragment extends Fragment {
             holder.date.setText(item.getDate());
             holder.event.setText(item.getEvent());
             holder.time.setText(item.getTime());
-
-//            holder.favoriteButton.setOnTouchListener(new View.OnTouchListener(){
-//
-//                @Override
-//                public boolean onTouch(View v, MotionEvent event) {
-//                    switch (event.getAction()) {
-//                        case MotionEvent.ACTION_DOWN:
-//                            ((EventsActivity) getActivity()).buttonPressed(v);
-//                            break;
-//                        case MotionEvent.ACTION_CANCEL:
-//                        case MotionEvent.ACTION_OUTSIDE:
-//                            ((EventsActivity) getActivity()).buttonReleased(v);
-//                            break;
-//                        case MotionEvent.ACTION_UP:
-//                            ((EventsActivity) getActivity()).buttonReleased(v);
-//                            break;
-//                    }
-//                    return true;
-//                }
-//            });
         }
 
         @Override
@@ -247,32 +227,33 @@ public class EventsFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                ViewHolder holder = (ViewHolder) v.getTag();
+//                ViewHolder holder = (ViewHolder) v.getTag();
 
                 switch (v.getId()) {
                     case R.id.info_button:
                         // TODO: fix auto-scrolling
                         // Check for an expanded view, collapse if you find one
-                        if (expandedPosition >= 0 && expandedPosition != holder.getPosition()) {
+                        if (expandedPosition >= 0 && expandedPosition != this.getPosition()) {
                             collapseCard(expandedHolder);
                             expandedPosition = -1;
                             expandedHolder = null;
                         }
 
-                        if (expandedPosition == holder.getPosition()) {
-                            collapseCard(holder);
+                        if (expandedPosition == this.getPosition()) {
+                            collapseCard(this);
                             expandedPosition = -1;
                             expandedHolder = null;
                         } else {
                             // Set the current position to "expanded"
-                            expandCard(holder);
-                            expandedPosition = holder.getPosition();
-                            setDescription(holder, items.get(expandedPosition).getLink());
-                            expandedHolder = holder;
+                            expandCard(this);
+                            expandedPosition = this.getPosition();
+                            setDescription(this, items.get(expandedPosition).getLink());
+                            expandedHolder = this;
                         }
                         break;
                 }
-                Toast.makeText(context, "Holder on click " + holder.getPosition(), Toast.LENGTH_SHORT).show();
+                Log.d("Holder clicked: ", this.toString());
+                Toast.makeText(context, "Holder on click " + this.getPosition(), Toast.LENGTH_SHORT).show();
             }
 
             /**
