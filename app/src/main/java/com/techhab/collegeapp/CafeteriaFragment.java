@@ -272,7 +272,7 @@ public class CafeteriaFragment extends Fragment {
             animSet.addAnimation(animRotate);
 
             statusBarArrow.startAnimation(animSet);
-            // why you set 300 into HeightAnimation
+
 
             HeightAnimation animation = new HeightAnimation(statusBarExtendedInfoFrame, convertToPixel(120), false);
             animation.setDuration(300);

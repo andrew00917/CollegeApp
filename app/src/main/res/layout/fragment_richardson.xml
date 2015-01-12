@@ -68,7 +68,7 @@
                 android:paddingTop="4dp"
                 android:textColor="@color/abc_secondary_text_material_dark"
                 android:layout_marginLeft="70dp"
-                android:text="Monday-Friday 8:00-10:00pm\nSaturdays 12:00-6:00pm\nSundays 10-7pm"
+                android:text="Monday-Friday: 10am-12am\nSaturdays: 10am-6pm\nSundays: 7pm-12am"
                 />
 
         </LinearLayout>
