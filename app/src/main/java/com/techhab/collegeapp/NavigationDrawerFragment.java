@@ -49,6 +49,14 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
     /**
+     * Keys for profile intent
+     *      user id
+     *      user email
+     */
+    private static final String USER_ID_KEY = "user_id";
+    private static final String USER_EMAIL_KEY = "user_email";
+
+    /**
      * A pointer to the current callbacks instance (the Activity).
      */
     private NavigationDrawerCallbacks mCallbacks;
@@ -116,8 +124,20 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mNavAdapterSettingsSupport = new SettingsSupportNavAdapter(getActivity());
         mDrawerListViewSettingsSupport.setAdapter(mNavAdapterSettingsSupport);
 
-        //TODO set actual onClickListener (should take user to profile page)
-        mProfileLayout.setOnClickListener(null);
+        // set on click listener
+        // TODO: add click animation to profileLayout
+        mProfileLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectItem(mCurrentSelectedPosition);
+                TextView id = (TextView) v.findViewById(R.id.nav_user_name);
+                TextView email = (TextView) v.findViewById(R.id.user_email);
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                intent.putExtra(USER_ID_KEY, id.getText().toString());
+                intent.putExtra(USER_EMAIL_KEY, email.getText().toString());
+                getActivity().startActivity(intent);
+            }
+        });
         mDrawerListView.setOnItemClickListener(mNavAdapter);
         mDrawerListViewSettingsSupport.setOnItemClickListener(mNavAdapterSettingsSupport);
 

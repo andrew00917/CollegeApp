@@ -1,9 +1,9 @@
 package com.techhab.collegeapp;
 
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -13,23 +13,33 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.WindowManager;
 
 import com.techhab.collegeapp.application.CollegeApplication;
 
 /**
  * Created by jhchoe on 11/01/15.
  */
-public class SettingsActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
+public class ProfileActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
     // Tag used when logging messages
-    private static final String TAG = SettingsActivity.class.getSimpleName();
+    private static final String TAG = ProfileActivity.class.getSimpleName();
+
+    /**
+     * Keys for profile intent
+     *      user id
+     *      user email
+     */
+    private static final String USER_ID_KEY = "user_id";
+    private static final String USER_EMAIL_KEY = "user_email";
+
+    private String userId = "";
+    private String userEmail="";
 
     private CollegeApplication application;
 
     // Fragment attributes
-    private static final int SETTINGS = 0;
-    private static final int FRAGMENT_COUNT = SETTINGS + 1;
+    private static final int PROFILE = 0;
+    private static final int FRAGMENT_COUNT = PROFILE + 1;
     private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
 
     /*  Navigation Drawer Stuff */
@@ -48,15 +58,18 @@ public class SettingsActivity extends ActionBarActivity implements NavigationDra
     private CharSequence mTitle;
 
     // Constructor
-    public SettingsActivity() {
+    public ProfileActivity() {
         super();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
 
-        setContentView(R.layout.activity_settings);
+        Intent intent = getIntent();
+        userId = intent.getStringExtra(USER_ID_KEY);
+        userEmail = intent.getStringExtra(USER_EMAIL_KEY);
 
         application = (CollegeApplication) getApplication();
 
@@ -74,17 +87,19 @@ public class SettingsActivity extends ActionBarActivity implements NavigationDra
         if (mNavigationDrawerFragment.isDrawerOpen()) {
             mDrawerLayout.closeDrawer(Gravity.START);
         }
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
 
-//        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.kzooOrange));
+        Bundle bundle = new Bundle();
+        bundle.putString(ProfileFragment.ARG_ID, userId);
+        bundle.putString(ProfileFragment.ARG_EMAIL, userEmail);
 
-//        FragmentManager fm = getSupportFragmentManager();
-//        fragments[SETTINGS] = fm.findFragmentById(R.id.settings_fragment);
-//
-//        FragmentTransaction transaction = fm.beginTransaction();
-//        for (int i = 0; i < fragments.length; i++) {
-//            transaction.hide(fragments[i]);
-//        }
-//        transaction.commit();
+        ProfileFragment frag = new ProfileFragment();
+        frag.setArguments(bundle);
+
+        transaction.replace(R.id.profile_fragment, frag);
+        transaction.commit();
+
     }
 
     @Override
@@ -176,5 +191,13 @@ public class SettingsActivity extends ActionBarActivity implements NavigationDra
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
     }
 }
