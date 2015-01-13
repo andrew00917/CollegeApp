@@ -1,6 +1,9 @@
 package com.techhab.collegeapp.application;
 
+import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.techhab.collegeapp.User;
@@ -244,5 +247,12 @@ public class CollegeApplication extends Application {
             }
         }
         load();
+    }
+
+    /* */
+    public void startActivityOffContext(Activity context, Class c) {
+        Intent intent = new Intent(context, c);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }

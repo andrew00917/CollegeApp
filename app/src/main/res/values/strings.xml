@@ -284,49 +284,6 @@
         </string-array>
 
         <string name="subject_prompt">Subject</string>
-        <!--<string-array name="subject_array">-->
-            <!--<item>African Studies</item>-->
-            <!--<item>American Studies</item>-->
-            <!--<item>Anthropology/Sociology</item>-->
-            <!--<item>Art</item>-->
-            <!--<item>Biology</item>-->
-            <!--<item>Community &amp; Global Health</item>-->
-            <!--<item>Chemistry</item>-->
-            <!--<item>Chinese</item>-->
-            <!--<item>Classics</item>-->
-            <!--<item>Computer Science</item>-->
-            <!--<item>Critical Theory &amp; Soc Justice</item>-->
-            <!--<item>Economics &amp; Business</item>-->
-            <!--<item>Education</item>-->
-            <!--<item>English</item>-->
-            <!--<item>Environmental Studies</item>-->
-            <!--<item>French</item>-->
-            <!--<item>German</item>-->
-            <!--<item>Greek</item>-->
-            <!--<item>Human Dev. &amp; Social Rel.</item>-->
-            <!--<item>Hebrew Language</item>-->
-            <!--<item>History</item>-->
-            <!--<item>Health Sciences</item>-->
-            <!--<item>Intn\'l &amp; Area Studies</item>-->
-            <!--<item>Interdisciplinary</item>-->
-            <!--<item>Japanese</item>-->
-            <!--<item>Language</item>-->
-            <!--<item>Latin</item>-->
-            <!--<item>Mathematics</item>-->
-            <!--<item>Music</item>-->
-            <!--<item>Physical Education</item>-->
-            <!--<item>Philosophy</item>-->
-            <!--<item>Physics</item>-->
-            <!--<item>Political Science</item>-->
-            <!--<item>Psychology</item>-->
-            <!--<item>Religion</item>-->
-            <!--<item>Shared Passages Seminars</item>-->
-            <!--<item>Senior Individualized Project</item>-->
-            <!--<item>Spanish</item>-->
-            <!--<item>Theatre Arts</item>-->
-            <!--<item>Women, Gender, and Sexuality</item>-->
-            <!--<item>Women\'s Studies</item>-->
-        <!--</string-array>-->
 
         <string name="course_level_prompt">Course Level</string>
         <string-array name="course_level_array">
@@ -475,18 +432,34 @@
             <item>6/11-9/13</item>
         </string-array>
 
+    <!-- Settings Activity -->
+    <string name="setting_general">General</string>
+        <string name="setting_notification_title">Notifications</string>
+        <string name="setting_notification_summary">Notify me with campus-wide information and updates to app</string>
+
+
+    <string name="setting_user_controls">User controls</string>
+        <string name="setting_setup_pin_title">Set up pin</string>
+        <string name="setting_setup_pin_summary">Set up a 4-digit pin number that can be used instead of your password for this app</string>
+        <string name="setting_modify_pin_title">Modify your pin</string>
+        <string name="setting_modify_pin_summary">Modify your 4-digit pin number</string>
+        <string name="setting_forget_pin_title">Forget your pin</string>
+        <string name="setting_forget_pin_summary">Forget your existing 4-digit pin number to use your school password instead</string>
+        <string name="setting_logout_title">Logout</string>
+        <string name="setting_logout_summary">Logout and discard your saved settings for this app</string>
+
     <string name="title_activity_cafeteria">Dining Information</string>
 
     <!-- Maps -->
     <string name="title_activity_maps">Campus Map</string>
 
 
-    <string name="title_activity_academic">AcademicActivity</string>
-    <string name="title_activity_campus">CampusActivity</string>
-    <string name="title_activity_food">FoodActivity</string>
-    <string name="title_activity_athletic">AthleticActivity</string>
-    <string name="title_activity_events">EventsActivity</string>
-    <string name="title_activity_news">NewsActivity</string>
-    <string name="title_activity_term">TermActivity</string>
+    <string name="title_activity_academic">Academic</string>
+    <string name="title_activity_campus">Campus</string>
+    <string name="title_activity_food">Dining</string>
+    <string name="title_activity_athletic">Athletic</string>
+    <string name="title_activity_events">Events</string>
+    <string name="title_activity_news">News</string>
+    <string name="title_activity_settings">Settings</string>
 
 </resources>

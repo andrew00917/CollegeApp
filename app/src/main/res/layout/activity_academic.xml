@@ -49,10 +49,7 @@
     </LinearLayout>
 
     <!--Navigation Drawer-->
-    <fragment android:id="@+id/home_navigation_drawer"
-        android:layout_width="@dimen/navigation_drawer_width"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:name="com.techhab.collegeapp.NavigationDrawerFragment" />
+    <include layout="@layout/navigation_drawer"
+        android:id="@+id/home_navigation_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

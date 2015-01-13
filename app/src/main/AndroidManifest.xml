@@ -104,12 +104,14 @@
             android:name="com.techhab.collegeapp.MapsActivity"
             android:label="@string/title_activity_maps" >
         </activity>
+
+        <!-- Drawer Activities -->
         <activity
-            android:name="com.techhab.collegeapp.TermActivity"
-            android:label="@string/title_activity_term" >
+            android:name="com.techhab.collegeapp.SettingsActivity"
+            android:label="@string/title_activity_settings" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techhab.collegeapp.AcademicActivity" />
+                android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
 
     </application>
