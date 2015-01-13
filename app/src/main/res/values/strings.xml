@@ -68,7 +68,6 @@
         <item>About</item>
         <item>Log Out</item>
     </string-array>
-
     <string-array name="nav_drawer_settings_support">
         <item>Settings</item>
         <item>Help &amp; feedback</item>
@@ -84,7 +83,6 @@
         <item>Grocery Info</item>
         <item>Campus Map</item>
     </string-array>
-
     <string-array name="cafeteria_value">
         <item>Today</item>
         <item>Tomorrow</item>
@@ -108,18 +106,14 @@
     <string name="action_reset_shared_prefs">Reset shared prefs</string>
     <string name="scroll_to_bottom">Scroll to bottom</string>
 
-    <!-- Maps action bar-->
+    <!-- Maps action bar -->
     <string name="title_buildings_select">Buildings</string>
-
     <string name="title_action_academic_buildings">Academic Buildings</string>
     <string name="title_action_residential_halls">Residential Halls</string>
     <string name="title_action_recreational_centers">Recreational Centers</string>
     <string name="title_action_offices">Offices</string>
     <string name="title_action_other">Other</string>
     <string name="title_action_show_all">Show All</string>
-
-
-
 
     <!-- Campus Info -->
     <string name="title_activity_info">Campus Information</string>
@@ -155,305 +149,301 @@
     <string name="view_less">VIEW LESS</string>
     <string name="collapse_list">COLLAPSE LIST</string>
 
-        <!-- Game In Progress card-->
-        <string name="game_in_progress">Game In Progress</string>
+    <!-- Game In Progress card -->
+    <string name="game_in_progress">Game In Progress</string>
 
-        <!-- Upcoming Games card -->
-        <string name="upcoming_events_default_text">Upcoming</string>
-        <string name="upcoming_events">Upcoming Events</string>
-        <string name="upcoming_games">Upcoming Games</string>
-        <string name="no_upcoming_events">No upcoming events</string>
-        <string name="no_past_events">No past events</string>
+    <!-- Upcoming Games card -->
+    <string name="upcoming_events_default_text">Upcoming</string>
+    <string name="upcoming_events">Upcoming Events</string>
+    <string name="upcoming_games">Upcoming Games</string>
+    <string name="no_upcoming_events">No upcoming events</string>
+    <string name="no_past_events">No past events</string>
 
-        <!-- Team Roster card -->
-        <string name="roster">Team Roster</string>
+    <!-- Team Roster card -->
+    <string name="roster">Team Roster</string>
+    <string name="head_coach">Head Coach</string>
+    <string name="assistant_coaches">Assistant Coaches</string>
+    <string name="student_assistants_managers">Student Assistants/Managers</string>
+    <string name="captains">Captains</string>
 
-        <string name="head_coach">Head Coach</string>
-        <string name="assistant_coaches">Assistant Coaches</string>
-        <string name="student_assistants_managers">Student Assistants/Managers</string>
-        <string name="captains">Captains</string>
+    <!-- Results card -->
+    <string name="results">Results</string>
+    <string name="athlete_no.">No.</string>
+    <string name="athlete_name">Name</string>
+    <string name="athlete_position">Pos.</string>
+    <string name="date">Date</string>
+    <string name="opponent">Opponent</string>
+    <string name="result">Result</string>
 
-        <!-- Results card -->
-        <string name="results">Results</string>
-
-        <string name="athlete_no.">No.</string>
-        <string name="athlete_name">Name</string>
-        <string name="athlete_position">Pos.</string>
-        <string name="date">Date</string>
-        <string name="opponent">Opponent</string>
-        <string name="result">Result</string>
-
-
-        <!-- Sports RSS URLS -->
-        <string name="mens_baseball">http://hornets.kzoo.edu/sports/bsb/2014-15/schedule?print=rss</string>
-        <string name="womens_softball">http://hornets.kzoo.edu/sports/sball/2014-15/schedule?print=rss</string>
-        <string name="mens_basketball">http://hornets.kzoo.edu/sports/mbkb/2014-15/schedule?print=rss</string>
-        <string name="womens_basketball">http://hornets.kzoo.edu/sports/wbkb/2014-15/schedule?print=rss</string>
-        <string name="mens_cross_country">http://hornets.kzoo.edu/sports/mxc/2014-15/schedule?print=rss</string>
-        <string name="womens_cross_country">http://hornets.kzoo.edu/sports/wxc/2014-15/schedule?print=rss</string>
-        <string name="mens_football">http://hornets.kzoo.edu/sports/fball/2014-15/schedule?print=rss</string>
-        <string name="mens_golf">http://hornets.kzoo.edu/sports/mgolf/2014-15/schedule?print=rss</string>
-        <string name="womens_golf">http://hornets.kzoo.edu/sports/wgolf/2014-15/schedule?print=rss</string>
-        <string name="mens_soccer">http://hornets.kzoo.edu/sports/msoc/2014-15/schedule?print=rss</string>
-        <string name="womens_soccer">http://hornets.kzoo.edu/sports/wsoc/2014-15/schedule?print=rss</string>
-        <string name="mens_swim_dive">http://hornets.kzoo.edu/sports/mswimdive/2014-15/schedule?print=rss</string>
-        <string name="womens_swim_dive">http://hornets.kzoo.edu/sports/wswimdive/2014-15/schedule?print=rss</string>
-        <string name="mens_tennis">http://hornets.kzoo.edu/sports/mten/2014-15/schedule?print=rss</string>
-        <string name="womens_tennis">http://hornets.kzoo.edu/sports/wten/2014-15/schedule?print=rss</string>
-        <string name="womens_volleyball">http://hornets.kzoo.edu/sports/wvball/2014-15/schedule?print=rss</string>
-        <string name="womens_lacrosse">http://hornets.kzoo.edu/sports/wlax/2014-15/schedule?print=rss</string>
-
-
+    <!-- Sports RSS URLS -->
+    <string name="mens_baseball">http://hornets.kzoo.edu/sports/bsb/2014-15/schedule?print=rss</string>
+    <string name="womens_softball">http://hornets.kzoo.edu/sports/sball/2014-15/schedule?print=rss</string>
+    <string name="mens_basketball">http://hornets.kzoo.edu/sports/mbkb/2014-15/schedule?print=rss</string>
+    <string name="womens_basketball">http://hornets.kzoo.edu/sports/wbkb/2014-15/schedule?print=rss</string>
+    <string name="mens_cross_country">http://hornets.kzoo.edu/sports/mxc/2014-15/schedule?print=rss</string>
+    <string name="womens_cross_country">http://hornets.kzoo.edu/sports/wxc/2014-15/schedule?print=rss</string>
+    <string name="mens_football">http://hornets.kzoo.edu/sports/fball/2014-15/schedule?print=rss</string>
+    <string name="mens_golf">http://hornets.kzoo.edu/sports/mgolf/2014-15/schedule?print=rss</string>
+    <string name="womens_golf">http://hornets.kzoo.edu/sports/wgolf/2014-15/schedule?print=rss</string>
+    <string name="mens_soccer">http://hornets.kzoo.edu/sports/msoc/2014-15/schedule?print=rss</string>
+    <string name="womens_soccer">http://hornets.kzoo.edu/sports/wsoc/2014-15/schedule?print=rss</string>
+    <string name="mens_swim_dive">http://hornets.kzoo.edu/sports/mswimdive/2014-15/schedule?print=rss</string>
+    <string name="womens_swim_dive">http://hornets.kzoo.edu/sports/wswimdive/2014-15/schedule?print=rss</string>
+    <string name="mens_tennis">http://hornets.kzoo.edu/sports/mten/2014-15/schedule?print=rss</string>
+    <string name="womens_tennis">http://hornets.kzoo.edu/sports/wten/2014-15/schedule?print=rss</string>
+    <string name="womens_volleyball">http://hornets.kzoo.edu/sports/wvball/2014-15/schedule?print=rss</string>
+    <string name="womens_lacrosse">http://hornets.kzoo.edu/sports/wlax/2014-15/schedule?print=rss</string>
 
     <!-- Academic Activity -->
-        <!-- Search Courses -->
-        <string name="term_prompt">Term</string>
-        <string-array name="term_array">
-            <item>Winter 2015</item>
-            <item>Fall 2014</item>
-            <item>Spring 2014</item>
-        </string-array>
+    <!-- Search Courses -->
+    <string name="term_prompt">Term</string>
 
-        <string-array name="category_array">
-            <item>Fine Arts</item>
-            <item>Humanities</item>
-            <item>Interdisciplinary</item>
-            <item>Modern/Classical Lang. &amp; Lit.</item>
-            <item>Natural Sciences &amp; Math.</item>
-            <item>Physical Education</item>
-            <item>Social Sciences</item>
-        </string-array>
+    <string-array name="term_array">
+        <item>Winter 2015</item>
+        <item>Fall 2014</item>
+        <item>Spring 2014</item>
+    </string-array>
+    <string-array name="category_array">
+        <item>Fine Arts</item>
+        <item>Humanities</item>
+        <item>Interdisciplinary</item>
+        <item>Modern/Classical Lang. &amp; Lit.</item>
+        <item>Natural Sciences &amp; Math.</item>
+        <item>Physical Education</item>
+        <item>Social Sciences</item>
+    </string-array>
+    <string-array name="fine_arts">
+        <item>Art and Art History</item>
+        <item>Music</item>
+        <item>Theatre Arts</item>
+    </string-array>
+    <string-array name="humanities">
+        <item>English</item>
+        <item>History</item>
+        <item>Philosophy</item>
+        <item>Religion</item>
+    </string-array>
+    <string-array name="interdisciplinary">
+        <item>African Studies</item>
+        <item>American Studies</item>
+        <item>Community and Global Health</item>
+        <item>Critical Theory Concentration</item>
+        <item>East Asian Studies</item>
+        <item>Environmental Studies</item>
+        <item>International and Area Studies</item>
+        <item>Jewish Studies</item>
+        <item>Media Studies</item>
+        <item>Neuroscience</item>
+        <item>Public Policy and Urban Affairs</item>
+        <item>Women, Gender, and Sexuality</item>
+    </string-array>
+    <string-array name="modern_classical_lang_lit">
+        <item>Chinese</item>
+        <item>Classics</item>
+        <item>French Lang. &amp; Lit.</item>
+        <item>German Studies</item>
+        <item>Japanese</item>
+        <item>Spanish LLang. &amp; Lit.</item>
+    </string-array>
+    <string-array name="science_math">
+        <item>3/2 Engineering Program</item>
+        <item>Biochemistry &amp; Molecular Bio.</item>
+        <item>Biological Physics</item>
+        <item>Biology</item>
+        <item>Chemistry</item>
+        <item>Computer Science</item>
+        <item>Mathematics</item>
+        <item>Physics</item>
+    </string-array>
+    <string-array name="physical_education">
+        <item>Physical Education</item>
+    </string-array>
+    <string-array name="social_science">
+        <item>Anthropology and Sociology</item>
+        <item>Economics and Business</item>
+        <item>Political Science</item>
+        <item>Psychology</item>
+    </string-array>
 
-        <string-array name="fine_arts">
-            <item>Art and Art History</item>
-            <item>Music</item>
-            <item>Theatre Arts</item>
-        </string-array>
+    <string name="subject_prompt">Subject</string>
+    <string name="course_level_prompt">Course Level</string>
 
-        <string-array name="humanities">
-            <item>English</item>
-            <item>History</item>
-            <item>Philosophy</item>
-            <item>Religion</item>
-        </string-array>
+    <string-array name="course_level_array">
+        <item>First Year Friendly</item>
+        <item>Introductory Level</item>
+        <item>Intermediate SO Level</item>
+        <item>Intermediate JR Level</item>
+        <item>Advanced SR Level</item>
+        <item>First-Year Seminar</item>
+        <item>Sophomore Seminar</item>
+        <item>Senior Seminar</item>
+        <item>PE Activity</item>
+        <item>Partial Credit Course</item>
+        <item>Music Ensemble</item>
+        <item>Music Applied</item>
+        <item>SIP/SIP Seminars</item>
+        <item>Off-campus not on Web</item>
+        <item>External course</item>
+        <item>Pre-approved ext. course</item>
+        <item>Service Learning</item>
+        <item>Tuition Payment Plan</item>
+    </string-array>
 
-        <string-array name="interdisciplinary">
-            <item>African Studies</item>
-            <item>American Studies</item>
-            <item>Community and Global Health</item>
-            <item>Critical Theory Concentration</item>
-            <item>East Asian Studies</item>
-            <item>Environmental Studies</item>
-            <item>International and Area Studies</item>
-            <item>Jewish Studies</item>
-            <item>Media Studies</item>
-            <item>Neuroscience</item>
-            <item>Public Policy and Urban Affairs</item>
-            <item>Women, Gender, and Sexuality</item>
-        </string-array>
+    <!-- Academic year -->
+    <string name="academic_year_2014_15">2014-15</string>
+    <string name="academic_year_2015_16">2015-16</string>
+    <string name="academic_year_2016_17">2016-17</string>
+    <string name="academic_year">Academic Year</string>
 
-        <string-array name="modern_classical_lang_lit">
-            <item>Chinese</item>
-            <item>Classics</item>
-            <item>French Lang. &amp; Lit.</item>
-            <item>German Studies</item>
-            <item>Japanese</item>
-            <item>Spanish LLang. &amp; Lit.</item>
-        </string-array>
+    <!-- Contents -->
+    <string-array name="Fall">
+        <item>Labor Day</item>
+        <item>Int\'l Orientation</item>
+        <item>Orientation</item>
+        <item>Transfer Welcome</item>
+        <item>Classes Begin</item>
+        <item>Drop/Add w/o signature ends</item>
+        <item>Drop/Add ends</item>
+        <item>Course Withdrawal begins</item>
+        <item>Drop/Add activities* ends</item>
+        <item>Homecoming</item>
+        <item>Fall Break Day</item>
+        <item>Winter Registration</item>
+        <item>Family Weekend</item>
+        <item>Course Withdrawal ends</item>
+        <item>Drop/Add for Winter begins</item>
+        <item>Classes End</item>
+        <item>Exams</item>
+        <item>Thanksgiving</item>
+        <item>Grades Due Noon</item>
+        <item>Winter Break</item>
+    </string-array>
+    <string-array name="Winter">
+        <item>Classes Begin</item>
+        <item>Drop/Add w/o signature ends</item>
+        <item>Drop/Add ends</item>
+        <item>Course Withdrawal begins</item>
+        <item>Drop/Add activities* ends</item>
+        <item>MLK Day</item>
+        <item>Winter Break Day</item>
+        <item>Spring Registration</item>
+        <item>Course Withdrawal ends</item>
+        <item>Drop/Add for Spring begins</item>
+        <item>Classes End</item>
+        <item>Exams</item>
+        <item>Grades Due Noon</item>
+        <item>Spring Break</item>
+    </string-array>
+    <string-array name="Spring">
+        <item>Classes Begin</item>
+        <item>Drop/Add w/o signature ends</item>
+        <item>Drop/Add ends</item>
+        <item>Course Withdrawal begins</item>
+        <item>Drop/Add activities* ends</item>
+        <item>Founder\'s Day</item>
+        <item>Fall Registration</item>
+        <item>Course Withdrawal ends</item>
+        <item>Drop/Add for Fall begins</item>
+        <item>DOGL</item>
+        <item>Memorial Day</item>
+        <item>Classes End</item>
+        <item>Exams</item>
+        <item>Senior Grades Due Noon</item>
+        <item>Commencement</item>
+        <item>Non-Senior Grades Due Noon</item>
+        <item>Summer Break</item>
+    </string-array>
 
-        <string-array name="science_math">
-            <item>3/2 Engineering Program</item>
-            <item>Biochemistry &amp; Molecular Bio.</item>
-            <item>Biological Physics</item>
-            <item>Biology</item>
-            <item>Chemistry</item>
-            <item>Computer Science</item>
-            <item>Mathematics</item>
-            <item>Physics</item>
-        </string-array>
-
-        <string-array name="physical_education">
-            <item>Physical Education</item>
-        </string-array>
-
-        <string-array name="social_science">
-            <item>Anthropology and Sociology</item>
-            <item>Economics and Business</item>
-            <item>Political Science</item>
-            <item>Psychology</item>
-        </string-array>
-
-        <string name="subject_prompt">Subject</string>
-
-        <string name="course_level_prompt">Course Level</string>
-        <string-array name="course_level_array">
-            <item>First Year Friendly</item>
-            <item>Introductory Level</item>
-            <item>Intermediate SO Level</item>
-            <item>Intermediate JR Level</item>
-            <item>Advanced SR Level</item>
-            <item>First-Year Seminar</item>
-            <item>Sophomore Seminar</item>
-            <item>Senior Seminar</item>
-            <item>PE Activity</item>
-            <item>Partial Credit Course</item>
-            <item>Music Ensemble</item>
-            <item>Music Applied</item>
-            <item>SIP/SIP Seminars</item>
-            <item>Off-campus not on Web</item>
-            <item>External course</item>
-            <item>Pre-approved ext. course</item>
-            <item>Service Learning</item>
-            <item>Tuition Payment Plan</item>
-        </string-array>
-
-        <!-- Academic year -->
-        <string name="academic_year_2014_15">2014-15</string>
-        <string name="academic_year_2015_16">2015-16</string>
-        <string name="academic_year_2016_17">2016-17</string>
-        <string name="academic_year">Academic Year</string>
-
-        <!-- Contents -->
-        <string-array name="Fall">
-            <item>Labor Day</item>
-            <item>Int\'l Orientation</item>
-            <item>Orientation</item>
-            <item>Transfer Welcome</item>
-            <item>Classes Begin</item>
-            <item>Drop/Add w/o signature ends</item>
-            <item>Drop/Add ends</item>
-            <item>Course Withdrawal begins</item>
-            <item>Drop/Add activities* ends</item>
-            <item>Homecoming</item>
-            <item>Fall Break Day</item>
-            <item>Winter Registration</item>
-            <item>Family Weekend</item>
-            <item>Course Withdrawal ends</item>
-            <item>Drop/Add for Winter begins</item>
-            <item>Classes End</item>
-            <item>Exams</item>
-            <item>Thanksgiving</item>
-            <item>Grades Due Noon</item>
-            <item>Winter Break</item>
-        </string-array>
-        <string-array name="Winter">
-            <item>Classes Begin</item>
-            <item>Drop/Add w/o signature ends</item>
-            <item>Drop/Add ends</item>
-            <item>Course Withdrawal begins</item>
-            <item>Drop/Add activities* ends</item>
-            <item>MLK Day</item>
-            <item>Winter Break Day</item>
-            <item>Spring Registration</item>
-            <item>Course Withdrawal ends</item>
-            <item>Drop/Add for Spring begins</item>
-            <item>Classes End</item>
-            <item>Exams</item>
-            <item>Grades Due Noon</item>
-            <item>Spring Break</item>
-        </string-array>
-        <string-array name="Spring">
-            <item>Classes Begin</item>
-            <item>Drop/Add w/o signature ends</item>
-            <item>Drop/Add ends</item>
-            <item>Course Withdrawal begins</item>
-            <item>Drop/Add activities* ends</item>
-            <item>Founder\'s Day</item>
-            <item>Fall Registration</item>
-            <item>Course Withdrawal ends</item>
-            <item>Drop/Add for Fall begins</item>
-            <item>DOGL</item>
-            <item>Memorial Day</item>
-            <item>Classes End</item>
-            <item>Exams</item>
-            <item>Senior Grades Due Noon</item>
-            <item>Commencement</item>
-            <item>Non-Senior Grades Due Noon</item>
-            <item>Summer Break</item>
-        </string-array>
-
-        <!-- Dates -->
-        <!-- 2014-15 -->
-        <string-array name="Fall_2014">
-            <item>9/1</item>
-            <item>9/4-9/9</item>
-            <item>9/10-9/14</item>
-            <item>9/12-9/13</item>
-            <item>9/15</item>
-            <item>9/17</item>
-            <item>9/19</item>
-            <item>9/22</item>
-            <item>9/26</item>
-            <item>10/18</item>
-            <item>10/24</item>
-            <item>10/27-11/7</item>
-            <item>10/31-11/2</item>
-            <item>11/7</item>
-            <item>11/10</item>
-            <item>11/21</item>
-            <item>11/23-11/25</item>
-            <item>11/27</item>
-            <item>12/3</item>
-            <item>11/26-1/4</item>
-        </string-array>
-        <string-array name="Winter_2014">
-            <item>1/5</item>
-            <item>1/7</item>
-            <item>1/9</item>
-            <item>1/12</item>
-            <item>1/16</item>
-            <item>1/19</item>
-            <item>2/6</item>
-            <item>2/16-2/27</item>
-            <item>2/27</item>
-            <item>3/2</item>
-            <item>3/13</item>
-            <item>3/15-3/17</item>
-            <item>3/24</item>
-            <item>3/18-3/29</item>
-        </string-array>
-        <string-array name="Spring_2014">
-            <item>3/30</item>
-            <item>4/1</item>
-            <item>4/3</item>
-            <item>4/6</item>
-            <item>4/10</item>
-            <item> </item>
-            <item>5/11-5/22</item>
-            <item>5/23</item>
-            <item>5/26</item>
-            <item>Student-determined</item>
-            <item>5/25</item>
-            <item>6/5</item>
-            <item>6/8-6/10</item>
-            <item>6/11</item>
-            <item>6/14</item>
-            <item>6/16</item>
-            <item>6/11-9/13</item>
-        </string-array>
+    <!-- Dates -->
+    <!-- 2014-15 -->
+    <string-array name="Fall_2014">
+        <item>9/1</item>
+        <item>9/4-9/9</item>
+        <item>9/10-9/14</item>
+        <item>9/12-9/13</item>
+        <item>9/15</item>
+        <item>9/17</item>
+        <item>9/19</item>
+        <item>9/22</item>
+        <item>9/26</item>
+        <item>10/18</item>
+        <item>10/24</item>
+        <item>10/27-11/7</item>
+        <item>10/31-11/2</item>
+        <item>11/7</item>
+        <item>11/10</item>
+        <item>11/21</item>
+        <item>11/23-11/25</item>
+        <item>11/27</item>
+        <item>12/3</item>
+        <item>11/26-1/4</item>
+    </string-array>
+    <string-array name="Winter_2014">
+        <item>1/5</item>
+        <item>1/7</item>
+        <item>1/9</item>
+        <item>1/12</item>
+        <item>1/16</item>
+        <item>1/19</item>
+        <item>2/6</item>
+        <item>2/16-2/27</item>
+        <item>2/27</item>
+        <item>3/2</item>
+        <item>3/13</item>
+        <item>3/15-3/17</item>
+        <item>3/24</item>
+        <item>3/18-3/29</item>
+    </string-array>
+    <string-array name="Spring_2014">
+        <item>3/30</item>
+        <item>4/1</item>
+        <item>4/3</item>
+        <item>4/6</item>
+        <item>4/10</item>
+        <item></item>
+        <item>5/11-5/22</item>
+        <item>5/23</item>
+        <item>5/26</item>
+        <item>Student-determined</item>
+        <item>5/25</item>
+        <item>6/5</item>
+        <item>6/8-6/10</item>
+        <item>6/11</item>
+        <item>6/14</item>
+        <item>6/16</item>
+        <item>6/11-9/13</item>
+    </string-array>
 
     <!-- Settings Activity -->
     <string name="setting_general">General</string>
-        <string name="setting_notification_title">Notifications</string>
-        <string name="setting_notification_summary">Notify me with campus-wide information and updates to app</string>
-
-
+    <string name="setting_notification_title">Notifications</string>
+    <string name="setting_notification_summary">Notify me with campus-wide information and updates to app</string>
     <string name="setting_user_controls">User controls</string>
-        <string name="setting_setup_pin_title">Set up pin</string>
-        <string name="setting_setup_pin_summary">Set up a 4-digit pin number that can be used instead of your password for this app</string>
-        <string name="setting_modify_pin_title">Modify your pin</string>
-        <string name="setting_modify_pin_summary">Modify your 4-digit pin number</string>
-        <string name="setting_forget_pin_title">Forget your pin</string>
-        <string name="setting_forget_pin_summary">Forget your existing 4-digit pin number to use your school password instead</string>
-        <string name="setting_logout_title">Logout</string>
-        <string name="setting_logout_summary">Logout and discard your saved settings for this app</string>
-
+    <string name="setting_setup_pin_title">Set up pin</string>
+    <string name="setting_setup_pin_summary">Set up a 4-digit pin number that can be used instead of your password for this app</string>
+    <string name="setting_modify_pin_title">Modify your pin</string>
+    <string name="setting_modify_pin_summary">Modify your 4-digit pin number</string>
+    <string name="setting_forget_pin_title">Forget your pin</string>
+    <string name="setting_forget_pin_summary">Forget your existing 4-digit pin number to use your school password instead</string>
+    <string name="setting_logout_title">Logout</string>
+    <string name="setting_logout_summary">Logout and discard your saved settings for this app</string>
     <string name="title_activity_cafeteria">Dining Information</string>
+
+    <!-- Profile Activity -->
+    <string-array name="profile_titles">
+        <item>My courses</item>
+        <item>Financial info</item>
+        <item>Employment</item>
+    </string-array>
+    <string name="profile_courses_title">My courses</string>
+    <string name="profile_courses_summary">View my courses and grades from different quarters</string>
+    <string name="profile_financial_title">Financial info</string>
+    <string name="profile_financial_summary">View my financial profile</string>
+    <string name="profile_employment_title">Employment</string>
+    <string name="profile_employment_summary">View my employment statement</string>
 
     <!-- Maps -->
     <string name="title_activity_maps">Campus Map</string>
-
-
     <string name="title_activity_academic">Academic</string>
     <string name="title_activity_campus">Campus</string>
     <string name="title_activity_food">Dining</string>
@@ -461,5 +451,6 @@
     <string name="title_activity_events">Events</string>
     <string name="title_activity_news">News</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_profile">Profile</string>
 
 </resources>
