@@ -151,7 +151,7 @@
                                 android:layout_weight="0.25"
                                 android:textSize="14sp"
                                 android:gravity="center"
-                                android:text="7:0-10am" />
+                                android:text="7:30-10am" />
 
                             <TextView
                                 android:id="@+id/cafeteria_saturday_tvBreakfastTime"

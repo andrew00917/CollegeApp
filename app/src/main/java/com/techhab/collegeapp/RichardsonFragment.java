@@ -12,33 +12,43 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RichardsonFragment extends Fragment implements View.OnClickListener {
+public class RichardsonFragment extends Fragment {
     public static final String ARG_OBJECT = "object";
+    private static int selectedPosition = 0;
+    private static final int MF_INDEX = 0;
+    private static final int SATURDAY_INDEX = 1;
+    private static final int SUNDAY_INDEX = 2;
     // Buttons Cafeteria
     View v;
     FoodStore Richardson;
     TextView tvTimeInfo;
-    ImageView image;
-    TextView tvTimeDetailInfo;
+    private ImageView statusBarArrow;
+    private LinearLayout statusBarExtendedInfoFrame;
     RecyclerView rvMenu;
-    ImageButton ibExpandble;
-    LinearLayout llHeader;
+    private LinearLayout statusBar;
     private boolean isBreakfastCollapse = true;
     RecyclerView.LayoutManager mLayoutManager;
     int currentBarColor;
@@ -60,118 +70,181 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_richardson, parent, false);
-        rvMenu = (RecyclerView) v.findViewById(R.id.fragment_cafeteria_rvMenu);
-        tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
-        tvTimeDetailInfo = (TextView) v.findViewById(R.id.status_bar_extended_info);
-        ibExpandble = (ImageButton) v.findViewById(R.id.status_bar_arrow);
-        llHeader = (LinearLayout) v.findViewById(R.id.richardson_status_bar);
-        tvTimeInfo.setOnClickListener(new View.OnClickListener() {
+        rvMenu = (RecyclerView) v.findViewById(R.id.fragment_richardson_rvMenu);
+        tvTimeInfo = (TextView) v.findViewById(R.id.fragment_richardson_tvInfo);
+        statusBarExtendedInfoFrame = (LinearLayout) v.findViewById(R.id.status_bar_extended_info_frame);
+        statusBar = (LinearLayout) v.findViewById(R.id.richrdson_status_bar);
+        statusBar.setClickable(true);
+
+        statusBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isExpanded) { // Expand
-                    HeightAnimation animation = new HeightAnimation(tvTimeDetailInfo, 300, true);
-                    animation.setDuration(300);
-                    llHeader.startAnimation(animation);
-                    ibExpandble.setImageResource(R.drawable.ic_action_expand);
-                    isExpanded = !isExpanded;
-                } else { // Collapse
-                    HeightAnimation animation = new HeightAnimation(tvTimeDetailInfo, 300, false);
-                    animation.setDuration(300);
-                    llHeader.startAnimation(animation);
-                    ibExpandble.setImageResource(R.drawable.ic_action_collapse);
-                    isExpanded = !isExpanded;
-                }
+                statusBar.setClickable(false);
+                expandStatusBar();
+
+                statusBar.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        statusBar.setClickable(true);
+                    }
+                }, 300);
             }
         });
-        //todo: fake data for Richardson
-        Richardson = new FoodStore();
-        Richardson.setStoreName("Richardson Room");
-        Richardson.setOpenHour(4);
-        Richardson.setCloseHour(15);
-        Meal Specials = new Meal();
-        Specials.setTitle("Specials");
-        Specials.setSubTitle("Sandwich");
-        List<String> specialSandwiches = new ArrayList<String>();
-        specialSandwiches.add("meat ball");
-        specialSandwiches.add("panini");
-        specialSandwiches.add("Tuna");
-        specialSandwiches.add("item 4");
-        specialSandwiches.add("item 5");
-        specialSandwiches.add("item 6");
-        specialSandwiches.add("item 7");
-        Specials.setMainLines(specialSandwiches);
-        List<String> specialSoups = new ArrayList<String>();
-        specialSoups.add("Tomato soups");
-        specialSoups.add("Cheddar Soup");
-        Specials.setInternationalCorner(specialSoups);
 
-        Meal lunch = new Meal();
-        lunch.setTitle("Lunch");
-        List<String> mainLines1 = new ArrayList<String>();
-        mainLines1.add("item1");
-        mainLines1.add("item2");
-        mainLines1.add("item3");
-        mainLines1.add("item4");
-        mainLines1.add("item5");
-        lunch.setMainLines(mainLines1);
-        List<String> internationalCorner1 = new ArrayList<String>();
-        internationalCorner1.add("item1");
-        internationalCorner1.add("item2");
-        lunch.setInternationalCorner(internationalCorner1);
+        setupData();
 
-        Meal dinner = new Meal();
-        dinner.setTitle("Dinner");
-        List<String> mainLines2 = new ArrayList<String>();
-        mainLines2.add("item1");
-        mainLines2.add("item2");
-        mainLines2.add("item3");
-        mainLines2.add("item4");
-        mainLines2.add("item5");
-        dinner.setMainLines(mainLines2);
-        List<String> internationalCorner2 = new ArrayList<String>();
-        internationalCorner2.add("item1");
-        internationalCorner2.add("item2");
-        dinner.setInternationalCorner(internationalCorner2);
-
-        List<Meal> meals = new ArrayList<Meal>();
-        meals.add(Specials);
-        meals.add(lunch);
-        meals.add(dinner);
-        Richardson.setMealList(meals);
         mLayoutManager = new LinearLayoutManager(getActivity());
         rvMenu.setLayoutManager(mLayoutManager);
-        rvMenu.setAdapter(new MenuAdapter(getActivity(), meals));
-        if (isOpened(Richardson))
+        rvMenu.setAdapter(new MenuAdapter(getActivity(), Richardson.getMealList()));
+
+        // for changing the color of the status bar based on the time, as well as the image for open/close sign
+        long remainTime = getRemainTime();
+        if (remainTime >= 0)
         {
             currentBarColor = R.color.green;
-           llHeader.setBackgroundColor(getResources().getColor(R.color.green));
+            statusBar.setBackgroundColor(getResources().getColor(R.color.green));
+            ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
+
+        } else {
+            currentBarColor = R.color.red;
+            statusBar.setBackgroundColor(getResources().getColor(R.color.red));
             ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
         }
-        else
-       {
-           currentBarColor = R.color.red;
-           llHeader.setBackgroundColor(getResources().getColor(R.color.red));
-           ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
-       }
-        getRemainTime();
+        displayStatusBar(remainTime);
         return v;
     }
 
 
-    private boolean isOpened(FoodStore foodStore)
-    {
-        Long currentTime = System.currentTimeMillis();
-        long openTime = getTimeOFDay(foodStore.getOpenHour(), foodStore.getOpenMinutes());
-        Calendar closeCalendar = Calendar.getInstance();
-        closeCalendar.set(Calendar.HOUR_OF_DAY, foodStore.getCloseHour());
-        closeCalendar.set(Calendar.MINUTE, foodStore.getCloseMinutes());
-        closeCalendar.set(Calendar.SECOND, 0);
-        long closedTIme = getTimeOFDay(foodStore.getCloseHour(), foodStore.getCloseMinutes());
-        if (currentTime >= openTime && currentTime <= closedTIme)
-            return true;
-        return false;
+
+    private void setupData() {
+        //todo: fake data for cafe
+        Richardson = new FoodStore();
+        Richardson.setStoreName("Richardson");
+        Meal specials = new Meal();
+        specials.setMealTitle("Specials");
+        specials.setSubTitle("Sandwiches");
+        List<String> breakfastMainLines = new ArrayList<String>();
+        specials.setSubTitle2("Soups");
+        breakfastMainLines.add("item 1");
+        specials.setMainLineItems(breakfastMainLines);
+        specials.setInternationalCornerItems(Arrays.asList("1", "2", "3", "4"));
+        specials.setOpenTimes(Arrays.asList(new TimeOfDay(10, 0), new TimeOfDay(10, 0),new TimeOfDay(15, 0)));
+        specials.setEndTimes(Arrays.asList(new TimeOfDay(24, 0), new TimeOfDay(18, 0), new TimeOfDay(24, 0)));
+
+
+        List<Meal> meals = new ArrayList<Meal>();
+        meals.add(specials);
+
+
+
+        Richardson.setMealList(meals);
     }
 
+
+    private void expandStatusBar() {
+        if ( ! isExpanded ) { // Expand
+            // Rotate the drawer arrow
+            statusBarArrow = (ImageView) v.findViewById(R.id.status_bar_arrow);
+
+            AnimationSet animSet = new AnimationSet(true);
+            animSet.setInterpolator(new DecelerateInterpolator());
+            animSet.setFillAfter(true);
+            animSet.setFillEnabled(true);
+
+            final RotateAnimation animRotate = new RotateAnimation(0.0f, -180.0f,
+                    RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+                    RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+
+            animRotate.setDuration(300);
+            animRotate.setFillAfter(true);
+            animSet.addAnimation(animRotate);
+
+            statusBarArrow.startAnimation(animSet);
+
+            HeightAnimation animation = new HeightAnimation(statusBarExtendedInfoFrame, convertToPixel(120), true);
+            animation.setDuration(300);
+            statusBar.startAnimation(animation);
+            isExpanded = !isExpanded;
+        } else { // Collapse
+            // Rotate the drawer arrow
+            statusBarArrow = (ImageView) v.findViewById(R.id.status_bar_arrow);
+
+            AnimationSet animSet = new AnimationSet(true);
+            animSet.setInterpolator(new DecelerateInterpolator());
+            animSet.setFillAfter(true);
+            animSet.setFillEnabled(true);
+
+            final RotateAnimation animRotate = new RotateAnimation(-180.0f, 0.0f,
+                    RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+                    RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+
+            animRotate.setDuration(300);
+            animRotate.setFillAfter(true);
+            animSet.addAnimation(animRotate);
+
+            statusBarArrow.startAnimation(animSet);
+
+
+            HeightAnimation animation = new HeightAnimation(statusBarExtendedInfoFrame, convertToPixel(120), false);
+            animation.setDuration(300);
+            statusBar.startAnimation(animation);
+            isExpanded = !isExpanded;
+        }
+
+
+    }
+
+    private long getRemainTime()
+    {
+        Calendar currentTime = Calendar.getInstance();
+        int dayOfWeek = currentTime.get(Calendar.DAY_OF_WEEK);
+        switch (dayOfWeek)
+        {
+            case Calendar.SUNDAY:
+                return countRemainTime(currentTime.getTimeInMillis(), SUNDAY_INDEX);
+            case Calendar.SATURDAY:
+                return countRemainTime(currentTime.getTimeInMillis(), SATURDAY_INDEX);
+            default:
+                return countRemainTime(currentTime.getTimeInMillis(), MF_INDEX);
+        }
+
+    }
+
+    private long  countRemainTime(long currentTime, int dayIndex)
+    {
+        long openTime = 0;
+        for (Meal meal : Richardson.getMealList())
+        {
+            if (meal.getOpenTimes().get(dayIndex) != null)
+            {
+                long openTimeInMillis = meal.getOpenTimes().get(dayIndex).getTimeInMillis();
+                if (openTime == 0)
+                {
+                    openTime = openTimeInMillis;
+                }
+                long closeTimeInMillis = meal.getEndTimes().get(dayIndex).getTimeInMillis();
+                if (currentTime >= openTimeInMillis && currentTime <= closeTimeInMillis)
+                    return closeTimeInMillis - currentTime;
+                if (currentTime < openTimeInMillis)
+                    return currentTime - openTimeInMillis;
+            }
+
+        }
+        int nextDayIndex = dayIndex == 2 ? 0 : dayIndex++;
+        return currentTime - getOpenTime(nextDayIndex) - 86400*1000;
+    }
+
+
+    private long getOpenTime(int dayIndex)
+    {
+        for (Meal meal : Richardson.getMealList()) {
+            if (meal.getOpenTimes().get(dayIndex) != null) {
+                return meal.getOpenTimes().get(dayIndex).getTimeInMillis();
+            }
+        }
+        return 0;
+
+    }
     private long getTimeOFDay(int hour, int minute)
     {
         Calendar openCalendar = Calendar.getInstance();
@@ -183,27 +256,10 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
 
 
 
-    private void getRemainTime()
+    private void displayStatusBar(final long remainTime)
     {
-        long openMillis = getTimeOFDay(Richardson.getOpenHour(), Richardson.getOpenMinutes());
-        long closeMillis = getTimeOFDay(Richardson.getCloseHour(), Richardson.getCloseMinutes());
-        Time TimeNow = new Time();
-        TimeNow.setToNow(); // set the date to Current Time
-        TimeNow.normalize(true);
-        long nowMillis = TimeNow.toMillis(true);
-        long millisset = 0;
-        if (nowMillis >= openMillis && nowMillis <= closeMillis)
-        {
-            millisset = closeMillis - nowMillis;
 
-        }
-        else
-        {
-            millisset = openMillis - nowMillis > 0 ? openMillis - nowMillis : openMillis - nowMillis + 86400*1000;
-
-        }
-
-        new CountDownTimer(millisset, 1000) {
+        new CountDownTimer(Math.abs(remainTime), 1000) {
             public void onTick(long millisUntilFinished) {
 
                 int days = (int) ((millisUntilFinished / 1000) / 86400);
@@ -213,27 +269,26 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
                         * 86400) + (hours * 3600))) / 60);
                 int seconds = (int) ((millisUntilFinished / 1000) % 60);
 
-                if (isOpened(Richardson))
+
+                if (remainTime >= 0)
                 {
                     if (hours == 0 && minutes <= 30 && currentBarColor != R.color.Yellow)
                     {
                         currentBarColor = R.color.Yellow;
-                        llHeader.setBackgroundColor(getResources().getColor(R.color.Yellow));
+                        statusBar.setBackgroundColor(getResources().getColor(R.color.Yellow));
                     }
                     else if ((hours > 0 || minutes > 30) && currentBarColor != R.color.green)
                     {
                         currentBarColor = R.color.green;
-                        llHeader.setBackgroundColor(getResources().getColor(R.color.green));
+                        statusBar.setBackgroundColor(getResources().getColor(R.color.green));
                     }
                     tvTimeInfo.setText(
-                         "Closing in " + hours + " hours and " + minutes + " minutes"
-                );}
-                else
-                {
+                            "Closing in " + hours + " hours and " + minutes + " minutes"
+                    );} else {
                     if (currentBarColor != R.color.red)
                     {
                         currentBarColor = R.color.red;
-                        llHeader.setBackgroundColor(getResources().getColor(R.color.red));
+                        statusBar.setBackgroundColor(getResources().getColor(R.color.red));
                     }
                     tvTimeInfo.setText(
                             "Opening in"+ " " + hours + "hours and " + minutes + " minutes");
@@ -242,32 +297,11 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
             }
 
             public void onFinish() {
-                getRemainTime();
+                displayStatusBar(getRemainTime());
 
             }
         }.start();
     }
-
-    @Override
-    public void onClick(View v) {
-
-        switch (v.getId()) {
-            case R.id.fragment_cafeteria_tvInfo:
-                if (tvTimeDetailInfo.getVisibility() == View.VISIBLE)
-                {
-                    tvTimeDetailInfo.setVisibility(View.GONE);
-                    ibExpandble.setImageResource(R.drawable.ic_action_expand);
-                }
-                else
-                {
-                    tvTimeDetailInfo.setVisibility(View.VISIBLE);
-                    ibExpandble.setImageResource(R.drawable.ic_action_collapse);
-                }
-
-        }
-    }
-
-
 
     private void PhoneCall(String phoneNumber) {
         Intent phoneIntent = new Intent(Intent.ACTION_CALL);
@@ -296,9 +330,7 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
             return openHour;
         }
 
-        public void setOpenHour(int openHour) {
-            this.openHour = openHour;
-        }
+
 
         public int getOpenMinutes() {
             return openMinutes;
@@ -310,10 +342,6 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
 
         public int getCloseHour() {
             return closeHour;
-        }
-
-        public void setCloseHour(int closeHour) {
-            this.closeHour = closeHour;
         }
 
         public int getCloseMinutes() {
@@ -347,10 +375,13 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
     {
         String mealTitle;
         String subTitle;
-        private List<String> mainLines;
-        private List<String> internationalCorner;
+        String subTitle2;
+        private List<String> mainLineItems;
+        private List<String> internationalCornerItems;
+        private List<TimeOfDay> openTimes;
+        private List<TimeOfDay> endTimes;
 
-        public String getTitle()
+        public String getMealTitle()
         {
             return mealTitle;
         }
@@ -359,7 +390,11 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
         {
             return subTitle;
         }
-        public void setTitle(String mealTitle)
+        public String getSubTitle2()
+        {
+            return subTitle2;
+        }
+        public void setMealTitle(String mealTitle)
         {
             this.mealTitle = mealTitle;
         }
@@ -367,27 +402,92 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
         {
             this.subTitle = subTitle;
         }
-
+        public void setSubTitle2(String subTitle2)
+        {
+            this.subTitle2 = subTitle2;
+        }
         public List<String> getMainLineItems()
         {
-            return mainLines;
+            return mainLineItems;
         }
 
-        public void setMainLines(List<String> mainLines)
+        public void setMainLineItems(List<String> mainLineItems)
         {
-            this.mainLines = mainLines;
+            this.mainLineItems = mainLineItems;
         }
 
         public List<String> getInternationalCornerItems()
         {
-            return internationalCorner;
+            return internationalCornerItems;
         }
 
-        public void setInternationalCorner(List<String> internationalCorner)
+        public void setInternationalCornerItems(List<String> internationalCornerItems)
         {
-            this.internationalCorner = internationalCorner;
+            this.internationalCornerItems = internationalCornerItems;
+        }
+        public List<TimeOfDay> getOpenTimes() {
+            return openTimes;
+        }
+
+        public void setOpenTimes(List<TimeOfDay> openTimes) {
+            this.openTimes = openTimes;
+        }
+
+        public List<TimeOfDay> getEndTimes() {
+            return endTimes;
+        }
+
+        public void setEndTimes(List<TimeOfDay> endTimes) {
+            this.endTimes = endTimes;
         }
     }
+
+    private class TimeOfDay
+    {
+        int hour;
+        int minutes;
+
+        public TimeOfDay(int hour, int minutes)
+        {
+            this.hour = hour;
+            this.minutes = minutes;
+        }
+        public int getHour() {
+            return hour;
+        }
+
+        public void setHour(int hour) {
+            this.hour = hour;
+        }
+
+        public int getMinutes() {
+            return minutes;
+        }
+
+        public void setMinutes(int minutes) {
+            this.minutes = minutes;
+        }
+
+        public String getTime()
+        {
+            NumberFormat formatter = new DecimalFormat("00");
+            return hour + ":" + formatter.format(minutes);
+        }
+
+        public long getTimeInMillis()
+        {
+            return getTimeOFDay(hour, minutes);
+        }
+    }
+
+    private void reloadFragment()
+    {
+        getFragmentManager().beginTransaction().detach(this)
+                .attach(this)
+                .commit();
+    }
+
+
     private class MenuAdapter extends RecyclerView.Adapter
     {
         private List<Meal> menuList;
@@ -414,9 +514,9 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
         {
             final Meal meal = menuList.get(i);
             final MenuAdapter.ViewHolder menuViewHolder = (ViewHolder) viewHolder;
-            menuViewHolder.tvTitle.setText(meal.getTitle());
+            menuViewHolder.tvTitle.setText(meal.getMealTitle());
             menuViewHolder.tvTitle1.setText(meal.getSubTitle());
-            menuViewHolder.tvTitle2.setText(meal.getSubTitle());
+            menuViewHolder.tvTitle2.setText(meal.getSubTitle2());
 
             loadMenu(menuViewHolder, meal);
             menuViewHolder.tbViewMore.setOnClickListener(new View.OnClickListener() {
@@ -550,5 +650,8 @@ public class RichardsonFragment extends Fragment implements View.OnClickListener
 
     }
 
-
+    private int convertToPixel(int dp)
+    {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+    }
 }

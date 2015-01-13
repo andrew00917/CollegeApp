@@ -55,7 +55,6 @@ public class CafeteriaFragment extends Fragment {
     private Spinner cafeteriaSpinner;
     private int currentBarColor;
     private boolean isExpanded = false;
-    private long mLastClickTime;
 
     private static final int RICHARDSON = 1;
 
@@ -137,7 +136,7 @@ public class CafeteriaFragment extends Fragment {
         cafeteriaSpinner.setAdapter(spinnerAdapter);
 
         setupData();
-        mapDataToView(v);
+
         mLayoutManager = new LinearLayoutManager(getActivity());
         rvMenu.setLayoutManager(mLayoutManager);
         rvMenu.setAdapter(new MenuAdapter(getActivity(), cafeteriaStore.getMealList()));
@@ -159,34 +158,19 @@ public class CafeteriaFragment extends Fragment {
         return v;
     }
 
-    private void mapDataToView(View view) {
-        List<TimeOfDay> breakfastOpenTimes = cafeteriaStore.getMealList().get(0).getOpenTimes();
-        List<TimeOfDay> breakfastCloseTimes = cafeteriaStore.getMealList().get(0).getEndTimes();
-        if (breakfastOpenTimes != null && breakfastCloseTimes != null)
-        {
-            String breakfastTimeMF = breakfastOpenTimes.get(MF_INDEX) == null ? "-" : breakfastOpenTimes.get(MF_INDEX).getTime() + "-" + breakfastCloseTimes.get(MF_INDEX).getTime();
-            ((TextView)view.findViewById(R.id.cafeteria_mF_tvBreakfastTime)).setText(breakfastTimeMF);
-            String breakfastTimeSat = breakfastOpenTimes.get(SATURDAY_INDEX) == null ? "-" : breakfastOpenTimes.get(SATURDAY_INDEX).getTime() + "-" + breakfastCloseTimes.get(SATURDAY_INDEX).getTime();
-            ((TextView)view.findViewById(R.id.cafeteria_saturday_tvBreakfastTime)).setText(breakfastTimeSat);
-            String breakfastTimeSun = breakfastOpenTimes.get(SUNDAY_INDEX) == null ? "-" : breakfastOpenTimes.get(SUNDAY_INDEX).getTime() + "-" + breakfastCloseTimes.get(SUNDAY_INDEX).getTime();
-            ((TextView)view.findViewById(R.id.cafeteria_sunday_tvBreakfastTime)).setText(breakfastTimeSun);
 
-        }
-    }
 
     private void setupData() {
         //todo: fake data for cafe
         cafeteriaStore = new FoodStore();
         cafeteriaStore.setStoreName("Cafeteria");
-        cafeteriaStore.setOpenHour(4);
-        cafeteriaStore.setCloseHour(22);
         Meal breakfast = new Meal();
         breakfast.setMealTitle("Breakfast");
         List<String> breakfastMainLines = new ArrayList<String>();
         breakfastMainLines.add("item 1");
         breakfast.setMainLineItems(breakfastMainLines);
         breakfast.setInternationalCornerItems(Arrays.asList("1", "2", "3", "4"));
-        breakfast.setOpenTimes(Arrays.asList(new TimeOfDay(7, 0), new TimeOfDay(9, 30), null));
+        breakfast.setOpenTimes(Arrays.asList(new TimeOfDay(7, 30), new TimeOfDay(9, 30), null));
         breakfast.setEndTimes(Arrays.asList(new TimeOfDay(10, 0), new TimeOfDay(11, 0), null));
 
         Meal lunch = new Meal();
@@ -321,9 +305,21 @@ public class CafeteriaFragment extends Fragment {
            }
 
         }
-        return currentTime - openTime - 86400*1000;
+        int nextDayIndex = dayIndex == 2 ? 0 : dayIndex++;
+        return currentTime - getOpenTime(nextDayIndex) - 86400*1000;
     }
 
+
+    private long getOpenTime(int dayIndex)
+    {
+        for (Meal meal : cafeteriaStore.getMealList()) {
+            if (meal.getOpenTimes().get(dayIndex) != null) {
+                return meal.getOpenTimes().get(dayIndex).getTimeInMillis();
+            }
+        }
+        return 0;
+
+    }
     private long getTimeOFDay(int hour, int minute)
     {
         Calendar openCalendar = Calendar.getInstance();
@@ -409,9 +405,7 @@ public class CafeteriaFragment extends Fragment {
             return openHour;
         }
 
-        public void setOpenHour(int openHour) {
-            this.openHour = openHour;
-        }
+
 
         public int getOpenMinutes() {
             return openMinutes;
@@ -425,9 +419,7 @@ public class CafeteriaFragment extends Fragment {
             return closeHour;
         }
 
-        public void setCloseHour(int closeHour) {
-            this.closeHour = closeHour;
-        }
+
 
         public int getCloseMinutes() {
             return closeMinutes;
