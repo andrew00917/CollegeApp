@@ -27,6 +27,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.techhab.collegeapp.application.CollegeApplication;
 
 /**
@@ -117,14 +118,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
         //TODO set actual onClickListener (should take user to profile page)
         mProfileLayout.setOnClickListener(null);
-//        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                //TODO: Point nav drawer items to actual fragments/activities
-//                ((HomeActivity) getActivity()).showFragment(position, false);
-//                selectItem(position);
-//            }
-//        });
+        mDrawerListView.setOnItemClickListener(mNavAdapter);
         mDrawerListViewSettingsSupport.setOnItemClickListener(mNavAdapterSettingsSupport);
 
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
@@ -267,7 +261,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     /**
      * Custom ListView adapter for the nav drawer
      */
-    class NavAdapter extends BaseAdapter {
+    class NavAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
 
         private Context context;
 
@@ -312,6 +306,60 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             titleTextView.setText(nav_drawer_items[position]);
             titleImageView.setImageResource(images[position]);
             return row;
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+//            Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_SHORT).show();
+            switch (position) {
+                case 0:
+                    // build a dialog and show
+                    emergencyCallDialog();
+                    break;
+                default:
+                    // TODO: NOT a default behavior
+                    emergencyCallDialog();
+            }
+        }
+
+        /**
+         *  Build and show material dialog for emergency call
+         */
+        private void emergencyCallDialog() {
+            new MaterialDialog.Builder(getActivity())
+                    .title("Choose who to call...")
+                    .items(new String[]{"Campus Security", "Health"})
+                    .itemsCallback(new MaterialDialog.ListCallback() {
+                        @Override
+                        public void onSelection(MaterialDialog dialog, View view,
+                                                int which, CharSequence text) {
+                            if (which == 0) {
+                                // TODO: call security
+                                dialog.dismiss();
+                            } else if (which == 1) {
+                                // TODO: call health
+                                dialog.dismiss();
+                            }
+                        }
+                    })
+                    .negativeText("Cancel")
+                    .autoDismiss(false)
+                    .negativeColor(getResources().getColor(R.color.abc_secondary_text_material_light))
+                    .callback(new MaterialDialog.Callback() {
+                        // Material Dialog library needs this empty method
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            // There is no positive button existing
+                        }
+
+                        @Override
+                        public void onNegative(MaterialDialog dialog) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .cancelable(false)
+                    .show();
         }
     }
 
