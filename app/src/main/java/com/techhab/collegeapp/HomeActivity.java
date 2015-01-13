@@ -49,11 +49,7 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
     // the logic in onSessionStateChange is only executed if this is the case
     private boolean isResumed = false;
 
-    /* Sub menu animation */
-    private ListView sub;
-
     /*  Navigation Drawer Stuff */
-
     public DrawerLayout mDrawerLayout;
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private Toolbar mToolbar;
@@ -123,8 +119,7 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
                             // Logged in but as guest
                             // set is social attribute
                             application.setIsSocial(false);
-                        }
-                        else {
+                        } else {
                             User currentUser = new User(currentUserString, currentUserPassword);
                             if ( ! currentUser.getUserName().equals("guest")) {
                                 application.setCurrentUser(currentUser);
@@ -137,12 +132,10 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
                     } catch (Exception e) {
                         Log.e(application.getTag(), e.toString());
                     }
-                }
-                else {
+                } else {
                     application.setIsSocial(false);
                 }
-            }
-            else {
+            } else {
                 application.setIsSocial(false);
                 application.setLoggedIn(false);
             }
@@ -181,18 +174,15 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
             showFragment(LOG_IN_HOME, false);
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             getSupportActionBar().hide();
-        }
-        else if (application.isLoggedIn() && ! application.isSocial()
+        } else if (application.isLoggedIn() && ! application.isSocial()
                 && fragments[HOME] != null) {
             // logged in as guest
             showFragment(HOME, false);
-        }
-        else if (application.isLoggedIn() && application.isSocial()
+        } else if (application.isLoggedIn() && application.isSocial()
                 && fragments[HOME] != null) {
             // logged in
             showFragment(HOME, false);
-        }
-        else {
+        } else {
             // TODO showing logged out home for now
             showFragment(LOG_IN_HOME, false);
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -248,14 +238,6 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
     @Override
     public void onDestroy() {
         super.onDestroy();
-    }
-
-    public void setListView(ListView sub) {
-        this.sub = sub;
-    }
-
-    public ListView getListView() {
-        return sub;
     }
 
     public void showFragment(int fragmentIndex, boolean addToBackStack) {

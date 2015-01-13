@@ -3,6 +3,7 @@ package com.techhab.collegeapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,16 +25,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
-
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.techhab.collegeapp.application.CollegeApplication;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends Fragment
-        implements NavigationDrawerCallbacks  {
+public class NavigationDrawerFragment extends Fragment implements NavigationDrawerCallbacks  {
 
     /**
      * Remember the position of the selected item.
@@ -69,6 +71,7 @@ public class NavigationDrawerFragment extends Fragment
     private SettingsSupportNavAdapter mNavAdapterSettingsSupport;
 
     public NavigationDrawerFragment() {
+
     }
 
     @Override
@@ -108,28 +111,15 @@ public class NavigationDrawerFragment extends Fragment
         mDrawerListViewSettingsSupport = (ListView) view.findViewById(R.id.settings_support);
         mProfileLayout = (LinearLayout) view.findViewById(R.id.profile_layout);
 
-        //TODO set actual onClickListener (should take user to profile page)
-        mProfileLayout.setOnClickListener(null);
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO: Point nav drawer items to actual fragments/activities
-                ((HomeActivity) getActivity()).showFragment(position, false);
-                selectItem(position);
-            }
-        });
-        mDrawerListViewSettingsSupport.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO: Point nav drawer rssItemList to actual fragments/activities
-                ((HomeActivity) getActivity()).showFragment(position, false);
-                selectItem(position);
-            }
-        });
         mNavAdapter = new NavAdapter(getActivity());
         mDrawerListView.setAdapter(mNavAdapter);
         mNavAdapterSettingsSupport = new SettingsSupportNavAdapter(getActivity());
         mDrawerListViewSettingsSupport.setAdapter(mNavAdapterSettingsSupport);
+
+        //TODO set actual onClickListener (should take user to profile page)
+        mProfileLayout.setOnClickListener(null);
+        mDrawerListView.setOnItemClickListener(mNavAdapter);
+        mDrawerListViewSettingsSupport.setOnItemClickListener(mNavAdapterSettingsSupport);
 
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return view;
@@ -158,7 +148,7 @@ public class NavigationDrawerFragment extends Fragment
             @Override
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                if (!isAdded()) return;
+                if ( ! isAdded()) return;
                 getActivity().invalidateOptionsMenu();
             }
 
@@ -166,8 +156,8 @@ public class NavigationDrawerFragment extends Fragment
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                if (!isAdded()) return;
-                if (!mUserLearnedDrawer) {
+                if ( ! isAdded()) return;
+                if ( ! mUserLearnedDrawer) {
                     mUserLearnedDrawer = true;
                 }
 
@@ -192,7 +182,7 @@ public class NavigationDrawerFragment extends Fragment
     }
 
 
-    private void selectItem(int position) {
+    public void selectItem(int position) {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
@@ -254,12 +244,12 @@ public class NavigationDrawerFragment extends Fragment
             return true;
         }*/
         if ((item.getItemId() == android.R.id.home)) {
-                 if (isDrawerOpen()) {
-                        mDrawerLayout.closeDrawer(mFragmentContainerView);
-                     } else {
-                        mDrawerLayout.openDrawer(mFragmentContainerView);
-                     }
+             if (isDrawerOpen()) {
+                mDrawerLayout.closeDrawer(mFragmentContainerView);
+             } else {
+                mDrawerLayout.openDrawer(mFragmentContainerView);
              }
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -271,7 +261,7 @@ public class NavigationDrawerFragment extends Fragment
     /**
      * Custom ListView adapter for the nav drawer
      */
-    class NavAdapter extends BaseAdapter {
+    class NavAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
 
         private Context context;
 
@@ -317,12 +307,66 @@ public class NavigationDrawerFragment extends Fragment
             titleImageView.setImageResource(images[position]);
             return row;
         }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+//            Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_SHORT).show();
+            switch (position) {
+                case 0:
+                    // build a dialog and show
+                    emergencyCallDialog();
+                    break;
+                default:
+                    // TODO: NOT a default behavior
+                    emergencyCallDialog();
+            }
+        }
+
+        /**
+         *  Build and show material dialog for emergency call
+         */
+        private void emergencyCallDialog() {
+            new MaterialDialog.Builder(getActivity())
+                    .title("Choose who to call...")
+                    .items(new String[]{"Campus Security", "Health"})
+                    .itemsCallback(new MaterialDialog.ListCallback() {
+                        @Override
+                        public void onSelection(MaterialDialog dialog, View view,
+                                                int which, CharSequence text) {
+                            if (which == 0) {
+                                // TODO: call security
+                                dialog.dismiss();
+                            } else if (which == 1) {
+                                // TODO: call health
+                                dialog.dismiss();
+                            }
+                        }
+                    })
+                    .negativeText("Cancel")
+                    .autoDismiss(false)
+                    .negativeColor(getResources().getColor(R.color.abc_secondary_text_material_light))
+                    .callback(new MaterialDialog.Callback() {
+                        // Material Dialog library needs this empty method
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            // There is no positive button existing
+                        }
+
+                        @Override
+                        public void onNegative(MaterialDialog dialog) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .cancelable(false)
+                    .show();
+        }
     }
 
     /**
      * Custom ListView adapter for the Settings & Support section of the nav drawer
      */
-    class SettingsSupportNavAdapter extends BaseAdapter {
+    class SettingsSupportNavAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
 
         private Context context;
 
@@ -367,6 +411,21 @@ public class NavigationDrawerFragment extends Fragment
             titleTextView.setText(nav_drawer_items[position]);
             titleImageView.setImageResource(images[position]);
             return row;
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+//            Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_SHORT).show();
+            Intent intent = null;
+            switch (position) {
+                case 0:
+                    intent = new Intent(getActivity(), SettingsActivity.class);
+                    break;
+                default:
+                    intent = new Intent(getActivity(), SettingsActivity.class);
+            }
+            getActivity().startActivity(intent);
         }
     }
 }

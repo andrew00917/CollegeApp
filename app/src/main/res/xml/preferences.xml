@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/setting_general"
+        android:key="pref_key_general_settings">
+
+        <CheckBoxPreference
+            android:key="pref_key_notification"
+            android:summary="@string/setting_notification_summary"
+            android:title="@string/setting_notification_title"
+            android:defaultValue="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/setting_user_controls"
+        android:key="pref_key_user_control_settings">
+
+        <Preference
+            android:key="pref_key_setup_pin"
+            android:summary="@string/setting_setup_pin_summary"
+            android:title="@string/setting_setup_pin_title" />
+
+        <Preference
+            android:key="pref_key_modify_pin"
+            android:summary="@string/setting_modify_pin_summary"
+            android:title="@string/setting_modify_pin_title" />
+
+        <Preference
+            android:key="pref_key_forget_pin"
+            android:summary="@string/setting_forget_pin_summary"
+            android:title="@string/setting_forget_pin_title" />
+
+        <Preference
+            android:key="pref_key_logout"
+            android:summary="@string/setting_logout_summary"
+            android:title="@string/setting_logout_title" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
