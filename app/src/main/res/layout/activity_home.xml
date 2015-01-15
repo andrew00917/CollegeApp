@@ -4,6 +4,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/example_home_background"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -16,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/expanded_toolbar"
             android:minHeight="@dimen/abc_action_bar_default_height_material"
-            android:background="@drawable/k_banner_day"
+            android:background="@drawable/md_transparent"
             app:theme="@style/Toolbar"
             app:popupTheme="@style/Theme.AppCompat.Light"
             />

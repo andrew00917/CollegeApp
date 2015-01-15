@@ -18,7 +18,7 @@
     <color name="main11">#E24B26</color>
     <color name="main20">#E23E26</color>
     <color name="main21">#E23126</color>
-    <color name="main00_trans">#50E27226</color>
+    <color name="main_menu_trans">#50000000</color>
 
     <!-- Material Button -->
     <color name="blue_pressed">@android:color/holo_blue_dark</color>

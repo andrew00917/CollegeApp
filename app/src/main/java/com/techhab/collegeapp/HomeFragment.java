@@ -10,8 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,7 +19,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.techhab.collegeapp.application.CollegeApplication;
@@ -184,7 +181,7 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
 //                            mainContainer.setLayoutParams(new FrameLayout
 //                                    .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 //                                    mainExpand.getHeight() + main00.getHeight()));
-                            mainContainer.setBackgroundColor(getResources().getColor(R.color.main00_trans));
+                            mainContainer.setBackgroundColor(getResources().getColor(R.color.main_menu_trans));
                             nullifyText();
                             lessToolbar();
                             mainExpand.setImageDrawable(getResources().getDrawable(R.drawable.main_expand_more));

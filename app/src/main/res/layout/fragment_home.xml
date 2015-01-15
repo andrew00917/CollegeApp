@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/example_home_background"
+    android:background="@drawable/md_transparent"
     tools:context="com.techhab.collegeapp.HomeFragment">
 
     <LinearLayout
@@ -34,11 +34,12 @@
     <LinearLayout
         android:id="@+id/main_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:minHeight="200dp"
-        android:animateLayoutChanges="true"
-        android:background="@color/main00" >
+        android:layout_gravity="bottom"
+        android:background="@color/main_menu_trans"
+        android:animateLayoutChanges="true" >
 
         <ImageView
             android:id="@+id/main_expand"
@@ -79,16 +80,11 @@
 
                         <TextView
                             android:id="@+id/main_menu_00"
+                            style="@style/MainMenuItem"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center_horizontal"
                             android:drawableTop="@drawable/main_academic"
-                            android:text="@string/main_menu_00"
-                            android:textSize="16sp"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:clickable="true" />
+                            android:text="@string/main_menu_00"/>
 
                     </LinearLayout>
 
@@ -101,16 +97,11 @@
 
                         <TextView
                             android:id="@+id/main_menu_01"
+                            style="@style/MainMenuItem"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center_horizontal"
                             android:drawableTop="@drawable/main_campus"
-                            android:text="@string/main_menu_01"
-                            android:textSize="16sp"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:clickable="true" />
+                            android:text="@string/main_menu_01"/>
 
                     </LinearLayout>
 
@@ -123,16 +114,11 @@
 
                         <TextView
                             android:id="@+id/main_menu_02"
+                            style="@style/MainMenuItem"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center_horizontal"
                             android:drawableTop="@drawable/main_food"
-                            android:text="@string/main_menu_02"
-                            android:textSize="16sp"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:clickable="true" />
+                            android:text="@string/main_menu_02"/>
 
                     </LinearLayout>
 
@@ -154,16 +140,11 @@
 
                         <TextView
                             android:id="@+id/main_menu_10"
+                            style="@style/MainMenuItem"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center_horizontal"
                             android:drawableTop="@drawable/main_athletic"
-                            android:text="@string/main_menu_10"
-                            android:textSize="16sp"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:clickable="true" />
+                            android:text="@string/main_menu_10"/>
 
                     </LinearLayout>
 
@@ -176,16 +157,11 @@
 
                         <TextView
                             android:id="@+id/main_menu_11"
+                            style="@style/MainMenuItem"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center_horizontal"
                             android:drawableTop="@drawable/main_event"
-                            android:text="@string/main_menu_11"
-                            android:textSize="16sp"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:clickable="true" />
+                            android:text="@string/main_menu_11"/>
 
                     </LinearLayout>
 
@@ -198,16 +174,11 @@
 
                         <TextView
                             android:id="@+id/main_menu_12"
+                            style="@style/MainMenuItem"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center_horizontal"
                             android:drawableTop="@drawable/main_news"
-                            android:text="@string/main_menu_12"
-                            android:textSize="16sp"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:clickable="true" />
+                            android:text="@string/main_menu_12"/>
 
                     </LinearLayout>
 

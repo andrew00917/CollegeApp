@@ -129,9 +129,15 @@
     <style name="SpinnerStyle" parent="android:style/Widget.ListView.DropDown">
         <item name="android:divider">@color/silver</item>
         <item name="android:dividerHeight">1dp</item>
+    </style>
 
-
-
+    <style name="MainMenuItem">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/kzooOrange</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:clickable">true</item>
     </style>
 
 </resources>
