@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -76,17 +77,15 @@ public class ProfileActivity extends ActionBarActivity implements NavigationDraw
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.home_navigation_drawer);
-        mNavigationDrawerFragment.setUp(R.id.home_navigation_drawer, mDrawerLayout, mToolbar);
+//        mNavigationDrawerFragment.setUp(R.id.home_navigation_drawer, mDrawerLayout, mToolbar);
 
-        if (mNavigationDrawerFragment.isDrawerOpen()) {
-            mDrawerLayout.closeDrawer(Gravity.START);
-        }
+        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.kzooOrange));
+
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
 

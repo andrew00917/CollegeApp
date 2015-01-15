@@ -1,7 +1,9 @@
 package com.techhab.collegeapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +63,7 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        TextView id = (TextView) v.findViewById(R.id.profile_user_id);
+        TextView id = (TextView) v.findViewById(R.id.profile_user_full_name);
         TextView email = (TextView) v.findViewById(R.id.profile_user_email);
         id.setText(userId);
         email.setText(userEmail);
@@ -73,12 +75,16 @@ public class ProfileFragment extends Fragment {
         // summary provided for existing titles in strings.xml
         // Suggestion: use recycler view instead of listview.
         String[] titles = getActivity().getResources().getStringArray(R.array.profile_titles);
+        String[] subtitles = getActivity().getResources().getStringArray(R.array.profile_subtitles);
 
-        ArrayAdapter<String> mAdapter = new ArrayAdapter<>(getActivity()
-                , R.layout.profile_listview_row, R.id.title, titles);
+        /*ArrayAdapter<String> mAdapter = new ArrayAdapter<>(getActivity(),
+                R.layout.profile_listview_row, R.id.title, titles);*/
+
+        ProfileAdapter profileAdapter = new ProfileAdapter(getActivity(),
+                R.layout.profile_listview_row, titles, subtitles);
 
         // Assign adapter to ListView
-        mListView.setAdapter(mAdapter);
+        mListView.setAdapter(profileAdapter);
 
         // ListView Item Click Listener
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -99,6 +105,41 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    private class ProfileAdapter extends ArrayAdapter<String> {
+
+        Context context;
+        int layoutResourceId;
+        String[] titles = null;
+        String[] subtitles = null;
+
+
+        public ProfileAdapter(Context context, int layoutResourceId, String[] titles, String[] subtitles) {
+            super(context, layoutResourceId, titles);
+
+            this.context = context;
+            this.layoutResourceId = layoutResourceId;
+            this.titles = titles;
+            this.subtitles = subtitles;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup viewParent) {
+            if (convertView == null) {
+                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+                convertView = inflater.inflate(layoutResourceId, viewParent, false);
+            }
+
+            TextView title = (TextView) convertView.findViewById(R.id.title);
+            TextView subtitle = (TextView) convertView.findViewById(R.id.subtitle);
+
+            title.setText(titles[position]);
+            subtitle.setText(subtitles[position]);
+
+            return convertView;
+        }
+
     }
 
 }

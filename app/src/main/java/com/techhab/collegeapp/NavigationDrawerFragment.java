@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -132,6 +133,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                 selectItem(mCurrentSelectedPosition);
                 TextView id = (TextView) v.findViewById(R.id.nav_user_name);
                 TextView email = (TextView) v.findViewById(R.id.user_email);
+
+                mDrawerLayout.closeDrawer(Gravity.START);
+
                 Intent intent = new Intent(getActivity(), ProfileActivity.class);
                 intent.putExtra(USER_ID_KEY, id.getText().toString());
                 intent.putExtra(USER_EMAIL_KEY, email.getText().toString());

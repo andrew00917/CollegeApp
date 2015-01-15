@@ -63,6 +63,7 @@
     <string name="image_description_place">Venice, Italy</string>
 
     <!-- Navigation Drawer -->
+    <string name="my_profile">My Profile</string>
     <string-array name="nav_drawer_items">
         <item>Emergency Call</item>
         <item>About</item>
@@ -435,6 +436,11 @@
         <item>Financial info</item>
         <item>Employment</item>
     </string-array>
+    <string-array name="profile_subtitles">
+        <item>View my courses and grades from different quarters</item>
+        <item>View my financial profile</item>
+        <item>View my employment statement</item>
+    </string-array>
     <string name="profile_courses_title">My courses</string>
     <string name="profile_courses_summary">View my courses and grades from different quarters</string>
     <string name="profile_financial_title">Financial info</string>
@@ -442,7 +448,6 @@
     <string name="profile_employment_title">Employment</string>
     <string name="profile_employment_summary">View my employment statement</string>
 
-    <!-- Maps -->
     <string name="title_activity_maps">Campus Map</string>
     <string name="title_activity_academic">Academic</string>
     <string name="title_activity_campus">Campus</string>
@@ -451,6 +456,6 @@
     <string name="title_activity_events">Events</string>
     <string name="title_activity_news">News</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_profile">My Profile</string>
 
 </resources>

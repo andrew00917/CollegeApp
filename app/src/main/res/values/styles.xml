@@ -31,7 +31,6 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:dropDownListViewStyle">@style/SpinnerStyle</item>
-        <!--<item name="android:buttonStyle">@style/MaterialButton</item>-->
     </style>
 
     <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">

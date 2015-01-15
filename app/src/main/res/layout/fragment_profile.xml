@@ -11,34 +11,45 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal|bottom"
-        android:padding="16dp" >
+        android:gravity="bottom"
+        android:background="@color/kzooOrangeLight"
+        android:paddingTop="32dp"
+        android:paddingLeft="26dp"
+        android:paddingBottom="32dp">
 
-        <ImageView
+        <!--<ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="16dp"
-            android:src="@drawable/custom_progress_bar" />
+            android:src="@drawable/custom_progress_bar" />-->
 
         <TextView
-            android:id="@+id/profile_user_id"
+            android:id="@+id/profile_user_full_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
-            android:textColor="@color/abc_primary_text_material_light"
+            android:textColor="@color/white"
+            android:text="Griffin Smalley"
             android:textSize="@dimen/abc_text_size_headline_material"/>
 
         <TextView
             android:id="@+id/profile_user_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:textColor="@color/abc_secondary_text_material_light"
+            android:textColor="@color/white"
+            android:text="k13gs03@kzoo.edu"
+            android:paddingBottom="8dp"
             android:textSize="@dimen/abc_text_size_subhead_material"/>
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/profile_user_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/abc_text_size_subhead_material"
+            android:textColor="@color/white"
+            android:text="ID Number: 381341"/>
 
-    <include layout="@layout/card_divider" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/profile_listview"
