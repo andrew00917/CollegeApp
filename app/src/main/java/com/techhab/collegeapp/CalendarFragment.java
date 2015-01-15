@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,10 +17,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.ToggleButton;
+
+import com.techhab.rss.Calendar;
 
 import java.util.ArrayList;
 
@@ -145,11 +152,13 @@ public class CalendarFragment extends Fragment {
 
             public TextView mTextView;
             public TableLayout tableView;
+            public ToggleButton btViewMore;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 mTextView = (TextView) itemView.findViewById(R.id.term);
                 tableView = (TableLayout) itemView.findViewById(R.id.table_layout);
+                btViewMore = (ToggleButton) itemView.findViewById(R.id.calendar_view_more_button);
             }
         }
 
@@ -159,7 +168,7 @@ public class CalendarFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mTextView.setText(mDataset[position]);
             final TableLayout table = holder.tableView;
 
@@ -212,7 +221,52 @@ public class CalendarFragment extends Fragment {
                     row.addView(text, rowParam);
                 }
                 table.addView(row);
+
+                // view shorter list
+                int starterHeight;
+                View listItem = table.getChildAt(0);
+                listItem.measure(0, 0);
+                int heightOfChild = listItem.getMeasuredHeight();
+                starterHeight = (table.getChildCount() < 3 ? table.getChildCount() : 3) * heightOfChild;
+
+                ViewGroup.LayoutParams params = table.getLayoutParams();
+                params.height = starterHeight;
+                table.setLayoutParams(params);
+                table.requestLayout();
+                holder.btViewMore.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        holder.btViewMore.setEnabled(false);
+                        int height = getHeightToAdd(table, !holder.btViewMore.isChecked());
+                        Log.e("Calendar@@","Table Height: " + table.getMeasuredHeight() + " /Height: " + height);
+                        HeightAnimation heightAnimation = new HeightAnimation(table, height, holder.btViewMore.isChecked());
+                        heightAnimation.setDuration(300);
+                        table.startAnimation(heightAnimation);
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                holder.btViewMore.setEnabled(true);
+                                Log.e("Calendar: ","Table Height: " + table.getMeasuredHeight());
+                            }
+                        }, 600);
+                    }
+                });
+
             }
+        }
+
+        private int getHeightToAdd(TableLayout parent, boolean isCollapse)
+        {
+            View listItem = parent.getChildAt(0);
+            listItem.measure(0, 0);
+            int heightOfChild = listItem.getMeasuredHeight();
+            if (parent.getChildCount() <= 3)
+                return 0;
+            if (isCollapse)
+                return parent.getMeasuredHeight() - heightOfChild * 3;
+            return heightOfChild * parent.getChildCount() - parent.getMeasuredHeight();
+
         }
 
         @Override

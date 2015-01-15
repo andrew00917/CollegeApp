@@ -1,6 +1,7 @@
 package com.techhab.collegeapp;
 
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -120,21 +121,38 @@ public class RichardsonFragment extends Fragment {
         //todo: fake data for cafe
         Richardson = new FoodStore();
         Richardson.setStoreName("Richardson");
+
         Meal specials = new Meal();
         specials.setMealTitle("Specials");
-        specials.setSubTitle("Sandwiches");
-        List<String> breakfastMainLines = new ArrayList<String>();
-        specials.setSubTitle2("Soups");
-        breakfastMainLines.add("item 1");
-        specials.setMainLineItems(breakfastMainLines);
-        specials.setInternationalCornerItems(Arrays.asList("1", "2", "3", "4"));
-        specials.setOpenTimes(Arrays.asList(new TimeOfDay(10, 0), new TimeOfDay(10, 0),new TimeOfDay(15, 0)));
+        Subtitle sandwiches = new Subtitle();
+        sandwiches.setName("Sandwiches");
+        sandwiches.setItems(Arrays.asList("item 1"));
+        Subtitle soups = new Subtitle();
+        soups.setName("Soups");
+        soups.setItems(Arrays.asList("item1", "item2", "item3", "item4", "item5", "item6"));
+        specials.getSubtitles().add(sandwiches);
+        specials.getSubtitles().add(soups);
+        specials.setOpenTimes(Arrays.asList(new TimeOfDay(10, 0), new TimeOfDay(10, 0), new TimeOfDay(15, 0)));
         specials.setEndTimes(Arrays.asList(new TimeOfDay(24, 0), new TimeOfDay(18, 0), new TimeOfDay(24, 0)));
+
+        Meal groups = new Meal();
+        groups.setMealTitle("One Meal Swipe = One Choice From Each Group");
+        Subtitle groupA = new Subtitle();
+        groupA.setName("Group A");
+        groupA.setItems(Arrays.asList("item 1","item2", "item3"));
+        Subtitle groupB = new Subtitle();
+        groupB.setName("Group B");
+        groupB.setItems(Arrays.asList("item1", "item2", "item3", "item4"));
+        groups.getSubtitles().add(groupA);
+        groups.getSubtitles().add(groupB);
+
+        groups.setOpenTimes(Arrays.asList(new TimeOfDay(10, 0), new TimeOfDay(10, 0), new TimeOfDay(15, 0)));
+        groups.setEndTimes(Arrays.asList(new TimeOfDay(24, 0), new TimeOfDay(18, 0), new TimeOfDay(24, 0)));
 
 
         List<Meal> meals = new ArrayList<Meal>();
         meals.add(specials);
-
+        meals.add(groups);
 
 
         Richardson.setMealList(meals);
@@ -313,9 +331,19 @@ public class RichardsonFragment extends Fragment {
     {
         TextView tvFoodItem = new TextView(getActivity());
         tvFoodItem.setText("- " + foodName);
+        tvFoodItem.setPadding(20,0,0,0);
         tvFoodItem.setTextColor(getResources().getColor(R.color.primary_text_default_material_light));
 
         return tvFoodItem;
+    }
+
+    private TextView createSubtitleTextView(String subtitle)
+    {
+        TextView tvSubtitle = new TextView(getActivity());
+        tvSubtitle.setText(subtitle);
+        tvSubtitle.setTextColor(getResources().getColor(R.color.secondary_text_default_material_light));
+        return tvSubtitle;
+
     }
 
     private class FoodStore
@@ -374,10 +402,7 @@ public class RichardsonFragment extends Fragment {
     private class Meal
     {
         String mealTitle;
-        String subTitle;
-        String subTitle2;
-        private List<String> mainLineItems;
-        private List<String> internationalCornerItems;
+        private List<Subtitle> subtitles = new ArrayList<>();
         private List<TimeOfDay> openTimes;
         private List<TimeOfDay> endTimes;
 
@@ -386,45 +411,11 @@ public class RichardsonFragment extends Fragment {
             return mealTitle;
         }
 
-        public String getSubTitle()
-        {
-            return subTitle;
-        }
-        public String getSubTitle2()
-        {
-            return subTitle2;
-        }
         public void setMealTitle(String mealTitle)
         {
             this.mealTitle = mealTitle;
         }
-        public void setSubTitle(String subTitle)
-        {
-            this.subTitle = subTitle;
-        }
-        public void setSubTitle2(String subTitle2)
-        {
-            this.subTitle2 = subTitle2;
-        }
-        public List<String> getMainLineItems()
-        {
-            return mainLineItems;
-        }
 
-        public void setMainLineItems(List<String> mainLineItems)
-        {
-            this.mainLineItems = mainLineItems;
-        }
-
-        public List<String> getInternationalCornerItems()
-        {
-            return internationalCornerItems;
-        }
-
-        public void setInternationalCornerItems(List<String> internationalCornerItems)
-        {
-            this.internationalCornerItems = internationalCornerItems;
-        }
         public List<TimeOfDay> getOpenTimes() {
             return openTimes;
         }
@@ -440,8 +431,37 @@ public class RichardsonFragment extends Fragment {
         public void setEndTimes(List<TimeOfDay> endTimes) {
             this.endTimes = endTimes;
         }
+
+        public List<Subtitle> getSubtitles() {
+            return subtitles;
+        }
+
+        public void setSubtitles(List<Subtitle> subtitles) {
+            this.subtitles = subtitles;
+        }
     }
 
+    private class Subtitle
+    {
+        String name;
+        List<String> items;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public List<String> getItems() {
+            return items;
+        }
+
+        public void setItems(List<String> items) {
+            this.items = items;
+        }
+    }
     private class TimeOfDay
     {
         int hour;
@@ -504,8 +524,8 @@ public class RichardsonFragment extends Fragment {
         {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.food_wells_menu_item, viewGroup, false);
-            return new ViewHolder(rowView);
+            View rowView = inflater.inflate(R.layout.richarson_food_wells_menu_item, viewGroup, false);
+            return new ViewHolder(rowView, menuList.get(i));
         }
 
 
@@ -515,8 +535,6 @@ public class RichardsonFragment extends Fragment {
             final Meal meal = menuList.get(i);
             final MenuAdapter.ViewHolder menuViewHolder = (ViewHolder) viewHolder;
             menuViewHolder.tvTitle.setText(meal.getMealTitle());
-            menuViewHolder.tvTitle1.setText(meal.getSubTitle());
-            menuViewHolder.tvTitle2.setText(meal.getSubTitle2());
 
             loadMenu(menuViewHolder, meal);
             menuViewHolder.tbViewMore.setOnClickListener(new View.OnClickListener() {
@@ -526,10 +544,10 @@ public class RichardsonFragment extends Fragment {
 
                     if (menuViewHolder.tbViewMore.isChecked())
                     {
-                        expandCardView((ViewHolder) viewHolder);
+                        expandCardView((ViewHolder) viewHolder, meal);
 
                     } else {
-                        collapseCardView((ViewHolder) viewHolder);
+                        collapseCardView((ViewHolder) viewHolder, meal);
                     }
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -542,28 +560,27 @@ public class RichardsonFragment extends Fragment {
                 }
             });
 
+       }
+
+        private void expandCardView(ViewHolder viewHolder, Meal meal) {
+            for (int i = 0; i < meal.getSubtitles().size() ; i++)
+            {
+                HeightAnimation animation = new HeightAnimation(viewHolder.subtitleViewList.get(i),
+                        getHeightToAdd(viewHolder.subtitleViewList.get(i), true), true);
+                animation.setDuration(300);
+                viewHolder.subtitleViewList.get(i).startAnimation(animation);
+            }
         }
 
-        private void expandCardView(ViewHolder viewHolder) {
-            HeightAnimation animation = new HeightAnimation(viewHolder.llMainLines,
-                    getHeightToAdd(viewHolder.llMainLines, true), true);
-            animation.setDuration(300);
-            viewHolder.llMainLines.startAnimation(animation);
-            HeightAnimation animation1 = new HeightAnimation(viewHolder.llInternationalCorner,
-                    getHeightToAdd(viewHolder.llInternationalCorner, true), true);
-            animation1.setDuration(300);
-            viewHolder.llInternationalCorner.startAnimation(animation1);
-        }
+        private void collapseCardView(ViewHolder viewHolder, Meal meal) {
+            for (int i = 0; i < meal.getSubtitles().size() ; i++)
+            {
+                HeightAnimation animation = new HeightAnimation(viewHolder.subtitleViewList.get(i),
+                        getHeightToAdd(viewHolder.subtitleViewList.get(i), false), false);
+                animation.setDuration(300);
+                viewHolder.subtitleViewList.get(i).startAnimation(animation);
+            }
 
-        private void collapseCardView(ViewHolder viewHolder) {
-            HeightAnimation animation = new HeightAnimation(viewHolder.llMainLines,
-                    getHeightToAdd(viewHolder.llMainLines, false), false);
-            animation.setDuration(300);
-            viewHolder.llMainLines.startAnimation(animation);
-            HeightAnimation animation1 = new HeightAnimation(viewHolder.llInternationalCorner,
-                    getHeightToAdd(viewHolder.llInternationalCorner, false), false);
-            animation1.setDuration(300);
-            viewHolder.llInternationalCorner.startAnimation(animation1);
         }
 
         @Override
@@ -580,38 +597,43 @@ public class RichardsonFragment extends Fragment {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public TextView tvTitle;
-            public TextView tvTitle1;
-            public TextView tvTitle2;
-
-            public LinearLayout llMainLines;
-            public LinearLayout llInternationalCorner;
             public ToggleButton tbViewMore;
+            public List<LinearLayout> subtitleViewList = new ArrayList<>();
+            public LinearLayout llContent;
 
-            public ViewHolder(View itemView) {
+            public ViewHolder(View itemView, Meal meal) {
                 super(itemView);
                 tvTitle = (TextView) itemView.findViewById(R.id.menu_item_tvTitle);
-                tvTitle1 = (TextView) itemView.findViewById(R.id.fragment_cafeteria_tvMainLine);
-                tvTitle2 = (TextView) itemView.findViewById(R.id.fragment_cafeteria_tvInternationalCorner);
-                llMainLines = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llMainLine);
-                llInternationalCorner = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llInternationalCorner);
                 tbViewMore = (ToggleButton) itemView.findViewById(R.id.fragment_cafeteria_tbViewMore);
+                llContent = (LinearLayout) itemView.findViewById(R.id.food_wells_menu_item_llContent);
+                for (Subtitle subtitle : meal.getSubtitles())
+                {
+                    LinearLayout subtitleLayout = new LinearLayout(getActivity());
+                    subtitleLayout.setOrientation(LinearLayout.VERTICAL);
+                    ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    subtitleLayout.setLayoutParams(layoutParams);
+                    llContent.addView(subtitleLayout);
+                    subtitleViewList.add(subtitleLayout);
+
+                }
             }
 
         }
 
         private void loadMenu(MenuAdapter.ViewHolder viewHolder, Meal meal) {
 
-            for (int i = 0; i < meal.getMainLineItems().size(); i++) {
-                viewHolder.llMainLines.addView(createFoodItemView(meal.getMainLineItems().get(i)));
+            for (int j = 0; j < meal.getSubtitles().size(); j ++)
+            {
+                Subtitle subtitle = meal.getSubtitles().get(j);
+                viewHolder.subtitleViewList.get(j).addView(createSubtitleTextView(subtitle.getName()));
+                for (int i = 0; i < subtitle.getItems().size(); i++) {
+                    viewHolder.subtitleViewList.get(j).addView(createFoodItemView(subtitle.getItems().get(i)));
+                }
+
+                setListViewHeightBasedOnChildren(viewHolder.subtitleViewList.get(j));
+
             }
 
-            setListViewHeightBasedOnChildren(viewHolder.llMainLines);
-
-            for (int i = 0; i < meal.getInternationalCornerItems().size(); i++) {
-                viewHolder.llInternationalCorner.addView(createFoodItemView(meal.getInternationalCornerItems().get(i)));
-            }
-
-            setListViewHeightBasedOnChildren(viewHolder.llInternationalCorner);
         }
 
         /**
@@ -626,7 +648,7 @@ public class RichardsonFragment extends Fragment {
             View listItem = linearLayout.getChildAt(0);
             listItem.measure(0, 0);
             int heightOfChild = listItem.getMeasuredHeight();
-            starterHeight = (linearLayout.getChildCount() < 3 ? linearLayout.getChildCount() : 3) * heightOfChild;
+            starterHeight = (linearLayout.getChildCount() <3 ? linearLayout.getChildCount() : 4) * heightOfChild;
 
             ViewGroup.LayoutParams params = linearLayout.getLayoutParams();
             params.height = starterHeight;
@@ -645,7 +667,7 @@ public class RichardsonFragment extends Fragment {
         if (parent.getChildCount() <= 3)
             return 0;
         else
-            return heightOfChild * (parent.getChildCount() - 3);
+            return heightOfChild * (parent.getChildCount() - 4);
 
 
     }
