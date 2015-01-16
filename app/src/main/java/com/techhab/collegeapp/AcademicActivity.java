@@ -18,8 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 
-public class AcademicActivity extends ActionBarActivity
-        implements NavigationDrawerCallbacks {
+public class AcademicActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
     private final Handler handler = new Handler();
 

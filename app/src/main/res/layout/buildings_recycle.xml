@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:animateLayoutChanges="true"
     android:orientation="vertical"
-    app:style="@style/CardView">
+    style="@style/CardView">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -16,78 +15,37 @@
 
         <FrameLayout
             android:id="@+id/building_banner"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="150dp"
             android:background="@drawable/domo">
 
-            <FrameLayout
-                android:layout_width="fill_parent"
+            <TextView
+                android:id="@+id/building_title"
+                android:padding="16dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:padding="16dp">
-
-            </FrameLayout>
-            <LinearLayout
-                android:id="@+id/title_section"
-                android:layout_width="fill_parent"
                 android:layout_gravity="bottom"
-                android:layout_height="50dp"
-                android:background="#30000000"
-                android:orientation="horizontal">
+                style="@style/CardTitle"
+                android:textColor="@color/abc_primary_text_material_dark" />
 
-                <TextView
-                    android:id="@+id/building_title"
-                    android:layout_marginLeft="8dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/white"
-                    android:textSize="24sp" />
-            </LinearLayout>
         </FrameLayout>
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="Hello world! this iashd iadnd naoenfgoaenrf sndfpogn aernf opneordn asdof"
-            android:textColor="@color/primary_text_default_material_light"
-            />
-
 
         <TextView
             android:id="@+id/building_description"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:gravity="center_vertical"
+            android:padding="16dp"
             android:textColor="@color/primary_text_default_material_light"
-            android:textSize="14sp" />
+            android:textSize="@dimen/abc_text_size_body_1_material" />
 
-
-        <include
-            android:id="@+id/divider"
-            layout="@layout/card_divider" />
+        <include layout="@layout/card_divider" />
 
         <LinearLayout
             android:id="@+id/button_section"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
             android:gravity="end|center_vertical"
             android:orientation="horizontal">
-
-            <!--<ImageButton
-                android:id="@+id/mapit_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/content_description"
-                android:gravity="right"
-                android:src="@drawable/ic_mapit" />-->
 
             <Button
                 android:id="@+id/read_more_button"
@@ -95,7 +53,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondary_text_default_material_light"
-                android:layout_marginRight="0dp"
                 android:text="@string/read_more"/>
 
             <Button
@@ -103,8 +60,7 @@
                 style="@style/MaterialButtonFlat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="0dp"
-                android:textColor="@color/kzooOrange"
+                android:textColor="@color/main00"
                 android:text="@string/map_it"/>
 
         </LinearLayout>

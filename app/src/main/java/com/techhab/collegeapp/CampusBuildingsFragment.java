@@ -10,14 +10,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,14 +27,13 @@ import com.techhab.collegeapp.application.CollegeApplication;
 public class CampusBuildingsFragment extends Fragment {
 
     public static final String ARG_OBJECT = "object";
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     public CampusBuildingsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,31 +46,20 @@ public class CampusBuildingsFragment extends Fragment {
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
-//        // use a linear layout manager
-//        mLayoutManager = new LinearLayoutManager(this);
-//        mRecyclerView.setLayoutManager(mLayoutManager);
-//
-//        // specify an adapter (see also next example)
-//        mAdapter = new MyAdapter(myDataset);
-//        mRecyclerView.setAdapter(mAdapter);
-
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(
-                getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
         mRecyclerView.setLayoutManager(layoutManager);
 
-        String[] dataset = new String[2];
-        /*for (int i = 0; i < dataset.length; i++) {
-            dataset[i] = "item" + i;
-        }*/
-        dataset[0] = "HICKS CENTER";
-        dataset[1] = "HOBEN HALL";
+        String[] building = new String[2];
+        building[0] = "HICKS CENTER";
+        building[1] = "HOBEN HALL";
 //        dataset[2] = "Arcus Center";
 //        dataset[3] = "Hoben Hall";
 //        dataset[4] = "Here is a description of Hoben Hall";
@@ -88,60 +75,61 @@ public class CampusBuildingsFragment extends Fragment {
         Drawable[] drawable = new Drawable[2];
         Resources res = getResources();
         drawable[0] = res.getDrawable(R.drawable.domo);
-        drawable[1] = res.getDrawable(R.drawable.western_michigan_broncos);
+        drawable[1] = res.getDrawable(R.drawable.k_banner_night);
 
-
-
-
-        RecyclerAdapter mAdapter = new RecyclerAdapter(dataset, description, drawable, getActivity());
+        mAdapter = new RecyclerAdapter(building, description, drawable, getActivity());
         mRecyclerView.setAdapter(mAdapter);
+
         super.onViewCreated(view, savedInstanceState);
     }
 
+    /**
+     * Recycler Adapter
+     */
     public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
-        private String[] mDataset;
-        private Context mContext;
+        private String[] mBuilding;
         private String[] mDescription;
         private Drawable[] mDrawable;
+        private Context mContext;
+
+        public boolean[] isExpanded;
+        public int[] dimen;
 
         private void toggleVisibility (TextView text) {
-            if (text.getVisibility() == View.GONE)
+            if (text.getVisibility() == View.GONE) {
                 text.setVisibility(View.VISIBLE);
-            else
+            } else {
                 text.setVisibility(View.GONE);
+            }
         }
 
-        public RecyclerAdapter(String[] dataset, String[] description, Drawable[] drawable, Context context) {
-            mDataset = dataset;
-            mContext = context;
+        public RecyclerAdapter(String[] building, String[] description, Drawable[] drawable, Context context) {
+            mBuilding = building;
             mDrawable = drawable;
             mDescription = description;
+            mContext = context;
+
+            isExpanded = new boolean[mBuilding.length];
+            dimen = new int[mBuilding.length];
+
+            for(int i = 0; i < isExpanded.length; i++) {
+                isExpanded[i] = false;
+                dimen[i] = -1;
+            }
         }
 
-        // Not use static
+        // Do not use static
         public class ViewHolder extends RecyclerView.ViewHolder {
 
-            public TextView mTextView, mDescr;
+            public TextView mTextView, mExpandTextView;
             public FrameLayout mBanner;
-            public ImageButton button;
+            public Button button, readButton;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                mTextView = (TextView) itemView.findViewById(R.id.building_title);
-                mTextView.setOnClickListener(new View.OnClickListener(){
-                    public void onClick(View v) {
-                        toggleVisibility(mDescr);
-                    }
-                });
 
-                mDescr = (TextView) itemView.findViewById(R.id.building_description);
-                mDescr.setOnClickListener(new View.OnClickListener(){
-                    public void onClick(View v) {
-                        Toast.makeText(
-                                mContext,
-                                "Text should expand!" , Toast.LENGTH_LONG).show();
-                    }
-                });
+                mTextView = (TextView) itemView.findViewById(R.id.building_title);
+                mExpandTextView = (TextView) itemView.findViewById(R.id.building_description);
 
                 mBanner = (FrameLayout) itemView.findViewById(R.id.building_banner);
                 mBanner.setOnTouchListener(new View.OnTouchListener(){
@@ -152,7 +140,7 @@ public class CampusBuildingsFragment extends Fragment {
                                 break;
                             case MotionEvent.ACTION_UP:
                                 mBanner.getBackground().setColorFilter(null);
-                                toggleVisibility(mDescr);
+                                toggleVisibility(mExpandTextView);
                                 break;
                             case MotionEvent.ACTION_CANCEL:
                                 mBanner.getBackground().setColorFilter(null);
@@ -162,14 +150,20 @@ public class CampusBuildingsFragment extends Fragment {
                         return true;
                     }
                 });
-                button = (ImageButton) itemView.findViewById(R.id.mapit_button);
+
+                readButton = (Button) itemView.findViewById(R.id.read_more_button);
+                readButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        toggleVisibility(mExpandTextView);
+                    }
+                });
+
+                button = (Button) itemView.findViewById(R.id.mapit_button);
                 button.setOnClickListener(new View.OnClickListener(){
                     public void onClick(View v){
-                        Intent activityChangeIntent = new Intent(getActivity(), MapsActivity.class);
-
-                        // currentContext.startActivity(activityChangeIntent);
-
-                        getActivity().startActivity(activityChangeIntent);
+                        Intent activityChangeIntent = new Intent(mContext, MapsActivity.class);
+                        startActivity(activityChangeIntent);
                     }
                 });
             }
@@ -177,36 +171,47 @@ public class CampusBuildingsFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return mDataset.length;
+            return mBuilding.length;
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            String currentPos = mDataset[position];
+        public void onBindViewHolder(ViewHolder holder, int p) {
+            holder.mTextView.setText(mBuilding[p]);
+            holder.mExpandTextView.setText(mDescription[p]);
+            holder.mBanner.setBackground(mDrawable[p]);
 
-            switch (currentPos) {
-                case "Hicks Center":
-                    holder.mTextView.setText(currentPos);
-                    holder.mDescr.setText(mDescription[position]);
-                    holder.mBanner.setBackground(mDrawable[position]);
-                    break;
-                default:
-                    holder.mTextView.setText(currentPos);
-                    holder.mDescr.setText(mDescription[position]);
-                    holder.mBanner.setBackground(mDrawable[position]);
-            }
+            toggleVisibility(holder.mExpandTextView);
 
-
+            // Expanding animation goes here
+//            if ( dimen[p] == -1) {
+//                dimen[p] = holder.mExpandTextView.getHeight();
+//            }
+//
+//            final int position = p;
+//            final TextView tempExpandTextView = holder.mExpandTextView;
+//
+//            holder.readButton.setOnClickListener(new Button.OnClickListener(){
+//                public void onClick(View view) {
+//                    if ( ! isExpanded[position]) {
+//                        HeightAnimation animation = new HeightAnimation(tempExpandTextView, dimen[position], true);
+//                        animation.setDuration(300);
+//                        tempExpandTextView.startAnimation(animation);
+//                        isExpanded[position] = true;
+//                    } else {
+//                        HeightAnimation animation = new HeightAnimation(tempExpandTextView, dimen[position], false);
+//                        animation.setDuration(300);
+//                        tempExpandTextView.startAnimation(animation);
+//                        isExpanded[position] = false;
+//                    }
+//                }
+//            });
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.buildings_recycle, parent, false);
-            ViewHolder holder = new ViewHolder(view);
-            return holder;
+            return new ViewHolder(view);
         }
-
     }
-
 }
