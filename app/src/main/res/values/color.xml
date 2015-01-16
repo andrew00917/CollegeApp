@@ -11,6 +11,7 @@
 
     <!-- Kzoo College colors -->
     <color name="kzooOrange">#E27226</color>
+    <color name="kzooOrangeLight">#E5813C</color>
     <color name="main00">#E27226</color>
     <color name="main01">#E26526</color>
     <color name="main10">#E25826</color>

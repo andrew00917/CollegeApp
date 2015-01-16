@@ -47,8 +47,17 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:background="@color/drawerDivider"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="16dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/theGray"
+        android:text="@string/my_profile"/>
 
     <!-- Content ListView -->
     <ListView

@@ -63,6 +63,7 @@
     <string name="image_description_place">Venice, Italy</string>
 
     <!-- Navigation Drawer -->
+    <string name="my_profile">My Profile</string>
     <string-array name="nav_drawer_items">
         <item>Emergency Call</item>
         <item>About</item>
@@ -123,6 +124,7 @@
     <string name="label_building_Hicks_Center">Hicks Center</string>
     <string name="map_it">MAP IT</string>
     <string name="read_more">READ MORE</string>
+
     <!-- Cafeteria(DetailedCafeteriaFragment) -->
     <string name="open">OPEN</string>
     <string name="closed">CLOSED</string>
@@ -136,14 +138,14 @@
     <string name="label_cafeteria_breakfast">BreakFast</string>
     <string name="label_cafeteria_lunch">Lunch</string>
     <string name="label_cafeteria_dinner">Dinner</string>
-    <!-- Cafeteria(GroceryFragment) -->
-    <string name="label_grocery_walgreens">Walgreens</string>
-    <string name="label_grocery_meijers">Meijers</string>
-    <string name="label_grocery_farmersMarket">Farmers Market</string>
-    <string name="label_grocery_hardingsMarkets">Hardings Markets</string>
-    <string name="label_grocery_irvingMarket">Irving Market</string>
-    <string name="label_grocery_laMexicanaMarket">La Mexicana Market</string>
-    <string name="label_grocery_pacificRimFoods">Pacific Rim Foods</string>
+
+    <string name="monday_friday">Monday - Friday</string>
+    <string name="mealtimes_mf">Breakfast: 7:30 - 10am\nLunch: 11 - 1:30pm\nDinner: 5 - 7:30pm</string>
+    <string name="lunch_mf">Lunch: 11 - 1:30pm</string>
+    <string name="dinner_mf">Dinner: 5 - 7:30pm</string>
+
+    <string name="saturday">Saturday</string>
+
 
     <!-- Athletic Activity -->
     <string name="men">MEN\'S</string>
@@ -422,6 +424,7 @@
     <string name="setting_notification_title">Notifications</string>
     <string name="setting_notification_summary">Notify me with campus-wide information and updates to app</string>
     <string name="setting_user_controls">User controls</string>
+<<<<<<< HEAD
     <string name="setting_setup_pin_title">Set up PIN</string>
     <string name="setting_setup_pin_summary">Set up a 4-digit PIN number that can be used instead of your password for this app</string>
     <string name="setting_modify_pin_title">Modify your PIN</string>
@@ -434,6 +437,36 @@
     <string name="title_activity_cafeteria">Dining Information</string>
 
     <!-- Maps -->
+=======
+    <string name="setting_setup_pin_title">Set up pin</string>
+    <string name="setting_setup_pin_summary">Set up a 4-digit pin number that can be used instead of your password for this app</string>
+    <string name="setting_modify_pin_title">Modify your pin</string>
+    <string name="setting_modify_pin_summary">Modify your 4-digit pin number</string>
+    <string name="setting_forget_pin_title">Forget your pin</string>
+    <string name="setting_forget_pin_summary">Forget your existing 4-digit pin number to use your school password instead</string>
+    <string name="setting_logout_title">Logout</string>
+    <string name="setting_logout_summary">Logout and discard your saved settings for this app</string>
+    <string name="title_activity_cafeteria">Dining Information</string>
+
+    <!-- Profile Activity -->
+    <string-array name="profile_titles">
+        <item>My courses</item>
+        <item>Financial info</item>
+        <item>Employment</item>
+    </string-array>
+    <string-array name="profile_subtitles">
+        <item>View my courses and grades from different quarters</item>
+        <item>View my financial profile</item>
+        <item>View my employment statement</item>
+    </string-array>
+    <string name="profile_courses_title">My courses</string>
+    <string name="profile_courses_summary">View my courses and grades from different quarters</string>
+    <string name="profile_financial_title">Financial info</string>
+    <string name="profile_financial_summary">View my financial profile</string>
+    <string name="profile_employment_title">Employment</string>
+    <string name="profile_employment_summary">View my employment statement</string>
+
+>>>>>>> dev
     <string name="title_activity_maps">Campus Map</string>
     <string name="title_activity_academic">Academic</string>
     <string name="title_activity_campus">Campus</string>
@@ -442,6 +475,10 @@
     <string name="title_activity_events">Events</string>
     <string name="title_activity_news">News</string>
     <string name="title_activity_settings">Settings</string>
+<<<<<<< HEAD
     <string name="title_activity_pin">PINActivity</string>
+=======
+    <string name="title_activity_profile">My Profile</string>
+>>>>>>> dev
 
 </resources>

@@ -99,10 +99,6 @@ public class AthleticActivity extends ActionBarActivity
         getSupportActionBar().setTitle(getResources().getString(R.string.main_menu_10));
         mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.kzooOrange));
 
-        /*String strColor = String.format("#%06X", 0xff9e501b);
-        Log.d("strColor", strColor);*/
-
-
         // Handle Boys/Girls toggle switch
         // Set a custom track drawable to keep it from "highlighting" upon selection
         Drawable genderSwitchTrack = getResources().getDrawable(

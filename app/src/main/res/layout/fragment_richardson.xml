@@ -4,29 +4,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/WhiteSmoke"
-    tools:context="com.techhab.collegeapp.CafeteriaFragment">
+    tools:context="com.techhab.collegeapp.RichardsonFragment">
 
 
     <LinearLayout
-        android:id="@+id/panel_side_cafeteria"
+        android:id="@+id/panel_side_richardson"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:showDividers="middle"
         android:orientation="vertical"
+        android:showDividers="middle"
         android:divider="?android:dividerHorizontal">
-        <LinearLayout android:id="@+id/richardson_status_bar"
+
+        <LinearLayout android:id="@+id/richrdson_status_bar"
             android:layout_width="match_parent"
-            android:background="@color/green"
+            android:background="@drawable/caf_status_bar_background"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
             android:orientation="vertical">
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+                <!-- <TextView android:id="@+id/fragment_cafeteria_tvInfo1"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:textSize="20dp"
+                     android:textColor="@color/white"
+                     android:text="@string/open"/>-->
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+                    <!--android:background="@color/OpenGreen"-->
+
                     <ImageView
                         android:id="@+id/fragment_cafeteria_image"
                         android:layout_width="60dp"
@@ -35,22 +44,26 @@
                         android:src="@drawable/open_sign"/>
 
                 </FrameLayout>
-                <TextView android:id="@+id/fragment_cafeteria_tvInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/abc_secondary_text_material_dark"
-                    android:gravity="center_vertical"
-                    android:layout_gravity="center_vertical"
-                    android:text="Closes in 2 hours"
-                    />
 
                 <FrameLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="fill_parent">
 
-                    <ImageButton
-                        android:id="@+id/ibExpandable"
+                    <TextView android:id="@+id/fragment_richardson_tvInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/abc_secondary_text_material_dark"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center_vertical"
+                        android:text="Closes in 2 hours"
+                        android:singleLine="true"
+                        android:layout_marginRight="5dp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/status_bar_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -58,25 +71,38 @@
                         android:layout_marginRight="12dp"
                         android:layout_gravity="center_vertical|right"
                         />
+
                 </FrameLayout>
+
             </LinearLayout>
 
-            <TextView android:id="@+id/fragment_cafeteria_tvTimeDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:textSize="16dp"
-                android:paddingTop="4dp"
-                android:textColor="@color/abc_secondary_text_material_dark"
-                android:layout_marginLeft="70dp"
-                android:text="Monday-Friday 8:00-10:00pm\nSaturdays 12:00-6:00pm\nSundays 10-7pm"
-                />
+            <LinearLayout
+                android:id="@+id/status_bar_extended_info_frame"
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp">
 
+
+                <TextView
+                    android:id="@+id/status_bar_extended_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:paddingTop="4dp"
+                    android:textColor="@color/abc_secondary_text_material_dark"
+                    android:layout_marginLeft="70dp"
+                    android:text="Monday-Friday 8:00-10:00pm\nSaturdays 12:00-6:00pm\nSundays 10-7pm"
+                    />
+
+            </LinearLayout>
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_cafeteria_rvMenu"
+            android:id="@+id/fragment_richardson_rvMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_cafeteria_spinner"
+            android:descendantFocusability="afterDescendants"
             />
 
     </LinearLayout>

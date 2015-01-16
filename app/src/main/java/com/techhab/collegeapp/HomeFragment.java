@@ -156,7 +156,7 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
                         intent = new Intent(getActivity(), EventsActivity.class);
                         break;
                     case MAIN_12_ID:
-                        intent = new Intent(getActivity(), NewsActivity.class);
+                        intent = new Intent(getActivity(), MapsActivity.class);
                         break;
                     case MAIN_EXPAND_ID:
                         if (isExpanded) {
