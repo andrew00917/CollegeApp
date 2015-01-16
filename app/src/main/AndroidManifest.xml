@@ -106,6 +106,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
+        <activity
+        android:name=".PINSetupActivity"
+        android:label="@string/title_activity_pin" >
+        </activity>
     </application>
 
 </manifest>

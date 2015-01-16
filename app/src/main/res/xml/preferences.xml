@@ -2,25 +2,29 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="@string/setting_general"
-        android:key="pref_key_general_settings">
+        android:key="pref_key_general_settings"
+        android:title="@string/setting_general">
 
         <CheckBoxPreference
+            android:defaultValue="true"
             android:key="pref_key_notification"
             android:summary="@string/setting_notification_summary"
-            android:title="@string/setting_notification_title"
-            android:defaultValue="true" />
+            android:title="@string/setting_notification_title" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/setting_user_controls"
-        android:key="pref_key_user_control_settings">
+        android:key="pref_key_user_control_settings"
+        android:title="@string/setting_user_controls">
 
-        <Preference
-            android:key="pref_key_setup_pin"
-            android:summary="@string/setting_setup_pin_summary"
-            android:title="@string/setting_setup_pin_title" />
+        <PreferenceScreen android:title="@string/setting_setup_pin_title"
+            android:summary="@string/setting_setup_pin_summary">
+            <intent
+                android:action="android.intent.action.MAIN"
+                android:targetPackage="com.techhab.collegeapp"
+                android:targetClass="com.techhab.collegeapp.PINSetupActivity"
+                />
+        </PreferenceScreen>
 
         <Preference
             android:key="pref_key_modify_pin"

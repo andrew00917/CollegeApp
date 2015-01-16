@@ -2,10 +2,13 @@ package com.techhab.collegeapp;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 /**
  * Created by jhchoe on 11/01/15.
