@@ -13,7 +13,6 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
@@ -23,11 +22,11 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.KZOO" >
-
         <service
             android:name="com.techhab.rss.EventsRssService"
             android:exported="false" />
-        <service android:name="com.techhab.rss.SportsRssService"
+        <service
+            android:name="com.techhab.rss.SportsRssService"
             android:exported="false" />
 
         <meta-data
@@ -41,7 +40,7 @@
 
         <!-- Home Activity -->
         <activity
-            android:name="com.techhab.collegeapp.HomeActivity"
+            android:name=".HomeActivity"
             android:label="@string/college" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,68 +51,69 @@
 
         <!-- Main Menu Activities -->
         <activity
-            android:name="com.techhab.collegeapp.AcademicActivity"
+            android:name=".AcademicActivity"
             android:label="@string/title_activity_academic" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
         <activity
-            android:name="com.techhab.collegeapp.CampusActivity"
+            android:name=".CampusActivity"
             android:label="@string/title_activity_campus" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
         <activity
-            android:name="com.techhab.collegeapp.FoodActivity"
+            android:name=".FoodActivity"
             android:label="@string/title_activity_food" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
         <activity
-            android:name="com.techhab.collegeapp.AthleticActivity"
-            android:theme="@style/Theme.NeutralSwitchStyle"
-            android:label="@string/title_activity_athletic" >
+            android:name=".AthleticActivity"
+            android:label="@string/title_activity_athletic"
+            android:theme="@style/Theme.NeutralSwitchStyle" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
         <activity
-            android:name="com.techhab.collegeapp.EventsActivity"
+            android:name=".EventsActivity"
             android:label="@string/title_activity_events" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
         <activity
-            android:name="com.techhab.collegeapp.NewsActivity"
+            android:name=".NewsActivity"
             android:label="@string/title_activity_news" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
-
-
         <activity
-            android:name="com.techhab.collegeapp.InfoActivity"
+            android:name=".InfoActivity"
             android:label="@string/title_activity_info" >
         </activity>
         <activity
-            android:name="com.techhab.collegeapp.MapsActivity"
+            android:name=".MapsActivity"
             android:label="@string/title_activity_maps" >
         </activity>
 
         <!-- Drawer Activities -->
         <activity
-            android:name="com.techhab.collegeapp.SettingsActivity"
+            android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
-
+        <activity
+            android:name=".PINSetupActivity"
+            android:label="@string/title_activity_pin" >
+        </activity>
     </application>
 
 </manifest>
