@@ -5,6 +5,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.techhab.collegeapp.R;
@@ -15,20 +18,24 @@ public class PINSetupActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         boolean wrapInScrollView = true;
+//        View passDialog = R.layout.dialog_password;
+        final EditText passDialogText = (EditText) findViewById(R.id.password);
         new MaterialDialog.Builder(this)
                 .title("Enter Password")
+                .customView(R.layout.dialog_password, wrapInScrollView)
+                .positiveText("OK")
+                .negativeText("Cancel")
                 .callback( new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
+
+                        Toast.makeText(getApplicationContext(), passDialogText.getText()+"hooo", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onNegative(MaterialDialog dialog) {
                     }
                 })
-                .customView(R.layout.dialog_password, wrapInScrollView)
-                .positiveText("OK")
-                .negativeText("Cancel")
                 .build()
                 .show();
         setContentView(R.layout.activity_pin);

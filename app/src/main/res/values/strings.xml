@@ -424,7 +424,6 @@
     <string name="setting_notification_title">Notifications</string>
     <string name="setting_notification_summary">Notify me with campus-wide information and updates to app</string>
     <string name="setting_user_controls">User controls</string>
-<<<<<<< HEAD
     <string name="setting_setup_pin_title">Set up PIN</string>
     <string name="setting_setup_pin_summary">Set up a 4-digit PIN number that can be used instead of your password for this app</string>
     <string name="setting_modify_pin_title">Modify your PIN</string>
@@ -436,17 +435,6 @@
     <string name="setting_password">Please enter your password</string>
     <string name="title_activity_cafeteria">Dining Information</string>
 
-    <!-- Maps -->
-=======
-    <string name="setting_setup_pin_title">Set up pin</string>
-    <string name="setting_setup_pin_summary">Set up a 4-digit pin number that can be used instead of your password for this app</string>
-    <string name="setting_modify_pin_title">Modify your pin</string>
-    <string name="setting_modify_pin_summary">Modify your 4-digit pin number</string>
-    <string name="setting_forget_pin_title">Forget your pin</string>
-    <string name="setting_forget_pin_summary">Forget your existing 4-digit pin number to use your school password instead</string>
-    <string name="setting_logout_title">Logout</string>
-    <string name="setting_logout_summary">Logout and discard your saved settings for this app</string>
-    <string name="title_activity_cafeteria">Dining Information</string>
 
     <!-- Profile Activity -->
     <string-array name="profile_titles">
@@ -466,7 +454,7 @@
     <string name="profile_employment_title">Employment</string>
     <string name="profile_employment_summary">View my employment statement</string>
 
->>>>>>> dev
+
     <string name="title_activity_maps">Campus Map</string>
     <string name="title_activity_academic">Academic</string>
     <string name="title_activity_campus">Campus</string>
@@ -475,10 +463,8 @@
     <string name="title_activity_events">Events</string>
     <string name="title_activity_news">News</string>
     <string name="title_activity_settings">Settings</string>
-<<<<<<< HEAD
     <string name="title_activity_pin">PINActivity</string>
-=======
     <string name="title_activity_profile">My Profile</string>
->>>>>>> dev
+
 
 </resources>

@@ -87,20 +87,6 @@
                 android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
         <activity
-<<<<<<< HEAD
-            android:name=".NewsActivity"
-            android:label="@string/title_activity_news" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techhab.collegeapp.HomeActivity" />
-        </activity>
-        <activity
-            android:name=".InfoActivity"
-            android:label="@string/title_activity_info" >
-        </activity>
-        <activity
-=======
->>>>>>> dev
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" >
         </activity>
@@ -114,16 +100,15 @@
                 android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
         <activity
-<<<<<<< HEAD
-            android:name=".PINSetupActivity"
-            android:label="@string/title_activity_pin" >
-=======
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techhab.collegeapp.HomeActivity" />
->>>>>>> dev
+        </activity>
+        <activity
+        android:name=".PINSetupActivity"
+        android:label="@string/title_activity_pin" >
         </activity>
     </application>
 
