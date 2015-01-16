@@ -37,13 +37,15 @@
             android:gravity="end|center_vertical"
             android:orientation="horizontal">
 
-            <Button
+            <ToggleButton
                 android:id="@+id/calendar_view_more_button"
                 style="@style/MaterialButtonFlat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/kzooOrange"
-                android:text="@string/view_more"/>
+                android:textOff="@string/view_more"
+                android:textOn="@string/view_less"
+                android:gravity="center"/>
 
         </LinearLayout>
 

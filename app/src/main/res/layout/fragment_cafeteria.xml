@@ -16,12 +16,12 @@
 
             <LinearLayout android:id="@+id/cafeteria_status_bar"
                 android:layout_width="match_parent"
-                android:background="@color/green"
+                android:background="@drawable/caf_status_bar_background"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
                 android:orientation="vertical">
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                <!-- <TextView android:id="@+id/fragment_cafeteria_tvInfo1"
@@ -43,34 +43,242 @@
                             android:src="@drawable/open_sign"/>
 
                         </FrameLayout>
+                    
+                        <FrameLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent">
 
-                        <TextView android:id="@+id/fragment_cafeteria_tvInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="16dp"
-                            android:layout_marginLeft="5dp"
-                            android:textColor="@color/abc_secondary_text_material_dark"
-                            android:gravity="center_vertical"
-                            android:layout_gravity="center_vertical"
-                            android:text="Closes in 2 hours"
-                            android:singleLine="true"
-                            android:drawableRight="@drawable/ic_action_expand"
-                            android:drawablePadding="3dp"
-                            android:layout_marginRight="5dp"
-                            />
+                            <TextView android:id="@+id/fragment_cafeteria_tvInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="16dp"
+                                android:layout_marginLeft="5dp"
+                                android:textColor="@color/abc_secondary_text_material_dark"
+                                android:gravity="center_vertical"
+                                android:layout_gravity="center_vertical"
+                                android:text="Closes in 2 hours"
+                                android:singleLine="true"
+                                android:layout_marginRight="5dp"
+                                />
 
+                            <ImageView
+                                android:id="@+id/status_bar_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:src="@drawable/ic_action_expand"
+                                android:layout_marginRight="12dp"
+                                android:layout_gravity="center_vertical|right"
+                                />
+
+                        </FrameLayout>
 
                     </LinearLayout>
 
-                <TextView android:id="@+id/fragment_cafeteria_tvTimeDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:textSize="16dp"
-                    android:paddingTop="4dp"
-                    android:textColor="@color/abc_secondary_text_material_dark"
-                    android:layout_marginLeft="70dp"
-                    android:text="Monday-Friday 8:00-10:00pm\nSaturdays 12:00-6:00pm\nSundays 10-7pm"
-                    />
+                <LinearLayout
+                    android:id="@+id/status_bar_extended_info_frame"
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_height="0dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        style="@style/CardSubtitle"
+                        android:text="Hours of Operations"/>
+
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp">
+
+                        <TableRow
+                            android:id="@+id/schedule_table_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:weightSum="1">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="M-F" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="Saturdays" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="Sundays" />
+
+
+                        </TableRow>
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="6dp"
+                            android:weightSum="1">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:gravity="left"
+                                android:text="Breakfast" />
+
+                            <TextView
+                                android:id="@+id/cafeteria_mF_tvBreakfastTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="14sp"
+                                android:gravity="center"
+                                android:text="7:30-10am" />
+
+                            <TextView
+                                android:id="@+id/cafeteria_saturday_tvBreakfastTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="14sp"
+                                android:gravity="center"
+                                android:text="9:30-11am" />
+
+                            <TextView
+                                android:id="@+id/cafeteria_sunday_tvBreakfastTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="14sp"
+                                android:gravity="center"
+                                android:text="-" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="6dp"
+                            android:weightSum="1">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:gravity="left"
+                                android:text="Lunch" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="14sp"
+                                android:gravity="center"
+                                android:text="11-1:30pm" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="14sp"
+                                android:gravity="center"
+                                android:text="-" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="14sp"
+                                android:gravity="center"
+                                android:text="-" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:weightSum="1">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25"
+                                android:gravity="left"
+                                android:text="Dinner" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="14sp"
+                                android:gravity="center"
+                                android:text="5-7:30pm" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="14sp"
+                                android:gravity="center"
+                                android:text="5-7pm" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/primary_text_default_material_light"
+                                android:layout_weight="0.25"
+                                android:textSize="14sp"
+                                android:gravity="center"
+                                android:text="5-7pm" />
+
+                        </TableRow>
+                    </TableLayout>
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="@string/monday_friday"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:textColor="@color/abc_secondary_text_material_dark"/>-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="@string/mealtimes_mf"-->
+                        <!--android:textColor="@color/abc_secondary_text_material_dark"/>-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="@string/saturday"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:textColor="@color/abc_secondary_text_material_dark"/>-->
+
+
+                    </LinearLayout>
 
             </LinearLayout>
 

@@ -54,9 +54,9 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_richardson, parent, false);
-        rvMenu = (RecyclerView) v.findViewById(R.id.fragment_cafeteria_rvMenu);
-        tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
-        tvTimeDetailInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvTimeDetail);
+        rvMenu = (RecyclerView) v.findViewById(R.id.fragment_richardson_rvMenu);
+        tvTimeInfo = (TextView) v.findViewById(R.id.fragment_richardson_tvInfo);
+        tvTimeDetailInfo = (TextView) v.findViewById(R.id.status_bar_extended_info);
 
         tvTimeInfo.setOnClickListener(this);
         //todo: fake data for Richardson
