@@ -45,9 +45,9 @@ public class ProfileActivity extends ActionBarActivity implements NavigationDraw
 
     /*  Navigation Drawer Stuff */
     public DrawerLayout mDrawerLayout;
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+//    private NavigationDrawerFragment mNavigationDrawerFragment;
     private Toolbar mToolbar;
-    public ActionBarDrawerToggle mDrawerToggle;
+//    public ActionBarDrawerToggle mDrawerToggle;
 
     // Boolean recording whether the activity has been resumed so that
     // the logic in onSessionStateChange is only executed if this is the case
@@ -79,12 +79,12 @@ public class ProfileActivity extends ActionBarActivity implements NavigationDraw
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.home_navigation_drawer);
+//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        mNavigationDrawerFragment = (NavigationDrawerFragment)
+//                getSupportFragmentManager().findFragmentById(R.id.home_navigation_drawer);
 //        mNavigationDrawerFragment.setUp(R.id.home_navigation_drawer, mDrawerLayout, mToolbar);
 
-        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.kzooOrange));
+//        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.kzooOrange));
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -103,11 +103,11 @@ public class ProfileActivity extends ActionBarActivity implements NavigationDraw
 
     @Override
     public void onBackPressed() {
-        if (mNavigationDrawerFragment.isDrawerOpen()) {
-            mDrawerLayout.closeDrawer(Gravity.START);
-        } else {
+//        if (mNavigationDrawerFragment.isDrawerOpen()) {
+//            mDrawerLayout.closeDrawer(Gravity.START);
+//        } else {
             super.onBackPressed();
-        }
+//        }
     }
 
     @Override
@@ -186,9 +186,9 @@ public class ProfileActivity extends ActionBarActivity implements NavigationDraw
                 return true;
         }
 
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
+//        if (mDrawerToggle.onOptionsItemSelected(item)) {
+//            return true;
+//        }
         return super.onOptionsItemSelected(item);
     }
 

@@ -35,18 +35,18 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 
-public class CampusActivity extends ActionBarActivity
-        implements NavigationDrawerCallbacks {
-
-        private final Handler handler = new Handler();
-
-        Toolbar toolbar;
+public class CampusActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
 
+    private final Handler handler = new Handler();
 
-        private int currentPosition;
     //from Fragment
     public static final String ARG_OBJECT = "object";
+
+    Toolbar toolbar;
+
+    private int currentPosition;
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
