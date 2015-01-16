@@ -87,17 +87,6 @@
                 android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
         <activity
-            android:name=".NewsActivity"
-            android:label="@string/title_activity_news" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techhab.collegeapp.HomeActivity" />
-        </activity>
-        <activity
-            android:name=".InfoActivity"
-            android:label="@string/title_activity_info" >
-        </activity>
-        <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" >
         </activity>
