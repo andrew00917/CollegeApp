@@ -15,7 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
-public class FoodActivity extends ActionBarActivity
+public class DiningActivity extends ActionBarActivity
             implements NavigationDrawerCallbacks {
 
         private final Handler handler = new Handler();
@@ -29,7 +29,7 @@ public class FoodActivity extends ActionBarActivity
 
         private int currentPosition;
 
-        public FoodActivity() {
+        public DiningActivity() {
             super();
         }
 
@@ -111,7 +111,7 @@ public class FoodActivity extends ActionBarActivity
          */
         public class MyPagerAdapter extends FragmentPagerAdapter {
 
-            private final String[] TITLES = {"Cafeteria", "Richardson", "BookClub"};
+            private final String[] TITLES = {"Cafeteria", "Stacks", "Book Club"};
 
             public MyPagerAdapter(FragmentManager fm) {
                 super(fm);

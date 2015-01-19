@@ -2,17 +2,13 @@ package com.techhab.collegeapp;
 
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.Time;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +18,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -33,10 +28,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
 
 
 public class CafeteriaFragment extends Fragment {
+
     public static final String ARG_OBJECT = "object";
     private static int selectedPosition = 0;
     private static final int MF_INDEX = 0;
@@ -45,16 +40,20 @@ public class CafeteriaFragment extends Fragment {
     // Buttons Cafeteria
     private View v;
     private FoodStore cafeteriaStore;
-    private TextView tvTimeInfo;
+    private TextView timeLeftText;
     private ImageView statusBarArrow;
     private LinearLayout statusBarExtendedInfoFrame;
-    private RecyclerView rvMenu;
+    private RecyclerView mealsRecyclerView;
     private LinearLayout statusBar;
     private boolean isBreakfastCollapse = true;
     private RecyclerView.LayoutManager mLayoutManager;
-    private Spinner cafeteriaSpinner;
+    private Spinner daySpinner;
     private int currentBarColor;
     private boolean isExpanded = false;
+    private Calendar mCalender;
+    private int mCurrentTime;
+    private int dayNum;
+    private boolean isOpen;
 
     private static final int RICHARDSON = 1;
 
@@ -65,17 +64,31 @@ public class CafeteriaFragment extends Fragment {
         return fragment;
     }
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_cafeteria, parent, false);
-        rvMenu = (RecyclerView) v.findViewById(R.id.fragment_cafeteria_rvMenu);
-        tvTimeInfo = (TextView) v.findViewById(R.id.fragment_cafeteria_tvInfo);
-        statusBarExtendedInfoFrame = (LinearLayout) v.findViewById(R.id.status_bar_extended_info_frame);
-        statusBar = (LinearLayout) v.findViewById(R.id.cafeteria_status_bar);
 
+        mCalender = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HHmm");
+        // Global variable that holds the 24 hour time and minutes (11:30pm is 2330)
+        mCurrentTime = Integer.parseInt(dateFormat.format(mCalender.getTime()));
+
+        // Round mCurrentTime to nears multiple of five to keep things clean
+        mCurrentTime = (int) Math.floor((mCurrentTime + 5/2) / 5) * 5;
+
+        dayNum = mCalender.get(Calendar.DAY_OF_WEEK);
+
+        isOpen = isOpen();
+
+        mealsRecyclerView = (RecyclerView) v.findViewById(R.id.meals_recycler_view);
+        timeLeftText = (TextView) v.findViewById(R.id.time_left_text);
+        statusBarExtendedInfoFrame = (LinearLayout) v.findViewById(
+                R.id.status_bar_extended_info_frame);
+        statusBar = (LinearLayout) v.findViewById(R.id.cafeteria_status_bar);
 
         statusBar.setClickable(true);
 
@@ -95,33 +108,35 @@ public class CafeteriaFragment extends Fragment {
         });
 
 
-        cafeteriaSpinner = (Spinner) v.findViewById(R.id.fragment_cafeteria_spinner);
+        daySpinner = (Spinner) v.findViewById(R.id.day_spinner);
         ArrayList<String> days = new ArrayList<>();
         // populate the days arraylist with 4 entries. The first two will always be
         // "Today" and "Tomorrow", but the last 2 entries must be programmatically determined
         // using the current date.
         days.add("Today");
         days.add("Tomorrow");
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        GregorianCalendar gregorianCalendar1 = new GregorianCalendar();
-        gregorianCalendar.add(Calendar.DATE, 2);
-        gregorianCalendar1.add(Calendar.DATE, 3);
+
+        Calendar mCalender = Calendar.getInstance();
         SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
-        String thirdDay = dayFormat.format(gregorianCalendar.getTime());
-        String forthDay = dayFormat.format(gregorianCalendar1.getTime());
+
+        mCalender.add(Calendar.DATE, 2);
+        String thirdDay = dayFormat.format(mCalender.getTime());
+
+        mCalender.add(Calendar.DATE, 1);
+        String fourthDay = dayFormat.format(mCalender.getTime());
+
         days.add(thirdDay);
-        days.add(forthDay);
-        CustomAdapter spinnerAdapter = new CustomAdapter(getActivity(), android.R.layout.simple_spinner_item, days);
+        days.add(fourthDay);
+
+        CustomAdapter spinnerAdapter = new CustomAdapter(getActivity(),
+                android.R.layout.simple_spinner_item, days);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        cafeteriaSpinner.setSelection(0, false);
-        cafeteriaSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-
+        daySpinner.setSelection(0, false);
+        daySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             // after the item is selected in the spinner it should refresh the fragment
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (selectedPosition  != position)
-                {
+                if (selectedPosition != position) {
                     selectedPosition = position;
                     reloadFragment();
                 }
@@ -133,29 +148,202 @@ public class CafeteriaFragment extends Fragment {
             }
         });
 
-        cafeteriaSpinner.setAdapter(spinnerAdapter);
+        daySpinner.setAdapter(spinnerAdapter);
 
         setupData();
 
         mLayoutManager = new LinearLayoutManager(getActivity());
-        rvMenu.setLayoutManager(mLayoutManager);
-        rvMenu.setAdapter(new MenuAdapter(getActivity(), cafeteriaStore.getMealList()));
+        mealsRecyclerView.setLayoutManager(mLayoutManager);
+        mealsRecyclerView.setAdapter(new MealsRecyclerAdapter(getActivity(),
+                cafeteriaStore.getMealList()));
 
-       // for changing the color of the status bar based on the time, as well as the image for open/close sign
-        long remainTime = getRemainTime();
-        if (remainTime >= 0)
-        {
-            currentBarColor = R.color.green;
-            statusBar.setBackgroundColor(getResources().getColor(R.color.green));
-            ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
+        setUpStatusBar();
 
-        } else {
-            currentBarColor = R.color.red;
-            statusBar.setBackgroundColor(getResources().getColor(R.color.red));
-            ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
-        }
-        displayStatusBar(remainTime);
         return v;
+    }
+
+    private void setUpStatusBar() {
+        if ( isOpen() ) {
+            statusBar.setBackgroundColor(getResources().getColor(R.color.green));
+            ((ImageView) v.findViewById(R.id.status_bar_open_closed_sign))
+                    .setImageResource(R.drawable.open_sign);
+            timeLeftText.setText(getTimeRemainingUntilClose());
+        } else {
+            statusBar.setBackgroundColor(getResources().getColor(R.color.red));
+            ((ImageView) v.findViewById(R.id.status_bar_open_closed_sign))
+                    .setImageResource(R.drawable.closed_sign);
+            timeLeftText.setText(getTimeRemainingUntilOpen());
+        }
+    }
+
+    /**
+     * Determines when the caf is open
+     *
+     * @return whether or not the caf is open
+     */
+    private boolean isOpen() {
+        // Check to see if the day is a weekday
+        if ( dayNum <= 5 ) {
+            // Check to see if caf is open
+            return timeIsBetween(mCurrentTime, 730, 1000) ||
+                    timeIsBetween(mCurrentTime, 1100, 1330) ||
+                    timeIsBetween(mCurrentTime, 1700, 1930);
+        } else if ( dayNum == 6) { // Saturday
+            return timeIsBetween(mCurrentTime, 930, 1100) ||
+                    timeIsBetween(mCurrentTime, 1115, 1315) ||
+                    timeIsBetween(mCurrentTime, 1700, 1900);
+        } else { // Sunday
+            return timeIsBetween(mCurrentTime, 1115, 1315) ||
+                    timeIsBetween(mCurrentTime, 1700, 1900);
+        }
+
+    }
+
+    /**
+     * Returns the amount of time remaining until the caf closes
+     *
+     * @return time remaining until close
+     */
+    private String getTimeRemainingUntilClose() {
+        // Check to see if the day is a weekday
+        if ( dayNum <= 5 ) {
+            // Check to see if caf is open
+            if ( timeIsBetween(mCurrentTime, 730, 1000) ) {
+                return timeUntil(1000);
+            } else if ( timeIsBetween(mCurrentTime, 1100, 1330) ) {
+                return timeUntil(1330);
+            } else if ( timeIsBetween(mCurrentTime, 1700, 1930) ) {
+                return timeUntil(1930);
+            }
+        } else if ( dayNum == 6) { // Saturday
+            if ( timeIsBetween(mCurrentTime, 930, 1100) ) {
+                return timeUntil(1100);
+            } else if ( timeIsBetween(mCurrentTime, 1115, 1315) ) {
+                return timeUntil(1315);
+            } else if ( timeIsBetween(mCurrentTime, 1700, 1900) ) {
+                return timeUntil(1900);
+            }
+        } else { // Sunday
+            if ( timeIsBetween(mCurrentTime, 1115, 1315) ) {
+                return timeUntil(1315);
+            } else if ( timeIsBetween(mCurrentTime, 1700, 1900) ) {
+                return timeUntil(1900);
+            }
+        }
+        return "Caf is currently open";
+    }
+
+    private String getTimeRemainingUntilOpen() {
+
+        if ( 1 <= dayNum && dayNum <= 5 ) { // Weekday
+            if ( mCurrentTime < 730 ) {
+                return timeUntil(730);
+            } else if ( mCurrentTime < 1100 ) {
+                return timeUntil(1100);
+            } else if ( mCurrentTime < 1700 ) {
+                return timeUntil(1700);
+            }
+        } else if ( dayNum == 6) { // Saturday
+            if ( mCurrentTime < 930 ) {
+                return timeUntil(930);
+            } else if ( mCurrentTime < 1115 ) {
+                return timeUntil(1115);
+            } else if ( mCurrentTime < 1700 ) {
+                return timeUntil(1700);
+            }
+        } else { // Sunday
+            if ( mCurrentTime < 1115 ) {
+                return timeUntil(1115);
+            } else if ( mCurrentTime < 1700 ) {
+                return timeUntil(1700);
+            }
+        }
+        return timeUntilTomorrow();
+    }
+
+    private String timeUntilTomorrow() {
+        String openTime;
+        int dayNumTomorrow;
+
+        // Roll over
+        if ( dayNum == 7 ) {
+            dayNumTomorrow = 1;
+        } else {
+            dayNumTomorrow = dayNum + 1;
+        }
+
+        if ( 1 <= dayNumTomorrow && dayNumTomorrow <= 5 ) {
+            openTime = "7:30 AM";
+        } else if ( dayNumTomorrow == 6 ) {
+            openTime = "9:30 AM";
+        } else {
+            openTime = "11:15 AM";
+        }
+
+        return "Opens tomorrow at " + openTime;
+    }
+
+    private String timeUntil(int laterDate) {
+        // Convert both dates to minutes from midnight, find difference, convert back
+        int startMinutes = minutesSinceMidnight(mCurrentTime);
+        int endMinutes = minutesSinceMidnight(laterDate);
+
+        int dif = endMinutes - startMinutes;
+
+        int hour = dif / 60;
+        int min = dif % 60;
+
+        String hoursPart = hour + " hours";
+        String minutesPart = " and " + min + " minutes";
+
+        if (hour == 0 ) {
+            hoursPart = "";
+            minutesPart = min + " minutes";
+        } else if ( hour == 1 ) {
+            hoursPart = "an hour";
+        }
+
+        if ( min == 0 ) {
+            minutesPart = "";
+        } else if ( min == 30 ) {
+            hoursPart = hour + "";
+            minutesPart = " and a half hours";
+        } else if ( min == 5 ) {
+            minutesPart = "a few minutes";
+        }
+
+        if ( min == 30 && hour == 0 ) {
+            hoursPart = "";
+            minutesPart = "half an hour";
+        }
+
+        if ( isOpen ) {
+            return "Closes in " + hoursPart + minutesPart;
+        } else {
+            return "Opens in " + hoursPart + minutesPart;
+        }
+    }
+
+    public static int minutesSinceMidnight(int milTime) {
+        double time = milTime / 100d;
+
+        int hours = (int) Math.floor(time);
+        int minutes = milTime % 100;
+
+        return (hours * 60) + minutes;
+    }
+
+    /**
+     *  Helper function to clean up the isOpen() method. Simply checks to see if the the
+     *  time is between the last two parameters.
+     *
+     * @param time the current time
+     * @param openTime the starting time
+     * @param closeTime the ending time
+     * @return Whether or not time is between openTime and closeTime
+     */
+    private boolean timeIsBetween(int time, long openTime, int closeTime) {
+        return openTime <= time && time < closeTime;
     }
 
 
@@ -176,7 +364,8 @@ public class CafeteriaFragment extends Fragment {
         Meal lunch = new Meal();
         lunch.setMealTitle("Lunch");
 
-        lunch.setMainLineItems(Arrays.asList("item1","item2","item3","item4","item5","item6","item7"));
+        lunch.setMainLineItems(Arrays.asList("item1","item2","item3","item4",
+                "item5","item6","item7"));
         List<String> internationalCorner1 = new ArrayList<String>();
         internationalCorner1.add("item1");
         internationalCorner1.add("item2");
@@ -267,24 +456,6 @@ public class CafeteriaFragment extends Fragment {
 
     }
 
-
-
-    private long getRemainTime()
-    {
-        Calendar currentTime = Calendar.getInstance();
-        int dayOfWeek = currentTime.get(Calendar.DAY_OF_WEEK);
-        switch (dayOfWeek)
-        {
-            case Calendar.SUNDAY:
-                return countRemainTime(currentTime.getTimeInMillis(), SUNDAY_INDEX);
-            case Calendar.SATURDAY:
-                return countRemainTime(currentTime.getTimeInMillis(), SATURDAY_INDEX);
-            default:
-                return countRemainTime(currentTime.getTimeInMillis(), MF_INDEX);
-        }
-
-    }
-
     private long  countRemainTime(long currentTime, int dayIndex)
     {
         long openTime = 0;
@@ -330,59 +501,6 @@ public class CafeteriaFragment extends Fragment {
     }
 
 
-
-    private void displayStatusBar(final long remainTime)
-    {
-
-        new CountDownTimer(Math.abs(remainTime), 1000) {
-            public void onTick(long millisUntilFinished) {
-
-                int days = (int) ((millisUntilFinished / 1000) / 86400);
-                int hours = (int) (((millisUntilFinished / 1000) - (days
-                        * 86400)) / 3600);
-                int minutes = (int) (((millisUntilFinished / 1000) - ((days
-                        * 86400) + (hours * 3600))) / 60);
-                int seconds = (int) ((millisUntilFinished / 1000) % 60);
-
-
-                if (remainTime >= 0)
-                {
-                    if (hours == 0 && minutes <= 30 && currentBarColor != R.color.Yellow)
-                    {
-                        currentBarColor = R.color.Yellow;
-                        statusBar.setBackgroundColor(getResources().getColor(R.color.Yellow));
-                    }
-                    else if ((hours > 0 || minutes > 30) && currentBarColor != R.color.green)
-                    {
-                        currentBarColor = R.color.green;
-                        statusBar.setBackgroundColor(getResources().getColor(R.color.green));
-                    }
-                    tvTimeInfo.setText(
-                            "Closing in " + hours + " hours and " + minutes + " minutes"
-                    );} else {
-                    if (currentBarColor != R.color.red)
-                    {
-                        currentBarColor = R.color.red;
-                        statusBar.setBackgroundColor(getResources().getColor(R.color.red));
-                    }
-                    tvTimeInfo.setText(
-                            "Opening in"+ " " + hours + "hours and " + minutes + " minutes");
-                }
-
-            }
-
-            public void onFinish() {
-                displayStatusBar(getRemainTime());
-
-            }
-        }.start();
-    }
-
-    private void PhoneCall(String phoneNumber) {
-        Intent phoneIntent = new Intent(Intent.ACTION_CALL);
-        phoneIntent.setData(Uri.parse("tel:" + phoneNumber));
-        startActivity(phoneIntent);
-    }
 
     private TextView createFoodItemView(String foodName)
     {
@@ -548,12 +666,12 @@ public class CafeteriaFragment extends Fragment {
                     .commit();
     }
 
-    private class MenuAdapter extends RecyclerView.Adapter
+    private class MealsRecyclerAdapter extends RecyclerView.Adapter
     {
         private List<Meal> mealList;
         private Context context;
         private int heightToAdd;
-        private MenuAdapter(Context context, List<Meal> mealList)
+        private MealsRecyclerAdapter(Context context, List<Meal> mealList)
         {
             this.context = context;
             this.mealList = mealList;
@@ -574,7 +692,7 @@ public class CafeteriaFragment extends Fragment {
         public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int i)
         {
             final Meal meal = mealList.get(i);
-            final MenuAdapter.ViewHolder menuViewHolder = (ViewHolder) viewHolder;
+            final MealsRecyclerAdapter.ViewHolder menuViewHolder = (ViewHolder) viewHolder;
             menuViewHolder.tvTitle.setText(meal.getMealTitle());
             menuViewHolder.tvTitle.setText(meal.getMealTitle());
 
@@ -649,7 +767,7 @@ public class CafeteriaFragment extends Fragment {
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                tvTitle = (TextView) itemView.findViewById(R.id.menu_item_tvTitle);
+                tvTitle = (TextView) itemView.findViewById(R.id.meal_title);
                 llMainLines = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llMainLine);
                 llInternationalCorner = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llInternationalCorner);
                 tbViewMore = (ToggleButton) itemView.findViewById(R.id.fragment_cafeteria_tbViewMore);
@@ -658,7 +776,7 @@ public class CafeteriaFragment extends Fragment {
 
         }
 
-        private void loadMenu(MenuAdapter.ViewHolder viewHolder, Meal meal) {
+        private void loadMenu(MealsRecyclerAdapter.ViewHolder viewHolder, Meal meal) {
 
             for (int i = 0; i < meal.getMainLineItems().size(); i++) {
                 viewHolder.llMainLines.addView(createFoodItemView(meal.getMainLineItems().get(i)));
@@ -709,7 +827,7 @@ public class CafeteriaFragment extends Fragment {
 
     }
 
-// setting up a custom adapter for spinner
+    // setting up a custom adapter for spinner
     private class CustomAdapter extends ArrayAdapter<String> {
 
         private ArrayList<String> days;

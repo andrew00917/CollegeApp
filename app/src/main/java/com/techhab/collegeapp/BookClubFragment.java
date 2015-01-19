@@ -200,7 +200,7 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.fragment_cafeteria_tvInfo:
+            case R.id.time_left_text:
                 tvTimeDetailInfo.setVisibility(tvTimeDetailInfo.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
 
 
@@ -397,7 +397,7 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                tvTitle = (TextView) itemView.findViewById(R.id.menu_item_tvTitle);
+                tvTitle = (TextView) itemView.findViewById(R.id.meal_title);
                 tvTitle1 = (TextView) itemView.findViewById(R.id.fragment_cafeteria_tvMainLine);
                 tvTitle2 = (TextView) itemView.findViewById(R.id.fragment_cafeteria_tvInternationalCorner);
                 llMainLines = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llMainLine);

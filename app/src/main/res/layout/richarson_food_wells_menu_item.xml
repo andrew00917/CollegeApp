@@ -13,6 +13,50 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <FrameLayout
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/breakfast" >
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:padding="16dp" >
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="end"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:textColor="@color/white" />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/meal_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:padding="16dp"
+                android:textSize="20sp"
+                android:text="Breakfast"
+                android:background="@color/thirty_percent_opacity"
+                android:textColor="@color/white" />
+
+        </FrameLayout>
+
         <LinearLayout
             android:id="@+id/food_wells_menu_item_llContent"
             android:layout_width="match_parent"

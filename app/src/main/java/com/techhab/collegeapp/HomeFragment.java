@@ -10,8 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,7 +19,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.techhab.collegeapp.application.CollegeApplication;
@@ -147,7 +144,7 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
                         intent = new Intent(getActivity(), CampusActivity.class);
                         break;
                     case MAIN_02_ID:
-                        intent = new Intent(getActivity(), FoodActivity.class);
+                        intent = new Intent(getActivity(), DiningActivity.class);
                         break;
                     case MAIN_10_ID:
                         intent = new Intent(getActivity(), AthleticActivity.class);

@@ -37,7 +37,7 @@
                     <!--android:background="@color/OpenGreen"-->
 
                     <ImageView
-                        android:id="@+id/fragment_cafeteria_image"
+                        android:id="@+id/status_bar_open_closed_sign"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_margin="5dp"
@@ -101,7 +101,7 @@
             android:id="@+id/fragment_richardson_rvMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_cafeteria_spinner"
+            android:layout_below="@+id/day_spinner"
             android:descendantFocusability="afterDescendants"
             />
 

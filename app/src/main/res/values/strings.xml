@@ -65,6 +65,7 @@
     <!-- Navigation Drawer -->
     <string name="my_profile">My Profile</string>
     <string-array name="nav_drawer_items">
+        <item>Announcements</item>
         <item>Emergency Call</item>
         <item>About</item>
         <item>Log Out</item>
