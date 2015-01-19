@@ -344,7 +344,7 @@ public class BookClubFragment extends Fragment implements View.OnClickListener {
         {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.food_wells_menu_item, viewGroup, false);
+            View rowView = inflater.inflate(R.layout.caf_meal_card, viewGroup, false);
             return new ViewHolder(rowView);
         }
 

@@ -54,6 +54,23 @@ public class CafeteriaFragment extends Fragment {
     private int mCurrentTime;
     private int dayNum;
     private boolean isOpen;
+    private Meal mCurrentMeal;
+    private List<Meal> meals;
+
+    private final int breakfastOpenTimeWeekday = 730;
+    private final int breakfastCloseTimeWeekday = 1000;
+    private final int breakfastOpenTimeSaturday = 930;
+    private final int breakfastCloseTimeSaturday = 1100;
+
+    private final int brunchOpenTimeSatOrSun = 1115;
+    private final int brunchCloseTimeSatOrSun = 1315;
+
+    private final int lunchOpenTimeWeekday = 1100;
+    private final int lunchCloseTimeWeekday = 1330;
+
+    private final int dinnerOpenTime = 1700;
+    private final int dinnerCloseTimeWeekday = 1930;
+    private final int dinnerCloseTimeSatOrSun = 1900;
 
     private static final int RICHARDSON = 1;
 
@@ -82,7 +99,10 @@ public class CafeteriaFragment extends Fragment {
 
         dayNum = mCalender.get(Calendar.DAY_OF_WEEK);
 
+        setUpMeals();
+
         isOpen = isOpen();
+
 
         mealsRecyclerView = (RecyclerView) v.findViewById(R.id.meals_recycler_view);
         timeLeftText = (TextView) v.findViewById(R.id.time_left_text);
@@ -150,7 +170,7 @@ public class CafeteriaFragment extends Fragment {
 
         daySpinner.setAdapter(spinnerAdapter);
 
-        setupData();
+//        setupData();
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mealsRecyclerView.setLayoutManager(mLayoutManager);
@@ -158,6 +178,7 @@ public class CafeteriaFragment extends Fragment {
                 cafeteriaStore.getMealList()));
 
         setUpStatusBar();
+
 
         return v;
     }
@@ -182,21 +203,50 @@ public class CafeteriaFragment extends Fragment {
      * @return whether or not the caf is open
      */
     private boolean isOpen() {
+
+        for (int i = 0; i < meals.size(); i++) {
+            if ( meals.get(i).isCurrentMeal() ) {
+                mCurrentMeal = meals.get(i);
+                return true;
+            }
+        }
+        return false;
+
+        /*
         // Check to see if the day is a weekday
         if ( dayNum <= 5 ) {
             // Check to see if caf is open
-            return timeIsBetween(mCurrentTime, 730, 1000) ||
-                    timeIsBetween(mCurrentTime, 1100, 1330) ||
-                    timeIsBetween(mCurrentTime, 1700, 1930);
+            if ( timeIsBetween(mCurrentTime, breakfastOpenTimeWeekday, breakfastCloseTimeWeekday) ) {
+                mCurrentMeal = "breakfast";
+                return true;
+            } else if ( timeIsBetween(mCurrentTime, lunchOpenTimeWeekday, lunchCloseTimeWeekday) ) {
+                mCurrentMeal = "lunch";
+                return true;
+            } else if ( timeIsBetween(mCurrentTime, dinnerOpenTime, dinnerCloseTimeWeekday ) ) {
+                mCurrentMeal = "dinner";
+                return true;
+            }
         } else if ( dayNum == 6) { // Saturday
-            return timeIsBetween(mCurrentTime, 930, 1100) ||
-                    timeIsBetween(mCurrentTime, 1115, 1315) ||
-                    timeIsBetween(mCurrentTime, 1700, 1900);
+            if ( timeIsBetween(mCurrentTime, breakfastOpenTimeSaturday, breakfastCloseTimeSaturday) ) {
+                mCurrentMeal = "breakfast";
+                return true;
+            } else if ( timeIsBetween(mCurrentTime, brunchOpenTimeSatOrSun, brunchCloseTimeSatOrSun) ) {
+                mCurrentMeal = "brunch";
+                return true;
+            } else if ( timeIsBetween(mCurrentTime, dinnerOpenTime, dinnerCloseTimeSatOrSun) ) {
+                mCurrentMeal = "dinner";
+                return true;
+            }
         } else { // Sunday
-            return timeIsBetween(mCurrentTime, 1115, 1315) ||
-                    timeIsBetween(mCurrentTime, 1700, 1900);
+            if ( timeIsBetween(mCurrentTime, brunchOpenTimeSatOrSun, brunchCloseTimeSatOrSun) ) {
+                mCurrentMeal = "brunch";
+                return true;
+            } else if ( timeIsBetween(mCurrentTime, dinnerOpenTime, dinnerCloseTimeSatOrSun) ) {
+                mCurrentMeal = "dinner";
+                return true;
+            }
         }
-
+        return false;*/
     }
 
     /**
@@ -208,54 +258,53 @@ public class CafeteriaFragment extends Fragment {
         // Check to see if the day is a weekday
         if ( dayNum <= 5 ) {
             // Check to see if caf is open
-            if ( timeIsBetween(mCurrentTime, 730, 1000) ) {
-                return timeUntil(1000);
-            } else if ( timeIsBetween(mCurrentTime, 1100, 1330) ) {
-                return timeUntil(1330);
-            } else if ( timeIsBetween(mCurrentTime, 1700, 1930) ) {
-                return timeUntil(1930);
+            if ( timeIsBetween(mCurrentTime, breakfastOpenTimeWeekday, breakfastCloseTimeWeekday) ) {
+                return timeUntil(breakfastCloseTimeWeekday);
+            } else if ( timeIsBetween(mCurrentTime, lunchOpenTimeWeekday, lunchCloseTimeWeekday) ) {
+                return timeUntil(lunchCloseTimeWeekday);
+            } else if ( timeIsBetween(mCurrentTime, dinnerOpenTime, dinnerCloseTimeWeekday) ) {
+                return timeUntil(dinnerCloseTimeWeekday);
             }
         } else if ( dayNum == 6) { // Saturday
-            if ( timeIsBetween(mCurrentTime, 930, 1100) ) {
-                return timeUntil(1100);
-            } else if ( timeIsBetween(mCurrentTime, 1115, 1315) ) {
-                return timeUntil(1315);
-            } else if ( timeIsBetween(mCurrentTime, 1700, 1900) ) {
-                return timeUntil(1900);
+            if ( timeIsBetween(mCurrentTime, breakfastOpenTimeSaturday, breakfastCloseTimeSaturday) ) {
+                return timeUntil(breakfastCloseTimeSaturday);
+            } else if ( timeIsBetween(mCurrentTime, brunchOpenTimeSatOrSun, brunchCloseTimeSatOrSun) ) {
+                return timeUntil(brunchCloseTimeSatOrSun);
+            } else if ( timeIsBetween(mCurrentTime, dinnerOpenTime, dinnerCloseTimeSatOrSun) ) {
+                return timeUntil(dinnerCloseTimeSatOrSun);
             }
         } else { // Sunday
-            if ( timeIsBetween(mCurrentTime, 1115, 1315) ) {
-                return timeUntil(1315);
-            } else if ( timeIsBetween(mCurrentTime, 1700, 1900) ) {
-                return timeUntil(1900);
+            if ( timeIsBetween(mCurrentTime, brunchOpenTimeSatOrSun, brunchCloseTimeSatOrSun) ) {
+                return timeUntil(brunchCloseTimeSatOrSun);
+            } else if ( timeIsBetween(mCurrentTime, dinnerOpenTime, dinnerCloseTimeSatOrSun) ) {
+                return timeUntil(dinnerCloseTimeSatOrSun);
             }
         }
         return "Caf is currently open";
     }
 
     private String getTimeRemainingUntilOpen() {
-
-        if ( 1 <= dayNum && dayNum <= 5 ) { // Weekday
-            if ( mCurrentTime < 730 ) {
-                return timeUntil(730);
-            } else if ( mCurrentTime < 1100 ) {
-                return timeUntil(1100);
-            } else if ( mCurrentTime < 1700 ) {
-                return timeUntil(1700);
+        if ( dayNum <= 5 ) { // Weekday
+            if ( mCurrentTime < breakfastOpenTimeWeekday ) {
+                return timeUntil(breakfastOpenTimeWeekday);
+            } else if ( mCurrentTime < lunchOpenTimeWeekday ) {
+                return timeUntil(lunchOpenTimeWeekday);
+            } else if ( mCurrentTime < dinnerOpenTime ) {
+                return timeUntil(dinnerOpenTime);
             }
         } else if ( dayNum == 6) { // Saturday
-            if ( mCurrentTime < 930 ) {
-                return timeUntil(930);
-            } else if ( mCurrentTime < 1115 ) {
-                return timeUntil(1115);
-            } else if ( mCurrentTime < 1700 ) {
-                return timeUntil(1700);
+            if ( mCurrentTime < breakfastOpenTimeSaturday ) {
+                return timeUntil(breakfastOpenTimeSaturday);
+            } else if ( mCurrentTime < brunchOpenTimeSatOrSun) {
+                return timeUntil(brunchOpenTimeSatOrSun);
+            } else if ( mCurrentTime < dinnerOpenTime ) {
+                return timeUntil(dinnerOpenTime);
             }
         } else { // Sunday
-            if ( mCurrentTime < 1115 ) {
-                return timeUntil(1115);
-            } else if ( mCurrentTime < 1700 ) {
-                return timeUntil(1700);
+            if ( mCurrentTime < brunchOpenTimeSatOrSun) {
+                return timeUntil(brunchOpenTimeSatOrSun);
+            } else if ( mCurrentTime < dinnerOpenTime ) {
+                return timeUntil(dinnerOpenTime);
             }
         }
         return timeUntilTomorrow();
@@ -346,26 +395,63 @@ public class CafeteriaFragment extends Fragment {
         return openTime <= time && time < closeTime;
     }
 
+    private void setUpMeals() {
+        // There are no meals, add them depending on the day
 
+        // Construct the meals
+        Meal breakfast = new Meal("Breakfast");
+        Meal brunch = new Meal("Brunch");
+        Meal lunch = new Meal("Lunch");
+        Meal dinner = new Meal("Dinner");
 
-    private void setupData() {
+        if ( dayNum <= 5 ) {
+            breakfast.setTimes(breakfastOpenTimeWeekday, breakfastCloseTimeWeekday);
+            meals.add(breakfast);
+
+            lunch.setTimes(lunchOpenTimeWeekday, lunchCloseTimeWeekday);
+            meals.add(lunch);
+
+            dinner.setTimes(dinnerOpenTime, dinnerCloseTimeWeekday);
+            meals.add(dinner);
+        } else if ( dayNum == 6) { // Saturday
+            breakfast.setTimes(breakfastOpenTimeSaturday, breakfastCloseTimeSaturday);
+            meals.add(breakfast);
+
+            brunch.setTimes(brunchOpenTimeSatOrSun, brunchCloseTimeSatOrSun);
+            meals.add(brunch);
+
+            dinner.setTimes(dinnerOpenTime, dinnerCloseTimeSatOrSun);
+            meals.add(dinner);
+        } else { // Sunday
+            brunch.setTimes(brunchOpenTimeSatOrSun, brunchCloseTimeSatOrSun);
+            meals.add(brunch);
+
+            dinner.setTimes(dinnerOpenTime, dinnerCloseTimeSatOrSun);
+            meals.add(dinner);
+        }
+    }
+
+    /*private void setupData() {
         //todo: fake data for cafe
         cafeteriaStore = new FoodStore();
         cafeteriaStore.setStoreName("Cafeteria");
         Meal breakfast = new Meal();
         breakfast.setMealTitle("Breakfast");
         List<String> breakfastMainLines = new ArrayList<String>();
-        breakfastMainLines.add("item 1");
-        breakfast.setMainLineItems(breakfastMainLines);
+        breakfastMainLines.add("Scrambled Eggs");
+        breakfastMainLines.add("Bacon");
+        breakfastMainLines.add("Hash Browns");
+        breakfast.addMainLineItems(breakfastMainLines);
         breakfast.setInternationalCornerItems(Arrays.asList("1", "2", "3", "4"));
+        Integer[] openTimes = new Integer[] {730, breakfastOpenTimeSaturday};
         breakfast.setOpenTimes(Arrays.asList(new TimeOfDay(7, 30), new TimeOfDay(9, 30), null));
         breakfast.setEndTimes(Arrays.asList(new TimeOfDay(10, 0), new TimeOfDay(11, 0), null));
 
         Meal lunch = new Meal();
         lunch.setMealTitle("Lunch");
 
-        lunch.setMainLineItems(Arrays.asList("item1","item2","item3","item4",
-                "item5","item6","item7"));
+        lunch.addMainLineItems(Arrays.asList("item1", "item2", "item3", "item4",
+                "item5", "item6", "item7"));
         List<String> internationalCorner1 = new ArrayList<String>();
         internationalCorner1.add("item1");
         internationalCorner1.add("item2");
@@ -382,7 +468,7 @@ public class CafeteriaFragment extends Fragment {
         mainLines2.add("item3");
         mainLines2.add("item4");
         mainLines2.add("item5");
-        dinner.setMainLineItems(mainLines2);
+        dinner.addMainLineItems(mainLines2);
         List<String> internationalCorner2 = new ArrayList<String>();
         internationalCorner2.add("item1");
         internationalCorner2.add("item2");
@@ -391,6 +477,7 @@ public class CafeteriaFragment extends Fragment {
         internationalCorner2.add("item5");
         internationalCorner2.add("item6");
         dinner.setInternationalCornerItems(internationalCorner2);
+//        dinner.setOpenTimes(Integer[] );
         dinner.setOpenTimes(Arrays.asList(new TimeOfDay(17, 0), new TimeOfDay(17, 0), new TimeOfDay(17, 0)));
         dinner.setEndTimes(Arrays.asList(new TimeOfDay(19, 30), new TimeOfDay(19, 0), new TimeOfDay(19, 0)));
 
@@ -401,7 +488,7 @@ public class CafeteriaFragment extends Fragment {
 
 
         cafeteriaStore.setMealList(meals);
-    }
+    }*/
 
     private void expandStatusBar() {
         if ( ! isExpanded ) { // Expand
@@ -456,41 +543,16 @@ public class CafeteriaFragment extends Fragment {
 
     }
 
-    private long  countRemainTime(long currentTime, int dayIndex)
-    {
-        long openTime = 0;
-        for (Meal meal : cafeteriaStore.getMealList())
-        {
-           if (meal.getOpenTimes().get(dayIndex) != null)
-           {
-               long openTimeInMillis = meal.getOpenTimes().get(dayIndex).getTimeInMillis();
-               if (openTime == 0)
-               {
-                   openTime = openTimeInMillis;
-               }
-               long closeTimeInMillis = meal.getEndTimes().get(dayIndex).getTimeInMillis();
-               if (currentTime >= openTimeInMillis && currentTime <= closeTimeInMillis)
-                   return closeTimeInMillis - currentTime;
-               if (currentTime < openTimeInMillis)
-                   return currentTime - openTimeInMillis;
-           }
-
-        }
-        int nextDayIndex = dayIndex == 2 ? 0 : dayIndex++;
-        return currentTime - getOpenTime(nextDayIndex) - 86400*1000;
-    }
-
-
-    private long getOpenTime(int dayIndex)
+    /*private long getOpenTime(int dayIndex)
     {
         for (Meal meal : cafeteriaStore.getMealList()) {
-            if (meal.getOpenTimes().get(dayIndex) != null) {
-                return meal.getOpenTimes().get(dayIndex).getTimeInMillis();
+            if (meal.getOpenTime().get(dayIndex) != null) {
+                return meal.getOpenTime().get(dayIndex).getTimeInMillis();
             }
         }
         return 0;
 
-    }
+    }*/
     private long getTimeOFDay(int hour, int minute)
     {
         Calendar openCalendar = Calendar.getInstance();
@@ -566,30 +628,37 @@ public class CafeteriaFragment extends Fragment {
         }
     }
 
-    private class Meal
-    {
+    private class Meal {
         String mealTitle;
         private List<String> mainLineItems;
         private List<String> internationalCornerItems;
-        private List<TimeOfDay> openTimes;
-        private List<TimeOfDay> endTimes;
+        private int openTime;
+        private int closeTime;
+        private boolean isCurrent = false;
+        private boolean isPast = false;
+        private boolean isUpcoming = false;
+
+        public Meal(String mealTitle) {
+            this.mealTitle = mealTitle;
+        }
+
 
         public String getMealTitle()
         {
             return mealTitle;
         }
 
-        public void setMealTitle(String mealTitle)
-        {
-            this.mealTitle = mealTitle;
-        }
+
+        /*public boolean isOpen() {
+
+        }*/
 
         public List<String> getMainLineItems()
         {
             return mainLineItems;
         }
 
-        public void setMainLineItems(List<String> mainLineItems)
+        public void addMainLineItems(List<String> mainLineItems)
         {
             this.mainLineItems = mainLineItems;
         }
@@ -604,21 +673,28 @@ public class CafeteriaFragment extends Fragment {
             this.internationalCornerItems = internationalCornerItems;
         }
 
-        public List<TimeOfDay> getOpenTimes() {
-            return openTimes;
+        /*public Integer[] getOpenTime() {
+            return openTime;
+        }*/
+
+        public void setTimes(int openTime, int closeTime) {
+            this.openTime = openTime;
+            this.closeTime = closeTime;
+
+            isCurrentMeal();
         }
 
-        public void setOpenTimes(List<TimeOfDay> openTimes) {
-            this.openTimes = openTimes;
+        public boolean isCurrentMeal() {
+            return timeIsBetween(mCurrentTime, openTime, closeTime);
         }
 
-        public List<TimeOfDay> getEndTimes() {
+        /*public Integer[] getEndTimes() {
             return endTimes;
-        }
+        }*/
 
-        public void setEndTimes(List<TimeOfDay> endTimes) {
+        /*public void setEndTimes(Integer[] endTimes) {
             this.endTimes = endTimes;
-        }
+        }*/
     }
 
     private class TimeOfDay
@@ -670,7 +746,7 @@ public class CafeteriaFragment extends Fragment {
     {
         private List<Meal> mealList;
         private Context context;
-        private int heightToAdd;
+
         private MealsRecyclerAdapter(Context context, List<Meal> mealList)
         {
             this.context = context;
@@ -682,7 +758,7 @@ public class CafeteriaFragment extends Fragment {
         {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.food_wells_menu_item, viewGroup, false);
+            View rowView = inflater.inflate(R.layout.caf_meal_card, viewGroup, false);
 
             return new ViewHolder(rowView);
         }
@@ -693,8 +769,8 @@ public class CafeteriaFragment extends Fragment {
         {
             final Meal meal = mealList.get(i);
             final MealsRecyclerAdapter.ViewHolder menuViewHolder = (ViewHolder) viewHolder;
-            menuViewHolder.tvTitle.setText(meal.getMealTitle());
-            menuViewHolder.tvTitle.setText(meal.getMealTitle());
+            menuViewHolder.mealTitle.setText(meal.getMealTitle());
+            menuViewHolder.mealTitle.setText(meal.getMealTitle());
 
             loadMenu(menuViewHolder, meal);
 
@@ -759,7 +835,7 @@ public class CafeteriaFragment extends Fragment {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            public TextView tvTitle;
+            public TextView mealTitle;
             public LinearLayout llMainLines;
             public LinearLayout llInternationalCorner;
             public ToggleButton tbViewMore;
@@ -767,7 +843,7 @@ public class CafeteriaFragment extends Fragment {
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                tvTitle = (TextView) itemView.findViewById(R.id.meal_title);
+                mealTitle = (TextView) itemView.findViewById(R.id.meal_title);
                 llMainLines = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llMainLine);
                 llInternationalCorner = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llInternationalCorner);
                 tbViewMore = (ToggleButton) itemView.findViewById(R.id.fragment_cafeteria_tbViewMore);

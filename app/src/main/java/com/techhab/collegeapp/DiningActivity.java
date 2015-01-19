@@ -46,6 +46,8 @@ public class DiningActivity extends ActionBarActivity
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Dining");
+            mDrawerLayout.setStatusBarBackgroundColor(getResources()
+                    .getColor(R.color.kzooOrange));
 
             ViewCompat.setElevation(header, getResources().getDimension(R.dimen.toolbar_elevation));
 
