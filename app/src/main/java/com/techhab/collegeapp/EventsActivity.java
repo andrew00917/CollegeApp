@@ -110,7 +110,6 @@ public class EventsActivity extends ActionBarActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-
     }
 
     @Override
@@ -151,17 +150,18 @@ public class EventsActivity extends ActionBarActivity
         view.startAnimation(animation);
     }
 
-    public int getProgressBarHeight() {
-        return progressBarHeight;
-    }
+//    public int getProgressBarHeight() {
+//        return progressBarHeight;
+//    }
 
     public void dismissProgressBar() {
-        if (progressBar.getHeight() != 0) {
-            progressBarHeight = progressBar.getHeight();
-        }
-        HeightAnimation animation = new HeightAnimation(progressBar, progressBarHeight, false);
-        animation.setDuration(300);
-        progressBar.startAnimation(animation);
+//        if (progressBar.getHeight() != 0) {
+//            progressBarHeight = progressBar.getHeight();
+//        }
+//        HeightAnimation animation = new HeightAnimation(progressBar, progressBarHeight, false);
+//        animation.setDuration(300);
+//        progressBar.startAnimation(animation);
+        progressBar.setVisibility(View.GONE);
     }
 
 
@@ -194,48 +194,48 @@ public class EventsActivity extends ActionBarActivity
             Bundle args = new Bundle();
             switch (position) {
                 case 0:
-                    fragment = new EventsEtcFragment();
-                    args.putInt(EventsFragment.ARG_OBJECT, position + 1);
+                    fragment = new EventsFragment();
+                    args.putInt(EventsFragment.ARG_POSITION, position);
                     fragment.setArguments(args);
                     break;
                 case 1:
                     fragment = new EventsFragment();
-                    args.putInt(EventsFragment.ARG_OBJECT, position + 1);
+                    args.putInt(EventsFragment.ARG_POSITION, position);
                     fragment.setArguments(args);
                     break;
                 case 2:
-                    fragment = new EventsStressFragment();
-                    args.putInt(EventsStressFragment.ARG_OBJECT, position + 1);
+                    fragment = new EventsFragment();
+                    args.putInt(EventsFragment.ARG_POSITION, position);
                     fragment.setArguments(args);
                     break;
                 case 3:
-                    fragment = new EventsTuesdayFragment();
-                    args.putInt(EventsTuesdayFragment.ARG_OBJECT, position + 1);
+                    fragment = new EventsFragment();
+                    args.putInt(EventsFragment.ARG_POSITION, position);
                     fragment.setArguments(args);
                     break;
                 case 4:
-                    fragment = new EventsWednesdayFragment();
-                    args.putInt(EventsWednesdayFragment.ARG_OBJECT, position + 1);
+                    fragment = new EventsFragment();
+                    args.putInt(EventsFragment.ARG_POSITION, position);
                     fragment.setArguments(args);
                     break;
                 case 5:
-                    fragment = new EventsTriviaFragment();
-                    args.putInt(EventsTriviaFragment.ARG_OBJECT, position + 1);
+                    fragment = new EventsFragment();
+                    args.putInt(EventsFragment.ARG_POSITION, position);
                     fragment.setArguments(args);
                     break;
                 case 6:
-                    fragment = new EventsFlicksFragment();
-                    args.putInt(EventsFlicksFragment.ARG_OBJECT, position + 1);
+                    fragment = new EventsFragment();
+                    args.putInt(EventsFragment.ARG_POSITION, position);
                     fragment.setArguments(args);
                     break;
                 case 7:
-                    fragment = new EventsZooDarkFragment();
-                    args.putInt(EventsZooDarkFragment.ARG_OBJECT, position + 1);
+                    fragment = new EventsFragment();
+                    args.putInt(EventsFragment.ARG_POSITION, position);
                     fragment.setArguments(args);
                     break;
                 default:
                     fragment = new EventsFragment();
-                    args.putInt(EventsFragment.ARG_OBJECT, position + 1);
+                    args.putInt(EventsFragment.ARG_POSITION, position);
                     fragment.setArguments(args);
                     break;
             }
