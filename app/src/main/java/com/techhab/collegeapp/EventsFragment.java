@@ -37,10 +37,12 @@ import java.util.List;
  */
 public class EventsFragment extends Fragment {
 
-    public static final String ARG_OBJECT = "object";
+    public static final String ARG_POSITION = "position";
 
     private static final String ITEMS = "rssItemList";
     private static final String RECEIVER = "receiver";
+
+    private int POSITION;
 
     private Intent mServiceIntent;
     private MyResultReceiver receiver;
@@ -58,6 +60,7 @@ public class EventsFragment extends Fragment {
     public static Fragment createNewInstance() {
         EventsFragment fragment = new EventsFragment();
         Bundle arg = new Bundle();
+//        POSITION = arg.getInt(ARG_POSITION);
         fragment.setArguments(arg);
         return fragment;
     }
@@ -66,6 +69,9 @@ public class EventsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
+        Bundle arg = getArguments();
+        POSITION = arg.getInt(ARG_POSITION);
 
         /*
          * Creates a new Intent to start the RssService
@@ -111,6 +117,93 @@ public class EventsFragment extends Fragment {
         super.onDetach();
     }
 
+    public List<EventsRssItem> getEtcEvent(List<EventsRssItem> list) {
+        List<EventsRssItem> ret = new ArrayList<>();
+        EventsRssItem item;
+        String event;
+        for (int i = 0; i < list.size(); i++) {
+            item = list.get(i);
+            event = item.getEvent().toLowerCase();
+            if ( ! (event.contains("stress free") || event.contains("tuesdays with") || event.contains("wind down wednesday")
+                    || event.contains("trivia night") || event.contains("zoo flicks") || event.contains("zoo after dark"))) {
+                ret.add(item);
+            }
+        }
+        return ret;
+    }
+
+    public List<EventsRssItem> getStressEvent(List<EventsRssItem> list) {
+        List<EventsRssItem> ret = new ArrayList<>();
+        EventsRssItem item;
+        for (int i = 0; i < list.size(); i++) {
+            item = list.get(i);
+            if (item.getEvent().toLowerCase().contains("stress free")) {
+                ret.add(item);
+            }
+        }
+        return ret;
+    }
+
+    public List<EventsRssItem> getTuesdayEvent(List<EventsRssItem> list) {
+        List<EventsRssItem> ret = new ArrayList<>();
+        EventsRssItem item;
+        for (int i = 0; i < list.size(); i++) {
+            item = list.get(i);
+            if (item.getEvent().toLowerCase().contains("tuesdays with")) {
+                ret.add(item);
+            }
+        }
+        return ret;
+    }
+
+    public List<EventsRssItem> getWednesdayEvent(List<EventsRssItem> list) {
+        List<EventsRssItem> ret = new ArrayList<>();
+        EventsRssItem item;
+        for (int i = 0; i < list.size(); i++) {
+            item = list.get(i);
+            if (item.getEvent().toLowerCase().contains("wind down wednesday")) {
+                ret.add(item);
+            }
+        }
+        return ret;
+    }
+
+    public List<EventsRssItem> getTriviaEvent(List<EventsRssItem> list) {
+        List<EventsRssItem> ret = new ArrayList<>();
+        EventsRssItem item;
+        for (int i = 0; i < list.size(); i++) {
+            item = list.get(i);
+            if (item.getEvent().toLowerCase().contains("trivia night")) {
+                ret.add(item);
+            }
+        }
+        return ret;
+    }
+
+    public List<EventsRssItem> getFlicksEvent(List<EventsRssItem> list) {
+        List<EventsRssItem> ret = new ArrayList<>();
+        EventsRssItem item;
+        for (int i = 0; i < list.size(); i++) {
+            item = list.get(i);
+            if (item.getEvent().toLowerCase().contains("zoo flicks")) {
+                ret.add(item);
+            }
+        }
+        return ret;
+    }
+
+    public List<EventsRssItem> getZooDarkEvent(List<EventsRssItem> list) {
+        List<EventsRssItem> ret = new ArrayList<>();
+        EventsRssItem item;
+        for (int i = 0; i < list.size(); i++) {
+            item = list.get(i);
+            if (item.getEvent().toLowerCase().contains("zoo after dark")) {
+                ret.add(item);
+            }
+        }
+        return ret;
+    }
+
 
     /**
      * Adapter for recycler view
@@ -121,8 +214,8 @@ public class EventsFragment extends Fragment {
         private List<EventsRssItem> items;
         private int expandedPosition = -1;
         private ViewHolder expandedHolder;
-        private int width = -1;
-        private int height = -1;
+//        private int width = -1;
+//        private int height = -1;
 
         public RssAdapter(Context context, List<EventsRssItem> items) {
             this.context = context;
@@ -145,7 +238,7 @@ public class EventsFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
             final EventsRssItem item;
             if (position < items.size()) {
                 item = items.get(position);
@@ -179,12 +272,49 @@ public class EventsFragment extends Fragment {
             View view = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.events_recycle, parent, false);
 
-            ViewHolder vh = new ViewHolder(context, view);
-
-            return vh;
+            return new ViewHolder(context, view);
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        /**
+         *  Generate jsoup DOM to set description of the event's cards and set calendar
+         *  button on click listener
+         *
+         * @param h
+         * @param link
+         */
+        private void setDescription(final ViewHolder h, String link) {
+            new EventsDom(context, h.event.getText().toString(), h.description,
+                    h.calendarButton, link, h.progress);
+        }
+
+        /**
+         *  Collapse card with description and buttons
+         *
+         * @param h
+         */
+        private void collapseCard(final ViewHolder h) {
+            h.description.setVisibility(View.GONE);
+            h.favoriteButton.setVisibility(View.GONE);
+            h.buildingButton.setVisibility(View.GONE);
+            h.calendarButton.setVisibility(View.GONE);
+            h.attendButton.setVisibility(View.GONE);
+        }
+
+        /**
+         *  Expand card with description and buttons
+         *
+         * @param h
+         */
+        private void expandCard(final ViewHolder h) {
+            h.progress.setVisibility(View.VISIBLE);
+            h.description.setVisibility(View.VISIBLE);
+            h.favoriteButton.setVisibility(View.VISIBLE);
+            h.buildingButton.setVisibility(View.VISIBLE);
+            h.calendarButton.setVisibility(View.VISIBLE);
+            h.attendButton.setVisibility(View.VISIBLE);
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
             public Context context;
 
@@ -218,124 +348,40 @@ public class EventsFragment extends Fragment {
 
                 infoButton = (ImageButton) v.findViewById(R.id.info_button);
                 infoButton.setTag(this);
-                infoButton.setOnClickListener(this);
-                favoriteButton = (ImageView) v.findViewById(R.id.favorite_button);
-                buildingButton = (ImageView) v.findViewById(R.id.building_button);
-                calendarButton = (ImageView) v.findViewById(R.id.calendar_button);
-                attendButton = (ImageView) v.findViewById(R.id.attending_button);
-            }
+                infoButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final ViewHolder vTag = (ViewHolder) v.getTag();
+                        final int position = vTag.getPosition();
 
-            @Override
-            public void onClick(View v) {
-//                ViewHolder holder = (ViewHolder) v.getTag();
-
-                switch (v.getId()) {
-                    case R.id.info_button:
                         // TODO: fix auto-scrolling
                         // Check for an expanded view, collapse if you find one
-                        if (expandedPosition >= 0 && expandedPosition != this.getPosition()) {
+                        if (expandedPosition >= 0 && expandedPosition != position) {
                             collapseCard(expandedHolder);
                             expandedPosition = -1;
                             expandedHolder = null;
                         }
 
-                        if (expandedPosition == this.getPosition()) {
-                            collapseCard(this);
+                        if (expandedPosition == position) {
+                            collapseCard(vTag);
                             expandedPosition = -1;
                             expandedHolder = null;
                         } else {
                             // Set the current position to "expanded"
-                            expandCard(this);
-                            expandedPosition = this.getPosition();
-                            setDescription(this, items.get(expandedPosition).getLink());
-                            expandedHolder = this;
+                            expandCard(vTag);
+                            expandedPosition = position;
+                            setDescription(vTag, items.get(position).getLink());
+                            expandedHolder = vTag;
                         }
-                        break;
-                }
-                Log.d("Holder clicked: ", this.toString());
-                Toast.makeText(context, "Holder on click " + this.getPosition(), Toast.LENGTH_SHORT).show();
-            }
+                        Log.d("Holder clicked: ", vTag.toString());
+                        Toast.makeText(getActivity(), "Holder on click " + position, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-            /**
-             *  Generate jsoup DOM to set description of the event's cards and set calendar
-             *  button on click listener
-             *
-             * @param h
-             * @param link
-             */
-            private void setDescription(ViewHolder h, String link) {
-                new EventsDom(context, h.event.getText().toString(), h.description,
-                        h.calendarButton, link, h.progress);
-            }
-
-            /**
-             *  Collapse card with description and buttons
-             *
-             * @param h
-             */
-            private void collapseCard(ViewHolder h) {
-                HeightAnimation animation;
-                if (width == -1 && height == -1) {
-//                    h.buttonSection.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-                    width = h.buttonSection.getLayoutParams().height;
-                    height = width * 5;
-                }
-                animation = new HeightAnimation(h.description, height, false);
-                animation.setDuration(300);
-                h.description.startAnimation(animation);
-
-
-                WidthAnimation widthAnimation;
-
-                widthAnimation = new WidthAnimation(h.favoriteButton, width, false);
-                widthAnimation.setDuration(300);
-                h.favoriteButton.startAnimation(widthAnimation);
-                widthAnimation = new WidthAnimation(h.buildingButton, width, false);
-                widthAnimation.setDuration(300);
-                h.buildingButton.startAnimation(widthAnimation);
-                widthAnimation = new WidthAnimation(h.calendarButton, width, false);
-                widthAnimation.setDuration(300);
-                h.calendarButton.startAnimation(widthAnimation);
-                widthAnimation = new WidthAnimation(h.attendButton, width, false);
-                widthAnimation.setDuration(300);
-                h.attendButton.startAnimation(widthAnimation);
-            }
-
-            /**
-             *  Expand card with description and buttons
-             *
-             * @param h
-             */
-            private void expandCard(ViewHolder h) {
-                HeightAnimation animation;
-
-                if (width == -1 && height == -1) {
-//                    h.buttonSection.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-                    width = h.buttonSection.getLayoutParams().height;
-                    height = width * 5;
-                }
-
-                animation = new HeightAnimation(h.progress,
-                        ((EventsActivity) context).getProgressBarHeight(), true);
-                animation.setDuration(300);
-                h.progress.startAnimation(animation);
-                animation = new HeightAnimation(h.description, height, true);
-                animation.setDuration(300);
-                h.description.startAnimation(animation);
-
-                WidthAnimation widthAnimation;
-                widthAnimation = new WidthAnimation(h.favoriteButton, width, true);
-                widthAnimation.setDuration(300);
-                h.favoriteButton.startAnimation(widthAnimation);
-                widthAnimation = new WidthAnimation(h.buildingButton, width, true);
-                widthAnimation.setDuration(300);
-                h.buildingButton.startAnimation(widthAnimation);
-                widthAnimation = new WidthAnimation(h.calendarButton, width, true);
-                widthAnimation.setDuration(300);
-                h.calendarButton.startAnimation(widthAnimation);
-                widthAnimation = new WidthAnimation(h.attendButton, width, true);
-                widthAnimation.setDuration(300);
-                h.attendButton.startAnimation(widthAnimation);
+                favoriteButton = (ImageView) v.findViewById(R.id.favorite_button);
+                buildingButton = (ImageView) v.findViewById(R.id.building_button);
+                calendarButton = (ImageView) v.findViewById(R.id.calendar_button);
+                attendButton = (ImageView) v.findViewById(R.id.attending_button);
             }
         }
     }
@@ -355,6 +401,39 @@ public class EventsFragment extends Fragment {
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             ((EventsActivity) getActivity()).dismissProgressBar();
             rssItemList = (List<EventsRssItem>) resultData.getSerializable(ITEMS);
+            switch (POSITION) {
+                case 0:
+                    // ETC
+                    rssItemList = getEtcEvent(rssItemList);
+                    break;
+                case 1:
+                    // Upcoming
+                    break;
+                case 2:
+                    // Stress free
+                    rssItemList = getStressEvent(rssItemList);
+                    break;
+                case 3:
+                    // Tuesday
+                    rssItemList = getTuesdayEvent(rssItemList);
+                    break;
+                case 4:
+                    // Wind down
+                    rssItemList = getWednesdayEvent(rssItemList);
+                    break;
+                case 5:
+                    // Trivia
+                    rssItemList = getTriviaEvent(rssItemList);
+                    break;
+                case 6:
+                    // Zoo flicks
+                    rssItemList = getFlicksEvent(rssItemList);
+                    break;
+                case 7:
+                    // Zoo after
+                    rssItemList = getZooDarkEvent(rssItemList);
+                    break;
+            }
             mAdapter.updateChange(rssItemList);
         }
     }

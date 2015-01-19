@@ -97,9 +97,10 @@ public class EventsDom {
         @Override
         protected void onPostExecute(String result) {
             contentView.setText(result);
-            HeightAnimation animation = new HeightAnimation(progress, progress.getHeight(), false);
-            animation.setDuration(300);
-            progress.startAnimation(animation);
+//            HeightAnimation animation = new HeightAnimation(progress, progress.getHeight(), false);
+//            animation.setDuration(300);
+//            progress.startAnimation(animation);
+            progress.setVisibility(ProgressBar.GONE);
         }
     }
 }
