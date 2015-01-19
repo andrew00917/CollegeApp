@@ -55,7 +55,7 @@ public class CafeteriaFragment extends Fragment {
     private int dayNum;
     private boolean isOpen;
     private Meal mCurrentMeal;
-    private List<Meal> meals;
+    private List<Meal> meals = new ArrayList<>();
 
     private final int breakfastOpenTimeWeekday = 730;
     private final int breakfastCloseTimeWeekday = 1000;
@@ -174,8 +174,7 @@ public class CafeteriaFragment extends Fragment {
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mealsRecyclerView.setLayoutManager(mLayoutManager);
-        mealsRecyclerView.setAdapter(new MealsRecyclerAdapter(getActivity(),
-                cafeteriaStore.getMealList()));
+        mealsRecyclerView.setAdapter(new MealsRecyclerAdapter(getActivity(), meals));
 
         setUpStatusBar();
 
@@ -642,16 +641,10 @@ public class CafeteriaFragment extends Fragment {
             this.mealTitle = mealTitle;
         }
 
-
         public String getMealTitle()
         {
             return mealTitle;
         }
-
-
-        /*public boolean isOpen() {
-
-        }*/
 
         public List<String> getMainLineItems()
         {
@@ -673,9 +666,6 @@ public class CafeteriaFragment extends Fragment {
             this.internationalCornerItems = internationalCornerItems;
         }
 
-        /*public Integer[] getOpenTime() {
-            return openTime;
-        }*/
 
         public void setTimes(int openTime, int closeTime) {
             this.openTime = openTime;
@@ -687,14 +677,6 @@ public class CafeteriaFragment extends Fragment {
         public boolean isCurrentMeal() {
             return timeIsBetween(mCurrentTime, openTime, closeTime);
         }
-
-        /*public Integer[] getEndTimes() {
-            return endTimes;
-        }*/
-
-        /*public void setEndTimes(Integer[] endTimes) {
-            this.endTimes = endTimes;
-        }*/
     }
 
     private class TimeOfDay
@@ -867,9 +849,6 @@ public class CafeteriaFragment extends Fragment {
             setListViewHeightBasedOnChildren(viewHolder.llInternationalCorner);
         }
 
-        /**
-         *
-         */
         public void setListViewHeightBasedOnChildren(LinearLayout linearLayout) {
             if (linearLayout == null) {
                 // pre-condition
