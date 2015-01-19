@@ -7,4 +7,87 @@
     tools:context="com.techhab.collegeapp.application.PINActivity">
 
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/gridLayout"
+        android:layout_marginBottom="120dp"
+
+        android:id="@+id/pintextlayout">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_below="@+id/linearLayout"
+            android:id="@+id/pintext"
+            android:inputType="numberPassword"
+            android:maxLength="4"
+            android:textSize="30sp"/>
+        </LinearLayout>
+
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:columnCount="3"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/gridLayout">
+        <Button
+            android:id="@+id/button1"
+            android:text="1" />
+
+        <Button
+            android:id="@+id/button2"
+            android:text="2"/>
+
+        <Button
+            android:id="@+id/button3"
+            android:text="3" />
+
+        <Button
+            android:id="@+id/button4"
+            android:text="4" />
+
+        <Button
+            android:id="@+id/button5"
+            android:text="5" />
+
+        <Button
+            android:id="@+id/button6"
+            android:text="6" />
+
+        <Button
+            android:id="@+id/button7"
+            android:text="7" />
+
+        <Button
+            android:id="@+id/button8"
+            android:text="8" />
+
+        <Button
+            android:id="@+id/button9"
+            android:text="9" />
+
+        <Button
+            android:id="@+id/button_password"
+            android:text="Password"
+            android:textSize="@dimen/abc_text_size_small_material"/>
+
+        <Button
+            android:id="@+id/button0"
+            android:text="0" />
+
+        <ImageButton
+            android:id="@+id/button_backspace"
+            android:src="@drawable/ic_action_previous_item"/>
+    </GridLayout>
+
+
 </RelativeLayout>
