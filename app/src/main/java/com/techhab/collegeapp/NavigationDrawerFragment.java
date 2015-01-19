@@ -4,6 +4,7 @@ package com.techhab.collegeapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -26,10 +27,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.techhab.collegeapp.application.CollegeApplication;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -348,45 +350,153 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         }
 
         /**
-         *  Build and show material dialog for emergency call
+         *  Build and show material dialog for fragment_emergency call
          */
         private void emergencyCallDialog() {
-            new MaterialDialog.Builder(getActivity())
-                    .title("Choose who to call...")
-                    .items(new String[]{"Campus Security", "Health"})
-                    .itemsCallback(new MaterialDialog.ListCallback() {
-                        @Override
-                        public void onSelection(MaterialDialog dialog, View view,
-                                                int which, CharSequence text) {
-                            if (which == 0) {
-                                // TODO: call security
-                                dialog.dismiss();
-                            } else if (which == 1) {
-                                // TODO: call health
-                                dialog.dismiss();
-                            }
-                        }
-                    })
-                    .negativeText("Cancel")
-                    .autoDismiss(false)
-                    .negativeColor(getResources().getColor(R.color.abc_secondary_text_material_light))
-                    .callback(new MaterialDialog.Callback() {
-                        // Material Dialog library needs this empty method
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            // There is no positive button existing
-                        }
-
-                        @Override
-                        public void onNegative(MaterialDialog dialog) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .cancelable(false)
-                    .show();
+//            new MaterialDialog.Builder(getActivity())
+//                    .title("Choose who to call...")
+//                    .items(new String[]{"Campus Security", "Health"})
+//                    .itemsCallback(new MaterialDialog.ListCallback() {
+//                        @Override
+//                        public void onSelection(MaterialDialog dialog, View view,
+//                                                int which, CharSequence text) {
+//                            if (which == 0) {
+//                                // TODO: call security
+//                                dialog.dismiss();
+//                            } else if (which == 1) {
+//                                // TODO: call health
+//                                dialog.dismiss();
+//                            }
+//                        }
+//                    })
+//                    .negativeText("Cancel")
+//                    .autoDismiss(false)
+//                    .negativeColor(getResources().getColor(R.color.abc_secondary_text_material_light))
+//                    .callback(new MaterialDialog.Callback() {
+//                        // Material Dialog library needs this empty method
+//                        @Override
+//                        public void onPositive(MaterialDialog dialog) {
+//                            // There is no positive button existing
+//                        }
+//
+//                        @Override
+//                        public void onNegative(MaterialDialog dialog) {
+//                            dialog.dismiss();
+//                        }
+//                    })
+//                    .cancelable(false)
+//                    .show();
+            List<Emergency> emergencyList = new ArrayList<>();
+            emergencyList.add(new Emergency("Campus Security","(269) 337-7321"));
+            emergencyList.add(new Emergency("City of Kalamazoo Police","(517) 763-1377"));
+            emergencyList.add(new Emergency("Sexual Assault Dean-On-Call","(517) 763-1377"));
+            MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                    .title("Emergency Contacts")
+                    .adapter(new EmergencyAdapter(getActivity(), emergencyList))
+                    .dividerColorRes(R.color.gray)
+                    .build();
+            ListView lvEmergency = dialog.getListView();
+            if (lvEmergency != null)
+            {
+                lvEmergency.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Emergency emergency = (Emergency) parent.getItemAtPosition(position);
+                        phoneCall(emergency.getPhone());
+                    }
+                });
+            }
+            dialog.show();
         }
     }
 
+    private void phoneCall(String phoneNumber) {
+        Intent phoneIntent = new Intent(Intent.ACTION_CALL);
+        phoneIntent.setData(Uri.parse("tel:" + phoneNumber));
+        startActivity(phoneIntent);
+    }
+
+    class EmergencyAdapter extends BaseAdapter
+    {
+
+        private Context context;
+        private List<Emergency> emergencyList;
+
+        public EmergencyAdapter(Context context, List<Emergency> emergencyList)
+        {
+            this.context =context;
+            this.emergencyList = emergencyList;
+        }
+
+        @Override
+        public int getCount() {
+            return emergencyList.size();
+        }
+
+        @Override
+        public Emergency getItem(int position) {
+            return emergencyList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder = null;
+            if (convertView == null)
+            {
+                LayoutInflater inflater = (LayoutInflater) context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.fragment_emergency, parent, false);
+                viewHolder = new ViewHolder();
+                viewHolder.tvName = (TextView) convertView.findViewById(R.id.emergency_tvName);
+                viewHolder.tvPhone = (TextView) convertView.findViewById(R.id.emergency_tvPhone);
+                convertView.setTag(viewHolder);
+
+            }
+            viewHolder = (ViewHolder) convertView.getTag();
+            Emergency emergency = getItem(position);
+            viewHolder.tvName.setText(emergency.getName());
+            viewHolder.tvPhone.setText(emergency.getPhone());
+            return convertView;
+        }
+
+        class ViewHolder
+        {
+            TextView tvName;
+            TextView tvPhone;
+        }
+    }
+
+
+    class Emergency
+    {
+        String name;
+        String phone;
+        public Emergency(String name, String phone)
+        {
+            this.name = name;
+            this.phone = phone;
+        }
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+    }
     /**
      * Custom ListView adapter for the Settings & Support section of the nav drawer
      */

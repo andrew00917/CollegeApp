@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+        <TextView
+            android:id="@+id/emergency_tvName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Emergency Center"
+            android:textColor="@color/secondary_text_default_material_light"
+            android:padding="5dp"/>
+        <TextView
+            android:id="@+id/emergency_tvPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="01686659545"
+            android:textColor="@color/primary_dark_material_dark"
+            android:padding="5dp"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/phone"
+            />
+
+</LinearLayout>
