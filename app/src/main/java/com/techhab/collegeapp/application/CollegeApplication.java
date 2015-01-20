@@ -43,6 +43,12 @@ public class CollegeApplication extends Application {
     // Sports tab rememberer
     private static final String SPORT_PREFERENCE = "sport_preference";
 
+    // True = a PIN number is in use (and has been set up)
+    private static final String PIN_STATE = "pin_state";
+
+    //PIN
+    private static final String PIN_PREFERENCE = "pin_preference";
+
     /* College App attributes getters and setters */
 
     public String getTag() {
@@ -144,6 +150,32 @@ public class CollegeApplication extends Application {
         SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
         int sportNumber = prefs.getInt(SPORT_PREFERENCE, 0);
         return sportNumber;
+    }
+
+    public void setPinState(boolean pinState) {
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(PIN_STATE, pinState);
+        editor.commit();
+    }
+
+    public boolean getPinState() {
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
+        boolean pinState = prefs.getBoolean(PIN_STATE, false);
+        return pinState;
+    }
+
+    public void setPin(int pin) {
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(PIN_PREFERENCE, 0000);
+        editor.commit();
+    }
+
+    public int getPin() {
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
+        int pin = prefs.getInt(PIN_PREFERENCE, 0000);
+        return pin;
     }
 
     public String getKey() {

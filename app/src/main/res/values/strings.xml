@@ -64,6 +64,7 @@
 
     <!-- Navigation Drawer -->
     <string name="my_profile">My Profile</string>
+
     <string-array name="nav_drawer_items">
         <item>Emergency Call</item>
         <item>About</item>
@@ -138,14 +139,11 @@
     <string name="label_cafeteria_breakfast">BreakFast</string>
     <string name="label_cafeteria_lunch">Lunch</string>
     <string name="label_cafeteria_dinner">Dinner</string>
-
     <string name="monday_friday">Monday - Friday</string>
     <string name="mealtimes_mf">Breakfast: 7:30 - 10am\nLunch: 11 - 1:30pm\nDinner: 5 - 7:30pm</string>
     <string name="lunch_mf">Lunch: 11 - 1:30pm</string>
     <string name="dinner_mf">Dinner: 5 - 7:30pm</string>
-
     <string name="saturday">Saturday</string>
-
 
     <!-- Athletic Activity -->
     <string name="men">MEN\'S</string>
@@ -405,7 +403,7 @@
         <item>4/3</item>
         <item>4/6</item>
         <item>4/10</item>
-        <item></item>
+        <item/>
         <item>5/11-5/22</item>
         <item>5/23</item>
         <item>5/26</item>
@@ -435,7 +433,6 @@
     <string name="setting_password">Please enter your password</string>
     <string name="title_activity_cafeteria">Dining Information</string>
 
-
     <!-- Profile Activity -->
     <string-array name="profile_titles">
         <item>My courses</item>
@@ -447,14 +444,13 @@
         <item>View my financial profile</item>
         <item>View my employment statement</item>
     </string-array>
+
     <string name="profile_courses_title">My courses</string>
     <string name="profile_courses_summary">View my courses and grades from different quarters</string>
     <string name="profile_financial_title">Financial info</string>
     <string name="profile_financial_summary">View my financial profile</string>
     <string name="profile_employment_title">Employment</string>
     <string name="profile_employment_summary">View my employment statement</string>
-
-
     <string name="title_activity_maps">Campus Map</string>
     <string name="title_activity_academic">Academic</string>
     <string name="title_activity_campus">Campus</string>
@@ -465,6 +461,6 @@
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_pin">PINActivity</string>
     <string name="title_activity_profile">My Profile</string>
-
+    <string name="title_activity_re_authentication">ReAuthenticationActivity</string>
 
 </resources>

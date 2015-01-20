@@ -1,51 +1,82 @@
 package com.techhab.collegeapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.techhab.collegeapp.application.CollegeApplication;
 
 public class PINSetupActivity extends ActionBarActivity {
-    Thread mThread;
+    private CollegeApplication application;
+    private String pin = null;
+    private TextView message;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean wrapInScrollView = true;
-        new MaterialDialog.Builder(this)
-                .title("Enter Password")
-                .customView(R.layout.dialog_password, wrapInScrollView)
-                .positiveText("OK")
-                .negativeText("Cancel")
-                .callback( new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-//                        EditText passDialogText = (EditText) findViewById(R.id.password);
-//                        Toast.makeText(getApplicationContext(), passDialogText.getText().toString()+"hooo", Toast.LENGTH_LONG).show();
-                        setUp();
-                    }
+        application = (CollegeApplication) getApplication();
+        // Dummy user information
+        final User user = application.getCurrentUser();
+        user.setFirstName("Jesus");
+        user.setLastName("Fred");
+        user.setPassword("12321");
 
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
+
+        // Set an EditText view to get user input
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+        AlertDialog passDialog = new AlertDialog.Builder(this)
+                .setTitle("Enter Password")
+                .setMessage("Please enter your password")
+                .setView(input)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if ( input.getText().toString().equals(user.getPassword()) ) {
+                            setUp();
+                        }
+
+                        else {
+                            Toast.makeText(getApplicationContext(), "Incorrect password", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
                         finish();
                     }
                 })
-                .cancelable(false)
-                .build()
-                .show();
+                .setCancelable(false)
+                .create();
+        // Open the soft keyboard
+        passDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        passDialog.show();
 
     }
 
     private void setUp() {
         setContentView(R.layout.activity_pin);
+        message = (TextView) findViewById(R.id.pin_message);
+        message.setText("Please enter a PIN");
+        message.setTextColor(Color.GRAY);
+
         final TextView pintext = (TextView) findViewById(R.id.pintext);
         Button btn1 = (Button) findViewById(R.id.button1);
         Button btn2 = (Button) findViewById(R.id.button2);
@@ -125,7 +156,6 @@ public class PINSetupActivity extends ActionBarActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //nothing
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //nothing
@@ -134,8 +164,31 @@ public class PINSetupActivity extends ActionBarActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if ( pintext.length() > 3 ) {
-                    finish();
-                    Toast.makeText(getApplicationContext(), pintext.getText().toString(), Toast.LENGTH_LONG).show();
+                    String pinString = pintext.getText().toString();
+                    // re-enter pin
+                    if ( pin == null ) {
+                        pin = pinString;
+                        pintext.setText("");
+                        message.setText("Re-enter your PIN");
+                        message.setTextColor(Color.GRAY);
+                    }
+                    // pin has been entered once before
+                    else {
+                        // pin has been re-entered correctly
+                        if ( pinString.equals(pin) ) {
+                            application.setPin(Integer.parseInt(pinString));
+                            application.setPinState(true);
+                            finish();
+                        }
+                        // pin has been re-entered incorrectly
+                        else {
+                            pin = null;
+                            pintext.setText("");
+                            message.setText("Your PIN does not match. Please retry");
+                            message.setTextColor(Color.RED);
+                        }
+
+                    }
                 }
             }
         });

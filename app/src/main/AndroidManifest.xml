@@ -110,6 +110,10 @@
             android:name=".PINSetupActivity"
             android:label="@string/title_activity_pin" >
         </activity>
+        <activity
+            android:name=".ReAuthenticationActivity"
+            android:label="@string/title_activity_re_authentication" >
+        </activity>
     </application>
 
 </manifest>
