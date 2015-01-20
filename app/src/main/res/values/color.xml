@@ -20,6 +20,9 @@
     <color name="main21">#E23126</color>
     <color name="main00_trans">#50E27226</color>
 
+    <!-- Transparent things -->
+    <color name="thirty_percent_opacity">#30000000</color>
+
     <!-- Material Button -->
     <color name="blue_pressed">@android:color/holo_blue_dark</color>
     <color name="blue_normal">@android:color/holo_blue_light</color>

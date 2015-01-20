@@ -1,7 +1,6 @@
 package com.techhab.collegeapp;
 
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.Time;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +18,6 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -104,12 +101,12 @@ public class RichardsonFragment extends Fragment {
         {
             currentBarColor = R.color.green;
             statusBar.setBackgroundColor(getResources().getColor(R.color.green));
-            ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
+            ((ImageView) v.findViewById(R.id.status_bar_open_closed_sign)).setImageResource(R.drawable.open_sign);
 
         } else {
             currentBarColor = R.color.red;
             statusBar.setBackgroundColor(getResources().getColor(R.color.red));
-            ((ImageView) v.findViewById(R.id.fragment_cafeteria_image)).setImageResource(R.drawable.open_sign);
+            ((ImageView) v.findViewById(R.id.status_bar_open_closed_sign)).setImageResource(R.drawable.open_sign);
         }
         displayStatusBar(remainTime);
         return v;
@@ -603,7 +600,7 @@ public class RichardsonFragment extends Fragment {
 
             public ViewHolder(View itemView, Meal meal) {
                 super(itemView);
-                tvTitle = (TextView) itemView.findViewById(R.id.menu_item_tvTitle);
+                tvTitle = (TextView) itemView.findViewById(R.id.meal_title);
                 tbViewMore = (ToggleButton) itemView.findViewById(R.id.fragment_cafeteria_tbViewMore);
                 llContent = (LinearLayout) itemView.findViewById(R.id.food_wells_menu_item_llContent);
                 for (Subtitle subtitle : meal.getSubtitles())

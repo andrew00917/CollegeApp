@@ -294,7 +294,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         String[] nav_drawer_items;
 
         // Array of drawables. MUST BE IN THE SAME ORDER AS THE nav_drawer_items STRING ARRAY!
-        int[] images = { R.drawable.phone, R.drawable.bookmark, R.drawable.logout };
+        int[] images = { R.drawable.numeric_1_box, R.drawable.phone, R.drawable.bookmark,
+                R.drawable.logout };
 
         public NavAdapter(Context context) {
             this.context = context;

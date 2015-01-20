@@ -66,6 +66,7 @@
     <string name="my_profile">My Profile</string>
 
     <string-array name="nav_drawer_items">
+        <item>Announcements</item>
         <item>Emergency Call</item>
         <item>About</item>
         <item>Log Out</item>
@@ -126,7 +127,7 @@
     <string name="map_it">MAP IT</string>
     <string name="read_more">READ MORE</string>
 
-    <!-- Cafeteria(DetailedCafeteriaFragment) -->
+    <!-- Dining Activity -->
     <string name="open">OPEN</string>
     <string name="closed">CLOSED</string>
     <string name="label_cafeteria_contact">Contact Us:</string>
@@ -139,6 +140,9 @@
     <string name="label_cafeteria_breakfast">BreakFast</string>
     <string name="label_cafeteria_lunch">Lunch</string>
     <string name="label_cafeteria_dinner">Dinner</string>
+
+    <string name="currently_serving">Currently Serving</string>
+
     <string name="monday_friday">Monday - Friday</string>
     <string name="mealtimes_mf">Breakfast: 7:30 - 10am\nLunch: 11 - 1:30pm\nDinner: 5 - 7:30pm</string>
     <string name="lunch_mf">Lunch: 11 - 1:30pm</string>

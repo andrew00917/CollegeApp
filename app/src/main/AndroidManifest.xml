@@ -65,7 +65,7 @@
                 android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
         <activity
-            android:name=".FoodActivity"
+            android:name=".DiningActivity"
             android:label="@string/title_activity_food" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
