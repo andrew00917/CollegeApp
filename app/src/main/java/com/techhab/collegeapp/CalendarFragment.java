@@ -278,7 +278,7 @@ public class CalendarFragment extends Fragment {
     }
 
     /**
-     *  CustomAdapter for spinner
+     *  CustomSpinnerAdapter for spinner
      */
     private class CustomAdapter extends ArrayAdapter<String> {
 

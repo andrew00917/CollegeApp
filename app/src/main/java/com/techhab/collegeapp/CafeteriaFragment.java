@@ -3,12 +3,12 @@ package com.techhab.collegeapp;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,14 +18,15 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -34,28 +35,22 @@ public class CafeteriaFragment extends Fragment {
 
     public static final String ARG_OBJECT = "object";
     private static int selectedPosition = 0;
-    private static final int MF_INDEX = 0;
-    private static final int SATURDAY_INDEX = 1;
-    private static final int SUNDAY_INDEX = 2;
     // Buttons Cafeteria
     private View v;
-    private FoodStore cafeteriaStore;
-    private TextView timeLeftText;
+    private TextView timeLeftText, noMoreMeals;
     private ImageView statusBarArrow;
     private LinearLayout statusBarExtendedInfoFrame;
     private RecyclerView mealsRecyclerView;
     private LinearLayout statusBar;
-    private boolean isBreakfastCollapse = true;
     private RecyclerView.LayoutManager mLayoutManager;
     private Spinner daySpinner;
-    private int currentBarColor;
     private boolean isExpanded = false;
     private Calendar mCalender;
     private int mCurrentTime;
     private int dayNum;
     private boolean isOpen;
-    private Meal mCurrentMeal;
     private List<Meal> meals = new ArrayList<>();
+    private boolean allMealsAreOver = false;
 
     private final int breakfastOpenTimeWeekday = 730;
     private final int breakfastCloseTimeWeekday = 1000;
@@ -97,6 +92,8 @@ public class CafeteriaFragment extends Fragment {
         // Round mCurrentTime to nears multiple of five to keep things clean
         mCurrentTime = (int) Math.floor((mCurrentTime + 5/2) / 5) * 5;
 
+        Log.d("CafeteriaFragment", "mCurrentTime = " + mCurrentTime);
+
         dayNum = mCalender.get(Calendar.DAY_OF_WEEK);
 
         setUpMeals();
@@ -106,6 +103,7 @@ public class CafeteriaFragment extends Fragment {
 
         mealsRecyclerView = (RecyclerView) v.findViewById(R.id.meals_recycler_view);
         timeLeftText = (TextView) v.findViewById(R.id.time_left_text);
+        noMoreMeals = (TextView) v.findViewById(R.id.no_more_meals);
         statusBarExtendedInfoFrame = (LinearLayout) v.findViewById(
                 R.id.status_bar_extended_info_frame);
         statusBar = (LinearLayout) v.findViewById(R.id.cafeteria_status_bar);
@@ -127,50 +125,8 @@ public class CafeteriaFragment extends Fragment {
             }
         });
 
-
         daySpinner = (Spinner) v.findViewById(R.id.day_spinner);
-        ArrayList<String> days = new ArrayList<>();
-        // populate the days arraylist with 4 entries. The first two will always be
-        // "Today" and "Tomorrow", but the last 2 entries must be programmatically determined
-        // using the current date.
-        days.add("Today");
-        days.add("Tomorrow");
-
-        Calendar mCalender = Calendar.getInstance();
-        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
-
-        mCalender.add(Calendar.DATE, 2);
-        String thirdDay = dayFormat.format(mCalender.getTime());
-
-        mCalender.add(Calendar.DATE, 1);
-        String fourthDay = dayFormat.format(mCalender.getTime());
-
-        days.add(thirdDay);
-        days.add(fourthDay);
-
-        CustomAdapter spinnerAdapter = new CustomAdapter(getActivity(),
-                android.R.layout.simple_spinner_item, days);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        daySpinner.setSelection(0, false);
-        daySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            // after the item is selected in the spinner it should refresh the fragment
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (selectedPosition != position) {
-                    selectedPosition = position;
-                    reloadFragment();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        daySpinner.setAdapter(spinnerAdapter);
-
-//        setupData();
+        initializeDaySpinner();
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mealsRecyclerView.setLayoutManager(mLayoutManager);
@@ -182,6 +138,9 @@ public class CafeteriaFragment extends Fragment {
         return v;
     }
 
+    /**
+     * Sets up the Open/Closed status bar at the top of the fragment.
+     */
     private void setUpStatusBar() {
         if ( isOpen() ) {
             statusBar.setBackgroundColor(getResources().getColor(R.color.green));
@@ -197,59 +156,22 @@ public class CafeteriaFragment extends Fragment {
     }
 
     /**
-     * Determines when the caf is open
+     * Determines when the caf is open.
      *
      * @return whether or not the caf is open
      */
     private boolean isOpen() {
-
         for (int i = 0; i < meals.size(); i++) {
-            if ( meals.get(i).isCurrentMeal() ) {
-                mCurrentMeal = meals.get(i);
+            if ( meals.get(i).isCurrent() ) {
+//                mCurrentMeal = meals.get(i);
                 return true;
             }
         }
         return false;
-
-        /*
-        // Check to see if the day is a weekday
-        if ( dayNum <= 5 ) {
-            // Check to see if caf is open
-            if ( timeIsBetween(mCurrentTime, breakfastOpenTimeWeekday, breakfastCloseTimeWeekday) ) {
-                mCurrentMeal = "breakfast";
-                return true;
-            } else if ( timeIsBetween(mCurrentTime, lunchOpenTimeWeekday, lunchCloseTimeWeekday) ) {
-                mCurrentMeal = "lunch";
-                return true;
-            } else if ( timeIsBetween(mCurrentTime, dinnerOpenTime, dinnerCloseTimeWeekday ) ) {
-                mCurrentMeal = "dinner";
-                return true;
-            }
-        } else if ( dayNum == 6) { // Saturday
-            if ( timeIsBetween(mCurrentTime, breakfastOpenTimeSaturday, breakfastCloseTimeSaturday) ) {
-                mCurrentMeal = "breakfast";
-                return true;
-            } else if ( timeIsBetween(mCurrentTime, brunchOpenTimeSatOrSun, brunchCloseTimeSatOrSun) ) {
-                mCurrentMeal = "brunch";
-                return true;
-            } else if ( timeIsBetween(mCurrentTime, dinnerOpenTime, dinnerCloseTimeSatOrSun) ) {
-                mCurrentMeal = "dinner";
-                return true;
-            }
-        } else { // Sunday
-            if ( timeIsBetween(mCurrentTime, brunchOpenTimeSatOrSun, brunchCloseTimeSatOrSun) ) {
-                mCurrentMeal = "brunch";
-                return true;
-            } else if ( timeIsBetween(mCurrentTime, dinnerOpenTime, dinnerCloseTimeSatOrSun) ) {
-                mCurrentMeal = "dinner";
-                return true;
-            }
-        }
-        return false;*/
     }
 
     /**
-     * Returns the amount of time remaining until the caf closes
+     * Returns the amount of time remaining until the caf closes.
      *
      * @return time remaining until close
      */
@@ -358,6 +280,9 @@ public class CafeteriaFragment extends Fragment {
             minutesPart = " and a half hours";
         } else if ( min == 5 ) {
             minutesPart = "a few minutes";
+            if ( hour == 1 ) {
+                minutesPart = "";
+            }
         }
 
         if ( min == 30 && hour == 0 ) {
@@ -395,8 +320,6 @@ public class CafeteriaFragment extends Fragment {
     }
 
     private void setUpMeals() {
-        // There are no meals, add them depending on the day
-
         // Construct the meals
         Meal breakfast = new Meal("Breakfast");
         Meal brunch = new Meal("Brunch");
@@ -430,64 +353,62 @@ public class CafeteriaFragment extends Fragment {
         }
     }
 
-    /*private void setupData() {
-        //todo: fake data for cafe
-        cafeteriaStore = new FoodStore();
-        cafeteriaStore.setStoreName("Cafeteria");
-        Meal breakfast = new Meal();
-        breakfast.setMealTitle("Breakfast");
-        List<String> breakfastMainLines = new ArrayList<String>();
-        breakfastMainLines.add("Scrambled Eggs");
-        breakfastMainLines.add("Bacon");
-        breakfastMainLines.add("Hash Browns");
-        breakfast.addMainLineItems(breakfastMainLines);
-        breakfast.setInternationalCornerItems(Arrays.asList("1", "2", "3", "4"));
-        Integer[] openTimes = new Integer[] {730, breakfastOpenTimeSaturday};
-        breakfast.setOpenTimes(Arrays.asList(new TimeOfDay(7, 30), new TimeOfDay(9, 30), null));
-        breakfast.setEndTimes(Arrays.asList(new TimeOfDay(10, 0), new TimeOfDay(11, 0), null));
+    private void initializeDaySpinner() {
+        ArrayList<String> days = new ArrayList<>();
+        // populate the days arraylist with 4 entries. The first two will always be
+        // "Today" and "Tomorrow", but the last 2 entries must be programmatically determined
+        // using the current date.
+        days.add("Today");
+        days.add("Tomorrow");
+        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
+        mCalender.add(Calendar.DATE, 2);
+        String thirdDay = dayFormat.format(mCalender.getTime());
+        mCalender.add(Calendar.DATE, 1);
+        String fourthDay = dayFormat.format(mCalender.getTime());
+        days.add(thirdDay);
+        days.add(fourthDay);
 
-        Meal lunch = new Meal();
-        lunch.setMealTitle("Lunch");
+        CustomSpinnerAdapter spinnerAdapter = new CustomSpinnerAdapter(getActivity(),
+                android.R.layout.simple_spinner_item, days);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        lunch.addMainLineItems(Arrays.asList("item1", "item2", "item3", "item4",
-                "item5", "item6", "item7"));
-        List<String> internationalCorner1 = new ArrayList<String>();
-        internationalCorner1.add("item1");
-        internationalCorner1.add("item2");
-        internationalCorner1.add("item3");
-        internationalCorner1.add("item4");
-        lunch.setInternationalCornerItems(internationalCorner1);
-        lunch.setOpenTimes(Arrays.asList(new TimeOfDay(11, 0), null, null));
-        lunch.setEndTimes(Arrays.asList(new TimeOfDay(13, 30), null, null));
-        Meal dinner = new Meal();
-        dinner.setMealTitle("Dinner");
-        List<String> mainLines2 = new ArrayList<String>();
-        mainLines2.add("item1");
-        mainLines2.add("item2");
-        mainLines2.add("item3");
-        mainLines2.add("item4");
-        mainLines2.add("item5");
-        dinner.addMainLineItems(mainLines2);
-        List<String> internationalCorner2 = new ArrayList<String>();
-        internationalCorner2.add("item1");
-        internationalCorner2.add("item2");
-        internationalCorner2.add("item3");
-        internationalCorner2.add("item4");
-        internationalCorner2.add("item5");
-        internationalCorner2.add("item6");
-        dinner.setInternationalCornerItems(internationalCorner2);
-//        dinner.setOpenTimes(Integer[] );
-        dinner.setOpenTimes(Arrays.asList(new TimeOfDay(17, 0), new TimeOfDay(17, 0), new TimeOfDay(17, 0)));
-        dinner.setEndTimes(Arrays.asList(new TimeOfDay(19, 30), new TimeOfDay(19, 0), new TimeOfDay(19, 0)));
+        daySpinner.setAdapter(spinnerAdapter);
 
-        List<Meal> meals = new ArrayList<Meal>();
-        meals.add(breakfast);
-        meals.add(lunch);
-        meals.add(dinner);
+        daySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if ( meals.isEmpty() ) {
+                    setUpMeals();
+                }
+
+                mealsRecyclerView.getAdapter().notifyDataSetChanged();
+
+                if (position != 0) {
+                    mealsRecyclerView.setVisibility(View.VISIBLE);
+                    noMoreMeals.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
-        cafeteriaStore.setMealList(meals);
-    }*/
+        allMealsAreOver = true;
+        for (Meal meal : meals) {
+            if ( ! meal.isPast() ) { // If any of the meals aren't past, set it to "Today"
+                allMealsAreOver = false;
+            }
+        }
+        // If all meals are over, set the spinner to tomorrow.
+        if ( allMealsAreOver ) {
+            daySpinner.setSelection(1);
+        } else {
+            daySpinner.setSelection(0);
+        }
+    }
 
     private void expandStatusBar() {
         if ( ! isExpanded ) { // Expand
@@ -542,29 +463,7 @@ public class CafeteriaFragment extends Fragment {
 
     }
 
-    /*private long getOpenTime(int dayIndex)
-    {
-        for (Meal meal : cafeteriaStore.getMealList()) {
-            if (meal.getOpenTime().get(dayIndex) != null) {
-                return meal.getOpenTime().get(dayIndex).getTimeInMillis();
-            }
-        }
-        return 0;
-
-    }*/
-    private long getTimeOFDay(int hour, int minute)
-    {
-        Calendar openCalendar = Calendar.getInstance();
-        openCalendar.set(Calendar.HOUR_OF_DAY, hour);
-        openCalendar.set(Calendar.MINUTE, minute);
-        openCalendar.set(Calendar.SECOND, 0);
-        return openCalendar.getTimeInMillis();
-    }
-
-
-
-    private TextView createFoodItemView(String foodName)
-    {
+    private TextView createFoodItemView(String foodName) {
         TextView tvFoodItem = new TextView(getActivity());
         tvFoodItem.setText("- " + foodName);
         tvFoodItem.setTextColor(getResources().getColor(R.color.primary_text_default_material_light));
@@ -572,187 +471,131 @@ public class CafeteriaFragment extends Fragment {
         return tvFoodItem;
     }
 
-    private class FoodStore
-    {
-        int openHour;
-        int openMinutes;
-        int closeHour;
-        int closeMinutes;
-        String storeName;
-        List<Meal> mealList;
-        public int getOpenHour() {
-            return openHour;
-        }
-
-
-
-        public int getOpenMinutes() {
-            return openMinutes;
-        }
-
-        public void setOpenMinutes(int openMinutes) {
-            this.openMinutes = openMinutes;
-        }
-
-        public int getCloseHour() {
-            return closeHour;
-        }
-
-
-
-        public int getCloseMinutes() {
-            return closeMinutes;
-        }
-
-        public void setCloseMinutes(int closeMinutes) {
-            this.closeMinutes = closeMinutes;
-        }
-
-        public String getStoreName() {
-            return storeName;
-        }
-
-        public void setStoreName(String storeName) {
-            this.storeName = storeName;
-        }
-
-        public List<Meal> getMealList()
-        {
-            return mealList;
-        }
-
-        public void setMealList(List<Meal> mealList)
-        {
-            this.mealList = mealList;
-        }
-    }
-
     private class Meal {
         String mealTitle;
-        private List<String> mainLineItems;
-        private List<String> internationalCornerItems;
+        private String[] mainLineItems;
+        private String[] internationalCornerItems;
         private int openTime;
         private int closeTime;
         private boolean isCurrent = false;
         private boolean isPast = false;
-        private boolean isUpcoming = false;
 
         public Meal(String mealTitle) {
             this.mealTitle = mealTitle;
+
+            //TODO pull actual items from internet
+            mainLineItems = new String[] {"Main line one", "Main line two"};
+            internationalCornerItems = new String[] {"International one", "International two"};
         }
 
-        public String getMealTitle()
-        {
+        public String getMealTitle() {
             return mealTitle;
         }
 
-        public List<String> getMainLineItems()
-        {
+        public boolean isPast() {
+            return isPast;
+        }
+
+        public boolean isCurrent() {
+            return isCurrent;
+        }
+
+        public String[] getMainLineItems() {
             return mainLineItems;
         }
 
-        public void addMainLineItems(List<String> mainLineItems)
-        {
-            this.mainLineItems = mainLineItems;
-        }
-
-        public List<String> getInternationalCornerItems()
-        {
+        public String[] getInternationalCornerItems() {
             return internationalCornerItems;
         }
-
-        public void setInternationalCornerItems(List<String> internationalCornerItems)
-        {
-            this.internationalCornerItems = internationalCornerItems;
-        }
-
 
         public void setTimes(int openTime, int closeTime) {
             this.openTime = openTime;
             this.closeTime = closeTime;
 
-            isCurrentMeal();
+            determineTimeState();
         }
 
-        public boolean isCurrentMeal() {
-            return timeIsBetween(mCurrentTime, openTime, closeTime);
-        }
-    }
-
-    private class TimeOfDay
-    {
-        int hour;
-        int minutes;
-
-        public TimeOfDay(int hour, int minutes)
-        {
-            this.hour = hour;
-            this.minutes = minutes;
-        }
-        public int getHour() {
-            return hour;
-        }
-
-        public void setHour(int hour) {
-            this.hour = hour;
-        }
-
-        public int getMinutes() {
-            return minutes;
-        }
-
-        public void setMinutes(int minutes) {
-            this.minutes = minutes;
-        }
-
-        public String getTime()
-        {
-            NumberFormat formatter = new DecimalFormat("00");
-            return hour + ":" + formatter.format(minutes);
-        }
-
-        public long getTimeInMillis()
-        {
-            return getTimeOFDay(hour, minutes);
+        public void determineTimeState() {
+            if ( mCurrentTime > closeTime ) {
+                isPast = true;
+            } else {
+                isCurrent = timeIsBetween(mCurrentTime, openTime, closeTime);
+            }
         }
     }
 
-    private void reloadFragment()
-    {
-            getFragmentManager().beginTransaction().detach(this)
-                    .attach(this)
-                    .commit();
+    private void reloadFragment() {
+        getFragmentManager().beginTransaction().detach(this)
+                .attach(this)
+                .commit();
     }
 
-    private class MealsRecyclerAdapter extends RecyclerView.Adapter
-    {
+    public class MealsRecyclerAdapter extends
+            RecyclerView.Adapter<MealsRecyclerAdapter.ViewHolder> {
+
         private List<Meal> mealList;
         private Context context;
 
-        private MealsRecyclerAdapter(Context context, List<Meal> mealList)
-        {
+        private MealsRecyclerAdapter(Context context, List<Meal> mealList) {
             this.context = context;
-            this.mealList = mealList;
+            this.mealList = setUpMealList(mealList);
+            Log.d("mealsRecycler", "mealList size = " + mealList.size());
+        }
+
+        /**
+         * Removes past meals from the meals to display.
+         *
+         * @param mealList the meal list to edit
+         * @return the edited meal list with only current or future meals included
+         */
+        private List<Meal> setUpMealList(List<Meal> mealList) {
+            for (Iterator<Meal> iterator = mealList.iterator(); iterator.hasNext();) {
+                Meal meal = iterator.next();
+                if ( meal.isPast() && daySpinner.getSelectedItemPosition() == 0 ) {
+                    // Remove the current element from the iterator and the list.
+                    iterator.remove();
+                }
+            }
+
+            Log.d("setUpMealList", "is meal list empty? " + mealList.isEmpty() );
+            if ( mealList.isEmpty() ) {
+                mealsRecyclerView.setVisibility(View.GONE);
+                noMoreMeals.setVisibility(View.VISIBLE);
+            } else {
+                mealsRecyclerView.setVisibility(View.VISIBLE);
+                noMoreMeals.setVisibility(View.GONE);
+            }
+
+            return mealList;
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
-        {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.caf_meal_card, viewGroup, false);
-
-            return new ViewHolder(rowView);
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.caf_meal_card, parent, false);
+            return new ViewHolder(view);
         }
 
-
         @Override
-        public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int i)
-        {
-            final Meal meal = mealList.get(i);
-            final MealsRecyclerAdapter.ViewHolder menuViewHolder = (ViewHolder) viewHolder;
-            menuViewHolder.mealTitle.setText(meal.getMealTitle());
-            menuViewHolder.mealTitle.setText(meal.getMealTitle());
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.mealTitle.setText(meals.get(position).getMealTitle());
+
+            if ( meals.get(position).isCurrent() ) {
+                holder.currentlyServingText.setVisibility(View.VISIBLE);
+            }
+
+            if ( meals.get(position).getMealTitle().equals("Breakfast") ) {
+                holder.mealImage.setBackground(getResources().getDrawable(R.drawable.breakfast));
+            } else if (meals.get(position).getMealTitle().equals("Lunch")) {
+                holder.mealImage.setBackground(getResources().getDrawable(R.drawable.lunch));
+            } else {
+                holder.mealImage.setBackground(getResources().getDrawable(R.drawable.dinner));
+            }
+
+            loadMenu(holder, meals.get(position));
+
+
+            /*menuViewHolder.mealTitle.setText(meal.getMealTitle());
 
             loadMenu(menuViewHolder, meal);
 
@@ -777,7 +620,7 @@ public class CafeteriaFragment extends Fragment {
                     }, 500);
 
                 }
-            });
+            });*/
 
         }
 
@@ -813,22 +656,28 @@ public class CafeteriaFragment extends Fragment {
         @Override
         public int getItemCount()
         {
+            mealList = setUpMealList(mealList);
             return mealList.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            public TextView mealTitle;
-            public LinearLayout llMainLines;
-            public LinearLayout llInternationalCorner;
+            public TextView mealTitle, currentlyServingText, noMoreMeals;
+            public LinearLayout llMainLines, llInternationalCorner;
+            public FrameLayout mealImage;
             public ToggleButton tbViewMore;
             public CardView cvRoot;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 mealTitle = (TextView) itemView.findViewById(R.id.meal_title);
-                llMainLines = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llMainLine);
-                llInternationalCorner = (LinearLayout) itemView.findViewById(R.id.fragment_cafeteria_llInternationalCorner);
-                tbViewMore = (ToggleButton) itemView.findViewById(R.id.fragment_cafeteria_tbViewMore);
+                mealImage = (FrameLayout) itemView.findViewById(R.id.image);
+                currentlyServingText = (TextView) itemView.findViewById(R.id.currently_serving);
+                llMainLines = (LinearLayout) itemView.findViewById(
+                        R.id.fragment_cafeteria_llMainLine);
+                llInternationalCorner = (LinearLayout) itemView.findViewById(
+                        R.id.fragment_cafeteria_llInternationalCorner);
+                tbViewMore = (ToggleButton) itemView.findViewById(
+                        R.id.fragment_cafeteria_tbViewMore);
                 cvRoot = (CardView) itemView.findViewById(R.id.food_wells_menu_item_cvRoot);
             }
 
@@ -836,14 +685,14 @@ public class CafeteriaFragment extends Fragment {
 
         private void loadMenu(MealsRecyclerAdapter.ViewHolder viewHolder, Meal meal) {
 
-            for (int i = 0; i < meal.getMainLineItems().size(); i++) {
-                viewHolder.llMainLines.addView(createFoodItemView(meal.getMainLineItems().get(i)));
+            for (int i = 0; i < meal.getMainLineItems().length; i++) {
+                viewHolder.llMainLines.addView(createFoodItemView(meal.getMainLineItems()[i]));
             }
 
             setListViewHeightBasedOnChildren(viewHolder.llMainLines);
 
-            for (int i = 0; i < meal.getInternationalCornerItems().size(); i++) {
-                viewHolder.llInternationalCorner.addView(createFoodItemView(meal.getInternationalCornerItems().get(i)));
+            for (int i = 0; i < meal.getInternationalCornerItems().length; i++) {
+                viewHolder.llInternationalCorner.addView(createFoodItemView(meal.getInternationalCornerItems()[i]));
             }
 
             setListViewHeightBasedOnChildren(viewHolder.llInternationalCorner);
@@ -883,19 +732,17 @@ public class CafeteriaFragment extends Fragment {
     }
 
     // setting up a custom adapter for spinner
-    private class CustomAdapter extends ArrayAdapter<String> {
+    private class CustomSpinnerAdapter extends ArrayAdapter<String> {
 
         private ArrayList<String> days;
         private LayoutInflater inflater;
         private Context context;
 
-        /*************  CustomAdapter Constructor *****************/
-        public CustomAdapter(Context context, int rowResourceLayout, ArrayList<String> days ) {
+        public CustomSpinnerAdapter(Context context, int rowResourceLayout, ArrayList<String> days) {
             super(context, rowResourceLayout, days);
             this.context = context;
             this.days = days;
 
-            /***********  Layout inflator to call external xml layout () **********************/
             inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         }
@@ -916,11 +763,9 @@ public class CafeteriaFragment extends Fragment {
             /********** Inflate spinner_rows.xml file for each row ( Defined below ) ************/
             View row = inflater.inflate(R.layout.cafeteria_spinner_rows, parent, false);
 
-
             TextView label = (TextView)row.findViewById(R.id.day);
 
             label.setText(days.get(position));
-
 
             return row;
         }

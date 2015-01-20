@@ -40,6 +40,8 @@
                     android:layout_gravity="end"
                     android:gravity="center_vertical"
                     android:textSize="16sp"
+                    android:text="@string/currently_serving"
+                    android:visibility="invisible"
                     android:textColor="@color/white" />
 
             </FrameLayout>

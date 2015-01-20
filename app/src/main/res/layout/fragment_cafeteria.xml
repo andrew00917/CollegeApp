@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/WhiteSmoke"
     tools:context="com.techhab.collegeapp.CafeteriaFragment">
 
 
@@ -286,13 +285,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-
-
                 android:id="@+id/day_spinner"
                 android:drawSelectorOnTop="true"
                 style="@style/SpinnerStyle"
-                android:layout_below="@+id/cafeteria_status_bar"
-                />
+                android:layout_below="@+id/cafeteria_status_bar" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/meals_recycler_view"
@@ -303,5 +299,18 @@
                 />
 
         </RelativeLayout>
+
+            <TextView
+                android:id="@+id/no_more_meals"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="No More Meals Today"
+                android:textColor="@color/secondary_text_disabled_material_light"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:visibility="gone"
+                android:layout_below="@id/meals_recycler_view"
+                android:layout_gravity="center"
+                android:gravity="center"/>
 
 </FrameLayout>

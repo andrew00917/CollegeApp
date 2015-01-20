@@ -167,7 +167,7 @@ public class HomeGamesFragment extends Fragment {
             mContext = context;
         }
 
-        // Not use static
+        // Don't use static
         public class ViewHolder extends RecyclerView.ViewHolder {
 
             public TextView mTextView, mGameName;
@@ -205,8 +205,7 @@ public class HomeGamesFragment extends Fragment {
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.recycle_item, parent, false);
-            ViewHolder holder = new ViewHolder(view);
-            return holder;
+            return new ViewHolder(view);
         }
     }
 
