@@ -1,5 +1,6 @@
 package com.techhab.collegeapp;
 
+import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -197,6 +198,7 @@ public class ProfileActivity extends ActionBarActivity implements NavigationDraw
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.content_frame, fragment);
         transaction.commit();
+
     }
 
     public String getUserId() {

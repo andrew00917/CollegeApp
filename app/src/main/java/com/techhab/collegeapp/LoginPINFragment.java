@@ -26,14 +26,12 @@ public class LoginPINFragment extends Fragment {
     private CollegeApplication application;
     View v;
     private TextView message;
-    private boolean verified;
     private int pin;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        verified = false;
         application = (CollegeApplication) getActivity().getApplication();
         pin = application.getPin();
     }
@@ -43,7 +41,7 @@ public class LoginPINFragment extends Fragment {
                              Bundle savedInstanceState) {
         final User user = application.getCurrentUser();
         v = inflater.inflate(R.layout.activity_pin, container, false);
-
+        v.setBackgroundColor(Color.WHITE);
         if (getActivity().getActionBar() != null && getActivity().getActionBar().isShowing()) {
             getActivity().getActionBar().hide();
         }
@@ -78,8 +76,7 @@ public class LoginPINFragment extends Fragment {
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 if ( input.getText().toString().equals(user.getPassword()) ) {
-                                    verified = true;
-                                    Toast.makeText(getActivity(), "verified", Toast.LENGTH_LONG).show();
+                                    verified();
                                     dialog.dismiss();
                                 }
 
@@ -176,11 +173,7 @@ public class LoginPINFragment extends Fragment {
                 if ( pintext.length() > 3 ) {
                     String pinString = pintext.getText().toString();
                     if ( pin == Integer.parseInt(pinString) ) {
-                        verified = true;
-                        // a new fragment to switch to
-                        Fragment fragment = new ProfileFragment();
-                        ProfileActivity activity = (ProfileActivity) getActivity();
-                        activity.changeFragment(fragment);
+                        verified();
                     }
                     else {
                         pintext.setText("");
@@ -194,7 +187,12 @@ public class LoginPINFragment extends Fragment {
         return v;
 
     }
-
+    private void verified() {
+        // a new fragment to switch to
+        Fragment fragment = new ProfileFragment();
+        ProfileActivity activity = (ProfileActivity) getActivity();
+        activity.changeFragment(fragment);
+    }
 
 
 }
