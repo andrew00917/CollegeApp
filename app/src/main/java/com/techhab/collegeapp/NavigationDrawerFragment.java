@@ -19,11 +19,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -467,7 +469,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     private void phoneCall(String phoneNumber) {
-        Intent phoneIntent = new Intent(Intent.ACTION_CALL);
+        Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
         phoneIntent.setData(Uri.parse("tel:" + phoneNumber));
         startActivity(phoneIntent);
     }
@@ -612,11 +614,41 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             switch (position) {
                 case 0:
                     intent = new Intent(getActivity(), SettingsActivity.class);
+                    getActivity().startActivity(intent);
                     break;
                 default:
-                    intent = new Intent(getActivity(), SettingsActivity.class);
+                    View popUpView = getActivity().getLayoutInflater().inflate(R.layout.helper_dialog, null);
+                    final PopupWindow popupWindow = new PopupWindow(popUpView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                    popupWindow.showAtLocation(popUpView, Gravity.BOTTOM, 0, 0);
+                    TextView tvCancel = (TextView) popUpView.findViewById(R.id.healer_dialog_tvCancel);
+                    tvCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                        }
+                    });
+
+                    TextView tvSendFeedBack = (TextView) popUpView.findViewById(R.id.helper_dialog_tvSendFeedBack);
+
+                    tvSendFeedBack.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getActivity(), FeedBackActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    TextView tvTakeATour = (TextView) popUpView.findViewById(R.id.helper_dialog_tvTakeATour);
+                    tvTakeATour.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getActivity(), TakeATourActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    break;
             }
-            getActivity().startActivity(intent);
+
         }
     }
 }
