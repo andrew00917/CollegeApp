@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<android.support.v7.widget.CardView
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_margin="8dp"
+    >
+    <EditText
+        android:id="@+id/et_feed_back"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_margin="16dp"
+        android:background="@null"
+        android:textColor="@color/secondary_text_default_material_light"
+        android:hint="Write your feed back"
+        android:gravity="left"/>
+
+</android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="8dp"
+        android:layout_marginTop="10dp"
+        >
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:padding="16dp">
+
+           <TextView
+               android:id="@+id/tvItemTitle"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:textSize="20dp"
+               android:text="Student Account"
+               android:textColor="@color/primary_dark_material_dark"
+               />
+           <TextView
+               android:id="@+id/tvDescription"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_below="@+id/tvItemTitle"
+               android:textColor="@color/secondary_text_default_material_light"
+               android:text="Include your google account information"
+               android:layout_toLeftOf="@+id/witchCompatStudentAccount"
+               android:layout_toStartOf="@+id/witchCompatStudentAccount" />
+           <android.support.v7.widget.SwitchCompat
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               app:showText="false"
+               android:layout_below="@+id/tvItemTitle"
+               android:layout_alignParentRight="true"
+               android:layout_alignParentEnd="true"
+               android:id="@+id/witchCompatStudentAccount" />
+       </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        >
+        <Button
+            android:id="@+id/feed_back_btSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/MaterialButtonFlat"
+
+            android:text="Send"/>
+
+        <Button
+            android:id="@+id/feed_back_btPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            style="@style/MaterialButtonFlat"
+
+            android:text="Preview"/>
+
+        </RelativeLayout>
+
+
+</LinearLayout>
