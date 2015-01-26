@@ -65,10 +65,13 @@
     <!-- Navigation Drawer -->
     <string name="my_profile">My Profile</string>
 
+    <string-array name="profile_drawer_items">
+        <item>My Profile</item>
+        <item>Class Schedule</item>
+    </string-array>
     <string-array name="nav_drawer_items">
         <item>Announcements</item>
         <item>Emergency Call</item>
-        <item>About</item>
         <item>Log Out</item>
     </string-array>
     <string-array name="nav_drawer_settings_support">
