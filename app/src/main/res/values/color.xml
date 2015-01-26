@@ -3,7 +3,7 @@
     <color name="shadow">#8A8A8A</color>
     <color name="stroke">#404040</color>
     <color name="drawerBackground">#272727</color>
-    <color name="drawerDivider">#404040</color>
+    <color name="drawerDivider">#999999</color>
     <color name="trans">#80FFFFFF</color>
     <color name="theGray">#999999</color>
     <color name="navDrawerIcon">#999999</color>
