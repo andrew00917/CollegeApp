@@ -192,6 +192,13 @@ public class ProfileActivity extends ActionBarActivity implements NavigationDraw
         return super.onOptionsItemSelected(item);
     }
 
+    public void changeFragment(Fragment fragment) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.content_frame, fragment);
+        transaction.commit();
+    }
+
     public String getUserId() {
         return userId;
     }

@@ -114,6 +114,10 @@
             android:name=".ReAuthenticationActivity"
             android:label="@string/title_activity_re_authentication" >
         </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
     </application>
 
 </manifest>

@@ -49,4 +49,20 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="pref_key_about_settings"
+        android:title="@string/setting_about">
+
+        <PreferenceScreen android:title="@string/setting_about_title"
+            android:key="pref_key_about"
+            android:summary="@string/setting_about_summary">
+            <intent
+                android:action="android.intent.action.MAIN"
+                android:targetPackage="com.techhab.collegeapp"
+                android:targetClass="com.techhab.collegeapp.AboutActivity"
+                />
+        </PreferenceScreen>
+
+        </PreferenceCategory>
+
 </PreferenceScreen>

@@ -2,7 +2,6 @@ package com.techhab.collegeapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -18,8 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.techhab.collegeapp.application.CollegeApplication;
 
 public class PINSetupActivity extends ActionBarActivity {
@@ -143,11 +140,9 @@ public class PINSetupActivity extends ActionBarActivity {
         });
         btnback.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                if ( pintext.length() < 1 ) {
-                    return;
-                }
-                else
+                if ( pintext.length() > 0 ) {
                     pintext.getEditableText().delete(pintext.length() - 1, pintext.length());
+                }
             }
         });
 

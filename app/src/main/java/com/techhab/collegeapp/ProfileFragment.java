@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.techhab.collegeapp.application.CollegeApplication;
+
 
 /**
  * Created by Jae Hyun Choe 1/13/2015
@@ -22,7 +26,7 @@ public class ProfileFragment extends Fragment {
 
     public static final String ARG_ID = "user_id";
     public static final String ARG_EMAIL = "user_email";
-
+    private CollegeApplication application;
     private String userId;
     private String userEmail;
 
@@ -56,6 +60,7 @@ public class ProfileFragment extends Fragment {
             userId = getArguments().getString(ARG_ID);
             userEmail = getArguments().getString(ARG_EMAIL);
         }
+        application = (CollegeApplication) getActivity().getApplication();
     }
 
     @Override
@@ -90,7 +95,15 @@ public class ProfileFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_SHORT).show();
+                if ( application.getPinState() ) {
+                    Fragment fragment = new LoginPINFragment();
+                    ProfileActivity activity = (ProfileActivity) getActivity();
+                    activity.changeFragment(fragment);
+                }
+                else {
+                    Toast.makeText(getActivity(), "no PIN", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
