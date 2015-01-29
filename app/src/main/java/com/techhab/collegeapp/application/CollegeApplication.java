@@ -168,7 +168,7 @@ public class CollegeApplication extends Application {
     public void setPin(int pin) {
         SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(PIN_PREFERENCE, 0000);
+        editor.putInt(PIN_PREFERENCE, pin);
         editor.commit();
     }
 

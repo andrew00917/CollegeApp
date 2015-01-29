@@ -173,7 +173,7 @@
 
             <ImageButton
                 android:id="@+id/button_backspace"
-                android:src="@drawable/ic_action_previous_item"
+                android:src="@drawable/ic_backspace_grey600_48dp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="fill_parent"/>

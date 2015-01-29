@@ -65,10 +65,13 @@
     <!-- Navigation Drawer -->
     <string name="my_profile">My Profile</string>
 
+    <string-array name="profile_drawer_items">
+        <item>My Profile</item>
+        <item>Class Schedule</item>
+    </string-array>
     <string-array name="nav_drawer_items">
         <item>Announcements</item>
         <item>Emergency Call</item>
-        <item>About</item>
         <item>Log Out</item>
     </string-array>
     <string-array name="nav_drawer_settings_support">
@@ -140,9 +143,7 @@
     <string name="label_cafeteria_breakfast">BreakFast</string>
     <string name="label_cafeteria_lunch">Lunch</string>
     <string name="label_cafeteria_dinner">Dinner</string>
-
     <string name="currently_serving">Currently Serving</string>
-
     <string name="monday_friday">Monday - Friday</string>
     <string name="mealtimes_mf">Breakfast: 7:30 - 10am\nLunch: 11 - 1:30pm\nDinner: 5 - 7:30pm</string>
     <string name="lunch_mf">Lunch: 11 - 1:30pm</string>
@@ -436,6 +437,9 @@
     <string name="setting_logout_summary">Logout and discard your saved settings for this app</string>
     <string name="setting_password">Please enter your password</string>
     <string name="title_activity_cafeteria">Dining Information</string>
+    <string name="setting_about">About</string>
+    <string name="setting_about_title">About</string>
+    <string name="setting_about_summary">About, Terms of Service, Privacy</string>
 
     <!-- Profile Activity -->
     <string-array name="profile_titles">
@@ -466,5 +470,6 @@
     <string name="title_activity_pin">PINActivity</string>
     <string name="title_activity_profile">My Profile</string>
     <string name="title_activity_re_authentication">ReAuthenticationActivity</string>
+    <string name="title_activity_about">AboutActivity</string>
 
 </resources>

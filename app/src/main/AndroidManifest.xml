@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
         android:name=".application.CollegeApplication"
@@ -107,12 +108,34 @@
                 android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
         <activity
+            android:name=".FeedBackActivity"
+            android:label="FeedBack" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techhab.collegeapp.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".PreviewFeedBackActivity"
+            android:label="Preview FeedBack" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techhab.collegeapp.HomeActivity" />
+        </activity>
+        <activity android:name=".TakeATourActivity">
+
+        </activity>
+
+        <activity
             android:name=".PINSetupActivity"
             android:label="@string/title_activity_pin" >
         </activity>
         <activity
             android:name=".ReAuthenticationActivity"
             android:label="@string/title_activity_re_authentication" >
+        </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/title_activity_about" >
         </activity>
     </application>
 

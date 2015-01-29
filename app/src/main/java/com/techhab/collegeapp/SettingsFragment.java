@@ -57,7 +57,7 @@ public class SettingsFragment extends PreferenceFragment {
                 // Set an EditText view to get user input
                 final EditText input = new EditText(getActivity());
                 input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                AlertDialog passDialog = new AlertDialog.Builder(getActivity())
+                final AlertDialog passDialog = new AlertDialog.Builder(getActivity())
                         .setTitle("Forget PIN")
                         .setMessage("Please enter your password")
                         .setView(input)
@@ -66,6 +66,7 @@ public class SettingsFragment extends PreferenceFragment {
                                 if (input.getText().toString().equals(user.getPassword())) {
                                     application.setPinState(false);
                                     setUpPinOptions();
+                                    dialog.dismiss();
                                 } else {
                                     Toast.makeText(getActivity().getApplicationContext(), "Incorrect password", Toast.LENGTH_LONG).show();
                                     dialog.dismiss();

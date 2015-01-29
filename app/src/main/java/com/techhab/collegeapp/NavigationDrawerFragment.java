@@ -19,11 +19,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -59,6 +61,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     private static final String USER_ID_KEY = "user_id";
     private static final String USER_EMAIL_KEY = "user_email";
 
+    private String userId = "";
+    private String userEmail = "";
+
     /**
      * A pointer to the current callbacks instance (the Activity).
      */
@@ -70,7 +75,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerListView, mDrawerListViewSettingsSupport;
+    private ListView mProfileListView, mDrawerListView, mDrawerListViewSettingsSupport;
     private View mFragmentContainerView;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
 
@@ -78,6 +83,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
+    private ProfileNavAdapter mProfileAdapter;
     private NavAdapter mNavAdapter;
     private SettingsSupportNavAdapter mNavAdapterSettingsSupport;
 
@@ -118,10 +124,18 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
         // inflate the parent view (the entire layout)
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        mProfileListView = (ListView) view.findViewById(R.id.profile_list);
         mDrawerListView = (ListView) view.findViewById(R.id.drawer_list);
         mDrawerListViewSettingsSupport = (ListView) view.findViewById(R.id.settings_support);
         mProfileLayout = (LinearLayout) view.findViewById(R.id.profile_layout);
 
+        TextView id = (TextView) mProfileLayout.findViewById(R.id.nav_user_name);
+        TextView email = (TextView) mProfileLayout.findViewById(R.id.user_email);
+        userId = id.getText().toString();
+        userEmail = email.getText().toString();
+
+        mProfileAdapter = new ProfileNavAdapter(getActivity());
+        mProfileListView.setAdapter(mProfileAdapter);
         mNavAdapter = new NavAdapter(getActivity());
         mDrawerListView.setAdapter(mNavAdapter);
         mNavAdapterSettingsSupport = new SettingsSupportNavAdapter(getActivity());
@@ -132,18 +146,17 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mProfileLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectItem(mCurrentSelectedPosition);
-                TextView id = (TextView) v.findViewById(R.id.nav_user_name);
-                TextView email = (TextView) v.findViewById(R.id.user_email);
+            selectItem(mCurrentSelectedPosition);
 
-                mDrawerLayout.closeDrawer(Gravity.START);
+            mDrawerLayout.closeDrawer(Gravity.START);
 
-                Intent intent = new Intent(getActivity(), ProfileActivity.class);
-                intent.putExtra(USER_ID_KEY, id.getText().toString());
-                intent.putExtra(USER_EMAIL_KEY, email.getText().toString());
-                getActivity().startActivity(intent);
+            Intent intent = new Intent(getActivity(), ProfileActivity.class);
+            intent.putExtra(USER_ID_KEY, userId);
+            intent.putExtra(USER_EMAIL_KEY, userEmail);
+            getActivity().startActivity(intent);
             }
         });
+        mProfileListView.setOnItemClickListener(mProfileAdapter);
         mDrawerListView.setOnItemClickListener(mNavAdapter);
         mDrawerListViewSettingsSupport.setOnItemClickListener(mNavAdapterSettingsSupport);
 
@@ -285,6 +298,82 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     /**
+     * Custom ListView adapter for the profile nav drawer
+     */
+    class ProfileNavAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
+
+        private Context context;
+
+        String[] profile_drawer_items;
+
+        // Array of drawables. MUST BE IN THE SAME ORDER AS THE nav_drawer_items STRING ARRAY!
+        int[] images = { R.drawable.ic_walk_grey600_48dp, R.drawable.ic_calendar };
+
+        public ProfileNavAdapter(Context context) {
+            this.context = context;
+            profile_drawer_items = context.getResources().getStringArray(R.array.profile_drawer_items);
+        }
+
+        @Override
+        public int getCount() {
+            return profile_drawer_items.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return profile_drawer_items[position];
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View row = null;
+            if (convertView == null) {
+                LayoutInflater inflater =
+                        (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                row = inflater.inflate(R.layout.nav_row, parent, false);
+            } else {
+                row = convertView;
+            }
+            TextView titleTextView = (TextView) row.findViewById(R.id.textView);
+            ImageView titleImageView = (ImageView) row.findViewById(R.id.imageView);
+
+            titleTextView.setText(profile_drawer_items[position]);
+            titleImageView.setImageResource(images[position]);
+            return row;
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+//            Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_SHORT).show();
+            switch (position) {
+                case 0:
+                    profileOnClick();
+                    break;
+                default:
+                    // TODO: NOT a default behavior
+                    profileOnClick();
+            }
+        }
+
+        private void profileOnClick() {
+            selectItem(mCurrentSelectedPosition);
+
+            mDrawerLayout.closeDrawer(Gravity.START);
+
+            Intent intent = new Intent(getActivity(), ProfileActivity.class);
+            intent.putExtra(USER_ID_KEY, userId);
+            intent.putExtra(USER_EMAIL_KEY, userEmail);
+            getActivity().startActivity(intent);
+        }
+    }
+
+    /**
      * Custom ListView adapter for the nav drawer
      */
     class NavAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
@@ -294,8 +383,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         String[] nav_drawer_items;
 
         // Array of drawables. MUST BE IN THE SAME ORDER AS THE nav_drawer_items STRING ARRAY!
-        int[] images = { R.drawable.numeric_1_box, R.drawable.phone, R.drawable.bookmark,
-                R.drawable.logout };
+//        int[] images = { R.drawable.numeric_1_box, R.drawable.phone, R.drawable.bookmark,
+//                R.drawable.logout };
+        int[] images = { R.drawable.ic_info_outline, R.drawable.phone, R.drawable.logout };
 
         public NavAdapter(Context context) {
             this.context = context;
@@ -354,39 +444,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
          *  Build and show material dialog for fragment_emergency call
          */
         private void emergencyCallDialog() {
-//            new MaterialDialog.Builder(getActivity())
-//                    .title("Choose who to call...")
-//                    .items(new String[]{"Campus Security", "Health"})
-//                    .itemsCallback(new MaterialDialog.ListCallback() {
-//                        @Override
-//                        public void onSelection(MaterialDialog dialog, View view,
-//                                                int which, CharSequence text) {
-//                            if (which == 0) {
-//                                // TODO: call security
-//                                dialog.dismiss();
-//                            } else if (which == 1) {
-//                                // TODO: call health
-//                                dialog.dismiss();
-//                            }
-//                        }
-//                    })
-//                    .negativeText("Cancel")
-//                    .autoDismiss(false)
-//                    .negativeColor(getResources().getColor(R.color.abc_secondary_text_material_light))
-//                    .callback(new MaterialDialog.Callback() {
-//                        // Material Dialog library needs this empty method
-//                        @Override
-//                        public void onPositive(MaterialDialog dialog) {
-//                            // There is no positive button existing
-//                        }
-//
-//                        @Override
-//                        public void onNegative(MaterialDialog dialog) {
-//                            dialog.dismiss();
-//                        }
-//                    })
-//                    .cancelable(false)
-//                    .show();
             List<Emergency> emergencyList = new ArrayList<>();
             emergencyList.add(new Emergency("Campus Security","(269) 337-7321"));
             emergencyList.add(new Emergency("City of Kalamazoo Police","(517) 763-1377"));
@@ -412,7 +469,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     private void phoneCall(String phoneNumber) {
-        Intent phoneIntent = new Intent(Intent.ACTION_CALL);
+        Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
         phoneIntent.setData(Uri.parse("tel:" + phoneNumber));
         startActivity(phoneIntent);
     }
@@ -498,6 +555,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             this.phone = phone;
         }
     }
+
     /**
      * Custom ListView adapter for the Settings & Support section of the nav drawer
      */
@@ -556,11 +614,41 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             switch (position) {
                 case 0:
                     intent = new Intent(getActivity(), SettingsActivity.class);
+                    getActivity().startActivity(intent);
                     break;
                 default:
-                    intent = new Intent(getActivity(), SettingsActivity.class);
+                    View popUpView = getActivity().getLayoutInflater().inflate(R.layout.helper_dialog, null);
+                    final PopupWindow popupWindow = new PopupWindow(popUpView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                    popupWindow.showAtLocation(popUpView, Gravity.BOTTOM, 0, 0);
+                    TextView tvCancel = (TextView) popUpView.findViewById(R.id.healer_dialog_tvCancel);
+                    tvCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupWindow.dismiss();
+                        }
+                    });
+
+                    TextView tvSendFeedBack = (TextView) popUpView.findViewById(R.id.helper_dialog_tvSendFeedBack);
+
+                    tvSendFeedBack.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getActivity(), FeedBackActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    TextView tvTakeATour = (TextView) popUpView.findViewById(R.id.helper_dialog_tvTakeATour);
+                    tvTakeATour.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getActivity(), TakeATourActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    break;
             }
-            getActivity().startActivity(intent);
+
         }
     }
 }
