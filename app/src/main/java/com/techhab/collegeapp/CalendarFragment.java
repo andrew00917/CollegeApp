@@ -103,7 +103,8 @@ public class CalendarFragment extends Fragment {
         years.add("2015-16");
         years.add("2016-17");
 
-        CustomAdapter spinnerAdapter = new CustomAdapter(getActivity(), android.R.layout.simple_spinner_item, years);
+        CustomAdapter spinnerAdapter = new CustomAdapter(getActivity(),
+                android.R.layout.simple_spinner_item, years);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setSelection(0, false);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

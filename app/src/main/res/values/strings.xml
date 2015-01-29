@@ -364,61 +364,61 @@
     <!-- Dates -->
     <!-- 2014-15 -->
     <string-array name="Fall_2014">
-        <item>9/1</item>
-        <item>9/4-9/9</item>
-        <item>9/10-9/14</item>
-        <item>9/12-9/13</item>
-        <item>9/15</item>
-        <item>9/17</item>
-        <item>9/19</item>
-        <item>9/22</item>
-        <item>9/26</item>
-        <item>10/18</item>
-        <item>10/24</item>
-        <item>10/27-11/7</item>
-        <item>10/31-11/2</item>
-        <item>11/7</item>
-        <item>11/10</item>
-        <item>11/21</item>
-        <item>11/23-11/25</item>
-        <item>11/27</item>
-        <item>12/3</item>
-        <item>11/26-1/4</item>
+        <item>Sep 1</item>
+        <item>Sep 4 - Sep 9</item>
+        <item>Sep 10 - Sep 14</item>
+        <item>Sep 12 - Sep 13</item>
+        <item>Sep 15</item>
+        <item>Sep 17</item>
+        <item>Sep 19</item>
+        <item>Sep 22</item>
+        <item>Sep 26</item>
+        <item>Oct 18</item>
+        <item>Oct 24</item>
+        <item>Oct 27 - Nov 7</item>
+        <item>Oct 31 - Nov 2</item>
+        <item>Nov 7</item>
+        <item>Nov 10</item>
+        <item>Nov 21</item>
+        <item>Nov 23 - Nov 25</item>
+        <item>Nov 27</item>
+        <item>Dec 3</item>
+        <item>Nov 26 - Jan 4</item>
     </string-array>
     <string-array name="Winter_2014">
-        <item>1/5</item>
-        <item>1/7</item>
-        <item>1/9</item>
-        <item>1/12</item>
-        <item>1/16</item>
-        <item>1/19</item>
-        <item>2/6</item>
-        <item>2/16-2/27</item>
-        <item>2/27</item>
-        <item>3/2</item>
-        <item>3/13</item>
-        <item>3/15-3/17</item>
-        <item>3/24</item>
-        <item>3/18-3/29</item>
+        <item>Jan 5</item>
+        <item>Jan 7</item>
+        <item>Jan 9</item>
+        <item>Jan 12</item>
+        <item>Jan 16</item>
+        <item>Jan 19</item>
+        <item>Feb 6</item>
+        <item>Feb 16 - Feb 27</item>
+        <item>Feb 27</item>
+        <item>Mar 2</item>
+        <item>Mar 13</item>
+        <item>Mar 15 - Mar 17</item>
+        <item>Mar 24</item>
+        <item>Mar 18 - Mar 29</item>
     </string-array>
     <string-array name="Spring_2014">
-        <item>3/30</item>
-        <item>4/1</item>
-        <item>4/3</item>
-        <item>4/6</item>
-        <item>4/10</item>
+        <item>Mar 30</item>
+        <item>Apr 1</item>
+        <item>Apr 3</item>
+        <item>Apr 6</item>
+        <item>Apr 10</item>
         <item/>
-        <item>5/11-5/22</item>
-        <item>5/23</item>
-        <item>5/26</item>
+        <item>May 11 - May 22</item>
+        <item>May 23</item>
+        <item>May 26</item>
         <item>Student-determined</item>
-        <item>5/25</item>
-        <item>6/5</item>
-        <item>6/8-6/10</item>
-        <item>6/11</item>
-        <item>6/14</item>
-        <item>6/16</item>
-        <item>6/11-9/13</item>
+        <item>May 25</item>
+        <item>Jun 5</item>
+        <item>Jun 8 - Jun 10</item>
+        <item>Jun 11</item>
+        <item>Jun 14</item>
+        <item>Jun 16</item>
+        <item>Jun 11 - Sep 13</item>
     </string-array>
 
     <!-- Settings Activity -->
