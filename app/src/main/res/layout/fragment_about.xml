@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
-    <TextView android:text="(c) 2015-2015 TechHab Inc.\nAll rights reserved."
+    <TextView android:text="(c) 2015-2015 TechHab Inc.\nAll rights reserved.\n"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -30,7 +30,7 @@
         android:text="Developers"
         style="?android:attr/listSeparatorTextViewStyle" />
 
-    <TextView android:text="This application was created and developed by:"
+    <TextView android:text="Created and developed by:\n"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
@@ -58,7 +58,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Give us money and you can use this app. Them be the terms."/>
+        android:text="Give us money and you can use this app. Them be the terms.\n"/>
 
     <TextView
         android:layout_height="wrap_content"

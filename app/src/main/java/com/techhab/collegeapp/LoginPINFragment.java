@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -27,6 +29,15 @@ public class LoginPINFragment extends Fragment {
     View v;
     private TextView message;
     private int pin;
+    private int toFragment = -1;
+
+    public int getToFragment() {
+        return toFragment;
+    }
+
+    public void setToFragment(int i) {
+        toFragment = i;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -190,9 +201,28 @@ public class LoginPINFragment extends Fragment {
     private void verified() {
         // a new fragment to switch to
         Fragment fragment = new ProfileFragment();
-        ProfileActivity activity = (ProfileActivity) getActivity();
-        activity.changeFragment(fragment);
+        changeFragment();
     }
-
+    private void changeFragment() {
+        Fragment fragment;
+        if (getToFragment() == 0) {
+            fragment = new MyCoursesFragment();
+        }
+        else if ( getToFragment() == 1 ) {
+            fragment = new MyCoursesFragment();
+        }
+        else if ( getToFragment() == 2 ) {
+            fragment = new MyCoursesFragment();
+        }
+        else {
+            //error
+            return;
+        }
+        ProfileActivity activity = (ProfileActivity) getActivity();
+        FragmentManager fm = activity.getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(((ViewGroup)(getView().getParent())).getId(), fragment); ;
+        transaction.commit();
+    }
 
 }
