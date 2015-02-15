@@ -130,9 +130,21 @@ public class LogInFragment extends Fragment {
     private void postLogin(String result) {
         User user = application.getCurrentUser();
         if (result.length() > 0) {
-            // String[] info = result.split(",");
-
             user.setValid(true);
+
+            // set user info here
+            String[] info = result.split(",");
+            user.setUserId(info[0]);
+            user.setPassword(info[1]);
+            if (info[2].equals("TRUE")) {
+                user.setActive(true);
+            } else {
+                user.setActive(false);
+            }
+            user.setFirstName(info[3]);
+            user.setLastName(info[4]);
+            user.setUserName();
+            user.setEmail(info[5]);
 
             application.setRememberLogin(rememberMeCheckBox.isChecked());
             application.setLoggedIn(true);

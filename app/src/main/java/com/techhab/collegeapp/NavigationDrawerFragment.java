@@ -31,6 +31,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.techhab.collegeapp.application.CollegeApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,16 +54,21 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
      */
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
+    private CollegeApplication application;
+
     /**
      * Keys for profile intent
      *      user id
      *      user email
      */
-    private static final String USER_ID_KEY = "user_id";
-    private static final String USER_EMAIL_KEY = "user_email";
+//    private static final String USER_ID_KEY = "user_id";
+//    private static final String USER_EMAIL_KEY = "user_email";
 
-    private String userId = "";
+    private String userName = "";
     private String userEmail = "";
+
+    private TextView nameField;
+    private TextView emailField;
 
     /**
      * A pointer to the current callbacks instance (the Activity).
@@ -94,6 +100,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        application = (CollegeApplication) getActivity().getApplication();
 
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
@@ -129,10 +137,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mDrawerListViewSettingsSupport = (ListView) view.findViewById(R.id.settings_support);
         mProfileLayout = (LinearLayout) view.findViewById(R.id.profile_layout);
 
-        TextView id = (TextView) mProfileLayout.findViewById(R.id.nav_user_name);
-        TextView email = (TextView) mProfileLayout.findViewById(R.id.user_email);
-        userId = id.getText().toString();
-        userEmail = email.getText().toString();
+        nameField = (TextView) mProfileLayout.findViewById(R.id.nav_user_name);
+        emailField = (TextView) mProfileLayout.findViewById(R.id.user_email);
 
         mProfileAdapter = new ProfileNavAdapter(getActivity());
         mProfileListView.setAdapter(mProfileAdapter);
@@ -151,8 +157,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             mDrawerLayout.closeDrawer(Gravity.START);
 
             Intent intent = new Intent(getActivity(), ProfileActivity.class);
-            intent.putExtra(USER_ID_KEY, userId);
-            intent.putExtra(USER_EMAIL_KEY, userEmail);
+//            intent.putExtra(USER_ID_KEY, userId);
+//            intent.putExtra(USER_EMAIL_KEY, userEmail);
             getActivity().startActivity(intent);
             }
         });
@@ -166,6 +172,16 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
+    }
+
+    public void setUserInfo() {
+        if (application.getCurrentUser() != null && application.getCurrentUser().isValid()) {
+            userName = application.getCurrentUser().getUserName();
+            userEmail = application.getCurrentUser().getEmail();
+
+            nameField.setText(userName);
+            emailField.setText(userEmail);
+        }
     }
 
     /**
@@ -367,8 +383,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             mDrawerLayout.closeDrawer(Gravity.START);
 
             Intent intent = new Intent(getActivity(), ProfileActivity.class);
-            intent.putExtra(USER_ID_KEY, userId);
-            intent.putExtra(USER_EMAIL_KEY, userEmail);
+//            intent.putExtra(USER_ID_KEY, userId);
+//            intent.putExtra(USER_EMAIL_KEY, userEmail);
             getActivity().startActivity(intent);
         }
     }

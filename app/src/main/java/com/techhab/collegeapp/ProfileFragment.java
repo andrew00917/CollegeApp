@@ -30,9 +30,11 @@ import com.techhab.collegeapp.application.CollegeApplication;
  */
 public class ProfileFragment extends Fragment {
 
+    public static final String ARG_NAME = "user_name";
     public static final String ARG_ID = "user_id";
     public static final String ARG_EMAIL = "user_email";
     private CollegeApplication application;
+    private String userName;
     private String userId;
     private String userEmail;
 
@@ -46,9 +48,10 @@ public class ProfileFragment extends Fragment {
      * @param userEmail User Email.
      * @return A new instance of fragment ProfileFragment.
      */
-    public static ProfileFragment newInstance(String userId, String userEmail) {
+    public static ProfileFragment newInstance(String userName, String userId, String userEmail) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
+        args.putString(ARG_NAME, userName);
         args.putString(ARG_ID, userId);
         args.putString(ARG_EMAIL, userEmail);
         fragment.setArguments(args);
@@ -63,6 +66,7 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            userName = getArguments().getString(ARG_NAME);
             userId = getArguments().getString(ARG_ID);
             userEmail = getArguments().getString(ARG_EMAIL);
         }
@@ -74,10 +78,12 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        TextView id = (TextView) v.findViewById(R.id.profile_user_full_name);
+        TextView name = (TextView) v.findViewById(R.id.profile_user_full_name);
         TextView email = (TextView) v.findViewById(R.id.profile_user_email);
-        id.setText(userId);
+        TextView id = (TextView) v.findViewById(R.id.profile_user_id);
+        name.setText(userName);
         email.setText(userEmail);
+        id.setText("ID Number: " + userId);
 
         ListView mListView = (ListView) v.findViewById(R.id.profile_listview);
         mListView.setDivider(null);
