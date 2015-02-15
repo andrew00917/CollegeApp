@@ -71,12 +71,20 @@ public class User {
         this.password = password;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public String getUserName() {
         return name;
     }
 
-    public void setUserName(String name) {
-        this.name = name;
+    public void setUserName() {
+        name = lastName + ", " + firstName;
     }
 
     public String getFirstName() {

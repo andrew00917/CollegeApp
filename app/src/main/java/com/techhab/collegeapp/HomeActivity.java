@@ -253,6 +253,11 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
     public void showFragment(int fragmentIndex, boolean addToBackStack) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
+
+        if (fragmentIndex == HOME) {
+            mNavigationDrawerFragment.setUserInfo();
+        }
+
         for (int i = 0; i < fragments.length; i++) {
             if (i == fragmentIndex) {
                 transaction.show(fragments[i]);
