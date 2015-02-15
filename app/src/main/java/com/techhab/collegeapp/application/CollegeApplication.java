@@ -40,7 +40,7 @@ public class CollegeApplication extends Application {
     // True = boys, false = girls. Sorry, ladies.
     private static final String SPORTS_GENDER_PREFERENCE = "sports_gender_preference";
 
-    // Sports tab rememberer
+    // Sports tab remember
     private static final String SPORT_PREFERENCE = "sport_preference";
 
     // True = a PIN number is in use (and has been set up)
@@ -196,20 +196,17 @@ public class CollegeApplication extends Application {
             editor.putString("userPassword", getCurrentUser().getPassword());
             editor.putBoolean("rememberLogin", getRememberLogin());
             editor.putLong("lastLoggedInTime", System.currentTimeMillis());
-        }
-        else if (getCurrentUser() != null && isSocial() && isLoggedIn()) {
+        } else if (getCurrentUser() != null && isSocial() && isLoggedIn()) {
             // user didn't check remember me box
             // but they are logged in
             // save everything except storing their username and password
             editor.putBoolean("rememberLogin", getRememberLogin());
             editor.putLong("lastLoggedInTime", System.currentTimeMillis());
-        }
-        else if (getCurrentUser() != null && ! isSocial()) {
+        } else if (getCurrentUser() != null && ! isSocial()) {
             // guest user.
             // store last logged in time and nothing else
             editor.putLong("lastLoggedInTime", System.currentTimeMillis());
-        }
-        else {
+        } else {
             // not logged in, not guest
             // no reason for them to be able to get here.
             // redirect them to logoutFragment.
@@ -231,13 +228,11 @@ public class CollegeApplication extends Application {
                 // if so, save their information.
                 save();
             }
-        }
-        else if (getCurrentUser() != null && getCurrentUser().getUserName().equals("guest")) {
+        } else if (getCurrentUser() != null && getCurrentUser().getUserName().equals("guest")) {
             // guest load
             setLoggedIn(true);
             setIsSocial(false);
-        }
-        else {
+        } else {
             setLoggedIn(false);
             setIsSocial(false);
         }
@@ -256,12 +251,10 @@ public class CollegeApplication extends Application {
                 if (user.isValid()) {
                     setCurrentUser(user);
                     setLoggedIn(true);
-                }
-                else {
+                } else {
                     // prompt user with error message
                 }
-            }
-            else {
+            } else {
                 // user who didn't want their information stored
                 // treat them like new user.
                 // Wait for user to put their login information in then
@@ -269,8 +262,7 @@ public class CollegeApplication extends Application {
                 // call this method again.
                 // DO NOTHING HERE.
             }
-        }
-        else {
+        } else {
             if (isSocial()) {
                 // not logged in but suppose to
                 // set logged in and social attribute to both false

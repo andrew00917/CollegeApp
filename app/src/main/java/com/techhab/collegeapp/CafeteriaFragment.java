@@ -25,8 +25,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -34,8 +32,7 @@ import java.util.*;
 public class CafeteriaFragment extends Fragment {
 
     public static final String ARG_OBJECT = "object";
-    private static int selectedPosition = 0;
-    // Buttons Cafeteria
+    public static int DAY = 0;
     private View v;
     private TextView timeLeftText, noMoreMeals;
     private ImageView statusBarArrow;
@@ -47,7 +44,7 @@ public class CafeteriaFragment extends Fragment {
     private boolean isExpanded = false;
     private Calendar mCalender;
     private int mCurrentTime;
-    private int dayNum;
+    private int currentDayNum;
     private boolean isOpen;
     private List<Meal> meals = new ArrayList<>();
     private boolean allMealsAreOver = false;
@@ -69,9 +66,10 @@ public class CafeteriaFragment extends Fragment {
 
     private static final int RICHARDSON = 1;
 
-    public static Fragment createNewInstance() {
+    public static Fragment createNewInstance(int dayNum) {
         CafeteriaFragment fragment = new CafeteriaFragment();
         Bundle arg = new Bundle();
+        arg.putInt("dayNum", dayNum);
         fragment.setArguments(arg);
         return fragment;
     }
@@ -89,17 +87,26 @@ public class CafeteriaFragment extends Fragment {
         // Global variable that holds the 24 hour time and minutes (11:30pm is 2330)
         mCurrentTime = Integer.parseInt(dateFormat.format(mCalender.getTime()));
 
-        // Round mCurrentTime to nears multiple of five to keep things clean
+        // Round mCurrentTime to nearest multiple of five to keep things clean
         mCurrentTime = (int) Math.floor((mCurrentTime + 5/2) / 5) * 5;
 
         Log.d("CafeteriaFragment", "mCurrentTime = " + mCurrentTime);
 
-        dayNum = mCalender.get(Calendar.DAY_OF_WEEK);
+        currentDayNum = mCalender.get(Calendar.DAY_OF_WEEK);
 
-        setUpMeals();
+
+        // Add any current or upcoming meals to the meals list. Might be empty if no meals are
+        // current or upcoming
+        if (getArguments() == null ) {
+            Log.d("CafeteriaFragment", "get arguements is null");
+        } else {
+            Log.d("CafeteriaFragment", "get arguements is not null");
+        }
+
+        int dayNum = this.getArguments().getInt("dayNum");
+        setUpMeals(dayNum);
 
         isOpen = isOpen();
-
 
         mealsRecyclerView = (RecyclerView) v.findViewById(R.id.meals_recycler_view);
         timeLeftText = (TextView) v.findViewById(R.id.time_left_text);
@@ -124,9 +131,6 @@ public class CafeteriaFragment extends Fragment {
                 }, 300);
             }
         });
-
-        daySpinner = (Spinner) v.findViewById(R.id.day_spinner);
-        initializeDaySpinner();
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mealsRecyclerView.setLayoutManager(mLayoutManager);
@@ -161,6 +165,9 @@ public class CafeteriaFragment extends Fragment {
      * @return whether or not the caf is open
      */
     private boolean isOpen() {
+        if ( meals.isEmpty() ) {
+            return false;
+        }
         for (int i = 0; i < meals.size(); i++) {
             if ( meals.get(i).isCurrent() ) {
 //                mCurrentMeal = meals.get(i);
@@ -177,7 +184,7 @@ public class CafeteriaFragment extends Fragment {
      */
     private String getTimeRemainingUntilClose() {
         // Check to see if the day is a weekday
-        if ( dayNum <= 5 ) {
+        if ( currentDayNum <= 5 ) {
             // Check to see if caf is open
             if ( timeIsBetween(mCurrentTime, breakfastOpenTimeWeekday, breakfastCloseTimeWeekday) ) {
                 return timeUntil(breakfastCloseTimeWeekday);
@@ -186,7 +193,7 @@ public class CafeteriaFragment extends Fragment {
             } else if ( timeIsBetween(mCurrentTime, dinnerOpenTime, dinnerCloseTimeWeekday) ) {
                 return timeUntil(dinnerCloseTimeWeekday);
             }
-        } else if ( dayNum == 6) { // Saturday
+        } else if ( currentDayNum == 6) { // Saturday
             if ( timeIsBetween(mCurrentTime, breakfastOpenTimeSaturday, breakfastCloseTimeSaturday) ) {
                 return timeUntil(breakfastCloseTimeSaturday);
             } else if ( timeIsBetween(mCurrentTime, brunchOpenTimeSatOrSun, brunchCloseTimeSatOrSun) ) {
@@ -205,7 +212,7 @@ public class CafeteriaFragment extends Fragment {
     }
 
     private String getTimeRemainingUntilOpen() {
-        if ( dayNum <= 5 ) { // Weekday
+        if ( currentDayNum <= 5 ) { // Weekday
             if ( mCurrentTime < breakfastOpenTimeWeekday ) {
                 return timeUntil(breakfastOpenTimeWeekday);
             } else if ( mCurrentTime < lunchOpenTimeWeekday ) {
@@ -213,7 +220,7 @@ public class CafeteriaFragment extends Fragment {
             } else if ( mCurrentTime < dinnerOpenTime ) {
                 return timeUntil(dinnerOpenTime);
             }
-        } else if ( dayNum == 6) { // Saturday
+        } else if ( currentDayNum == 6) { // Saturday
             if ( mCurrentTime < breakfastOpenTimeSaturday ) {
                 return timeUntil(breakfastOpenTimeSaturday);
             } else if ( mCurrentTime < brunchOpenTimeSatOrSun) {
@@ -236,10 +243,10 @@ public class CafeteriaFragment extends Fragment {
         int dayNumTomorrow;
 
         // Roll over
-        if ( dayNum == 7 ) {
+        if ( currentDayNum == 7 ) {
             dayNumTomorrow = 1;
         } else {
-            dayNumTomorrow = dayNum + 1;
+            dayNumTomorrow = currentDayNum + 1;
         }
 
         if ( 1 <= dayNumTomorrow && dayNumTomorrow <= 5 ) {
@@ -319,37 +326,52 @@ public class CafeteriaFragment extends Fragment {
         return openTime <= time && time < closeTime;
     }
 
-    private void setUpMeals() {
+    /**
+     * Creates the meal objects and adds the appropriate meals, depending on whether or not they
+     * are current, in the past, or upcoming.
+     */
+    private void setUpMeals(int dayNumber) {
         // Construct the meals
         Meal breakfast = new Meal("Breakfast");
         Meal brunch = new Meal("Brunch");
         Meal lunch = new Meal("Lunch");
         Meal dinner = new Meal("Dinner");
 
-        if ( dayNum <= 5 ) {
-            breakfast.setTimes(breakfastOpenTimeWeekday, breakfastCloseTimeWeekday);
-            meals.add(breakfast);
+        boolean isToday = (dayNumber == currentDayNum);
 
-            lunch.setTimes(lunchOpenTimeWeekday, lunchCloseTimeWeekday);
-            meals.add(lunch);
-
-            dinner.setTimes(dinnerOpenTime, dinnerCloseTimeWeekday);
-            meals.add(dinner);
-        } else if ( dayNum == 6) { // Saturday
-            breakfast.setTimes(breakfastOpenTimeSaturday, breakfastCloseTimeSaturday);
-            meals.add(breakfast);
-
-            brunch.setTimes(brunchOpenTimeSatOrSun, brunchCloseTimeSatOrSun);
-            meals.add(brunch);
-
-            dinner.setTimes(dinnerOpenTime, dinnerCloseTimeSatOrSun);
-            meals.add(dinner);
+        // For each meal, set the times for that day then check to see if it is in the past.
+        // If it isn't, add it to the meals list.
+        if ( 1 < dayNumber && dayNumber <= 6 ) { // Mon - Fri
+            possiblyAddToMeals(isToday, breakfast, breakfastOpenTimeWeekday,
+                    breakfastCloseTimeWeekday);
+            possiblyAddToMeals(isToday, lunch, lunchOpenTimeWeekday, lunchCloseTimeWeekday);
+            possiblyAddToMeals(isToday, dinner, dinnerOpenTime, dinnerCloseTimeWeekday);
+        } else if ( dayNumber == 7) { // Saturday
+            possiblyAddToMeals(isToday, breakfast, breakfastOpenTimeSaturday, breakfastCloseTimeSaturday);
+            possiblyAddToMeals(isToday, brunch, brunchOpenTimeSatOrSun, brunchCloseTimeSatOrSun);
+            possiblyAddToMeals(isToday, dinner, dinnerOpenTime, dinnerCloseTimeSatOrSun);
         } else { // Sunday
-            brunch.setTimes(brunchOpenTimeSatOrSun, brunchCloseTimeSatOrSun);
-            meals.add(brunch);
+            possiblyAddToMeals(isToday, brunch, brunchOpenTimeSatOrSun, brunchCloseTimeSatOrSun);
+            possiblyAddToMeals(isToday, dinner, dinnerOpenTime, dinnerCloseTimeSatOrSun);
+        }
+    }
 
-            dinner.setTimes(dinnerOpenTime, dinnerCloseTimeSatOrSun);
-            meals.add(dinner);
+    /**
+     * Possibly adds 'meal' to the meals list, depending on whether or not it is current or
+     * upcoming.
+     *
+     * @param isToday whether the meals list we're constructing is for today or not
+     * @param meal the meal to possibly add
+     * @param openTime the opening time of the meal
+     * @param closeTime the closing time of the meal
+     */
+    private void possiblyAddToMeals(boolean isToday, Meal meal, int openTime, int closeTime) {
+        meal.setTimes(openTime, closeTime);
+        // If isToday is false, add the meal. If isToday is true, then check if it's in the past.
+        if ( ! isToday ) {
+            meals.add(meal);
+        } else if ( ! meal.isPast() ) {
+            meals.add(meal);
         }
     }
 
@@ -377,16 +399,18 @@ public class CafeteriaFragment extends Fragment {
         daySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ( meals.isEmpty() ) {
-                    setUpMeals();
+                // Empty the meals list to start anew.
+                meals.clear();
+                // Set up the meals again, but this time pass in the day num depending on the
+                // position. Sunday is one.
+                int selectedDayNum = currentDayNum + position;
+                if ( selectedDayNum >= 8 ) { // Rollover
+                    selectedDayNum = selectedDayNum - 7;
                 }
+                setUpMeals(selectedDayNum);
 
                 mealsRecyclerView.getAdapter().notifyDataSetChanged();
-
-                if (position != 0) {
-                    mealsRecyclerView.setVisibility(View.VISIBLE);
-                    noMoreMeals.setVisibility(View.GONE);
-                }
+                checkIfNoMeals(meals);
             }
 
             @Override
@@ -493,6 +517,7 @@ public class CafeteriaFragment extends Fragment {
         }
 
         public boolean isPast() {
+            determineTimeState();
             return isPast;
         }
 
@@ -530,6 +555,23 @@ public class CafeteriaFragment extends Fragment {
                 .commit();
     }
 
+    /**
+     * If the meal list is empty, hides the recycler view and sets the no more meals
+     * text to visible.
+     *
+     * @param mealList
+     * @return
+     */
+    private void checkIfNoMeals(List<Meal> mealList) {
+        if ( mealList.isEmpty() ) {
+            mealsRecyclerView.setVisibility(View.GONE);
+            noMoreMeals.setVisibility(View.VISIBLE);
+        } else {
+            mealsRecyclerView.setVisibility(View.VISIBLE);
+            noMoreMeals.setVisibility(View.GONE);
+        }
+    }
+
     public class MealsRecyclerAdapter extends
             RecyclerView.Adapter<MealsRecyclerAdapter.ViewHolder> {
 
@@ -538,35 +580,11 @@ public class CafeteriaFragment extends Fragment {
 
         private MealsRecyclerAdapter(Context context, List<Meal> mealList) {
             this.context = context;
-            this.mealList = setUpMealList(mealList);
+            this.mealList = mealList;
+
+            checkIfNoMeals(this.mealList);
+
             Log.d("mealsRecycler", "mealList size = " + mealList.size());
-        }
-
-        /**
-         * Removes past meals from the meals to display.
-         *
-         * @param mealList the meal list to edit
-         * @return the edited meal list with only current or future meals included
-         */
-        private List<Meal> setUpMealList(List<Meal> mealList) {
-            for (Iterator<Meal> iterator = mealList.iterator(); iterator.hasNext();) {
-                Meal meal = iterator.next();
-                if ( meal.isPast() && daySpinner.getSelectedItemPosition() == 0 ) {
-                    // Remove the current element from the iterator and the list.
-                    iterator.remove();
-                }
-            }
-
-            Log.d("setUpMealList", "is meal list empty? " + mealList.isEmpty() );
-            if ( mealList.isEmpty() ) {
-                mealsRecyclerView.setVisibility(View.GONE);
-                noMoreMeals.setVisibility(View.VISIBLE);
-            } else {
-                mealsRecyclerView.setVisibility(View.VISIBLE);
-                noMoreMeals.setVisibility(View.GONE);
-            }
-
-            return mealList;
         }
 
         @Override
@@ -578,50 +596,22 @@ public class CafeteriaFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.mealTitle.setText(meals.get(position).getMealTitle());
+            Meal meal = meals.get(position);
+            holder.mealTitle.setText(meal.getMealTitle());
 
-            if ( meals.get(position).isCurrent() ) {
+            if ( meal.isCurrent() ) {
                 holder.currentlyServingText.setVisibility(View.VISIBLE);
             }
 
-            if ( meals.get(position).getMealTitle().equals("Breakfast") ) {
+            if ( meal.getMealTitle().equals("Breakfast") ) {
                 holder.mealImage.setBackground(getResources().getDrawable(R.drawable.breakfast));
-            } else if (meals.get(position).getMealTitle().equals("Lunch")) {
+            } else if ( meal.getMealTitle().equals("Lunch") ) {
                 holder.mealImage.setBackground(getResources().getDrawable(R.drawable.lunch));
             } else {
                 holder.mealImage.setBackground(getResources().getDrawable(R.drawable.dinner));
             }
 
-            loadMenu(holder, meals.get(position));
-
-
-            /*menuViewHolder.mealTitle.setText(meal.getMealTitle());
-
-            loadMenu(menuViewHolder, meal);
-
-            menuViewHolder.tbViewMore.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    menuViewHolder.tbViewMore.setEnabled(false);
-
-                    if (menuViewHolder.tbViewMore.isChecked())
-                    {
-                        expandCardView((ViewHolder) viewHolder);
-
-                    } else {
-                        collapseCardView((ViewHolder) viewHolder);
-                    }
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            menuViewHolder.tbViewMore.setEnabled(true);
-                        }
-                    }, 500);
-
-                }
-            });*/
-
+            loadMenu(holder, meal);
         }
 
         private void expandCardView(ViewHolder viewHolder) {
@@ -656,7 +646,6 @@ public class CafeteriaFragment extends Fragment {
         @Override
         public int getItemCount()
         {
-            mealList = setUpMealList(mealList);
             return mealList.size();
         }
 
@@ -683,7 +672,7 @@ public class CafeteriaFragment extends Fragment {
 
         }
 
-        private void loadMenu(MealsRecyclerAdapter.ViewHolder viewHolder, Meal meal) {
+        private void loadMenu(ViewHolder viewHolder, Meal meal) {
 
             for (int i = 0; i < meal.getMainLineItems().length; i++) {
                 viewHolder.llMainLines.addView(createFoodItemView(meal.getMainLineItems()[i]));
@@ -713,7 +702,6 @@ public class CafeteriaFragment extends Fragment {
             params.height = starterHeight;
             linearLayout.setLayoutParams(params);
             linearLayout.requestLayout();
-
         }
     }
 

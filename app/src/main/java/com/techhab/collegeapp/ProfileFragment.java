@@ -1,18 +1,23 @@
 package com.techhab.collegeapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,9 +30,11 @@ import com.techhab.collegeapp.application.CollegeApplication;
  */
 public class ProfileFragment extends Fragment {
 
+    public static final String ARG_NAME = "user_name";
     public static final String ARG_ID = "user_id";
     public static final String ARG_EMAIL = "user_email";
     private CollegeApplication application;
+    private String userName;
     private String userId;
     private String userEmail;
 
@@ -41,9 +48,10 @@ public class ProfileFragment extends Fragment {
      * @param userEmail User Email.
      * @return A new instance of fragment ProfileFragment.
      */
-    public static ProfileFragment newInstance(String userId, String userEmail) {
+    public static ProfileFragment newInstance(String userName, String userId, String userEmail) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
+        args.putString(ARG_NAME, userName);
         args.putString(ARG_ID, userId);
         args.putString(ARG_EMAIL, userEmail);
         fragment.setArguments(args);
@@ -58,6 +66,7 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            userName = getArguments().getString(ARG_NAME);
             userId = getArguments().getString(ARG_ID);
             userEmail = getArguments().getString(ARG_EMAIL);
         }
@@ -69,10 +78,12 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        TextView id = (TextView) v.findViewById(R.id.profile_user_full_name);
+        TextView name = (TextView) v.findViewById(R.id.profile_user_full_name);
         TextView email = (TextView) v.findViewById(R.id.profile_user_email);
-        id.setText(userId);
+        TextView id = (TextView) v.findViewById(R.id.profile_user_id);
+        name.setText(userName);
         email.setText(userEmail);
+        id.setText("ID Number: " + userId);
 
         ListView mListView = (ListView) v.findViewById(R.id.profile_listview);
         mListView.setDivider(null);
@@ -95,15 +106,53 @@ public class ProfileFragment extends Fragment {
         // ListView Item Click Listener
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 //                Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_SHORT).show();
                 if ( application.getPinState() ) {
-                    Fragment fragment = new LoginPINFragment();
-                    ProfileActivity activity = (ProfileActivity) getActivity();
-                    activity.changeFragment(fragment);
+                    LoginPINFragment fragment =  new LoginPINFragment();
+                    fragment.setToFragment(position);
+                    changeFragment(fragment);
                 }
                 else {
-                    Toast.makeText(getActivity(), "no PIN", Toast.LENGTH_LONG).show();
+                    // AlertDialog to sign in with password
+                    final EditText input = new EditText(getActivity());
+                    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+                    AlertDialog passDialog = new AlertDialog.Builder(getActivity())
+                            .setTitle("Enter Password")
+                            .setMessage("Please enter your password")
+                            .setView(input)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    if (input.getText().toString().equals(application.getCurrentUser().getPassword())) {
+                                        Fragment fragment;
+                                        if (position == 0) {
+                                            // change to MyCourses fragment
+                                            fragment = new MyCoursesFragment();
+                                        } else if (position == 1) {
+                                            //
+                                            fragment = new MyCoursesFragment();
+                                        } else {
+                                            //
+                                            fragment = new MyCoursesFragment();
+                                        }
+                                        changeFragment(fragment);
+                                    } else {
+                                        Toast.makeText(getActivity().getApplicationContext(), "Incorrect password", Toast.LENGTH_LONG).show();
+                                        dialog.dismiss();
+                                    }
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setCancelable(false)
+                            .create();
+                    // Open the soft keyboard
+                    passDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                    passDialog.show();
                 }
             }
         });
@@ -154,6 +203,13 @@ public class ProfileFragment extends Fragment {
             return convertView;
         }
 
+    }
+    private void changeFragment(Fragment fragment) {
+        ProfileActivity activity = (ProfileActivity) getActivity();
+        FragmentManager fm = activity.getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(((ViewGroup)(getView().getParent())).getId(), fragment);
+        transaction.commit();
     }
 
 }

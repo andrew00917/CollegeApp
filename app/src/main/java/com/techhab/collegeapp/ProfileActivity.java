@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import com.techhab.collegeapp.application.CollegeApplication;
 
@@ -31,11 +32,12 @@ public class ProfileActivity extends ActionBarActivity implements NavigationDraw
      *      user id
      *      user email
      */
-    private static final String USER_ID_KEY = "user_id";
-    private static final String USER_EMAIL_KEY = "user_email";
+//    private static final String USER_ID_KEY = "user_id";
+//    private static final String USER_EMAIL_KEY = "user_email";
 
-    private String userId = "";
+    private String userName = "";
     private String userEmail="";
+    private String userId = "";
 
     private CollegeApplication application;
 
@@ -69,11 +71,14 @@ public class ProfileActivity extends ActionBarActivity implements NavigationDraw
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        Intent intent = getIntent();
-        userId = intent.getStringExtra(USER_ID_KEY);
-        userEmail = intent.getStringExtra(USER_EMAIL_KEY);
-
         application = (CollegeApplication) getApplication();
+
+//        Intent intent = getIntent();
+//        userId = intent.getStringExtra(USER_ID_KEY);
+//        userEmail = intent.getStringExtra(USER_EMAIL_KEY);
+        userName = application.getCurrentUser().getUserName();
+        userEmail = application.getCurrentUser().getEmail();
+        userId = application.getCurrentUser().getUserId();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -91,6 +96,7 @@ public class ProfileActivity extends ActionBarActivity implements NavigationDraw
         FragmentTransaction transaction = fm.beginTransaction();
 
         Bundle bundle = new Bundle();
+        bundle.putString(ProfileFragment.ARG_NAME, userName);
         bundle.putString(ProfileFragment.ARG_ID, userId);
         bundle.putString(ProfileFragment.ARG_EMAIL, userEmail);
 
@@ -199,13 +205,5 @@ public class ProfileActivity extends ActionBarActivity implements NavigationDraw
         transaction.replace(R.id.content_frame, fragment);
         transaction.commit();
 
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
     }
 }
