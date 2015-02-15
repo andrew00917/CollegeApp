@@ -84,7 +84,7 @@ public class User {
     }
 
     public void setUserName() {
-        name = lastName + ", " + firstName;
+        name = firstName + " " + lastName;
     }
 
     public String getFirstName() {
