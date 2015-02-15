@@ -1,5 +1,6 @@
 package com.techhab.collegeapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,13 +15,14 @@ import android.view.MenuItem;
 import com.techhab.collegeapp.application.CollegeApplication;
 
 /**
- * Created by akhavantafti on 1/21/2015.
+ * Created by akhavantafti on 2/10/2015.
  */
-public class PreviewFeedBackActivity  extends ActionBarActivity implements NavigationDrawerCallbacks {
+public class CalendarDetailActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
     // Tag used when logging messages
-    private static final String TAG = FeedBackActivity.class.getSimpleName();
-    public static final String IS_GOOGLE_ACCOUNT_ON = "GOOGLE_ACCOUNT_ON";
+    private static final String TAG = ProfileActivity.class.getSimpleName();
+
+    private static final String CALENDAR_KEY = "CALENDAR_KEY";
 
     private CollegeApplication application;
 
@@ -33,10 +35,6 @@ public class PreviewFeedBackActivity  extends ActionBarActivity implements Navig
     public DrawerLayout mDrawerLayout;
     //    private NavigationDrawerFragment mNavigationDrawerFragment;
     private Toolbar mToolbar;
-//    public ActionBarDrawerToggle mDrawerToggle;
-
-    // Boolean recording whether the activity has been resumed so that
-    // the logic in onSessionStateChange is only executed if this is the case
     private boolean isResumed = false;
 
     /**
@@ -45,40 +43,50 @@ public class PreviewFeedBackActivity  extends ActionBarActivity implements Navig
     private CharSequence mTitle;
 
     // Constructor
-    public PreviewFeedBackActivity() {
+    public CalendarDetailActivity() {
         super();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_preview_feedback);
+        setContentView(R.layout.activity_calendar_detail);
 
+        Intent intent = getIntent();
 
         application = (CollegeApplication) getApplication();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        boolean isGoogleAccountOn = getIntent().getBooleanExtra(IS_GOOGLE_ACCOUNT_ON, true);
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
 
         Bundle bundle = new Bundle();
-        bundle.putBoolean(IS_GOOGLE_ACCOUNT_ON, isGoogleAccountOn);
-        PreviewFeedBackFragment frag = new PreviewFeedBackFragment();
+
+        CalendarDetailFragment frag = new CalendarDetailFragment();
         frag.setArguments(bundle);
-        transaction.replace(R.id.preview_feed_back_fragment, frag);
+
+        transaction.replace(R.id.calendar_detail_fragment, frag);
         transaction.commit();
 
     }
-
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+    }
 
     @Override
     public void onResume() {
@@ -94,20 +102,33 @@ public class PreviewFeedBackActivity  extends ActionBarActivity implements Navig
         isResumed = false;
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu rssItemList for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_settings, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
 
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -115,10 +136,14 @@ public class PreviewFeedBackActivity  extends ActionBarActivity implements Navig
                 return true;
         }
 
-//        if (mDrawerToggle.onOptionsItemSelected(item)) {
-//            return true;
-//        }
         return super.onOptionsItemSelected(item);
     }
 
+    public void changeFragment(Fragment fragment) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.content_frame, fragment);
+        transaction.commit();
+
+    }
 }

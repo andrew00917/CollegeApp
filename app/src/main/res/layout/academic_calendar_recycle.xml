@@ -28,26 +28,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
-        <include layout="@layout/card_divider" />
-
-        <LinearLayout
-            android:id="@+id/calendar_footer"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:gravity="end|center_vertical"
-            android:orientation="horizontal">
-
-            <ToggleButton
-                android:id="@+id/calendar_view_more_button"
-                style="@style/MaterialButtonFlat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/kzooOrange"
-                android:textOff="@string/view_more"
-                android:textOn="@string/view_less"
-                android:gravity="center"/>
-
-        </LinearLayout>
 
     </LinearLayout>
 

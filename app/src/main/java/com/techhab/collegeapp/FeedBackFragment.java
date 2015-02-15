@@ -14,10 +14,14 @@ import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -32,15 +36,83 @@ public class FeedBackFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view  = inflater.inflate(R.layout.fragment_feedback, container, false);
+        final View view  = inflater.inflate(R.layout.fragment_feedback, container, false);
         Button btSend = (Button) view.findViewById(R.id.feed_back_btSend);
-        Button btPreview = (Button) view.findViewById(R.id.feed_back_btPreview);
         swStudentAccount = (SwitchCompat) view.findViewById(R.id.witchCompatStudentAccount);
+        swStudentAccount.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                displayStudentAccount(view);
+            }
+        });
         etFeedBack = (EditText) view.findViewById(R.id.et_feed_back);
         btSend.setOnClickListener(onClickListener);
-        btPreview.setOnClickListener(onClickListener);
+        //
+        TextView tvApplicationVersion = (TextView) view.findViewById(R.id.tv_application_version);
+        tvApplicationVersion.setText(FeedBackFragment.getApplicationVersion(getActivity()));
+        TextView tvDeviceModel = (TextView) view.findViewById(R.id.tv_device_model);
+        tvDeviceModel.setText(FeedBackFragment.getDeviceName());
+
+        TextView tvOSVersion = (TextView) view.findViewById(R.id.tv_os_version);
+        tvOSVersion.setText("Android " + Build.VERSION.RELEASE);
+
+        displayStudentAccount(view);
+        TextView tvTime = (TextView) view.findViewById(R.id.tv_time);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
+        tvTime.setText(formatter.format(new Date()));
+
+        View parentView = view.findViewById(R.id.feedBack_parentView);
+        setupUI(parentView);
         return view;
     }
+
+    public void setupUI(View view) {
+
+        if(!(view instanceof EditText)) {
+
+            view.setOnTouchListener(new View.OnTouchListener() {
+
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideKeyboard();
+                    return false;
+                }
+
+            });
+        }
+
+        if (view instanceof ViewGroup) {
+
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+
+                View innerView = ((ViewGroup) view).getChildAt(i);
+
+                setupUI(innerView);
+            }
+        }
+    }
+
+    private void hideKeyboard()
+    {
+        InputMethodManager inputMethodManager = (InputMethodManager)  getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+    }
+
+    private void displayStudentAccount(View view) {
+        if (swStudentAccount.isChecked())
+        {
+            view.findViewById(R.id.preview_llGoogleAccount).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.preview_googleAccountDivider).setVisibility(View.VISIBLE);
+            TextView tvGoogleAccount = (TextView) view.findViewById(R.id.tv_google_account);
+            tvGoogleAccount.setText(FeedBackFragment.getPossibleGoogleAccount(getActivity()));
+        }
+        else
+        {
+            view.findViewById(R.id.preview_llGoogleAccount).setVisibility(View.GONE);
+            view.findViewById(R.id.preview_googleAccountDivider).setVisibility(View.GONE);
+        }
+    }
+
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -48,11 +120,6 @@ public class FeedBackFragment extends Fragment {
             {
                 case R.id.feed_back_btSend:
                     sendEmail();
-                    break;
-                case R.id.feed_back_btPreview:
-                    Intent intent = new Intent(getActivity(), PreviewFeedBackActivity.class);
-                    intent.putExtra(PreviewFeedBackActivity.IS_GOOGLE_ACCOUNT_ON, swStudentAccount.isChecked());
-                    startActivity(intent);
                     break;
             }
         }
@@ -62,7 +129,7 @@ public class FeedBackFragment extends Fragment {
     {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"k11oa01@kzoo.edu"});
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"oat1345@gmail.com"});
         i.putExtra(Intent.EXTRA_SUBJECT, "Feed Back");
         i.putExtra(Intent.EXTRA_TEXT   , getEmailBody());
         try {
@@ -92,7 +159,7 @@ public class FeedBackFragment extends Fragment {
             return packageInfo.versionName;
 
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e(PreviewFeedBackFragment.class.getSimpleName(), e.getMessage());
+            Log.e(FeedBackFragment.class.getSimpleName(), e.getMessage());
         }
         return "";
     }

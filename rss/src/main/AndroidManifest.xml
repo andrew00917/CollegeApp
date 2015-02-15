@@ -5,5 +5,7 @@
             android:exported="false" />
         <service android:name=".SportsRssService"
             android:exported="false" />
+        <service android:name=".NewsRssService"
+            android:exported="false"/>
     </application>
 </manifest>

@@ -97,6 +97,14 @@ public class CalendarFragment extends Fragment {
 
         RecyclerAdapter mAdapter = new RecyclerAdapter(dataset, getActivity());
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+                @Override public void onItemClick(View view, int position) {
+                    //todo: implement more here
+                    Intent intent = new Intent(getActivity(), CalendarDetailActivity.class);
+                    startActivity(intent);
+                }
+        }));
 
         ArrayList<String> years = new ArrayList<>();
         years.add("2014-15");
@@ -152,13 +160,11 @@ public class CalendarFragment extends Fragment {
 
             public TextView mTextView;
             public TableLayout tableView;
-            public ToggleButton btViewMore;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 mTextView = (TextView) itemView.findViewById(R.id.term);
                 tableView = (TableLayout) itemView.findViewById(R.id.table_layout);
-                btViewMore = (ToggleButton) itemView.findViewById(R.id.calendar_view_more_button);
             }
         }
 
@@ -233,41 +239,9 @@ public class CalendarFragment extends Fragment {
                 params.height = starterHeight;
                 table.setLayoutParams(params);
                 table.requestLayout();
-                holder.btViewMore.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        holder.btViewMore.setEnabled(false);
-                        int height = getHeightToAdd(table, !holder.btViewMore.isChecked());
-                        Log.e("Calendar@@","Table Height: " + table.getMeasuredHeight() + " /Height: " + height);
-                        HeightAnimation heightAnimation = new HeightAnimation(table, height, holder.btViewMore.isChecked());
-                        heightAnimation.setDuration(300);
-                        table.startAnimation(heightAnimation);
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                holder.btViewMore.setEnabled(true);
-                                Log.e("Calendar: ","Table Height: " + table.getMeasuredHeight());
-                            }
-                        }, 600);
-                    }
-                });
-
             }
         }
 
-        private int getHeightToAdd(TableLayout parent, boolean isCollapse)
-        {
-            View listItem = parent.getChildAt(0);
-            listItem.measure(0, 0);
-            int heightOfChild = listItem.getMeasuredHeight();
-            if (parent.getChildCount() <= 3)
-                return 0;
-            if (isCollapse)
-                return parent.getMeasuredHeight() - heightOfChild * 3;
-            return heightOfChild * parent.getChildCount() - parent.getMeasuredHeight();
-
-        }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

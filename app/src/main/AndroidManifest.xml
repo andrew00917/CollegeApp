@@ -109,19 +109,29 @@
         </activity>
         <activity
             android:name=".FeedBackActivity"
-            android:label="FeedBack" >
+            android:label="FeedBack"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
         <activity
-            android:name=".PreviewFeedBackActivity"
-            android:label="Preview FeedBack" >
+            android:name=".CalendarDetailActivity"
+            android:label="Calendar"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techhab.collegeapp.HomeActivity" />
         </activity>
-        <activity android:name=".TakeATourActivity">
+        <activity
+            android:name=".NewsActivity"
+            android:label="News"
+            android:windowSoftInputMode="stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techhab.collegeapp.HomeActivity" />
+        </activity>
+        <activity android:name=".HelpAndFeedBackActivity">
 
         </activity>
 
