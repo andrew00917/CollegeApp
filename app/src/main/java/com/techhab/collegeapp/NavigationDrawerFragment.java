@@ -432,9 +432,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             switch (position) {
                 case 0:
                     // build a dialog and show
-                    Intent intent = new Intent(getActivity(), NewsActivity.class);
-                    startActivity(intent);
-                    break;
+//                  /*  Intent intent = new Intent(getActivity(), NewsActivity.class);
+//                    startActivity(intent);
+//                    break;*/
                 default:
                     // TODO: NOT a default behavior
                     emergencyCallDialog();
