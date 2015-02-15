@@ -32,6 +32,7 @@ import java.util.*;
 public class CafeteriaFragment extends Fragment {
 
     public static final String ARG_OBJECT = "object";
+    public static int DAY = 0;
     private View v;
     private TextView timeLeftText, noMoreMeals;
     private ImageView statusBarArrow;
@@ -65,9 +66,10 @@ public class CafeteriaFragment extends Fragment {
 
     private static final int RICHARDSON = 1;
 
-    public static Fragment createNewInstance() {
+    public static Fragment createNewInstance(int dayNum) {
         CafeteriaFragment fragment = new CafeteriaFragment();
         Bundle arg = new Bundle();
+        arg.putInt("dayNum", dayNum);
         fragment.setArguments(arg);
         return fragment;
     }
@@ -95,7 +97,14 @@ public class CafeteriaFragment extends Fragment {
 
         // Add any current or upcoming meals to the meals list. Might be empty if no meals are
         // current or upcoming
-        setUpMeals(currentDayNum);
+        if (getArguments() == null ) {
+            Log.d("CafeteriaFragment", "get arguements is null");
+        } else {
+            Log.d("CafeteriaFragment", "get arguements is not null");
+        }
+
+        int dayNum = this.getArguments().getInt("dayNum");
+        setUpMeals(dayNum);
 
         isOpen = isOpen();
 
@@ -564,7 +573,7 @@ public class CafeteriaFragment extends Fragment {
     }
 
     public class MealsRecyclerAdapter extends
-            RecyclerView.Adapter<RecyclerView.ViewHolder> {
+            RecyclerView.Adapter<MealsRecyclerAdapter.ViewHolder> {
 
         private List<Meal> mealList;
         private Context context;
@@ -579,57 +588,33 @@ public class CafeteriaFragment extends Fragment {
         }
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if (viewType == 1) {
-                //inflate your layout and pass it to view holder
-                View view = LayoutInflater.from(parent.getContext()).inflate(
-                        R.layout.caf_meal_card, parent, false);
-                return new ViewHolderItem(view);
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.caf_meal_card, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            Meal meal = meals.get(position);
+            holder.mealTitle.setText(meal.getMealTitle());
+
+            if ( meal.isCurrent() ) {
+                holder.currentlyServingText.setVisibility(View.VISIBLE);
+            }
+
+            if ( meal.getMealTitle().equals("Breakfast") ) {
+                holder.mealImage.setBackground(getResources().getDrawable(R.drawable.breakfast));
+            } else if ( meal.getMealTitle().equals("Lunch") ) {
+                holder.mealImage.setBackground(getResources().getDrawable(R.drawable.lunch));
             } else {
-                //inflate your layout and pass it to view holder
-                View view = LayoutInflater.from(parent.getContext()).inflate(
-                        R.layout.cafeteria_spinner, parent, false);
-                return new ViewHolderHeader(view);
+                holder.mealImage.setBackground(getResources().getDrawable(R.drawable.dinner));
             }
+
+            loadMenu(holder, meal);
         }
 
-        @Override
-        public int getItemViewType(int position) {
-            if ( position == 0 ) {
-                return 0;
-            }
-            return 1;
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder rawHolder, int position) {
-
-
-            if ( rawHolder instanceof ViewHolderItem ) {
-                Meal meal = meals.get(position - 1);
-                ViewHolderItem holder = ((ViewHolderItem) rawHolder);
-                holder.mealTitle.setText(meal.getMealTitle());
-
-                if ( meal.isCurrent() ) {
-                    holder.currentlyServingText.setVisibility(View.VISIBLE);
-                }
-
-                if ( meal.getMealTitle().equals("Breakfast") ) {
-                    holder.mealImage.setBackground(getResources().getDrawable(R.drawable.breakfast));
-                } else if ( meal.getMealTitle().equals("Lunch") ) {
-                    holder.mealImage.setBackground(getResources().getDrawable(R.drawable.lunch));
-                } else {
-                    holder.mealImage.setBackground(getResources().getDrawable(R.drawable.dinner));
-                }
-
-                loadMenu(holder, meal);
-            } else if ( rawHolder instanceof ViewHolderHeader ) {
-
-                initializeDaySpinner();
-            }
-        }
-
-        private void expandCardView(ViewHolderItem viewHolder) {
+        private void expandCardView(ViewHolder viewHolder) {
             HeightAnimation animation = new HeightAnimation(viewHolder.llMainLines,
                     getHeightToAdd(viewHolder.llMainLines, true), true);
             animation.setDuration(300);
@@ -640,7 +625,7 @@ public class CafeteriaFragment extends Fragment {
             viewHolder.llInternationalCorner.startAnimation(animation1);
         }
 
-        private void collapseCardView(ViewHolderItem viewHolder) {
+        private void collapseCardView(ViewHolder viewHolder) {
             HeightAnimation animation = new HeightAnimation(viewHolder.llMainLines,
                     getHeightToAdd(viewHolder.llMainLines, false), false);
             animation.setDuration(300);
@@ -661,17 +646,17 @@ public class CafeteriaFragment extends Fragment {
         @Override
         public int getItemCount()
         {
-            return mealList.size() + 1;
+            return mealList.size();
         }
 
-        public class ViewHolderItem extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder {
             public TextView mealTitle, currentlyServingText, noMoreMeals;
             public LinearLayout llMainLines, llInternationalCorner;
             public FrameLayout mealImage;
             public ToggleButton tbViewMore;
             public CardView cvRoot;
 
-            public ViewHolderItem(View itemView) {
+            public ViewHolder(View itemView) {
                 super(itemView);
                 mealTitle = (TextView) itemView.findViewById(R.id.meal_title);
                 mealImage = (FrameLayout) itemView.findViewById(R.id.image);
@@ -687,15 +672,7 @@ public class CafeteriaFragment extends Fragment {
 
         }
 
-        public class ViewHolderHeader extends RecyclerView.ViewHolder {
-
-            public ViewHolderHeader(View headerView) {
-                super(headerView);
-                daySpinner = (Spinner) headerView.findViewById(R.id.day_spinner);
-            }
-        }
-
-        private void loadMenu(ViewHolderItem viewHolder, Meal meal) {
+        private void loadMenu(ViewHolder viewHolder, Meal meal) {
 
             for (int i = 0; i < meal.getMainLineItems().length; i++) {
                 viewHolder.llMainLines.addView(createFoodItemView(meal.getMainLineItems()[i]));
@@ -725,7 +702,6 @@ public class CafeteriaFragment extends Fragment {
             params.height = starterHeight;
             linearLayout.setLayoutParams(params);
             linearLayout.requestLayout();
-
         }
     }
 
