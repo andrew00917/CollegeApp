@@ -261,8 +261,7 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
         for (int i = 0; i < fragments.length; i++) {
             if (i == fragmentIndex) {
                 transaction.show(fragments[i]);
-            }
-            else {
+            } else {
                 transaction.hide(fragments[i]);
             }
         }
