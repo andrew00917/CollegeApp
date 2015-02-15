@@ -10,11 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <FrameLayout
             android:id="@+id/header"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@color/kzooOrange">
+            <!--android:background="@drawable/shadow">-->
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -26,6 +28,15 @@
                 app:theme="@style/Toolbar"
                 app:popupTheme="@style/Theme.AppCompat.Light" />
 
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:id="@+id/day_spinner"
+                android:drawSelectorOnTop="true"
+                android:layout_gravity="center_vertical|end"
+                style="@style/SpinnerStyle" />
+
             <com.techhab.collegeapp.PagerSlidingTabStrip
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
@@ -33,7 +44,7 @@
                 android:layout_gravity="bottom"
                 android:scrollbars="none"
                 android:fillViewport="true"
-                android:layout_marginTop="@dimen/abc_action_bar_default_height_material"
+                android:layout_marginTop="82dp"
                 app:pstsPaddingMiddle="false"
                 app:pstsShouldExpand="true" />
 
