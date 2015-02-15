@@ -510,22 +510,22 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.fragment_emergency, parent, false);
                 viewHolder = new ViewHolder();
-                viewHolder.tvName = (TextView) convertView.findViewById(R.id.emergency_tvName);
-                viewHolder.tvPhone = (TextView) convertView.findViewById(R.id.emergency_tvPhone);
+                viewHolder.contactName = (TextView) convertView.findViewById(R.id.emergency_contact_name);
+                viewHolder.contactNumber = (TextView) convertView.findViewById(R.id.emergency_contact_phone);
                 convertView.setTag(viewHolder);
 
             }
             viewHolder = (ViewHolder) convertView.getTag();
             Emergency emergency = getItem(position);
-            viewHolder.tvName.setText(emergency.getName());
-            viewHolder.tvPhone.setText(emergency.getPhone());
+            viewHolder.contactName.setText(emergency.getName());
+            viewHolder.contactNumber.setText(emergency.getPhone());
             return convertView;
         }
 
         class ViewHolder
         {
-            TextView tvName;
-            TextView tvPhone;
+            TextView contactName;
+            TextView contactNumber;
         }
     }
 

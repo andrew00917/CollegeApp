@@ -1,6 +1,17 @@
 package com.techhab.collegeapp;
 
 import android.location.Location;
+import android.os.AsyncTask;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URL;
 
 /**
  * Created by jhchoe on 10/16/14.
@@ -9,13 +20,16 @@ import android.location.Location;
  */
 public class User {
 
+    private boolean validity = false;
+
     private String id;
     private String password;
+    private boolean active;
     private String name;
     private String firstName;
     private String middleName;
     private String lastName;
-    private int studentId;
+    private String email;
     private Location location;
 
     public User() {
@@ -26,14 +40,19 @@ public class User {
     public User(String id, String password) {
         setUserId(id);
         setPassword(password);
-        if (isValid()) {
-            return;
-        }
-        else {
-            // TODO throw an error
-            setUserId("guest");
-            setPassword(null);
-        }
+        validity = false;
+//        if (isValid()) {
+//            return;
+//        } else {
+//            // TODO throw an error
+//            setUserId("guest");
+//            setPassword(null);
+//        }
+    }
+
+    public void setUserAsGuest() {
+        setUserId("guest");
+        setPassword(null);
     }
 
     public String getUserId() {
@@ -84,12 +103,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public int getStudentId() {
-        return studentId;
+    public String getEmail() {
+        return email;
     }
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Location getLocation() {
@@ -100,11 +119,15 @@ public class User {
         this.location = location;
     }
 
+    public void setValid(boolean valid) {
+        this.validity = valid;
+    }
+
     public boolean isValid() {
         // TODO authenticate if the user is valid user.
         // TODO if valid, load user information before return true
         loadInfo();
-        return true;
+        return validity;
     }
 
     private void loadInfo() {
