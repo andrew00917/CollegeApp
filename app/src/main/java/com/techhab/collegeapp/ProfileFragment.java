@@ -1,18 +1,23 @@
 package com.techhab.collegeapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -95,15 +100,53 @@ public class ProfileFragment extends Fragment {
         // ListView Item Click Listener
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 //                Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_SHORT).show();
                 if ( application.getPinState() ) {
-                    Fragment fragment = new LoginPINFragment();
-                    ProfileActivity activity = (ProfileActivity) getActivity();
-                    activity.changeFragment(fragment);
+                    LoginPINFragment fragment =  new LoginPINFragment();
+                    fragment.setToFragment(position);
+                    changeFragment(fragment);
                 }
                 else {
-                    Toast.makeText(getActivity(), "no PIN", Toast.LENGTH_LONG).show();
+                    // AlertDialog to sign in with password
+                    final EditText input = new EditText(getActivity());
+                    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+                    AlertDialog passDialog = new AlertDialog.Builder(getActivity())
+                            .setTitle("Enter Password")
+                            .setMessage("Please enter your password")
+                            .setView(input)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    if (input.getText().toString().equals(application.getCurrentUser().getPassword())) {
+                                        Fragment fragment;
+                                        if (position == 0) {
+                                            // change to MyCourses fragment
+                                            fragment = new MyCoursesFragment();
+                                        } else if (position == 1) {
+                                            //
+                                            fragment = new MyCoursesFragment();
+                                        } else {
+                                            //
+                                            fragment = new MyCoursesFragment();
+                                        }
+                                        changeFragment(fragment);
+                                    } else {
+                                        Toast.makeText(getActivity().getApplicationContext(), "Incorrect password", Toast.LENGTH_LONG).show();
+                                        dialog.dismiss();
+                                    }
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setCancelable(false)
+                            .create();
+                    // Open the soft keyboard
+                    passDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                    passDialog.show();
                 }
             }
         });
@@ -154,6 +197,13 @@ public class ProfileFragment extends Fragment {
             return convertView;
         }
 
+    }
+    private void changeFragment(Fragment fragment) {
+        ProfileActivity activity = (ProfileActivity) getActivity();
+        FragmentManager fm = activity.getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(((ViewGroup)(getView().getParent())).getId(), fragment);
+        transaction.commit();
     }
 
 }
