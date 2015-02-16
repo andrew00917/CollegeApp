@@ -86,7 +86,7 @@ public class CollegeApplication extends Application {
     public void setLoggedIn(boolean isLoggedIn) {
         this.isLoggedIn = isLoggedIn;
 
-        if ( ! isLoggedIn && isSocial()) {
+        if ( ! isLoggedIn && ! isSocial()) {
             // If the user is logged out, reset the info and nullify all the logged-in user's values
             setCurrentUser(null);
             setIsSocial(false);
@@ -107,7 +107,7 @@ public class CollegeApplication extends Application {
     }
 
     public String getCurrentUserKey() {
-        return USER_KEY;
+        return USER_KEY + currentUser.getUserId();
     }
 
     public String getCurrentUserPasswordKey() {
@@ -179,30 +179,30 @@ public class CollegeApplication extends Application {
     }
 
     public String getKey() {
-        if ( ! isSocial()) {
+        if (isSocial()) {
             return "guest";
         }
-        return LOGGED_IN_KEY;
+        return LOGGED_IN_KEY + getCurrentUserKey();
     }
 
     public void save() {
         SharedPreferences prefs = getApplicationContext().getSharedPreferences(getKey(), MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
-        if (getRememberLogin() && getCurrentUser() != null && isSocial() && isLoggedIn()) {
+        if (getRememberLogin() && getCurrentUser() != null && ! isSocial() && isLoggedIn()) {
             // user checked remember me box
             // save their user name info and password
             editor.putString("userID", getCurrentUser().getUserId());
             editor.putString("userPassword", getCurrentUser().getPassword());
             editor.putBoolean("rememberLogin", getRememberLogin());
             editor.putLong("lastLoggedInTime", System.currentTimeMillis());
-        } else if (getCurrentUser() != null && isSocial() && isLoggedIn()) {
+        } else if (getCurrentUser() != null && ! isSocial() && isLoggedIn()) {
             // user didn't check remember me box
             // but they are logged in
             // save everything except storing their username and password
             editor.putBoolean("rememberLogin", getRememberLogin());
             editor.putLong("lastLoggedInTime", System.currentTimeMillis());
-        } else if (getCurrentUser() != null && ! isSocial()) {
+        } else if (getCurrentUser() != null && isSocial()) {
             // guest user.
             // store last logged in time and nothing else
             editor.putLong("lastLoggedInTime", System.currentTimeMillis());
@@ -271,12 +271,5 @@ public class CollegeApplication extends Application {
             }
         }
         load();
-    }
-
-    /* */
-    public void startActivityOffContext(Activity context, Class c) {
-        Intent intent = new Intent(context, c);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
     }
 }

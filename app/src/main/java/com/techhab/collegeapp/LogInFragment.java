@@ -85,9 +85,7 @@ public class LogInFragment extends Fragment {
         });
 
         rememberMeText = (TextView) v.findViewById(R.id.remember_me_text);
-
-        //numChar = kEmail.getText().toString().length();
-
+        rememberMeCheckBox.setChecked(true);
         rememberMeText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +106,22 @@ public class LogInFragment extends Fragment {
         });
 
         return v;
+    }
+
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        if (kEmail.getText().toString().length() != 0) {
+//            password.requestFocus();
+//        }
+//    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (kEmail.getText().toString().length() != 0) {
+            password.requestFocus();
+        }
     }
 
     private void loginSubmit() {
@@ -149,6 +163,7 @@ public class LogInFragment extends Fragment {
 
             closeKeyboard(getActivity(), kEmail.getWindowToken());
             closeKeyboard(getActivity(), password.getWindowToken());
+            password.setText("");
             ((HomeActivity) getActivity()).showFragment(HOME_FRAGMENT, false);
             ((HomeActivity) getActivity()).mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             ((HomeActivity) getActivity()).getSupportActionBar().show();
@@ -157,6 +172,7 @@ public class LogInFragment extends Fragment {
 
             closeKeyboard(getActivity(), kEmail.getWindowToken());
             closeKeyboard(getActivity(), password.getWindowToken());
+            kEmail.setText("");
             ((HomeActivity) getActivity()).showFragment(HOME_FRAGMENT, false);
             ((HomeActivity) getActivity()).mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             ((HomeActivity) getActivity()).getSupportActionBar().show();

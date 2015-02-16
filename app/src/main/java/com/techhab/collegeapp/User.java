@@ -84,7 +84,11 @@ public class User {
     }
 
     public void setUserName() {
-        name = firstName + " " + lastName;
+        if (getUserId().equals("guest")) {
+            name = "guest";
+        } else {
+            name = firstName + " " + lastName;
+        }
     }
 
     public String getFirstName() {
