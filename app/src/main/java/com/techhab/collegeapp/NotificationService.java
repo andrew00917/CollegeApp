@@ -28,7 +28,7 @@ public class NotificationService extends Service {
     private void handleIntent(Intent intent) {
         // obtain the wake lock
         PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, Const.TAG);
+        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "blah");
         mWakeLock.acquire();
 
         // check the global background data setting
