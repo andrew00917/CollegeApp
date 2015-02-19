@@ -261,6 +261,7 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
         for (int i = 0; i < fragments.length; i++) {
             if (i == fragmentIndex) {
                 transaction.show(fragments[i]);
+//                fm.getFragments().get(i).onResume();
             } else {
                 transaction.hide(fragments[i]);
             }
@@ -422,12 +423,12 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
         }
     }
 
-    private void logout() {
-        // TODO
-        // Close the session, which will cause a callback to show the logout screen
-        //Session.getActiveSession().closeAndClearTokenInformation();
-
-        // Clear any permissions
+    public void logout() {
+        application.setLoggedIn(false);
+        application.save();
+        showFragment(LOG_IN_HOME, false);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        getSupportActionBar().hide();
     }
 
 

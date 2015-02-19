@@ -43,6 +43,8 @@ import java.util.List;
  */
 public class NavigationDrawerFragment extends Fragment implements NavigationDrawerCallbacks  {
 
+    private static final int LOG_IN_HOME = 0;
+
     /**
      * Remember the position of the selected item.
      */
@@ -449,6 +451,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                 case 0:
                     // build a dialog and show
                     emergencyCallDialog();
+                    break;
+                case 2:
+                    ((HomeActivity) getActivity()).logout();
                     break;
                 default:
                     // TODO: NOT a default behavior

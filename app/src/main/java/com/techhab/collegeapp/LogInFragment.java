@@ -85,9 +85,7 @@ public class LogInFragment extends Fragment {
         });
 
         rememberMeText = (TextView) v.findViewById(R.id.remember_me_text);
-
-        //numChar = kEmail.getText().toString().length();
-
+        rememberMeCheckBox.setChecked(true);
         rememberMeText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +100,7 @@ public class LogInFragment extends Fragment {
         guestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                kEmail.setText("guest");
                 loginSubmit();
             }
         });
@@ -109,27 +108,38 @@ public class LogInFragment extends Fragment {
         return v;
     }
 
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        if (kEmail.getText().toString().length() != 0) {
+//            password.requestFocus();
+//        }
+//    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (kEmail.getText().toString().length() != 0) {
+            password.requestFocus();
+        }
+    }
+
     private void loginSubmit() {
         String u = kEmail.getText().toString();
         String p = password.getText().toString();
 
-        try {
-            if (u.equals("guest")) {
-                application.setIsSocial(false);
-            } else {
-                User newUser = new User(u, p);
-                application.setCurrentUser(newUser);
-                new MySqlAsync().execute(u, p);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            // alert user for an error
+        if (u.equals("guest")) {
+            application.setIsSocial(false);
         }
+
+        User newUser = new User(u, p);
+        application.setCurrentUser(newUser);
+        new MySqlAsync().execute(u, p);
     }
 
     private void postLogin(String result) {
         User user = application.getCurrentUser();
-        if (result.length() > 0) {
+        if (result.length() > 5) {
             user.setValid(true);
 
             // set user info here
@@ -153,11 +163,20 @@ public class LogInFragment extends Fragment {
 
             closeKeyboard(getActivity(), kEmail.getWindowToken());
             closeKeyboard(getActivity(), password.getWindowToken());
+            password.setText("");
+            ((HomeActivity) getActivity()).showFragment(HOME_FRAGMENT, false);
+            ((HomeActivity) getActivity()).mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            ((HomeActivity) getActivity()).getSupportActionBar().show();
+        } else if (result.equals("guest")) {
+            user.setUserAsGuest();
+
+            closeKeyboard(getActivity(), kEmail.getWindowToken());
+            closeKeyboard(getActivity(), password.getWindowToken());
+            kEmail.setText("");
             ((HomeActivity) getActivity()).showFragment(HOME_FRAGMENT, false);
             ((HomeActivity) getActivity()).mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             ((HomeActivity) getActivity()).getSupportActionBar().show();
         } else {
-            user.setUserAsGuest();
             showLoginError();
         }
     }
@@ -190,30 +209,34 @@ public class LogInFragment extends Fragment {
             String u = (String) params[0];
             String p = (String) params[1];
 
-            String link = "http://www.techhab.com/sample_query.php?useremail=" + u + "&password=" + p;
+            if (u.equals("guest")) {
+                return "guest";
+            } else {
+                String link = "http://www.techhab.com/sample_query.php?useremail=" + u + "&password=" + p;
 
-            try {
-                URL url = new URL(link);
-                HttpClient client = new DefaultHttpClient();
-                HttpGet request = new HttpGet();
-                request.setURI(new URI(link));
+                try {
+                    URL url = new URL(link);
+                    HttpClient client = new DefaultHttpClient();
+                    HttpGet request = new HttpGet();
+                    request.setURI(new URI(link));
 
-                HttpResponse response = client.execute(request);
-                BufferedReader in = new BufferedReader
-                        (new InputStreamReader(response.getEntity().getContent()));
+                    HttpResponse response = client.execute(request);
+                    BufferedReader in = new BufferedReader
+                            (new InputStreamReader(response.getEntity().getContent()));
 
-                StringBuffer sb = new StringBuffer("");
-                String line="";
-                while ((line = in.readLine()) != null) {
-                    sb.append(line);
+                    StringBuffer sb = new StringBuffer("");
+                    String line = "";
+                    while ((line = in.readLine()) != null) {
+                        sb.append(line);
+                    }
+                    in.close();
+
+                    return sb.toString();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                in.close();
-
-                return sb.toString();
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-            return null;
+            return "guest";
         }
 
         @Override
