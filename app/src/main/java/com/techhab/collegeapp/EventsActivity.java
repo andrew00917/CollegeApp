@@ -3,6 +3,7 @@ package com.techhab.collegeapp;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -12,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +24,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.nineoldandroids.view.ViewHelper;
 import com.techhab.kcollegecustomviews.ProgressBar;
@@ -32,6 +35,12 @@ public class EventsActivity extends BaseActivity
     private final Handler handler = new Handler();
 
     private ProgressBar progressBar;
+
+    private DrawerLayout mDrawerLayout;
+    private NavigationDrawerFragment mNavigationDrawerFragment;
+
+    private LinearLayout header;
+    private FrameLayout pagerWrapper;
 
     private Toolbar toolbar;
     private SlidingTabLayout tabs;
@@ -60,7 +69,9 @@ public class EventsActivity extends BaseActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.main_menu_11));
 
-        ViewCompat.setElevation(findViewById(R.id.header), getResources().getDimension(R.dimen.toolbar_elevation));
+        header = (LinearLayout) findViewById(R.id.header);
+
+        ViewCompat.setElevation(header, getResources().getDimension(R.dimen.toolbar_elevation));
 
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
@@ -77,7 +88,8 @@ public class EventsActivity extends BaseActivity
         // Padding for ViewPager must be set outside the ViewPager itself
         // because with padding, EdgeEffect of ViewPager become strange.
         final int tabHeight = getResources().getDimensionPixelSize(R.dimen.tab_height);
-        findViewById(R.id.pager_wrapper).setPadding(0, getActionBarSize() + tabHeight, 0, 0);
+        pagerWrapper = (FrameLayout) findViewById(R.id.pager_wrapper);
+        pagerWrapper.setPadding(0, getActionBarSize() + tabHeight, 0, 0);
 
         tabs = (SlidingTabLayout) findViewById(R.id.tabs);
         tabs.setCustomTabView(R.layout.tab, android.R.id.text1);
@@ -92,6 +104,16 @@ public class EventsActivity extends BaseActivity
         mSlop = vc.getScaledTouchSlop();
         mInterceptionLayout = (TouchInterceptionFrameLayout) findViewById(R.id.container);
         mInterceptionLayout.setScrollInterceptionListener(mInterceptionListener);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.home_navigation_drawer);
+//        mNavigationDrawerFragment.setUp(R.id.home_navigation_drawer, mDrawerLayout, toolbar);
+
+
+        // Disable app name in toolbar
+
+        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.kzooOrange));
 
         /*
             check to see if the user is accessing the this activity for the first time
@@ -152,6 +174,15 @@ public class EventsActivity extends BaseActivity
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mNavigationDrawerFragment.isDrawerOpen()) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public void dismissProgressBar() {
@@ -229,10 +260,11 @@ public class EventsActivity extends BaseActivity
         public void onMoveMotionEvent(MotionEvent ev, float diffX, float diffY) {
             float translationY = ScrollUtils.getFloat(ViewHelper.getTranslationY(mInterceptionLayout) + diffY,
                     -toolbar.getHeight(), 0);
-            ViewHelper.setTranslationY(mInterceptionLayout, translationY*2);
+            ViewHelper.setTranslationY(mInterceptionLayout, translationY);
             if (translationY < 0) {
-                FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mInterceptionLayout.getLayoutParams();
-                lp.height = (int) (getScreenHeight() - (translationY*2));
+                DrawerLayout.LayoutParams lp = (DrawerLayout.LayoutParams) mInterceptionLayout.getLayoutParams();
+                lp.height = (int) (getScreenHeight() - translationY);
+                mInterceptionLayout.setLayoutParams(lp);
                 mInterceptionLayout.requestLayout();
             }
         }
@@ -308,8 +340,9 @@ public class EventsActivity extends BaseActivity
                     float translationY = (float) animation.getAnimatedValue();
                     ViewHelper.setTranslationY(mInterceptionLayout, translationY);
                     if (translationY < 0) {
-                        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mInterceptionLayout.getLayoutParams();
+                        DrawerLayout.LayoutParams lp = (DrawerLayout.LayoutParams) mInterceptionLayout.getLayoutParams();
                         lp.height = (int) (getScreenHeight() - translationY);
+                        mInterceptionLayout.setLayoutParams(lp);
                         mInterceptionLayout.requestLayout();
                     }
                 }
