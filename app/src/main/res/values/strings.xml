@@ -70,7 +70,6 @@
         <item>Class Schedule</item>
     </string-array>
     <string-array name="nav_drawer_items">
-        <item>News</item>
         <item>Announcements</item>
         <item>Emergency Call</item>
         <item>Log Out</item>
