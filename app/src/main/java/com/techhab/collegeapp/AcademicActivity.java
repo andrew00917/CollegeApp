@@ -23,7 +23,7 @@ public class AcademicActivity extends ActionBarActivity implements NavigationDra
     private final Handler handler = new Handler();
 
     Toolbar toolbar;
-    PagerSlidingTabStrip tabs;
+    SlidingTabLayout tabs;
     ViewPager pager;
 
     private MyPagerAdapter adapter;
@@ -39,7 +39,7 @@ public class AcademicActivity extends ActionBarActivity implements NavigationDra
         setContentView(R.layout.activity_academic);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
         pager = (ViewPager) findViewById(R.id.pager);
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 

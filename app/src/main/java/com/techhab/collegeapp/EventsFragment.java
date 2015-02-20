@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EventsFragment extends Fragment {
+public class EventsFragment extends BaseFragment {
 
     public static final String ARG_POSITION = "position";
 
@@ -50,7 +50,7 @@ public class EventsFragment extends Fragment {
     View v;
 
     private List<EventsRssItem> rssItemList = new ArrayList<>();
-    private RecyclerView mRecyclerView;
+    private ObservableRecyclerView mRecyclerView;
     private RssAdapter mAdapter;
 
     public EventsFragment() {
@@ -88,8 +88,18 @@ public class EventsFragment extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_events, parent, false);
 
-        mRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view);
+        mRecyclerView = (ObservableRecyclerView) v.findViewById(R.id.my_recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setHasFixedSize(false);
+        setDummyData(mRecyclerView);
 
+        Fragment parentFragment = getParentFragment();
+        if (getActivity() != null) {
+            mRecyclerView.setTouchInterceptionViewGroup((ViewGroup) getActivity().findViewById(R.id.container));
+            if (parentFragment instanceof ObservableScrollViewCallbacks) {
+                mRecyclerView.setScrollViewCallbacks((ObservableScrollViewCallbacks) parentFragment);
+            }
+        }
         return v;
     }
 
@@ -97,10 +107,14 @@ public class EventsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        try {
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        mRecyclerView.setLayoutManager(layoutManager);
+            mRecyclerView.setLayoutManager(layoutManager);
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//        }
 
         mAdapter = new RssAdapter(getActivity(), rssItemList);
         mRecyclerView.setAdapter(mAdapter);

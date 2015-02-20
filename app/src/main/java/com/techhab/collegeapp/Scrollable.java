@@ -1,8 +1,7 @@
 package com.techhab.collegeapp;
 
-/**
- * Created by Griffin on 12/26/2014.
- */
+import android.view.ViewGroup;
+
 /**
  * Provides common API for observable and scrollable widgets.
  */
@@ -29,4 +28,13 @@ public interface Scrollable {
      * @return current Y pixel
      */
     int getCurrentScrollY();
+
+    /**
+     * Sets a touch motion event delegation ViewGroup.
+     * This is used to pass motion events back to parent view.
+     * It's up to the implementation classes whether or not it works.
+     *
+     * @param viewGroup ViewGroup object to dispatch motion events
+     */
+    void setTouchInterceptionViewGroup(ViewGroup viewGroup);
 }
