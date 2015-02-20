@@ -208,7 +208,8 @@ public class ProfileFragment extends Fragment {
         ProfileActivity activity = (ProfileActivity) getActivity();
         FragmentManager fm = activity.getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(((ViewGroup)(getView().getParent())).getId(), fragment);
+        transaction.replace(R.id.profile_fragment, fragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 

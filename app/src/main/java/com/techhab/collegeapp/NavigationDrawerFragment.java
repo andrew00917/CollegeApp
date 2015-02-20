@@ -43,6 +43,8 @@ import java.util.List;
  */
 public class NavigationDrawerFragment extends Fragment implements NavigationDrawerCallbacks  {
 
+    private static final int LOG_IN_HOME = 0;
+
     /**
      * Remember the position of the selected item.
      */
@@ -401,7 +403,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         // Array of drawables. MUST BE IN THE SAME ORDER AS THE nav_drawer_items STRING ARRAY!
 //        int[] images = { R.drawable.numeric_1_box, R.drawable.phone, R.drawable.bookmark,
 //                R.drawable.logout };
-        int[] images = { R.drawable.main_news,  R.drawable.ic_info_outline, R.drawable.phone, R.drawable.logout };
+        int[] images = {   R.drawable.ic_info_outline, R.drawable.phone, R.drawable.logout };
 
         public NavAdapter(Context context) {
             this.context = context;
@@ -448,9 +450,17 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             switch (position) {
                 case 0:
                     // build a dialog and show
+
 //                  /*  Intent intent = new Intent(getActivity(), NewsActivity.class);
 //                    startActivity(intent);
 //                    break;*/
+
+                    emergencyCallDialog();
+                    break;
+                case 2:
+                    ((HomeActivity) getActivity()).logout();
+                    break;
+
                 default:
                     // TODO: NOT a default behavior
                     emergencyCallDialog();
