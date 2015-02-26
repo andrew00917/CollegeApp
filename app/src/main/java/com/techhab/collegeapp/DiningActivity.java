@@ -44,7 +44,7 @@ public class DiningActivity extends ActionBarActivity
     private MyPagerAdapter adapter;
 
     private Calendar mCalender;
-    private int dayNum;
+    private int dayNum, currentDayNum;
 
     private int currentPosition;
 
@@ -72,7 +72,7 @@ public class DiningActivity extends ActionBarActivity
 //        ViewCompat.setElevation(header, getResources().getDimension(R.dimen.toolbar_elevation));
 
         mCalender = Calendar.getInstance();
-        dayNum = mCalender.get(Calendar.DAY_OF_WEEK);
+        currentDayNum = dayNum = mCalender.get(Calendar.DAY_OF_WEEK);
         initializeDaySpinner();
 
         adapter = new MyPagerAdapter(getSupportFragmentManager());
@@ -116,7 +116,11 @@ public class DiningActivity extends ActionBarActivity
 //                meals.clear();
                 // Set up the meals again, but this time pass in the day num depending on the
                 // position. Sunday is 1.
-                dayNum = dayNum + position;
+
+                // Reset dayNum to the current day
+//                dayNum = mCalender.get(Calendar.DAY_OF_WEEK);
+
+                dayNum = currentDayNum + position;
                 if ( dayNum >= 8 ) { // Rollover
                     dayNum = dayNum - 7;
                 }
@@ -223,6 +227,11 @@ public class DiningActivity extends ActionBarActivity
         }
 
         @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+
+        @Override
         public Fragment getItem(int position) {
             Fragment fragment;
             Bundle args = new Bundle();
@@ -232,7 +241,7 @@ public class DiningActivity extends ActionBarActivity
                     fragment = CafeteriaFragment.createNewInstance(dayNum);
 //                    args.putInt(CafeteriaFragment.ARG_OBJECT, position + 1);
 
-                    fragment.setArguments(args);
+//                    fragment.setArguments(args);
                     break;
                 case 1:
                     fragment = new RichardsonFragment();
