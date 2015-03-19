@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/example_home_background"
     tools:context="com.techhab.collegeapp.HomeFragment">
+    <!--android:background="@drawable/example_home_background"-->
 
     <LinearLayout
         android:id="@+id/image_description"
@@ -14,7 +14,7 @@
         android:padding="8dp"
         android:orientation="vertical" >
 
-        <TextView
+        <!--<TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/image_description_name"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:text="@string/image_description_place"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp" />-->
 
     </LinearLayout>
 
@@ -35,12 +35,12 @@
         android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="bottom"
         android:orientation="vertical"
         android:minHeight="200dp"
-        android:animateLayoutChanges="true"
-        android:background="@color/main00" >
+        android:animateLayoutChanges="true" >
 
-        <ImageView
+        <!--<ImageView
             android:id="@+id/main_expand"
             android:contentDescription="@string/content_description"
             android:layout_width="wrap_content"
@@ -55,181 +55,141 @@
             android:id="@+id/container"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:fillViewport="true" >
+            android:fillViewport="true" >-->
 
             <TableLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/eighty_percent_opacity"
+                android:padding="5dp"
                 android:orientation="vertical"
                 android:weightSum="2" >
 
                 <TableRow
                     android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:paddingBottom="8dp" >
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:orientation="vertical" >
-
-                        <TextView
-                            android:id="@+id/main_menu_00"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center_horizontal"
-                            android:drawableTop="@drawable/main_academic"
-                            android:text="@string/main_menu_00"
-                            android:textSize="16sp"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:clickable="true" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:orientation="vertical" >
-
-                        <TextView
-                            android:id="@+id/main_menu_01"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center_horizontal"
-                            android:drawableTop="@drawable/main_campus"
-                            android:text="@string/main_menu_01"
-                            android:textSize="16sp"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:clickable="true" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:orientation="vertical" >
-
-                        <TextView
-                            android:id="@+id/main_menu_02"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center_horizontal"
-                            android:drawableTop="@drawable/main_food"
-                            android:text="@string/main_menu_02"
-                            android:textSize="16sp"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:clickable="true" />
-
-                    </LinearLayout>
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingTop="8dp" >
 
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:layout_weight="1"
                         android:orientation="vertical" >
 
                         <TextView
+                            style="@style/MainMenuItem"
+                            android:id="@+id/main_menu_00"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/ic_school_white_36dp"
+                            android:text="@string/main_menu_00" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            style="@style/MainMenuItem"
+                            android:id="@+id/main_menu_01"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/ic_bank_white_36dp"
+                            android:text="@string/main_menu_01" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            style="@style/MainMenuItem"
+                            android:id="@+id/main_menu_02"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@drawable/ic_silverware_white_36dp"
+                            android:text="@string/main_menu_02" />
+
+                    </LinearLayout>
+
+                </TableRow>
+
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    android:paddingTop="28dp"
+                    android:paddingBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            style="@style/MainMenuItem"
                             android:id="@+id/main_menu_10"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center_horizontal"
-                            android:drawableTop="@drawable/main_athletic"
-                            android:text="@string/main_menu_10"
-                            android:textSize="16sp"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:clickable="true" />
+                            android:drawableTop="@drawable/ic_trophy_variant_white_36dp"
+                            android:text="@string/main_menu_10" />
 
                     </LinearLayout>
 
+
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:layout_weight="1"
                         android:orientation="vertical" >
 
                         <TextView
+                            style="@style/MainMenuItem"
                             android:id="@+id/main_menu_11"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center_horizontal"
-                            android:drawableTop="@drawable/main_event"
-                            android:text="@string/main_menu_11"
-                            android:textSize="16sp"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:clickable="true" />
+                            android:drawableTop="@drawable/ic_calendar_white_36dp"
+                            android:text="@string/main_menu_11" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:layout_weight="1"
                         android:orientation="vertical" >
 
                         <TextView
+                            style="@style/MainMenuItem"
                             android:id="@+id/main_menu_12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center_horizontal"
-                            android:drawableTop="@drawable/main_news"
-                            android:text="@string/main_menu_12"
-                            android:textSize="16sp"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:clickable="true" />
+                            android:drawableTop="@drawable/ic_map_white_36dp"
+                            android:text="@string/main_menu_12" />
 
                     </LinearLayout>
 
                 </TableRow>
 
             </TableLayout>
-        </ScrollView>
+        <!--</ScrollView>-->
 
     </LinearLayout>
-
-    <FrameLayout android:id="@+id/progress_container"
-        android:background="@color/trans"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true" >
-
-        <ProgressBar
-            style="@android:style/Widget.ProgressBar.Large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-    </FrameLayout>
 
 </FrameLayout>

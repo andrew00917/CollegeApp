@@ -22,6 +22,7 @@
 
     <!-- Transparent things -->
     <color name="thirty_percent_opacity">#30000000</color>
+    <color name="eighty_percent_opacity">#80000000</color>
 
     <!-- Material Button -->
     <color name="blue_pressed">@android:color/holo_blue_dark</color>

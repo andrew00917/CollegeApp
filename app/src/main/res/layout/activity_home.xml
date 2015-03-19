@@ -4,6 +4,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/example_home_background"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -15,11 +16,14 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/expanded_toolbar"
-            android:minHeight="@dimen/abc_action_bar_default_height_material"
-            android:background="@drawable/k_banner_day"
-            app:theme="@style/Toolbar"
+            app:title="Kalamazoo College"
+            app:subtitle="More in Four"
+            app:titleMarginTop="36dp"
             app:popupTheme="@style/Theme.AppCompat.Light"
+            app:theme="@style/Toolbar"
             />
+            <!--android:minHeight="@dimen/abc_action_bar_default_height_material"-->
+            <!--android:background="@drawable/k_banner_day"-->
 
 
         <!-- The main content view -->
@@ -31,7 +35,8 @@
         <fragment android:name="com.techhab.collegeapp.HomeFragment"
             android:id="@+id/homeFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_home" />
 
         <fragment android:name="com.techhab.collegeapp.LogInFragment"
             android:id="@+id/loggedOutHomeFragment"

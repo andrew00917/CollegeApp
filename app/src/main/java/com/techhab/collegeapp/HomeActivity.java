@@ -93,7 +93,7 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -103,7 +103,7 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
 
         // Disable app name in toolbar
 
-        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.kzooOrange));
+        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.kzooOrangeLight));
 
         FragmentManager fm = getSupportFragmentManager();
         fragments[LOG_IN_HOME] = fm.findFragmentById(R.id.loggedOutHomeFragment);

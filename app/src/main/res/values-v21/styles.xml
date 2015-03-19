@@ -11,11 +11,12 @@
         <item name="windowActionBar">false</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:colorButtonNormal">@color/kzooOrange</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
     </style>
+        <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
 
     <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">false</item>
@@ -35,4 +36,5 @@
 
     <style name="MaterialButton" parent="android:Widget.Material.Button" />
 
+    <!--<style name="MainMenuItem" parent="MainMenuItem"/>-->
 </resources>

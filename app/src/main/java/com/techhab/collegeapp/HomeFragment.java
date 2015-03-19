@@ -28,14 +28,12 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
     // Store the Application (as you can't always get to it when you can't access the Activity - e.g. during rotations)
     private CollegeApplication application;
 
-    // FrameLayout of the progressContainer
-    private FrameLayout progressContainer;
 
     // Views
     private View v;
     private LinearLayout mainContainer;
-    private ImageView mainExpand;
-    private boolean isExpanded;
+//    private ImageView mainExpand;
+//    private boolean isExpanded;
 
     private TextView main00;
     private TextView main01;
@@ -45,7 +43,7 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
     private TextView main12;
 
     // View id
-    private static final int MAIN_EXPAND_ID = R.id.main_expand;
+//    private static final int MAIN_EXPAND_ID = R.id.main_expand;
     private static final int MAIN_00_ID = R.id.main_menu_00;
     private static final int MAIN_01_ID = R.id.main_menu_01;
     private static final int MAIN_02_ID = R.id.main_menu_02;
@@ -82,16 +80,12 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_home, parent, false);
 
-        progressContainer = (FrameLayout)v.findViewById(R.id.progress_container);
-        // Hide the progressContainer
-        progressContainer.setVisibility(FrameLayout.INVISIBLE);
-
         // Set banner image according to current time in timezone
 //        setBanner(v);
 
         mainContainer = (LinearLayout) v.findViewById(R.id.main_container);
-        mainExpand = (ImageView) v.findViewById(R.id.main_expand);
-        isExpanded = false;
+//        mainExpand = (ImageView) v.findViewById(R.id.main_expand);
+//        isExpanded = false;
 
         main00 = (TextView) v.findViewById(R.id.main_menu_00);
         main01 = (TextView) v.findViewById(R.id.main_menu_01);
@@ -100,7 +94,7 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
         main11 = (TextView) v.findViewById(R.id.main_menu_11);
         main12 = (TextView) v.findViewById(R.id.main_menu_12);
 
-        mainExpand.setOnTouchListener(this);
+//        mainExpand.setOnTouchListener(this);
 
         main00.setOnTouchListener(this);
         main01.setOnTouchListener(this);
@@ -155,7 +149,7 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
                     case MAIN_12_ID:
                         intent = new Intent(getActivity(), MapsActivity.class);
                         break;
-                    case MAIN_EXPAND_ID:
+                   /* case MAIN_EXPAND_ID:
                         if (isExpanded) {
                             com.techhab.collegeapp.Animation animation
                                     = new com.techhab.collegeapp.Animation(mainContainer
@@ -187,7 +181,7 @@ public class HomeFragment extends Fragment implements View.OnTouchListener {
                             mainExpand.setImageDrawable(getResources().getDrawable(R.drawable.main_expand_more));
                             isExpanded = true;
                         }
-                        break;
+                        break;*/
                 }
                 if (intent != null) {
                     getActivity().startActivity(intent);
