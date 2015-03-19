@@ -34,4 +34,7 @@
     <dimen name="medium_toolbar">112dp</dimen>
     <dimen name="toolbar_elevation">4dp</dimen>
 
+    <!-- Main menu -->
+    <dimen name="main_menu_card_height">85dp</dimen>
+
 </resources>

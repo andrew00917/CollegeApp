@@ -3,6 +3,8 @@
 
     <string name="app_name">KCollege</string>
     <string name="college">KCollege</string>
+    <string name="kalamazoo_college">Kalamazoo College</string>
+    <string name="more_in_four">More in Four</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>

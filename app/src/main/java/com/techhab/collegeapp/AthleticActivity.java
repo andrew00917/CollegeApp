@@ -219,7 +219,7 @@ public class AthleticActivity extends ActionBarActivity
                     .positiveColor(getResources().getColor(R.color.kzooOrange))
                     .negativeText("Cancel")
                     .autoDismiss(false)
-                    .negativeColor(getResources().getColor(R.color.gray))
+                    .negativeColor(getResources().getColor(R.color.grey))
                     .callback(new MaterialDialog.ButtonCallback() {
                         // Material Dialog library needs this empty method
                         @Override

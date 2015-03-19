@@ -93,7 +93,7 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavigationDrawerFragment = (NavigationDrawerFragment)

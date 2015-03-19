@@ -15,9 +15,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/expanded_toolbar"
-            app:title="Kalamazoo College"
-            app:subtitle="More in Four"
+            android:layout_height="@dimen/abc_action_bar_default_height_material"
             app:titleMarginTop="36dp"
             app:popupTheme="@style/Theme.AppCompat.Light"
             app:theme="@style/Toolbar"
@@ -25,6 +23,21 @@
             <!--android:minHeight="@dimen/abc_action_bar_default_height_material"-->
             <!--android:background="@drawable/k_banner_day"-->
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/kalamazoo_college"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/kzooOrangeLight"
+            android:paddingLeft="24dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/more_in_four"
+            android:paddingLeft="24dp"
+            android:textSize="18sp"
+            android:textColor="@color/white"/>
 
         <!-- The main content view -->
         <FrameLayout

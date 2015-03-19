@@ -478,7 +478,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                     .title("Emergency Contacts")
                     .adapter(new EmergencyAdapter(getActivity(), emergencyList))
-                    .dividerColorRes(R.color.gray)
+                    .dividerColorRes(R.color.grey)
                     .build();
             ListView lvEmergency = dialog.getListView();
             if (lvEmergency != null)
