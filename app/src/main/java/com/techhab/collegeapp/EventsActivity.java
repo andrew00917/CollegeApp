@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.nineoldandroids.view.ViewHelper;
 import com.techhab.kcollegecustomviews.ProgressBar;
@@ -41,6 +43,8 @@ public class EventsActivity extends BaseActivity
 
     private int currentPosition;
 
+    private LinearLayout header;
+    private FrameLayout wrapper;
     private TouchInterceptionFrameLayout mInterceptionLayout;
     private boolean mScrolled;
     private int mSlop;
@@ -90,6 +94,8 @@ public class EventsActivity extends BaseActivity
 
         ViewConfiguration vc = ViewConfiguration.get(this);
         mSlop = vc.getScaledTouchSlop();
+        header = (LinearLayout) findViewById(R.id.header);
+        wrapper = (FrameLayout) findViewById(R.id.pager_wrapper);
         mInterceptionLayout = (TouchInterceptionFrameLayout) findViewById(R.id.container);
         mInterceptionLayout.setScrollInterceptionListener(mInterceptionListener);
 
@@ -229,11 +235,11 @@ public class EventsActivity extends BaseActivity
         public void onMoveMotionEvent(MotionEvent ev, float diffX, float diffY) {
             float translationY = ScrollUtils.getFloat(ViewHelper.getTranslationY(mInterceptionLayout) + diffY,
                     -toolbar.getHeight(), 0);
-            ViewHelper.setTranslationY(mInterceptionLayout, translationY*2);
+            ViewHelper.setTranslationY(mInterceptionLayout, translationY);
             if (translationY < 0) {
-                FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mInterceptionLayout.getLayoutParams();
-                lp.height = (int) (getScreenHeight() - (translationY*2));
-                mInterceptionLayout.requestLayout();
+//                DrawerLayout.LayoutParams lp = (DrawerLayout.LayoutParams) mInterceptionLayout.getLayoutParams();
+//                lp.height = (int) (getScreenHeight() - translationY);
+//                mInterceptionLayout.requestLayout();
             }
         }
 
@@ -308,9 +314,9 @@ public class EventsActivity extends BaseActivity
                     float translationY = (float) animation.getAnimatedValue();
                     ViewHelper.setTranslationY(mInterceptionLayout, translationY);
                     if (translationY < 0) {
-                        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mInterceptionLayout.getLayoutParams();
-                        lp.height = (int) (getScreenHeight() - translationY);
-                        mInterceptionLayout.requestLayout();
+//                        DrawerLayout.LayoutParams lp = (DrawerLayout.LayoutParams) mInterceptionLayout.getLayoutParams();
+//                        lp.height = (int) (getScreenHeight() - translationY);
+//                        mInterceptionLayout.requestLayout();
                     }
                 }
             });

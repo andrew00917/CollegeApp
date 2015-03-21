@@ -10,7 +10,8 @@
     <com.techhab.collegeapp.TouchInterceptionFrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/black">
 
         <LinearLayout
             android:id="@+id/header"
@@ -53,17 +54,17 @@
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 tools:context=".EventsActivity" />
         </FrameLayout>
-
     </com.techhab.collegeapp.TouchInterceptionFrameLayout>
 
-    <fragment android:id="@+id/home_navigation_drawer"
+    <fragment
+        android:id="@+id/home_navigation_drawer"
+        android:name="com.techhab.collegeapp.NavigationDrawerFragment"
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:name="com.techhab.collegeapp.NavigationDrawerFragment" />
+        android:layout_gravity="start" />
 
 </android.support.v4.widget.DrawerLayout>
