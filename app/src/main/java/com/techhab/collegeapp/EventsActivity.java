@@ -233,14 +233,14 @@ public class EventsActivity extends BaseActivity
 
         @Override
         public void onMoveMotionEvent(MotionEvent ev, float diffX, float diffY) {
-            float translationY = ScrollUtils.getFloat(ViewHelper.getTranslationY(mInterceptionLayout) + diffY,
-                    -toolbar.getHeight(), 0);
-            ViewHelper.setTranslationY(mInterceptionLayout, translationY);
-            if (translationY < 0) {
+//            float translationY = ScrollUtils.getFloat(ViewHelper.getTranslationY(mInterceptionLayout) + diffY,
+//                    -toolbar.getHeight(), 0);
+//            ViewHelper.setTranslationY(mInterceptionLayout, translationY);
+//            if (translationY < 0) {
 //                DrawerLayout.LayoutParams lp = (DrawerLayout.LayoutParams) mInterceptionLayout.getLayoutParams();
 //                lp.height = (int) (getScreenHeight() - translationY);
 //                mInterceptionLayout.requestLayout();
-            }
+//            }
         }
 
         @Override
@@ -305,23 +305,23 @@ public class EventsActivity extends BaseActivity
     }
 
     private void animateToolbar(final float toY) {
-        float layoutTranslationY = ViewHelper.getTranslationY(mInterceptionLayout);
-        if (layoutTranslationY != toY) {
-            ValueAnimator animator = ValueAnimator.ofFloat(ViewHelper.getTranslationY(mInterceptionLayout), toY).setDuration(200);
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    float translationY = (float) animation.getAnimatedValue();
-                    ViewHelper.setTranslationY(mInterceptionLayout, translationY);
-                    if (translationY < 0) {
+//        float layoutTranslationY = ViewHelper.getTranslationY(mInterceptionLayout);
+//        if (layoutTranslationY != toY) {
+//            ValueAnimator animator = ValueAnimator.ofFloat(ViewHelper.getTranslationY(mInterceptionLayout), toY).setDuration(200);
+//            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//                @Override
+//                public void onAnimationUpdate(ValueAnimator animation) {
+//                    float translationY = (float) animation.getAnimatedValue();
+//                    ViewHelper.setTranslationY(mInterceptionLayout, translationY);
+//                    if (translationY < 0) {
 //                        DrawerLayout.LayoutParams lp = (DrawerLayout.LayoutParams) mInterceptionLayout.getLayoutParams();
 //                        lp.height = (int) (getScreenHeight() - translationY);
 //                        mInterceptionLayout.requestLayout();
-                    }
-                }
-            });
-            animator.start();
-        }
+//                    }
+//                }
+//            });
+//            animator.start();
+//        }
     }
 
     /**
