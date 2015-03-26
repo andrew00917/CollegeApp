@@ -415,40 +415,42 @@ public class EventsFragment extends BaseFragment {
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             ((EventsActivity) getActivity()).dismissProgressBar();
             rssItemList = (List<EventsRssItem>) resultData.getSerializable(ITEMS);
-            switch (POSITION) {
-                case 0:
-                    // ETC
-                    rssItemList = getEtcEvent(rssItemList);
-                    break;
-                case 1:
-                    // Upcoming
-                    break;
-                case 2:
-                    // Stress free
-                    rssItemList = getStressEvent(rssItemList);
-                    break;
-                case 3:
-                    // Tuesday
-                    rssItemList = getTuesdayEvent(rssItemList);
-                    break;
-                case 4:
-                    // Wind down
-                    rssItemList = getWednesdayEvent(rssItemList);
-                    break;
-                case 5:
-                    // Trivia
-                    rssItemList = getTriviaEvent(rssItemList);
-                    break;
-                case 6:
-                    // Zoo flicks
-                    rssItemList = getFlicksEvent(rssItemList);
-                    break;
-                case 7:
-                    // Zoo after
-                    rssItemList = getZooDarkEvent(rssItemList);
-                    break;
+            if (rssItemList != null) {
+                switch (POSITION) {
+                    case 0:
+                        // ETC
+                        rssItemList = getEtcEvent(rssItemList);
+                        break;
+                    case 1:
+                        // Upcoming
+                        break;
+                    case 2:
+                        // Stress free
+                        rssItemList = getStressEvent(rssItemList);
+                        break;
+                    case 3:
+                        // Tuesday
+                        rssItemList = getTuesdayEvent(rssItemList);
+                        break;
+                    case 4:
+                        // Wind down
+                        rssItemList = getWednesdayEvent(rssItemList);
+                        break;
+                    case 5:
+                        // Trivia
+                        rssItemList = getTriviaEvent(rssItemList);
+                        break;
+                    case 6:
+                        // Zoo flicks
+                        rssItemList = getFlicksEvent(rssItemList);
+                        break;
+                    case 7:
+                        // Zoo after
+                        rssItemList = getZooDarkEvent(rssItemList);
+                        break;
+                }
+                mAdapter.updateChange(rssItemList);
             }
-            mAdapter.updateChange(rssItemList);
         }
     }
 
