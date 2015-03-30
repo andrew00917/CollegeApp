@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -51,8 +52,12 @@ public class CalendarDetailActivity extends ActionBarActivity implements Navigat
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_detail);
+        getWindow().getAttributes().windowAnimations = R.style.Fade;
 
         Intent intent = getIntent();
+
+        //get argument from previous activity
+        int selectedPosition = intent.getIntExtra("position", -1);
 
         application = (CollegeApplication) getApplication();
 
@@ -65,6 +70,7 @@ public class CalendarDetailActivity extends ActionBarActivity implements Navigat
         FragmentTransaction transaction = fm.beginTransaction();
 
         Bundle bundle = new Bundle();
+        bundle.putInt("position", selectedPosition);
 
         CalendarDetailFragment frag = new CalendarDetailFragment();
         frag.setArguments(bundle);

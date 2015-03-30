@@ -471,5 +471,8 @@
     <string name="title_activity_profile">My Profile</string>
     <string name="title_activity_re_authentication">ReAuthenticationActivity</string>
     <string name="title_activity_about">AboutActivity</string>
+    <string name="search_help_text">Search help</string>
+    <string name="menu.texthint.search_help">Search help</string>
+    <string name="search_activities_hint">Input where do you go?</string>
 
 </resources>

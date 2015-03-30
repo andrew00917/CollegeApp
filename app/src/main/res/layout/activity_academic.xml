@@ -25,6 +25,16 @@
                 app:theme="@style/Toolbar"
                 app:popupTheme="@style/Theme.AppCompat.Light" />
 
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:id="@+id/day_spinner"
+                android:drawSelectorOnTop="true"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical|end"
+                style="@style/SpinnerStyle" />
+
             <com.techhab.collegeapp.PagerSlidingTabStrip
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"

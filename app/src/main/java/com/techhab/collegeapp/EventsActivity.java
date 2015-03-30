@@ -84,7 +84,9 @@ public class EventsActivity extends ActionBarActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds rssItemList to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_events, menu);
+        getMenuInflater().inflate(R.menu.menu_action_with_search, menu);
+        //create search interface
+        SearchableCreator.makeSearchable(this, menu);
         return true;
     }
 
@@ -171,7 +173,7 @@ public class EventsActivity extends ActionBarActivity
     public class MyPagerAdapter extends FragmentPagerAdapter {
 
         private final String[] TITLES = {"Etc", "Upcoming Events", "Stress Free Zone"
-                , "Tuesdays With...","Wind Down Wednesday", "Trivia Night", "Zoo Flicks"
+                , "Tuesdays With...", "Wind Down Wednesday", "Trivia Night", "Zoo Flicks"
                 , "Zoo After Dark"};
 
         public MyPagerAdapter(FragmentManager fm) {
@@ -190,56 +192,7 @@ public class EventsActivity extends ActionBarActivity
 
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment;
-            Bundle args = new Bundle();
-            switch (position) {
-                case 0:
-                    fragment = new EventsFragment();
-                    args.putInt(EventsFragment.ARG_POSITION, position);
-                    fragment.setArguments(args);
-                    break;
-                case 1:
-                    fragment = new EventsFragment();
-                    args.putInt(EventsFragment.ARG_POSITION, position);
-                    fragment.setArguments(args);
-                    break;
-                case 2:
-                    fragment = new EventsFragment();
-                    args.putInt(EventsFragment.ARG_POSITION, position);
-                    fragment.setArguments(args);
-                    break;
-                case 3:
-                    fragment = new EventsFragment();
-                    args.putInt(EventsFragment.ARG_POSITION, position);
-                    fragment.setArguments(args);
-                    break;
-                case 4:
-                    fragment = new EventsFragment();
-                    args.putInt(EventsFragment.ARG_POSITION, position);
-                    fragment.setArguments(args);
-                    break;
-                case 5:
-                    fragment = new EventsFragment();
-                    args.putInt(EventsFragment.ARG_POSITION, position);
-                    fragment.setArguments(args);
-                    break;
-                case 6:
-                    fragment = new EventsFragment();
-                    args.putInt(EventsFragment.ARG_POSITION, position);
-                    fragment.setArguments(args);
-                    break;
-                case 7:
-                    fragment = new EventsFragment();
-                    args.putInt(EventsFragment.ARG_POSITION, position);
-                    fragment.setArguments(args);
-                    break;
-                default:
-                    fragment = new EventsFragment();
-                    args.putInt(EventsFragment.ARG_POSITION, position);
-                    fragment.setArguments(args);
-                    break;
-            }
-            return fragment;
+            return EventsFragment.createNewInstance(position);
         }
     }
 

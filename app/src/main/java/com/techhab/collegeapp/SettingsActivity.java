@@ -158,9 +158,9 @@ public class SettingsActivity extends ActionBarActivity implements NavigationDra
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu rssItemList for use in the action bar
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_settings, menu);
+        // Inflate the menu; this adds rssItemList to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_action_with_search, menu);
+        //create search interface
         return super.onCreateOptionsMenu(menu);
     }
 

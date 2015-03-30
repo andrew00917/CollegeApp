@@ -4,6 +4,7 @@
     <style name="AppTheme" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
         <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:selectableItemBackground">@drawable/card_ripples</item>
     </style>
 
     <style name="KZooActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
@@ -129,9 +130,31 @@
     <style name="SpinnerStyle" parent="android:style/Widget.ListView.DropDown">
         <item name="android:divider">@color/silver</item>
         <item name="android:dividerHeight">1dp</item>
-
-
-
     </style>
+    <style name="SingleLineListTextOnly.SubContent" parent="@style/SingleLineListTextOnly">
+        <item name="android:textSize">14sp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+    </style>
+
+    <style name="Widget.MyApp.HeaderBar.Spinner" parent="Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
+        <item name="android:background">?android:selectableItemBackground</item>
+        <item name="android:dropDownSelector">?android:selectableItemBackground</item>
+        <item name="android:divider">@null</item>
+        <item name="android:overlapAnchor">true</item>
+    </style>
+
+    <style name="Fade">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+
+    <style name="card_expand">
+        <item name="android:layout_marginTop">@dimen/card_default_native_margin_top</item>
+        <item name="android:layout_marginBottom">@dimen/card_default_native_margin_bottom</item>
+        <item name="android:layout_marginLeft">@dimen/card_default_native_margin_left</item>
+        <item name="android:layout_marginRight">@dimen/card_default_native_margin_right</item>
+    </style>"
 
 </resources>
