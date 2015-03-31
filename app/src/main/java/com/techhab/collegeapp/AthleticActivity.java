@@ -51,7 +51,7 @@ public class AthleticActivity extends ActionBarActivity
     private final Handler handler = new Handler();
 
     private Toolbar toolbar;
-    private PagerSlidingTabStrip mPagerSlidingTabStrip;
+    private SlidingTabLayout mPagerSlidingTabStrip;
     private ViewPager mViewPager;
     private SwitchCompat genderSwitch;
     private LinearLayout genderSwitchLayout, header;
@@ -81,7 +81,7 @@ public class AthleticActivity extends ActionBarActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbarAndGenderSwitch = (FrameLayout) findViewById(R.id.toolbar_and_gender_switch);
         header = (LinearLayout) findViewById(R.id.header);
-        mPagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        mPagerSlidingTabStrip = (SlidingTabLayout) findViewById(R.id.tabs);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         genderSwitchLayout = (LinearLayout) findViewById(R.id.gender_switch_layout);
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -173,7 +173,7 @@ public class AthleticActivity extends ActionBarActivity
         mViewPager.setCurrentItem(application.getSportPreference());
         // Call notifyDataSetChanged() to get rid of a minor visual bug that keeps the
         // colors from updating in the tab strip
-        mPagerSlidingTabStrip.notifyDataSetChanged();
+//        mPagerSlidingTabStrip.notifyDataSetChanged();
 
         /* Check to see if this is the first time the user has opened
         AthleticActivity. If it is, show the dialog to choose
@@ -290,7 +290,7 @@ public class AthleticActivity extends ActionBarActivity
         } else {
             mViewPager.setCurrentItem(convertPage(pageIndexPreSwitch));
         }
-        mPagerSlidingTabStrip.notifyDataSetChanged();
+//        mPagerSlidingTabStrip.notifyDataSetChanged();
 
 
     }
