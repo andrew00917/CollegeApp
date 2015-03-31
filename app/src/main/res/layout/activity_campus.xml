@@ -29,7 +29,7 @@ android:fitsSystemWindows="true">
             app:popupTheme="@style/Theme.AppCompat.Light" />
 
 
-        <com.techhab.collegeapp.PagerSlidingTabStrip
+        <com.techhab.collegeapp.SlidingTabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"

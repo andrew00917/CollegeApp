@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,7 +30,7 @@ public class CampusActivity extends ActionBarActivity implements NavigationDrawe
     public DrawerLayout mDrawerLayout;
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private Toolbar mToolbar;
-    private PagerSlidingTabStrip tabs;
+    private SlidingTabLayout tabs;
     private ViewPager pager;
     private MyPagerAdapter adapter;
 
@@ -61,7 +62,7 @@ public class CampusActivity extends ActionBarActivity implements NavigationDrawe
             // change fragment displaying according to the saved currentPosition
         }
 
-        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
         pager = (ViewPager) findViewById(R.id.pager);
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 

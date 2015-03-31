@@ -30,7 +30,7 @@ public class EventsActivity extends ActionBarActivity
     private int progressBarHeight;
 
     private Toolbar toolbar;
-    private PagerSlidingTabStrip tabs;
+    private SlidingTabLayout tabs;
     private ViewPager pager;
 
     private MyPagerAdapter adapter;
@@ -49,7 +49,7 @@ public class EventsActivity extends ActionBarActivity
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
         pager = (ViewPager) findViewById(R.id.pager);
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
