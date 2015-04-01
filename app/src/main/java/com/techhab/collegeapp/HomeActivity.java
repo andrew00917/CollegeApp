@@ -1,12 +1,15 @@
 package com.techhab.collegeapp;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -178,7 +181,7 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
-        if ( ! (application.isSocial() || application.isLoggedIn())
+        if ( !(application.isSocial() || application.isLoggedIn())
                 && fragments[LOG_IN_HOME] != null) {
             // not logged in and also not guest
             showFragment(LOG_IN_HOME, false);
@@ -211,6 +214,19 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
     public void onResume() {
         super.onResume();
         isResumed = true;
+        // alarm manager for notifications
+        // minutes is the interval. This might be better in the shared prefs
+        int minutes = 2;
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent i = new Intent(this, NotificationService.class);
+        PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+        am.cancel(pi);
+        // minutes <= 0 means notifications are disabled
+        if (minutes > 0) {
+            am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SystemClock.elapsedRealtime() + minutes*60*1000,
+                    minutes*60*1000, pi);
+        }
 
         onResumeFragments();
     }

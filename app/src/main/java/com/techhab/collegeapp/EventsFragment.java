@@ -2,7 +2,6 @@ package com.techhab.collegeapp;
 
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -24,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.techhab.kcollegecustomviews.ProgressBar;
+import com.techhab.rss.Calendar;
 import com.techhab.rss.EventsDom;
 import com.techhab.rss.EventsRssItem;
 import com.techhab.rss.EventsRssService;
@@ -31,36 +30,37 @@ import com.techhab.rss.EventsRssService;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardExpand;
+import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
+import it.gmariotti.cardslib.library.recyclerview.internal.CardArrayRecyclerViewAdapter;
+import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EventsFragment extends BaseFragment {
+public class EventsFragment extends Fragment {
 
     public static final String ARG_POSITION = "position";
-
     private static final String ITEMS = "rssItemList";
     private static final String RECEIVER = "receiver";
 
-    private int POSITION;
-
+    private int mPosition;
     private Intent mServiceIntent;
     private MyResultReceiver receiver;
-
-    View v;
-
     private List<EventsRssItem> rssItemList = new ArrayList<>();
-    private ObservableRecyclerView mRecyclerView;
-    private RssAdapter mAdapter;
+    private CustomCardArrayRecyclerViewAdapter mAdapter;
+    private List<Card> cards;
 
     public EventsFragment() {
         // Required Empty Constructor
     }
 
-    public static Fragment createNewInstance() {
+    public static Fragment createNewInstance(int position) {
         EventsFragment fragment = new EventsFragment();
         Bundle arg = new Bundle();
-//        POSITION = arg.getInt(ARG_POSITION);
+        arg.putInt(ARG_POSITION, position);
         fragment.setArguments(arg);
         return fragment;
     }
@@ -71,7 +71,7 @@ public class EventsFragment extends BaseFragment {
         setRetainInstance(true);
 
         Bundle arg = getArguments();
-        POSITION = arg.getInt(ARG_POSITION);
+        mPosition = arg.getInt(ARG_POSITION);
 
         /*
          * Creates a new Intent to start the RssService
@@ -79,6 +79,8 @@ public class EventsFragment extends BaseFragment {
         mServiceIntent = new Intent(getActivity(), EventsRssService.class);
         receiver = new MyResultReceiver(new Handler());
         rssItemList = new ArrayList<>();
+        cards = new ArrayList<>();
+        mAdapter = new CustomCardArrayRecyclerViewAdapter(getActivity(), cards);
         new DownloadXmlTask().execute();
     }
 
@@ -86,49 +88,53 @@ public class EventsFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_events, parent, false);
+        View view = inflater.inflate(R.layout.fragment_events, parent, false);
 
-        mRecyclerView = (ObservableRecyclerView) v.findViewById(R.id.my_recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setHasFixedSize(false);
-        setDummyData(mRecyclerView);
+        CardRecyclerView cardRecyclerView = (CardRecyclerView) view.findViewById(R.id.my_recycler_view);
+        cardRecyclerView.setHasFixedSize(false);
+        cardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        cardRecyclerView.setAdapter(mAdapter);
 
-        Fragment parentFragment = getParentFragment();
-        if (getActivity() != null) {
-            mRecyclerView.setTouchInterceptionViewGroup((ViewGroup) getActivity().findViewById(R.id.container));
-            if (parentFragment instanceof ObservableScrollViewCallbacks) {
-                mRecyclerView.setScrollViewCallbacks((ObservableScrollViewCallbacks) parentFragment);
-            }
+        return view;
+    }
+
+    private void setupRecycleView() {
+        for (int i = 0; i < rssItemList.size(); i++) {
+            cards.add(initializeCardView(rssItemList.get(i)));
         }
-        return v;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    private CustomCard initializeCardView(final EventsRssItem eventsRssItem) {
+        CustomCard card = new CustomCard(getActivity(), eventsRssItem);
 
-//        try {
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        //setup card expand
+        CustomCardExpand cardExpand = new CustomCardExpand(getActivity(), eventsRssItem);
+        card.addCardExpand(cardExpand);
+        ViewToClickToExpand viewToClickToExpand = ViewToClickToExpand.builder().enableForExpandAction();
+        card.setViewToClickToExpand(viewToClickToExpand);
 
-            mRecyclerView.setLayoutManager(layoutManager);
-//        } catch (NullPointerException e) {
-//            e.printStackTrace();
-//        }
+        card.setOnClickListener(new Card.OnCardClickListener() {
+            @Override
+            public void onClick(Card card, View view) {
+                card.doToogleExpand();
+            }
+        });
 
-        mAdapter = new RssAdapter(getActivity(), rssItemList);
-        mRecyclerView.setAdapter(mAdapter);
+        return card;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    class CustomCardArrayRecyclerViewAdapter extends CardArrayRecyclerViewAdapter {
 
-    }
+        public CustomCardArrayRecyclerViewAdapter(Context context, List<Card> cards) {
+            super(context, cards);
+        }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
+        public void updateChange() {
+            //recreate new cards list
+            cards.clear();
+            setupRecycleView();
+            this.notifyDataSetChanged();
+        }
     }
 
     public List<EventsRssItem> getEtcEvent(List<EventsRssItem> list) {
@@ -138,7 +144,7 @@ public class EventsFragment extends BaseFragment {
         for (int i = 0; i < list.size(); i++) {
             item = list.get(i);
             event = item.getEvent().toLowerCase();
-            if ( ! (event.contains("stress free") || event.contains("tuesdays with") || event.contains("wind down wednesday")
+            if (!(event.contains("stress free") || event.contains("tuesdays with") || event.contains("wind down wednesday")
                     || event.contains("trivia night") || event.contains("zoo flicks") || event.contains("zoo after dark"))) {
                 ret.add(item);
             }
@@ -218,188 +224,102 @@ public class EventsFragment extends BaseFragment {
         return ret;
     }
 
+    class CustomCard extends Card {
+        private EventsRssItem item;
 
-    /**
-     * Adapter for recycler view
-     */
-    public class RssAdapter extends RecyclerView.Adapter<RssAdapter.ViewHolder> {
-
-        private Context context;
-        private List<EventsRssItem> items;
-        private int expandedPosition = -1;
-        private ViewHolder expandedHolder;
-//        private int width = -1;
-//        private int height = -1;
-
-        public RssAdapter(Context context, List<EventsRssItem> items) {
-            this.context = context;
-            this.items = items;
+        public CustomCard(Context context, EventsRssItem item) {
+            this(context);
+            this.item = item;
         }
 
-        public void updateChange(List<EventsRssItem> list) {
-            if ( ! items.isEmpty()) {
-                items.clear();
-            }
-            if (list != null && ! list.isEmpty()) {
-                items.addAll(list);
-            }
-            this.notifyDataSetChanged();
+        public CustomCard(Context context) {
+            super(context, R.layout.events_recycle);
         }
 
         @Override
-        public int getItemCount() {
-            return items.size();
-        }
+        public void setupInnerViewElements(ViewGroup parent, View view) {
+            FrameLayout image = (FrameLayout) view.findViewById(R.id.image);
+            TextView date = (TextView) view.findViewById(R.id.date);
+            TextView tvEvent = (TextView) view.findViewById(R.id.event);
+            TextView time = (TextView) view.findViewById(R.id.time);
 
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, final int position) {
-            final EventsRssItem item;
-            if (position < items.size()) {
-                item = items.get(position);
-            } else {
-                return;
-            }
             String[] event = item.getEvent().split(" ");
 
             if (event[0].toLowerCase().equals("stress")) {
-                holder.image.setBackground(getResources().getDrawable(R.drawable.stree_free_zone));
+                image.setBackground(getResources().getDrawable(R.drawable.stree_free_zone));
             } else if (event[0].toLowerCase().equals("tuesdays")) {
-                holder.image.setBackground(getResources().getDrawable(R.drawable.tuesdays_with));
+                image.setBackground(getResources().getDrawable(R.drawable.tuesdays_with));
             } else if (event[0].toLowerCase().equals("wind")) {
-                holder.image.setBackground(getResources().getDrawable(R.drawable.wind_down_wed));
+                image.setBackground(getResources().getDrawable(R.drawable.wind_down_wed));
             } else if (event[0].toLowerCase().equals("trivia")) {
-                holder.image.setBackground(getResources().getDrawable(R.drawable.trivia_night));
+                image.setBackground(getResources().getDrawable(R.drawable.trivia_night));
             } else if (event[1].toLowerCase().equals("flicks")) {
-                holder.image.setBackground(getResources().getDrawable(R.drawable.zoo_flicks));
+                image.setBackground(getResources().getDrawable(R.drawable.zoo_flicks));
             } else if (event[1].toLowerCase().equals("after")) {
-                holder.image.setBackground(getResources().getDrawable(R.drawable.zoo_after_dark));
+                image.setBackground(getResources().getDrawable(R.drawable.zoo_after_dark));
             } else {
-                holder.image.setBackground(getResources().getDrawable(R.drawable.banner));
+                image.setBackground(getResources().getDrawable(R.drawable.banner));
             }
-            holder.date.setText(item.getDate());
-            holder.event.setText(item.getEvent());
-            holder.time.setText(item.getTime());
-        }
-
-        @Override
-        public RssAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.events_recycle, parent, false);
-
-            return new ViewHolder(context, view);
-        }
-
-        /**
-         *  Generate jsoup DOM to set description of the event's cards and set calendar
-         *  button on click listener
-         *
-         * @param h
-         * @param link
-         */
-        private void setDescription(final ViewHolder h, String link) {
-            new EventsDom(context, h.event.getText().toString(), h.description,
-                    h.calendarButton, link, h.progress);
-        }
-
-        /**
-         *  Collapse card with description and buttons
-         *
-         * @param h
-         */
-        private void collapseCard(final ViewHolder h) {
-            h.description.setVisibility(View.GONE);
-            h.favoriteButton.setVisibility(View.GONE);
-            h.buildingButton.setVisibility(View.GONE);
-            h.calendarButton.setVisibility(View.GONE);
-            h.attendButton.setVisibility(View.GONE);
-        }
-
-        /**
-         *  Expand card with description and buttons
-         *
-         * @param h
-         */
-        private void expandCard(final ViewHolder h) {
-            h.progress.setVisibility(View.VISIBLE);
-            h.description.setVisibility(View.VISIBLE);
-            h.favoriteButton.setVisibility(View.VISIBLE);
-            h.buildingButton.setVisibility(View.VISIBLE);
-            h.calendarButton.setVisibility(View.VISIBLE);
-            h.attendButton.setVisibility(View.VISIBLE);
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-
-            public Context context;
-
-            public View v;
-            public FrameLayout image;
-            public TextView date, event, description, time;
-            public ProgressBar progress;
-            public View divider;
-            public LinearLayout buttonSection;
-            public ImageButton infoButton;
-            public ImageView favoriteButton, buildingButton, calendarButton, attendButton;
-
-            public ViewHolder(Context context, View itemView) {
-                super(itemView);
-
-                this.context = context;
-
-                v = itemView;
-
-                image = (FrameLayout) v.findViewById(R.id.image);
-                date = (TextView) v.findViewById(R.id.date);
-                event = (TextView) v.findViewById(R.id.event);
-                description = (TextView) v.findViewById(R.id.place);
-                time = (TextView) v.findViewById(R.id.time);
-
-                progress = (ProgressBar) v.findViewById(R.id.progress_bar);
-
-                divider = v.findViewById(R.id.divider);
-
-                buttonSection = (LinearLayout) v.findViewById(R.id.button_section);
-
-                infoButton = (ImageButton) v.findViewById(R.id.info_button);
-                infoButton.setTag(this);
-                infoButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final ViewHolder vTag = (ViewHolder) v.getTag();
-                        final int position = vTag.getPosition();
-
-                        // TODO: fix auto-scrolling
-                        // Check for an expanded view, collapse if you find one
-                        if (expandedPosition >= 0 && expandedPosition != position) {
-                            collapseCard(expandedHolder);
-                            expandedPosition = -1;
-                            expandedHolder = null;
-                        }
-
-                        if (expandedPosition == position) {
-                            collapseCard(vTag);
-                            expandedPosition = -1;
-                            expandedHolder = null;
-                        } else {
-                            // Set the current position to "expanded"
-                            expandCard(vTag);
-                            expandedPosition = position;
-                            setDescription(vTag, items.get(position).getLink());
-                            expandedHolder = vTag;
-                        }
-                        Log.d("Holder clicked: ", vTag.toString());
-                        Toast.makeText(getActivity(), "Holder on click " + position, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                favoriteButton = (ImageView) v.findViewById(R.id.favorite_button);
-                buildingButton = (ImageView) v.findViewById(R.id.building_button);
-                calendarButton = (ImageView) v.findViewById(R.id.calendar_button);
-                attendButton = (ImageView) v.findViewById(R.id.attending_button);
-            }
+            date.setText(item.getDate());
+            tvEvent.setText(item.getEvent());
+            time.setText(item.getTime());
         }
     }
 
+    class CustomCardExpand extends CardExpand {
+
+        private final Context context;
+        private EventsRssItem event;
+
+        public CustomCardExpand(Context context, EventsRssItem event) {
+            this(context);
+            this.event = event;
+        }
+
+        public CustomCardExpand(Context context) {
+            super(context, R.layout.events_recycle_expand);
+            this.context = context;
+        }
+
+        @Override
+        public void setupInnerViewElements(ViewGroup parent, View view) {
+            final ProgressBar progress = (ProgressBar) view.findViewById(R.id.progress_bar);
+            final LinearLayout buttonSection = (LinearLayout) view.findViewById(R.id.button_section);
+            final LinearLayout layoutProgressBar = (LinearLayout) view.findViewById(R.id.layout_progress_bar);
+            final TextView tvDescription = (TextView) view.findViewById(R.id.place);
+
+            //ImageView favoriteButton = (ImageView) view.findViewById(R.id.favorite_button);
+            //ImageView buildingButton = (ImageView) view.findViewById(R.id.building_button);
+            final ImageView calendarButton = (ImageView) view.findViewById(R.id.calendar_button);
+            //ImageView attendButton = (ImageView) view.findViewById(R.id.attending_button);
+            String description = tvDescription.getText().toString();
+            if (description != null && description.isEmpty()) {
+                /*
+                 * Generate jsoup DOM to set description of the event's cards and set calendar
+                 * button on click listener
+                 */
+                new EventsDom(context, event, new EventsDom.OnContentLoaded() {
+                    @Override
+                    public void onContentLoaded(String content, final String building, final String date, final int duration) {
+                        layoutProgressBar.setVisibility(View.GONE);
+                        tvDescription.setVisibility(View.VISIBLE);
+                        tvDescription.setText(content);
+
+                        buttonSection.setVisibility(View.VISIBLE);
+                        calendarButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Calendar cal = new Calendar(context);
+                                cal.insertEvent(event.getEvent(), building, duration, date);
+                            }
+                        });
+                    }
+                });
+            } else {
+                layoutProgressBar.setVisibility(View.GONE);
+            }
+        }
+    }
 
     /**
      * Rss Receiver
@@ -415,52 +335,50 @@ public class EventsFragment extends BaseFragment {
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             ((EventsActivity) getActivity()).dismissProgressBar();
             rssItemList = (List<EventsRssItem>) resultData.getSerializable(ITEMS);
-            if (rssItemList != null) {
-                switch (POSITION) {
-                    case 0:
-                        // ETC
-                        rssItemList = getEtcEvent(rssItemList);
-                        break;
-                    case 1:
-                        // Upcoming
-                        break;
-                    case 2:
-                        // Stress free
-                        rssItemList = getStressEvent(rssItemList);
-                        break;
-                    case 3:
-                        // Tuesday
-                        rssItemList = getTuesdayEvent(rssItemList);
-                        break;
-                    case 4:
-                        // Wind down
-                        rssItemList = getWednesdayEvent(rssItemList);
-                        break;
-                    case 5:
-                        // Trivia
-                        rssItemList = getTriviaEvent(rssItemList);
-                        break;
-                    case 6:
-                        // Zoo flicks
-                        rssItemList = getFlicksEvent(rssItemList);
-                        break;
-                    case 7:
-                        // Zoo after
-                        rssItemList = getZooDarkEvent(rssItemList);
-                        break;
-                }
-                mAdapter.updateChange(rssItemList);
+            switch (mPosition) {
+                case 0:
+                    // ETC
+                    rssItemList = getEtcEvent(rssItemList);
+                    break;
+                case 1:
+                    // Upcoming
+                    break;
+                case 2:
+                    // Stress free
+                    rssItemList = getStressEvent(rssItemList);
+                    break;
+                case 3:
+                    // Tuesday
+                    rssItemList = getTuesdayEvent(rssItemList);
+                    break;
+                case 4:
+                    // Wind down
+                    rssItemList = getWednesdayEvent(rssItemList);
+                    break;
+                case 5:
+                    // Trivia
+                    rssItemList = getTriviaEvent(rssItemList);
+                    break;
+                case 6:
+                    // Zoo flicks
+                    rssItemList = getFlicksEvent(rssItemList);
+                    break;
+                case 7:
+                    // Zoo after
+                    rssItemList = getZooDarkEvent(rssItemList);
+                    break;
             }
+            mAdapter.updateChange();
         }
     }
 
     /**
-     *  Background task to start service for Rss
+     * Background task to start service for Rss
      */
     private class DownloadXmlTask extends AsyncTask<Void, Integer, String> {
 
         @Override
-        protected String doInBackground(Void...voids) {
+        protected String doInBackground(Void... voids) {
             try {
                 mServiceIntent.putExtra(RECEIVER, receiver);
                 // Starts the IntentService

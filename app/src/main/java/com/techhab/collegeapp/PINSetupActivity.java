@@ -28,11 +28,6 @@ public class PINSetupActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         application = (CollegeApplication) getApplication();
-        // Dummy user information
-        final User user = application.getCurrentUser();
-        user.setFirstName("Jesus");
-        user.setLastName("Fred");
-        user.setPassword("12321");
 
 
         // Set an EditText view to get user input
@@ -45,7 +40,7 @@ public class PINSetupActivity extends ActionBarActivity {
                 .setView(input)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        if ( input.getText().toString().equals(user.getPassword()) ) {
+                        if ( input.getText().toString().equals(application.getCurrentUser().getPassword()) ) {
                             setUp();
                         }
 
@@ -191,8 +186,10 @@ public class PINSetupActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_pin, menu);
+        // Inflate the menu; this adds rssItemList to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_action_with_search, menu);
+        //create search interface
+        SearchableCreator.makeSearchable(this, menu);
         return true;
     }
 

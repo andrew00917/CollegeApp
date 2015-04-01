@@ -1,41 +1,20 @@
 package com.techhab.collegeapp;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NavUtils;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 
 public class CampusActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
@@ -51,6 +30,9 @@ public class CampusActivity extends ActionBarActivity implements NavigationDrawe
     public DrawerLayout mDrawerLayout;
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private Toolbar mToolbar;
+    private SlidingTabLayout tabs;
+    private ViewPager pager;
+    private MyPagerAdapter adapter;
 
     public CampusActivity() {
             super();
@@ -79,12 +61,26 @@ public class CampusActivity extends ActionBarActivity implements NavigationDrawe
             currentPosition = savedInstanceState.getInt("currentFragment");
             // change fragment displaying according to the saved currentPosition
         }
+
+        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
+        pager = (ViewPager) findViewById(R.id.pager);
+        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        adapter = new MyPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(adapter);
+        tabs.setViewPager(pager);
+
+        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
+                .getDisplayMetrics());
+        pager.setPageMargin(pageMargin);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds rssItemList to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_campus, menu);
+        getMenuInflater().inflate(R.menu.menu_action_with_search, menu);
+        //create search interface
+        SearchableCreator.makeSearchable(this, menu);
         return true;
     }
 
@@ -135,6 +131,31 @@ public class CampusActivity extends ActionBarActivity implements NavigationDrawe
         super.onRestoreInstanceState(savedInstanceState);
         currentPosition = savedInstanceState.getInt("currentFragment");
         // change fragment displaying according to the saved currentPosition
+    }
+
+    public class MyPagerAdapter extends FragmentStatePagerAdapter {
+
+        private final String[] TITLES = {"Common", "Dormitories", "Departments"};
+
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return TITLES[position];
+        }
+
+        @Override
+        public int getCount() {
+            return TITLES.length;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment = CampusBuildingsFragment.createNewInstance(position);
+            return fragment;
+        }
     }
 
     @Override

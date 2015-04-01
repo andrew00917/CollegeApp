@@ -403,7 +403,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         // Array of drawables. MUST BE IN THE SAME ORDER AS THE nav_drawer_items STRING ARRAY!
 //        int[] images = { R.drawable.numeric_1_box, R.drawable.phone, R.drawable.bookmark,
 //                R.drawable.logout };
-        int[] images = { R.drawable.ic_info_outline, R.drawable.phone, R.drawable.logout };
+        int[] images = {   R.drawable.ic_info_outline, R.drawable.phone, R.drawable.logout };
 
         public NavAdapter(Context context) {
             this.context = context;
@@ -450,11 +450,17 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             switch (position) {
                 case 0:
                     // build a dialog and show
+
+//                  /*  Intent intent = new Intent(getActivity(), NewsActivity.class);
+//                    startActivity(intent);
+//                    break;*/
+
                     emergencyCallDialog();
                     break;
                 case 2:
                     ((HomeActivity) getActivity()).logout();
                     break;
+
                 default:
                     // TODO: NOT a default behavior
                     emergencyCallDialog();
@@ -635,40 +641,12 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             switch (position) {
                 case 0:
                     intent = new Intent(getActivity(), SettingsActivity.class);
-                    getActivity().startActivity(intent);
                     break;
                 default:
-                    View popUpView = getActivity().getLayoutInflater().inflate(R.layout.helper_dialog, null);
-                    final PopupWindow popupWindow = new PopupWindow(popUpView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-                    popupWindow.showAtLocation(popUpView, Gravity.BOTTOM, 0, 0);
-                    TextView tvCancel = (TextView) popUpView.findViewById(R.id.healer_dialog_tvCancel);
-                    tvCancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            popupWindow.dismiss();
-                        }
-                    });
-
-                    TextView tvSendFeedBack = (TextView) popUpView.findViewById(R.id.helper_dialog_tvSendFeedBack);
-
-                    tvSendFeedBack.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(getActivity(), FeedBackActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-
-                    TextView tvTakeATour = (TextView) popUpView.findViewById(R.id.helper_dialog_tvTakeATour);
-                    tvTakeATour.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(getActivity(), TakeATourActivity.class);
-                            startActivity(intent);
-                        }
-                    });
+                    intent = new Intent(getActivity(), HelpAndFeedBackActivity.class);
                     break;
             }
+            getActivity().startActivity(intent);
 
         }
     }

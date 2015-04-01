@@ -1,11 +1,17 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.techhab.collegeapp.CourseSearchFragment">
 
-    <ListView
+    <ExpandableListView
         android:id="@+id/my_list_view"
-        style="@style/MaterialListView" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:groupIndicator="@null"
+        android:descendantFocusability="blocksDescendants"
+        android:dividerHeight="1dp"
+        android:divider="@null"
+        android:childDivider="@android:color/transparent"  />
 
-</FrameLayout>
+</RelativeLayout>

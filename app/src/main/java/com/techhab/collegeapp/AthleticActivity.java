@@ -344,7 +344,9 @@ public class AthleticActivity extends ActionBarActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds rssItemList to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_athletic, menu);
+        getMenuInflater().inflate(R.menu.menu_action_with_search, menu);
+        //create search interface
+        SearchableCreator.makeSearchable(this, menu);
         return true;
     }
 

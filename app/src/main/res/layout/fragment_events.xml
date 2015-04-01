@@ -1,8 +1,14 @@
-<com.techhab.collegeapp.ObservableRecyclerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/my_recycler_view"
-    android:scrollbars="vertical"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.techhab.collegeapp.EventsFragment" />
+    android:layout_height="match_parent">
+
+    <it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/card_expand"
+        card:list_card_layout_resourceID="@layout/native_recyclerview_card_layout"
+        android:id="@+id/my_recycler_view" />
+</LinearLayout>
