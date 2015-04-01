@@ -193,36 +193,36 @@ public class EventsActivity extends BaseActivity
             new TouchInterceptionFrameLayout.TouchInterceptionListener() {
         @Override
         public boolean shouldInterceptTouchEvent(MotionEvent ev, boolean moving, float diffX, float diffY) {
-            if (!mScrolled && mSlop < Math.abs(diffX) && Math.abs(diffY) < Math.abs(diffX)) {
-                // Horizontal scroll is maybe handled by ViewPager
-                return false;
-            }
-
-            Scrollable scrollable = getCurrentScrollable();
-            if (scrollable == null) {
-                mScrolled = false;
-                return false;
-            }
-
-            // If interceptionLayout can move, it should intercept.
-            // And once it begins to move, horizontal scroll shouldn't work any longer.
-            int toolbarHeight = toolbar.getHeight();
-            int translationY = (int) ViewHelper.getTranslationY(mInterceptionLayout);
-            boolean scrollingUp = 0 < diffY;
-            boolean scrollingDown = diffY < 0;
-            if (scrollingUp) {
-                if (translationY < 0) {
-                    mScrolled = true;
-                    mLastScrollState = ScrollState.UP;
-                    return true;
-                }
-            } else if (scrollingDown) {
-                if (-toolbarHeight < translationY) {
-                    mScrolled = true;
-                    mLastScrollState = ScrollState.DOWN;
-                    return true;
-                }
-            }
+//            if (!mScrolled && mSlop < Math.abs(diffX) && Math.abs(diffY) < Math.abs(diffX)) {
+//                // Horizontal scroll is maybe handled by ViewPager
+//                return false;
+//            }
+//
+//            Scrollable scrollable = getCurrentScrollable();
+//            if (scrollable == null) {
+//                mScrolled = false;
+//                return false;
+//            }
+//
+//            // If interceptionLayout can move, it should intercept.
+//            // And once it begins to move, horizontal scroll shouldn't work any longer.
+//            int toolbarHeight = toolbar.getHeight();
+//            int translationY = (int) ViewHelper.getTranslationY(mInterceptionLayout);
+//            boolean scrollingUp = 0 < diffY;
+//            boolean scrollingDown = diffY < 0;
+//            if (scrollingUp) {
+//                if (translationY < 0) {
+//                    mScrolled = true;
+//                    mLastScrollState = ScrollState.UP;
+//                    return true;
+//                }
+//            } else if (scrollingDown) {
+//                if (-toolbarHeight < translationY) {
+//                    mScrolled = true;
+//                    mLastScrollState = ScrollState.DOWN;
+//                    return true;
+//                }
+//            }
             mScrolled = false;
             return false;
         }
@@ -263,25 +263,25 @@ public class EventsActivity extends BaseActivity
     }
 
     private void adjustToolbar(ScrollState scrollState) {
-        int toolbarHeight = toolbar.getHeight();
-        final Scrollable scrollable = getCurrentScrollable();
-        if (scrollable == null) {
-            return;
-        }
-        int scrollY = scrollable.getCurrentScrollY();
-        if (scrollState == ScrollState.DOWN) {
-            showToolbar();
-        } else if (scrollState == ScrollState.UP) {
-            if (toolbarHeight <= scrollY) {
-                hideToolbar();
-            } else {
-                showToolbar();
-            }
-        } else if (!toolbarIsShown() && !toolbarIsHidden()) {
-            // Toolbar is moving but doesn't know which to move:
-            // you can change this to hideToolbar()
-            showToolbar();
-        }
+//        int toolbarHeight = toolbar.getHeight();
+//        final Scrollable scrollable = getCurrentScrollable();
+//        if (scrollable == null) {
+//            return;
+//        }
+//        int scrollY = scrollable.getCurrentScrollY();
+//        if (scrollState == ScrollState.DOWN) {
+//            showToolbar();
+//        } else if (scrollState == ScrollState.UP) {
+//            if (toolbarHeight <= scrollY) {
+//                hideToolbar();
+//            } else {
+//                showToolbar();
+//            }
+//        } else if (!toolbarIsShown() && !toolbarIsHidden()) {
+//            // Toolbar is moving but doesn't know which to move:
+//            // you can change this to hideToolbar()
+//            showToolbar();
+//        }
     }
 
     private Fragment getCurrentFragment() {
