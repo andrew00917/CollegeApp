@@ -7,22 +7,23 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.techhab.kcollegecustomviews.ProgressBar;
 
 
 public class EventsActivity extends ActionBarActivity
-        implements NavigationDrawerCallbacks {
+        implements NavigationDrawerCallbacks, ObservableScrollViewCallbacks {
 
     private final Handler handler = new Handler();
 
@@ -56,6 +57,7 @@ public class EventsActivity extends ActionBarActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.main_menu_11));
+        getSupportActionBar().setShowHideAnimationEnabled(true);
 
         adapter = new MyPagerAdapter(getSupportFragmentManager());
 
@@ -319,6 +321,30 @@ public class EventsActivity extends ActionBarActivity
 ////            animator.start();
 ////        }
 //    }
+
+    @Override
+    public void onScrollChanged(int i, boolean b, boolean b2) {
+
+    }
+
+    @Override
+    public void onDownMotionEvent() {
+
+    }
+
+    @Override
+    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+        ActionBar actionBar = getSupportActionBar();
+        if (scrollState == ScrollState.UP) {
+            if (actionBar.isShowing()) {
+                actionBar.hide();
+            }
+        } else if (scrollState == ScrollState.DOWN) {
+            if (!actionBar.isShowing()) {
+                actionBar.show();
+            }
+        }
+    }
 
     /**
      * MyPagerAdapter

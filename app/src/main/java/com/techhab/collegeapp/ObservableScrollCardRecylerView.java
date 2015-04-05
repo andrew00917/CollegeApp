@@ -11,12 +11,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
+import com.github.ksoichiro.android.observablescrollview.Scrollable;
+
+import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
+
 /**
- * RecyclerView that its scroll position can be observed.
- * Before using this, please consider to use the RecyclerView.OnScrollListener
- * provided by the support library officially.
+ * Created by akhavantafti on 4/2/2015.
  */
-public class ObservableRecyclerView extends RecyclerView implements Scrollable {
+public class ObservableScrollCardRecylerView extends CardRecyclerView implements Scrollable {
 
     // Fields that should be saved onSaveInstanceState
     private int mPrevFirstVisiblePosition;
@@ -35,17 +39,17 @@ public class ObservableRecyclerView extends RecyclerView implements Scrollable {
     private MotionEvent mPrevMoveEvent;
     private ViewGroup mTouchInterceptionViewGroup;
 
-    public ObservableRecyclerView(Context context) {
+    public ObservableScrollCardRecylerView(Context context) {
         super(context);
         init();
     }
 
-    public ObservableRecyclerView(Context context, AttributeSet attrs) {
+    public ObservableScrollCardRecylerView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ObservableRecyclerView(Context context, AttributeSet attrs, int defStyle) {
+    public ObservableScrollCardRecylerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }

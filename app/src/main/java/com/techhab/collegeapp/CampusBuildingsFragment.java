@@ -190,7 +190,8 @@ public class CampusBuildingsFragment extends Fragment {
         }
 
         public CustomCard(Context context) {
-            super(context, R.layout.buildings_recycle);
+            super(context, R.layout.buildings_recycle
+            );
         }
 
         @Override

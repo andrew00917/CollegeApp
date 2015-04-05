@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +22,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
+import com.nineoldandroids.view.ViewHelper;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.techhab.kcollegecustomviews.ProgressBar;
 import com.techhab.rss.Calendar;
 import com.techhab.rss.EventsDom;
@@ -30,6 +35,7 @@ import com.techhab.rss.EventsRssService;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.gmariotti.cardslib.library.cards.topcolored.TopColoredCard;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
@@ -40,7 +46,7 @@ import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EventsFragment extends Fragment {
+public class EventsFragment extends Fragment implements ObservableScrollViewCallbacks{
 
     public static final String ARG_POSITION = "position";
     private static final String ITEMS = "rssItemList";
@@ -90,10 +96,12 @@ public class EventsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_events, parent, false);
 
-        CardRecyclerView cardRecyclerView = (CardRecyclerView) view.findViewById(R.id.my_recycler_view);
+        ObservableScrollCardRecylerView
+                cardRecyclerView = (ObservableScrollCardRecylerView) view.findViewById(R.id.my_recycler_view);
         cardRecyclerView.setHasFixedSize(false);
         cardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         cardRecyclerView.setAdapter(mAdapter);
+        cardRecyclerView.setScrollViewCallbacks(this);
 
         return view;
     }
@@ -107,21 +115,47 @@ public class EventsFragment extends Fragment {
     private CustomCard initializeCardView(final EventsRssItem eventsRssItem) {
         CustomCard card = new CustomCard(getActivity(), eventsRssItem);
 
-        //setup card expand
-        CustomCardExpand cardExpand = new CustomCardExpand(getActivity(), eventsRssItem);
-        card.addCardExpand(cardExpand);
+
         ViewToClickToExpand viewToClickToExpand = ViewToClickToExpand.builder().enableForExpandAction();
         card.setViewToClickToExpand(viewToClickToExpand);
 
         card.setOnClickListener(new Card.OnCardClickListener() {
             @Override
             public void onClick(Card card, View view) {
+                //setup card expand
+                CustomCardExpand cardExpand = new CustomCardExpand(getActivity(), eventsRssItem);
+                card.addCardExpand(cardExpand);
                 card.doToogleExpand();
             }
         });
 
         return card;
     }
+
+    @Override
+    public void onScrollChanged(int i, boolean b, boolean b2) {
+
+    }
+
+    @Override
+    public void onDownMotionEvent() {
+
+    }
+
+    @Override
+    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+        ActionBar actionBar = ((EventsActivity) getActivity()).getSupportActionBar();
+        if (scrollState == ScrollState.UP) {
+            if (actionBar.isShowing()) {
+                actionBar.hide();
+            }
+        } else if (scrollState == ScrollState.DOWN) {
+            if (!actionBar.isShowing()) {
+                actionBar.show();
+            }
+        }
+    }
+
 
     class CustomCardArrayRecyclerViewAdapter extends CardArrayRecyclerViewAdapter {
 
@@ -270,6 +304,7 @@ public class EventsFragment extends Fragment {
 
         private final Context context;
         private EventsRssItem event;
+        private boolean isContentLoaded = false;
 
         public CustomCardExpand(Context context, EventsRssItem event) {
             this(context);
@@ -293,7 +328,7 @@ public class EventsFragment extends Fragment {
             final ImageView calendarButton = (ImageView) view.findViewById(R.id.calendar_button);
             //ImageView attendButton = (ImageView) view.findViewById(R.id.attending_button);
             String description = tvDescription.getText().toString();
-            if (description != null && description.isEmpty()) {
+            if (!isContentLoaded) {
                 /*
                  * Generate jsoup DOM to set description of the event's cards and set calendar
                  * button on click listener
@@ -313,6 +348,7 @@ public class EventsFragment extends Fragment {
                                 cal.insertEvent(event.getEvent(), building, duration, date);
                             }
                         });
+                        isContentLoaded = true;
                     }
                 });
             } else {

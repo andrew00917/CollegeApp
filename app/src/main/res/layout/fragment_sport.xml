@@ -1,4 +1,4 @@
-<com.techhab.collegeapp.ObservableScrollView
+<com.github.ksoichiro.android.observablescrollview.ObservableScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollview"
@@ -681,4 +681,4 @@
 
     </LinearLayout>
 
-</com.techhab.collegeapp.ObservableScrollView>
+</com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
