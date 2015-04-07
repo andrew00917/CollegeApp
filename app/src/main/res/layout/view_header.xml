@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/kzooOrange"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:id="@+id/toolbar_and_gender_switch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:animateLayoutChanges="true"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:minHeight="@dimen/abc_action_bar_default_height_material"
+            app:theme="@style/Toolbar"
+            app:popupTheme="@style/Theme.AppCompat.Light" />
+
+
+    </FrameLayout>
+
+    <com.techhab.collegeapp.SlidingTabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="bottom"
+        android:scrollbars="none"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        app:pstsPaddingMiddle="true" />
+
+</LinearLayout>
