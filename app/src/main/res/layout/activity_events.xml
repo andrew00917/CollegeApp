@@ -10,12 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="@dimen/abc_action_bar_default_height_material"
+            android:layout_marginTop="@dimen/abc_action_bar_default_height_material"
             tools:context="com.techhab.collegeapp.EventsActivity" />
 
         <LinearLayout
@@ -24,7 +23,6 @@
             android:layout_height="wrap_content"
             android:background="@color/kzooOrange"
             android:orientation="vertical">
-
 
             <FrameLayout
                 android:id="@+id/toolbar_and_gender_switch"
@@ -39,7 +37,6 @@
                     android:minHeight="@dimen/abc_action_bar_default_height_material"
                     app:theme="@style/Toolbar"
                     app:popupTheme="@style/Theme.AppCompat.Light" />
-
 
             </FrameLayout>
 
