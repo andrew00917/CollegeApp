@@ -18,49 +18,26 @@ import java.io.IOException;
  */
 public class EventsDom {
 
+    private final OnContentLoaded listener;
     private Context context;
 
-    private TextView contentView;
-    private View calendar;
-    private com.techhab.kcollegecustomviews.ProgressBar progress;
-
-    private String event;
+    private EventsRssItem event;
     private String building;
     private int duration = 1;
     private String date;
 
-    public EventsDom(Context context, String event, TextView contentView, View calendar, String link
-            , com.techhab.kcollegecustomviews.ProgressBar progress) {
+    public EventsDom(Context context, EventsRssItem event, OnContentLoaded listener) {
         this.context = context;
-
         this.event = event;
+        this.listener = listener;
 
-        this.contentView = contentView;
-        this.calendar = calendar;
-        this.progress = progress;
-
-        if (contentView.getText().toString().equals("")) {
-            new MyAsyncTask().execute(link);
-        } else {
-            progress.setVisibility(ProgressBar.GONE);
-            setOnClickListenerForCalendar();
-        }
-    }
-
-    public void setOnClickListenerForCalendar() {
-        calendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar cal = new Calendar(context);
-                cal.insertEvent(event, building, duration, date);
-            }
-        });
+        new MyAsyncTask().execute(event.getLink());
     }
 
     private class MyAsyncTask extends AsyncTask<String, Integer, String> {
 
         @Override
-        protected String doInBackground(String...link) {
+        protected String doInBackground(String... link) {
             try {
                 StringBuffer buffer = new StringBuffer();
 
@@ -86,7 +63,6 @@ public class EventsDom {
                         buffer.append("\n" + elem.text() + "\n");
                     }
                 }
-                setOnClickListenerForCalendar();
                 return buffer.toString();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -96,11 +72,13 @@ public class EventsDom {
 
         @Override
         protected void onPostExecute(String result) {
-            contentView.setText(result);
-//            HeightAnimation animation = new HeightAnimation(progress, progress.getHeight(), false);
-//            animation.setDuration(300);
-//            progress.startAnimation(animation);
-            progress.setVisibility(ProgressBar.GONE);
+            if (EventsDom.this.listener != null) {
+                EventsDom.this.listener.onContentLoaded(result, building, date, duration);
+            }
         }
+    }
+
+    public interface OnContentLoaded {
+        public void onContentLoaded(String content, String building, String date, int duration);
     }
 }

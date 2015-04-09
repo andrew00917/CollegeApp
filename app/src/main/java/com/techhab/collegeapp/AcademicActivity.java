@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 public class AcademicActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
@@ -23,12 +27,13 @@ public class AcademicActivity extends ActionBarActivity implements NavigationDra
     private final Handler handler = new Handler();
 
     Toolbar toolbar;
-    PagerSlidingTabStrip tabs;
+    SlidingTabLayout tabs;
     ViewPager pager;
 
     private MyPagerAdapter adapter;
 
     private int currentPosition;
+    private Spinner toolbarSpinner;
 
     public AcademicActivity() {
         super();
@@ -39,9 +44,10 @@ public class AcademicActivity extends ActionBarActivity implements NavigationDra
         setContentView(R.layout.activity_academic);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
         pager = (ViewPager) findViewById(R.id.pager);
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toolbarSpinner = (Spinner) findViewById(R.id.day_spinner);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -50,6 +56,34 @@ public class AcademicActivity extends ActionBarActivity implements NavigationDra
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         tabs.setViewPager(pager);
+
+        tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                //if position is in Search Course tab
+                if(position == 0){
+                    toolbarSpinner.setVisibility(View.GONE);
+                }else{
+                    toolbarSpinner.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        List<String> days = Arrays.asList("2014-15", "2015-16", "2016-17") ;
+        ArrayAdapter baseSpinnerAdapter = new ArrayAdapter<>(this, R.layout.day_spinner_item, days);
+        baseSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        toolbarSpinner.setAdapter(baseSpinnerAdapter);
 
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
                 .getDisplayMetrics());
@@ -69,7 +103,10 @@ public class AcademicActivity extends ActionBarActivity implements NavigationDra
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds rssItemList to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_academic, menu);
+        getMenuInflater().inflate(R.menu.menu_action_with_search, menu);
+        //create search interface
+        SearchableCreator.makeSearchable(this, menu);
+
         return true;
     }
 
@@ -142,7 +179,7 @@ public class AcademicActivity extends ActionBarActivity implements NavigationDra
     /**
      * MyPagerAdapter
      */
-    public class MyPagerAdapter extends FragmentPagerAdapter {
+     class MyPagerAdapter extends FragmentPagerAdapter {
 
         private final String[] TITLES = {"Search Courses", "Calendar"};
 

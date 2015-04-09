@@ -48,7 +48,7 @@ public class HelpAndFeedBackFragment extends Fragment {
         });
 
 
-        LinearLayout llSendFeedBack = (LinearLayout) view.findViewById(R.id.llFeedBack);
+        LinearLayout llSendFeedBack = (LinearLayout) view.findViewById(R.id.layout_feedBack);
         llSendFeedBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

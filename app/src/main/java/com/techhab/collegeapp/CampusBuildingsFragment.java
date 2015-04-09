@@ -2,216 +2,214 @@ package com.techhab.collegeapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.techhab.collegeapp.R;
-import com.techhab.collegeapp.application.CollegeApplication;
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
+import com.nineoldandroids.view.ViewHelper;
+import com.nineoldandroids.view.ViewPropertyAnimator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardExpand;
+import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
+import it.gmariotti.cardslib.library.recyclerview.internal.CardArrayRecyclerViewAdapter;
 
 
-public class CampusBuildingsFragment extends Fragment {
+public class CampusBuildingsFragment extends BaseObservableRecyclerFragment {
 
-    public static final String ARG_OBJECT = "object";
-
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private static final int NUMBER_CARD_IN_COMMON_TAB = 4;
+    private static final int NUMBER_CARD_IN_DORMITORIES_TAB = 6;
+    private static final int NUMBER_CARD_IN_DEPARTMENTS_TAB = 7;
+    //show define in xml
+    private static String[][] titles = new String[][]{
+            {"HICKS CENTER", "Upjohn Library", "Mail Center", "BookStore"},
+            {"Crissey Hall", "DeWaters", "Harmon", "Hoben", "Severn", "Trowbridge"},
+            {"Anderson Athletic Center", "Arcus Center", "Dow Science Center", "Humphrey House", "Light Fine Arts", "Nelda K. Balch Playhouse", "Olds·Upton Science"}
+    };
 
     public CampusBuildingsFragment() {
         // Required empty public constructor
+    }
+
+    public static Fragment createNewInstance(int position) {
+        Fragment fragment = new CampusBuildingsFragment();
+        Bundle args = new Bundle();
+        //POSITION 0 for COMMON tab
+        //POSITION 1 for DORMITORIES tab
+        //POSITION 2 for DEPARTMENTS tab
+        args.putInt(POSITION, position);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home_games, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
 
         return view;
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
-        mRecyclerView.setLayoutManager(layoutManager);
-
-        String[] building = new String[2];
-        building[0] = "HICKS CENTER";
-        building[1] = "HOBEN HALL";
-//        dataset[2] = "Arcus Center";
-//        dataset[3] = "Hoben Hall";
-//        dataset[4] = "Here is a description of Hoben Hall";
-//        dataset[5] = "western_michigan_broncos";
-
-        String [] description = new String[2];
-
-        description[0] = "This is a description of Hicks Center We get a reference to the ExpandableListView, expandableListView.\n" +
-                "\n" +
-                "Then we call MyDataProvider.getDataHashMap() to get the HashMap containing the lists of countries and cities. We assign this to our HashMap, countriesHashMap.";
-        description[1] = "This is a description for Hoben Halllllllllllllllll";
-
-        Drawable[] drawable = new Drawable[2];
-        Resources res = getResources();
-        drawable[0] = res.getDrawable(R.drawable.domo);
-        drawable[1] = res.getDrawable(R.drawable.k_banner_night);
-
-        mAdapter = new RecyclerAdapter(building, description, drawable, getActivity());
-        mRecyclerView.setAdapter(mAdapter);
-
-        super.onViewCreated(view, savedInstanceState);
+    protected List<Card> setupRecyclerCards() {
+        if (tabPosition != null) {
+            switch (tabPosition) {
+                case 0:
+                    //set up card view for Common tab
+                    return setupRecycleViewForCommon(tabPosition);
+                case 1:
+                    //set up card view for Dormitories tab
+                    return setupRecycleViewForDormitories(tabPosition);
+                case 2:
+                    //set up card view for departments tab
+                    return setupRecycleViewForDepartments(tabPosition);
+                default:
+                    return Collections.emptyList();
+            }
+        }
+        return Collections.emptyList();
     }
 
-    /**
-     * Recycler Adapter
-     */
-    public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
-        private String[] mBuilding;
-        private String[] mDescription;
-        private Drawable[] mDrawable;
-        private Context mContext;
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.fragment_campus_buildings;
+    }
 
-        public boolean[] isExpanded;
-        public int[] dimen;
+    private List<Card> setupRecycleViewForCommon(Integer tabPosition) {
+        List<Card> result = new ArrayList<>();
+        String expandDescription[] = new String[NUMBER_CARD_IN_COMMON_TAB];
+        expandDescription[0] = "This is a description of Hicks Center We get a reference to the ExpandableListView, expandableListView.\n" +
+                "\n" +
+                "Then we call MyDataProvider.getDataHashMap() to get the HashMap containing the lists of countries and cities. We assign this to our HashMap, countriesHashMap.";
 
-        private void toggleVisibility (TextView text) {
-            if (text.getVisibility() == View.GONE) {
-                text.setVisibility(View.VISIBLE);
-            } else {
-                text.setVisibility(View.GONE);
-            }
+        expandDescription[1] = "This is a description for Hoben Halllllllllllllllll";
+        expandDescription[2] = "This is a description for Hoben Halllllllllllllllll";
+        expandDescription[3] = "This is a description for Hoben Halllllllllllllllll";
+        //set up recycle adapter
+        for (int i = 0; i < expandDescription.length; i++) {
+            //initialize new card
+            Card card = initializeCardView(titles[tabPosition][i], i, expandDescription[i]);
+            result.add(card);
         }
 
-        public RecyclerAdapter(String[] building, String[] description, Drawable[] drawable, Context context) {
-            mBuilding = building;
-            mDrawable = drawable;
-            mDescription = description;
-            mContext = context;
+        return result;
+    }
 
-            isExpanded = new boolean[mBuilding.length];
-            dimen = new int[mBuilding.length];
+    private List<Card> setupRecycleViewForDormitories(Integer tabPosition) {
+        List<Card> result = new ArrayList<>();
+        String expandDescription[] = new String[NUMBER_CARD_IN_DORMITORIES_TAB];
+        expandDescription[0] = "This is a description of Hicks Center We get a reference to the ExpandableListView, expandableListView.\n" +
+                "\n" +
+                "Then we call MyDataProvider.getDataHashMap() to get the HashMap containing the lists of countries and cities. We assign this to our HashMap, countriesHashMap.";
 
-            for(int i = 0; i < isExpanded.length; i++) {
-                isExpanded[i] = false;
-                dimen[i] = -1;
+        expandDescription[1] = "This is a description for Hoben Halllllllllllllllll";
+        expandDescription[2] = "This is a description for Hoben Halllllllllllllllll";
+        expandDescription[3] = "This is a description for Hoben Halllllllllllllllll";
+        expandDescription[4] = "This is a description for Hoben Halllllllllllllllll";
+        expandDescription[5] = "This is a description for Hoben Halllllllllllllllll";
+        //set up recycle adapter
+        for (int i = 0; i < expandDescription.length; i++) {
+            Card card = initializeCardView(titles[tabPosition][i], i, expandDescription[i]);
+            result.add(card);
+        }
+        return result;
+    }
+
+    private List<Card> setupRecycleViewForDepartments(Integer tabPosition) {
+        List<Card> result = new ArrayList<>();
+        String expandDescription[] = new String[NUMBER_CARD_IN_DEPARTMENTS_TAB];
+        expandDescription[0] = "This is a description of Hicks Center We get a reference to the ExpandableListView, expandableListView.\n" +
+                "\n" +
+                "Then we call MyDataProvider.getDataHashMap() to get the HashMap containing the lists of countries and cities. We assign this to our HashMap, countriesHashMap.";
+
+        expandDescription[1] = "This is a description for Hoben Halllllllllllllllll";
+        expandDescription[2] = "This is a description for Hoben Halllllllllllllllll";
+        expandDescription[3] = "This is a description for Hoben Halllllllllllllllll";
+        expandDescription[4] = "This is a description for Hoben Halllllllllllllllll";
+        expandDescription[5] = "This is a description for Hoben Halllllllllllllllll";
+        expandDescription[6] = "This is a description for Hoben Halllllllllllllllll";
+
+        //set up recycle adapter
+        for (int i = 0; i < expandDescription.length; i++) {
+            Card card = initializeCardView(titles[tabPosition][i], i, expandDescription[i]);
+            result.add(card);
+        }
+        return result;
+    }
+
+    private Card initializeCardView(String cardTitle, int index, String expandTitle) {
+        //create new card
+        CustomCard card = new CustomCard(getActivity(), index, cardTitle);
+
+        //create new Card Expand
+        CardExpand cardExpand = new CardExpand(getActivity());
+        cardExpand.setTitle(expandTitle);
+        card.addCardExpand(cardExpand);
+
+        ViewToClickToExpand viewToClickToExpand = ViewToClickToExpand.builder().enableForExpandAction();
+        card.setViewToClickToExpand(viewToClickToExpand);
+
+        card.setOnClickListener(new Card.OnCardClickListener() {
+            @Override
+            public void onClick(Card card, View view) {
+                card.doToogleExpand();
             }
+        });
+
+        return card;
+    }
+
+    class CustomCard extends Card {
+
+        private String cardTitle;
+        int position;
+        TextView tvTitle;
+        Button btnMapIt;
+        FrameLayout banner;
+
+        CustomCard(Context context, int index, String cardTitle) {
+            this(context);
+            this.position = index;
+            this.cardTitle = cardTitle;
         }
 
-        // Do not use static
-        public class ViewHolder extends RecyclerView.ViewHolder {
-
-            public TextView mTextView, mExpandTextView;
-            public FrameLayout mBanner;
-            public Button button, readButton;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-
-                mTextView = (TextView) itemView.findViewById(R.id.building_title);
-                mExpandTextView = (TextView) itemView.findViewById(R.id.building_description);
-
-                mBanner = (FrameLayout) itemView.findViewById(R.id.building_banner);
-                mBanner.setOnTouchListener(new View.OnTouchListener(){
-                    public boolean onTouch(View v, MotionEvent event){
-                        switch (event.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-                                mBanner.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.DARKEN);
-                                break;
-                            case MotionEvent.ACTION_UP:
-                                mBanner.getBackground().setColorFilter(null);
-                                toggleVisibility(mExpandTextView);
-                                break;
-                            case MotionEvent.ACTION_CANCEL:
-                                mBanner.getBackground().setColorFilter(null);
-                                break;
-                            default: break;
-                        }
-                        return true;
-                    }
-                });
-
-                readButton = (Button) itemView.findViewById(R.id.read_more_button);
-                readButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        toggleVisibility(mExpandTextView);
-                    }
-                });
-
-                button = (Button) itemView.findViewById(R.id.mapit_button);
-                button.setOnClickListener(new View.OnClickListener(){
-                    public void onClick(View v){
-                        Intent activityChangeIntent = new Intent(mContext, MapsActivity.class);
-                        startActivity(activityChangeIntent);
-                    }
-                });
-            }
+        public CustomCard(Context context) {
+            super(context, R.layout.buildings_recycle);
         }
 
         @Override
-        public int getItemCount() {
-            return mBuilding.length;
-        }
+        public void setupInnerViewElements(ViewGroup parent, View view) {
 
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int p) {
-            holder.mTextView.setText(mBuilding[p]);
-            holder.mExpandTextView.setText(mDescription[p]);
-            holder.mBanner.setBackground(mDrawable[p]);
+            tvTitle = (TextView) view.findViewById(R.id.building_title);
+            tvTitle.setText(cardTitle);
 
-            toggleVisibility(holder.mExpandTextView);
+            btnMapIt = (Button) view.findViewById(R.id.mapit_button);
+            btnMapIt.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent activityChangeIntent = new Intent(mContext, MapsActivity.class);
+                    startActivity(activityChangeIntent);
+                }
+            });
 
-            // Expanding animation goes here
-//            if ( dimen[p] == -1) {
-//                dimen[p] = holder.mExpandTextView.getHeight();
-//            }
-//
-//            final int position = p;
-//            final TextView tempExpandTextView = holder.mExpandTextView;
-//
-//            holder.readButton.setOnClickListener(new Button.OnClickListener(){
-//                public void onClick(View view) {
-//                    if ( ! isExpanded[position]) {
-//                        HeightAnimation animation = new HeightAnimation(tempExpandTextView, dimen[position], true);
-//                        animation.setDuration(300);
-//                        tempExpandTextView.startAnimation(animation);
-//                        isExpanded[position] = true;
-//                    } else {
-//                        HeightAnimation animation = new HeightAnimation(tempExpandTextView, dimen[position], false);
-//                        animation.setDuration(300);
-//                        tempExpandTextView.startAnimation(animation);
-//                        isExpanded[position] = false;
-//                    }
-//                }
-//            });
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.buildings_recycle, parent, false);
-            return new ViewHolder(view);
+            banner = (FrameLayout) view.findViewById(R.id.building_banner);
+            if (position == 0) {
+                banner.setBackgroundResource(R.drawable.domo);
+            } else if (position == 1) {
+                banner.setBackgroundResource(R.drawable.k_banner_night);
+            }
         }
     }
 }

@@ -10,12 +10,21 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.internal.gr;
 import com.techhab.collegeapp.application.CollegeApplication;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class CourseSearchFragment extends Fragment {
@@ -28,8 +37,7 @@ public class CourseSearchFragment extends Fragment {
 
     View v;
 
-    private ListView mListView;
-    private int expandedPosition = -1;
+    private ExpandableListView mListView;
 
     // @formatter:off
     private static final int[] CATEGORY = new int[] {
@@ -41,6 +49,7 @@ public class CourseSearchFragment extends Fragment {
         R.array.physical_education,
         R.array.social_science
     };
+    private int lastSelectedGroup;
     // @formatter:on
 
     public CourseSearchFragment() {
@@ -63,7 +72,7 @@ public class CourseSearchFragment extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_course_search, parent, false);
 
-        mListView = (ListView) v.findViewById(R.id.my_list_view);
+        mListView = (ExpandableListView) v.findViewById(R.id.my_list_view);
 
         return v;
     }
@@ -78,80 +87,189 @@ public class CourseSearchFragment extends Fragment {
 
         String[] dataset = getActivity().getResources().getStringArray(R.array.category_array);
 
-        ArrayAdapter<String> mAdapter = new ArrayAdapter<>(getActivity()
-                , R.layout.course_search_listview_row, R.id.category, dataset);
-
+        List<String> listDataHeader = Arrays.asList(dataset);
+        Map<String,List<String>> mapDataChild = new HashMap<>();
+        int headerSize = CATEGORY.length;
+        for (int i = 0; i < headerSize; i++) {
+            String header = dataset[i];
+            String[] content = getActivity().getResources().getStringArray(CATEGORY[i]);
+            mapDataChild.put(header, Arrays.asList(content));
+        }
+        ExpandableListAdapter adapter = new ExpandableListAdapter(getActivity(), listDataHeader, mapDataChild);
 
         // Assign adapter to ListView
-        mListView.setAdapter(mAdapter);
+        mListView.setAdapter(adapter);
 
-        // ListView Item Click Listener
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
+        mListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                final boolean isLastElement = position >= parent.getCount();
-
-                // Arrow animation (rotate)
-                TextView text = (TextView) view.findViewById(R.id.category);
-                ImageView arrow = (ImageView) view.findViewById(R.id.action_icon);
-                View divider = view.findViewById(R.id.divider);
-                if (expandedPosition == position) {
-                    /* COLLAPSE */
-                    text.setTextColor(getResources().getColor(R.color.abc_primary_text_material_light));
-                    arrow.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_down_ccw));
-                    divider.setVisibility(View.GONE);
-                    if ( ! isLastElement) {
-                        View nextDivider
-                                = parent.getChildAt(position + 1).findViewById(R.id.divider);
-                        nextDivider.setVisibility(View.GONE);
-                    }
-                    expandedPosition = -1;
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                //always keep expand status for selected view at group position
+                if (mListView.isGroupExpanded(groupPosition)) {
+                    mListView.collapseGroup(groupPosition);
+                    v.findViewById(R.id.img_group).startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_down_ccw));
                 } else {
-                    /* COLLAPSE PREVIOUS */
-                    if (expandedPosition > -1) {
-                        TextView previousText
-                                = (TextView) parent.getChildAt(expandedPosition).findViewById(R.id.category);
-                        previousText.setTextColor(getResources().getColor(R.color.abc_primary_text_material_light));
-                        ImageView previousArrow
-                                = (ImageView) parent.getChildAt(expandedPosition).findViewById(R.id.action_icon);
-                        previousArrow.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_down_ccw));
-                        View previous
-                                = parent.getChildAt(expandedPosition).findViewById(R.id.divider);
-                        previous.setVisibility(View.GONE);
-                        if ( ! isLastElement) {
-                            View nextDivider
-                                    = parent.getChildAt(expandedPosition + 1).findViewById(R.id.divider);
-                            nextDivider.setVisibility(View.GONE);
-                        }
-                    }
-                    /* EXPAND */
-                    // change text color
-                    text.setTextColor(getResources().getColor(R.color.main00));
-                    // arrow animation
-                    arrow.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_up_ccw));
-                    // show dividers
-                    divider.setVisibility(View.VISIBLE);
-                    if ( ! isLastElement) {
-                        View previousDivider
-                                = parent.getChildAt(position + 1).findViewById(R.id.divider);
-                        previousDivider.setVisibility(View.VISIBLE);
-                    }
-                    expandedPosition = position;
+                    mListView.collapseGroup(lastSelectedGroup);
+                    mListView.expandGroup(groupPosition);
+                    lastSelectedGroup = groupPosition;
+                    v.findViewById(R.id.img_group).startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_down_ccw));
                 }
-                // ListView Clicked item value
-                String itemValue = (String) mListView.getItemAtPosition(position);
-
-                // Show Alert
-                Toast.makeText(getActivity(), "Position :" + position + "  ListItem : "
-                        + itemValue, Toast.LENGTH_LONG).show();
+                return true;
             }
         });
+
+        // ListView Item Click Listener
+//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                final boolean isLastElement = position >= parent.getCount();
+//
+//                // Arrow animation (rotate)
+//                TextView text = (TextView) view.findViewById(R.id.category);
+//                ImageView arrow = (ImageView) view.findViewById(R.id.action_icon);
+//                View divider = view.findViewById(R.id.divider);
+//                if (expandedPosition == position) {
+//                    /* COLLAPSE */
+//                    text.setTextColor(getResources().getColor(R.color.abc_primary_text_material_light));
+//                    arrow.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_down_ccw));
+//                    divider.setVisibility(View.GONE);
+//                    if ( ! isLastElement) {
+//                        View nextDivider
+//                                = parent.getChildAt(position + 1).findViewById(R.id.divider);
+//                        nextDivider.setVisibility(View.GONE);
+//                    }
+//                    expandedPosition = -1;
+//                } else {
+//                    /* COLLAPSE PREVIOUS */
+//                    if (expandedPosition > -1) {
+//                        TextView previousText
+//                                = (TextView) parent.getChildAt(expandedPosition).findViewById(R.id.category);
+//                        previousText.setTextColor(getResources().getColor(R.color.abc_primary_text_material_light));
+//                        ImageView previousArrow
+//                                = (ImageView) parent.getChildAt(expandedPosition).findViewById(R.id.action_icon);
+//                        previousArrow.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_down_ccw));
+//                        View previous
+//                                = parent.getChildAt(expandedPosition).findViewById(R.id.divider);
+//                        previous.setVisibility(View.GONE);
+//                        if ( ! isLastElement) {
+//                            View nextDivider
+//                                    = parent.getChildAt(expandedPosition + 1).findViewById(R.id.divider);
+//                            nextDivider.setVisibility(View.GONE);
+//                        }
+//                    }
+//                    /* EXPAND */
+//                    // change text color
+//                    text.setTextColor(getResources().getColor(R.color.main00));
+//                    // arrow animation
+//                    arrow.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_up_ccw));
+//                    // show dividers
+//                    divider.setVisibility(View.VISIBLE);
+//                    if ( ! isLastElement) {
+//                        View previousDivider
+//                                = parent.getChildAt(position + 1).findViewById(R.id.divider);
+//                        previousDivider.setVisibility(View.VISIBLE);
+//                    }
+//                    expandedPosition = position;
+//                }
+//                // ListView Clicked item value
+//                String itemValue = (String) mListView.getItemAtPosition(position);
+//
+//                // Show Alert
+//                Toast.makeText(getActivity(), "Position :" + position + "  ListItem : "
+//                        + itemValue, Toast.LENGTH_LONG).show();ø
+//            }
+//        });
 
 //        RecyclerAdapter mAdapter = new RecyclerAdapter(dataset, getActivity());
     }
 
+    private class ExpandableListAdapter extends BaseExpandableListAdapter{
+
+        private final Context context;
+        private final List<String> listDataHeader;
+        private final Map<String, List<String>> mapChildData;
+
+        public ExpandableListAdapter(Context context, List<String> listDataHeader, Map<String, List<String>> mapChildData){
+            this.context = context;
+            this.listDataHeader = listDataHeader;
+            this.mapChildData = mapChildData;
+        }
+        @Override
+        public int getGroupCount() {
+            return this.listDataHeader.size();
+        }
+
+        @Override
+        public int getChildrenCount(int groupPosition) {
+            return this.mapChildData.get(listDataHeader.get(groupPosition)).size();
+        }
+
+        @Override
+        public Object getGroup(int groupPosition) {
+            return listDataHeader.get(groupPosition);
+        }
+
+        @Override
+        public Object getChild(int groupPosition, int childPosition) {
+            return this.mapChildData.get(this.listDataHeader.get(groupPosition)).get(childPosition);
+        }
+
+        @Override
+        public long getGroupId(int groupPosition) {
+            return groupPosition;
+        }
+
+        @Override
+        public long getChildId(int groupPosition, int childPosition) {
+            return childPosition;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return false;
+        }
+
+        @Override
+        public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+            String headerTitle = (String) getGroup(groupPosition);
+            if(convertView == null){
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                //TODO: this is need a separate or generic layout
+                convertView = inflater.inflate(R.layout.helper_group, parent, false);
+            }
+            TextView tvTitle  = (TextView) convertView.findViewById(R.id.helper_group_tvQuestion);
+            tvTitle.setText(headerTitle);
+
+            ImageView imgGroup = (ImageView) convertView.findViewById(R.id.img_group);
+            if (isExpanded) {
+                imgGroup.setBackgroundResource(R.drawable.ic_action_collapse);
+            } else {
+                imgGroup.setBackgroundResource(R.drawable.ic_action_expand);
+            }
+
+
+            return convertView;
+        }
+
+        @Override
+        public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+            String content = (String) getChild(groupPosition, childPosition);
+            if(convertView == null){
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                //TODO: this is need a separate or generic layout
+                convertView = inflater.inflate(R.layout.helper_item, null);
+            }
+            TextView tvTitle  = (TextView) convertView.findViewById(R.id.helper_item_tvAnswer);
+            tvTitle.setText(content);
+            return convertView;
+        }
+
+        @Override
+        public boolean isChildSelectable(int groupPosition, int childPosition) {
+            return true;
+        }
+    }
     @Override
     public void onDetach() {
         super.onDetach();

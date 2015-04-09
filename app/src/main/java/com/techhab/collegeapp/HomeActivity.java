@@ -181,7 +181,7 @@ public class HomeActivity extends ActionBarActivity implements NavigationDrawerC
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
-        if ( ! (application.isSocial() || application.isLoggedIn())
+        if ( !(application.isSocial() || application.isLoggedIn())
                 && fragments[LOG_IN_HOME] != null) {
             // not logged in and also not guest
             showFragment(LOG_IN_HOME, false);

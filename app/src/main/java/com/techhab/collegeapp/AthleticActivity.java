@@ -8,8 +8,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.NavUtils;
-import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -23,8 +21,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -32,17 +28,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.techhab.collegeapp.application.CollegeApplication;
-
-import org.apache.http.message.BasicNameValuePair;
-
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 
 public class AthleticActivity extends ActionBarActivity
@@ -51,7 +42,7 @@ public class AthleticActivity extends ActionBarActivity
     private final Handler handler = new Handler();
 
     private Toolbar toolbar;
-    private PagerSlidingTabStrip mPagerSlidingTabStrip;
+    private SlidingTabLayout mPagerSlidingTabStrip;
     private ViewPager mViewPager;
     private SwitchCompat genderSwitch;
     private LinearLayout genderSwitchLayout, header;
@@ -81,7 +72,7 @@ public class AthleticActivity extends ActionBarActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbarAndGenderSwitch = (FrameLayout) findViewById(R.id.toolbar_and_gender_switch);
         header = (LinearLayout) findViewById(R.id.header);
-        mPagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        mPagerSlidingTabStrip = (SlidingTabLayout) findViewById(R.id.tabs);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         genderSwitchLayout = (LinearLayout) findViewById(R.id.gender_switch_layout);
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -173,7 +164,7 @@ public class AthleticActivity extends ActionBarActivity
         mViewPager.setCurrentItem(application.getSportPreference());
         // Call notifyDataSetChanged() to get rid of a minor visual bug that keeps the
         // colors from updating in the tab strip
-        mPagerSlidingTabStrip.notifyDataSetChanged();
+//        mPagerSlidingTabStrip.notifyDataSetChanged();
 
         /* Check to see if this is the first time the user has opened
         AthleticActivity. If it is, show the dialog to choose
@@ -290,7 +281,7 @@ public class AthleticActivity extends ActionBarActivity
         } else {
             mViewPager.setCurrentItem(convertPage(pageIndexPreSwitch));
         }
-        mPagerSlidingTabStrip.notifyDataSetChanged();
+//        mPagerSlidingTabStrip.notifyDataSetChanged();
 
 
     }
@@ -344,7 +335,9 @@ public class AthleticActivity extends ActionBarActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds rssItemList to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_athletic, menu);
+        getMenuInflater().inflate(R.menu.menu_action_with_search, menu);
+        //create search interface
+        SearchableCreator.makeSearchable(this, menu);
         return true;
     }
 

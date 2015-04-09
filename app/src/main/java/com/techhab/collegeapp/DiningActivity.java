@@ -36,7 +36,7 @@ public class DiningActivity extends ActionBarActivity
     private final Handler handler = new Handler();
 
     private Toolbar toolbar;
-    private PagerSlidingTabStrip tabs;
+    private SlidingTabLayout tabs;
     private ViewPager pager;
     private FrameLayout header;
     private Spinner daySpinner;
@@ -57,7 +57,7 @@ public class DiningActivity extends ActionBarActivity
         setContentView(R.layout.activity_dining);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
         pager = (ViewPager) findViewById(R.id.pager);
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         header = (FrameLayout) findViewById(R.id.header);
@@ -160,7 +160,9 @@ public class DiningActivity extends ActionBarActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds rssItemList to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_food, menu);
+        getMenuInflater().inflate(R.menu.menu_action_with_search, menu);
+        //create search interface
+        SearchableCreator.makeSearchable(this, menu);
         return true;
     }
 
