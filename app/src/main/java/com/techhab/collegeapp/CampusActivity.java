@@ -2,6 +2,7 @@ package com.techhab.collegeapp;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.v4.app.Fragment;
 
 public class CampusActivity extends BaseObservableRecyclerActivity {
 
@@ -13,6 +14,11 @@ public class CampusActivity extends BaseObservableRecyclerActivity {
     @Override
     protected String[] getTabTitles() {
         return new String[]{"Common", "Dormitories", "Departments"};
+    }
+
+    @Override
+    protected Class<? extends Fragment> getFragmentClass() {
+        return CampusBuildingsFragment.class;
     }
 
     @Override

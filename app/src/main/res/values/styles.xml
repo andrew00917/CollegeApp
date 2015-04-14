@@ -151,8 +151,8 @@
     </style>
 
     <style name="card_expand">
-        <item name="android:layout_marginTop">@dimen/card_default_native_margin_top</item>
-        <item name="android:layout_marginBottom">@dimen/card_default_native_margin_bottom</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
         <item name="android:layout_marginLeft">@dimen/card_default_native_margin_left</item>
         <item name="android:layout_marginRight">@dimen/card_default_native_margin_right</item>
     </style>"

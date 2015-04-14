@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -28,11 +29,16 @@ import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.techhab.collegeapp.application.CollegeApplication;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 /**
  * Created by akhavantafti on 4/7/2015.
  */
 public abstract class BaseObservableRecyclerActivity extends ActionBarActivity implements ObservableScrollViewCallbacks, NavigationDrawerCallbacks {
     public static final String ARG_SCROLL_Y = "ARG_SCROLL_Y";
+    private static final String TAG = BaseObservableRecyclerActivity.class.getSimpleName();
 
     protected Application application;
     protected Toolbar toolbar;
@@ -46,7 +52,7 @@ public abstract class BaseObservableRecyclerActivity extends ActionBarActivity i
     private DrawerLayout mDrawerLayout;
     private int currentPosition;
     private int mBaseTranslationY;
-    private int currentHeight;
+    protected int currentHeight;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -336,18 +342,32 @@ public abstract class BaseObservableRecyclerActivity extends ActionBarActivity i
 
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment = CampusBuildingsFragment.createNewInstance(position);
-
-            //put new argument for scroll view
-            Bundle args = fragment.getArguments();
-            if (0 <= mScrollY) {
-                args.putInt(ARG_SCROLL_Y, mScrollY);
+            Fragment fragment = null;
+            Class fragmentClass = getFragmentClass();
+            try {
+                Method newInstanceMethod = fragmentClass.getMethod("createNewInstance", Integer.class);
+                fragment = (Fragment) newInstanceMethod.invoke(null, position);
+            } catch (NoSuchMethodException e) {
+                Log.e(TAG, e.getMessage());
+            } catch (InvocationTargetException e) {
+                Log.e(TAG, e.getMessage());
+            } catch (IllegalAccessException e) {
+                Log.e(TAG, e.getMessage());
             }
-            fragment.setArguments(args);
-            mPages.put(position, fragment);
+            if (fragment != null) {
+                //put new argument for scroll view
+                Bundle args = fragment.getArguments();
+                if (0 <= mScrollY) {
+                    args.putInt(ARG_SCROLL_Y, mScrollY);
+                }
+                fragment.setArguments(args);
+                mPages.put(position, fragment);
+            }
             return fragment;
         }
     }
+
+    protected abstract Class<? extends Fragment> getFragmentClass();
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {

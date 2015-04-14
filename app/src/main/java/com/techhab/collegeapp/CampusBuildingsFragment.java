@@ -36,7 +36,7 @@ public class CampusBuildingsFragment extends BaseObservableRecyclerFragment {
         // Required empty public constructor
     }
 
-    public static Fragment createNewInstance(int position) {
+    public static Fragment createNewInstance(Integer position) {
         Fragment fragment = new CampusBuildingsFragment();
         Bundle args = new Bundle();
         //POSITION 0 for COMMON tab

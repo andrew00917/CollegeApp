@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +34,7 @@ import com.techhab.rss.EventsRssItem;
 import com.techhab.rss.EventsRssService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import it.gmariotti.cardslib.library.cards.topcolored.TopColoredCard;
@@ -46,24 +48,22 @@ import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EventsFragment extends Fragment implements ObservableScrollViewCallbacks{
+public class EventsFragment extends BaseObservableRecyclerFragment {
 
     public static final String ARG_POSITION = "position";
     private static final String ITEMS = "rssItemList";
     private static final String RECEIVER = "receiver";
 
-    private int mPosition;
     private Intent mServiceIntent;
     private MyResultReceiver receiver;
     private List<EventsRssItem> rssItemList = new ArrayList<>();
     private CustomCardArrayRecyclerViewAdapter mAdapter;
-    private List<Card> cards;
 
     public EventsFragment() {
         // Required Empty Constructor
     }
 
-    public static Fragment createNewInstance(int position) {
+    public static Fragment createNewInstance(Integer position) {
         EventsFragment fragment = new EventsFragment();
         Bundle arg = new Bundle();
         arg.putInt(ARG_POSITION, position);
@@ -76,34 +76,32 @@ public class EventsFragment extends Fragment implements ObservableScrollViewCall
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        Bundle arg = getArguments();
-        mPosition = arg.getInt(ARG_POSITION);
-
         /*
          * Creates a new Intent to start the RssService
          */
         mServiceIntent = new Intent(getActivity(), EventsRssService.class);
         receiver = new MyResultReceiver(new Handler());
         rssItemList = new ArrayList<>();
-        cards = new ArrayList<>();
-        mAdapter = new CustomCardArrayRecyclerViewAdapter(getActivity(), cards);
         new DownloadXmlTask().execute();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_events, parent, false);
-
-        ObservableScrollCardRecylerView
-                cardRecyclerView = (ObservableScrollCardRecylerView) view.findViewById(R.id.my_recycler_view);
-        cardRecyclerView.setHasFixedSize(false);
-        cardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        cardRecyclerView.setAdapter(mAdapter);
-        cardRecyclerView.setScrollViewCallbacks(this);
-
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        mAdapter = new CustomCardArrayRecyclerViewAdapter(getActivity(), cards);
+        mCardRecyclerView.setAdapter(mAdapter);
         return view;
+    }
+
+    @Override
+    protected List<Card> setupRecyclerCards() {
+        //just return empty list for full fill later
+        return new ArrayList<>();
+    }
+
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.fragment_events;
     }
 
     private void setupRecycleView() {
@@ -130,30 +128,6 @@ public class EventsFragment extends Fragment implements ObservableScrollViewCall
         });
 
         return card;
-    }
-
-    @Override
-    public void onScrollChanged(int i, boolean b, boolean b2) {
-
-    }
-
-    @Override
-    public void onDownMotionEvent() {
-
-    }
-
-    @Override
-    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
-        ActionBar actionBar = ((EventsActivity) getActivity()).getSupportActionBar();
-        if (scrollState == ScrollState.UP) {
-            if (actionBar.isShowing()) {
-                actionBar.hide();
-            }
-        } else if (scrollState == ScrollState.DOWN) {
-            if (!actionBar.isShowing()) {
-                actionBar.show();
-            }
-        }
     }
 
 
@@ -371,7 +345,7 @@ public class EventsFragment extends Fragment implements ObservableScrollViewCall
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             ((EventsActivity) getActivity()).dismissProgressBar();
             rssItemList = (List<EventsRssItem>) resultData.getSerializable(ITEMS);
-            switch (mPosition) {
+            switch (tabPosition) {
                 case 0:
                     // ETC
                     rssItemList = getEtcEvent(rssItemList);
