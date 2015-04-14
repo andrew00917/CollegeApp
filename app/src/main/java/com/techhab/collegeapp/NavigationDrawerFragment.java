@@ -4,14 +4,16 @@ package com.techhab.collegeapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,29 +21,26 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.techhab.collegeapp.application.CollegeApplication;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.drakeet.materialdialog.MaterialDialog;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends Fragment implements NavigationDrawerCallbacks  {
+public class NavigationDrawerFragment extends Fragment implements NavigationDrawerCallbacks {
 
     private static final int LOG_IN_HOME = 0;
 
@@ -60,8 +59,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     /**
      * Keys for profile intent
-     *      user id
-     *      user email
+     * user id
+     * user email
      */
 //    private static final String USER_ID_KEY = "user_id";
 //    private static final String USER_EMAIL_KEY = "user_email";
@@ -120,7 +119,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // Indicate that this fragment would like to influence the set of actions in the action bar.
         setHasOptionsMenu(true);
@@ -130,7 +129,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // inflate the parent view (the entire layout)
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
@@ -154,14 +153,14 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mProfileLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            selectItem(mCurrentSelectedPosition);
+                selectItem(mCurrentSelectedPosition);
 
-            mDrawerLayout.closeDrawer(Gravity.START);
+                mDrawerLayout.closeDrawer(Gravity.START);
 
-            Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
 //            intent.putExtra(USER_ID_KEY, userId);
 //            intent.putExtra(USER_EMAIL_KEY, userEmail);
-            getActivity().startActivity(intent);
+                getActivity().startActivity(intent);
             }
         });
         mProfileListView.setOnItemClickListener(mProfileAdapter);
@@ -205,7 +204,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             @Override
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                if ( ! isAdded()) return;
+                if (!isAdded()) return;
                 getActivity().invalidateOptionsMenu();
             }
 
@@ -213,8 +212,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                if ( ! isAdded()) return;
-                if ( ! mUserLearnedDrawer) {
+                if (!isAdded()) return;
+                if (!mUserLearnedDrawer) {
                     mUserLearnedDrawer = true;
                 }
 
@@ -301,11 +300,11 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             return true;
         }*/
         if ((item.getItemId() == android.R.id.home)) {
-             if (isDrawerOpen()) {
+            if (isDrawerOpen()) {
                 mDrawerLayout.closeDrawer(mFragmentContainerView);
-             } else {
+            } else {
                 mDrawerLayout.openDrawer(mFragmentContainerView);
-             }
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -325,7 +324,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         String[] profile_drawer_items;
 
         // Array of drawables. MUST BE IN THE SAME ORDER AS THE nav_drawer_items STRING ARRAY!
-        int[] images = { R.drawable.ic_walk_grey600_48dp, R.drawable.ic_calendar };
+        int[] images = {R.drawable.ic_walk_grey600_48dp, R.drawable.ic_calendar};
 
         public ProfileNavAdapter(Context context) {
             this.context = context;
@@ -403,7 +402,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         // Array of drawables. MUST BE IN THE SAME ORDER AS THE nav_drawer_items STRING ARRAY!
 //        int[] images = { R.drawable.numeric_1_box, R.drawable.phone, R.drawable.bookmark,
 //                R.drawable.logout };
-        int[] images = {   R.drawable.ic_info_outline, R.drawable.phone, R.drawable.logout };
+        int[] images = {R.drawable.ic_info_outline, R.drawable.phone, R.drawable.logout};
 
         public NavAdapter(Context context) {
             this.context = context;
@@ -468,29 +467,69 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         }
 
         /**
-         *  Build and show material dialog for fragment_emergency call
+         * Build and show material dialog for fragment_emergency call
          */
         private void emergencyCallDialog() {
+            final MaterialDialog dialog = new MaterialDialog(getActivity());
+            dialog.setTitle("Emergency Contacts");
+
             List<Emergency> emergencyList = new ArrayList<>();
-            emergencyList.add(new Emergency("Campus Security","(269) 337-7321"));
-            emergencyList.add(new Emergency("City of Kalamazoo Police","(517) 763-1377"));
-            emergencyList.add(new Emergency("Sexual Assault Dean-On-Call","(517) 763-1377"));
-            MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-                    .title("Emergency Contacts")
-                    .adapter(new EmergencyAdapter(getActivity(), emergencyList))
-                    .dividerColorRes(R.color.gray)
-                    .build();
-            ListView lvEmergency = dialog.getListView();
-            if (lvEmergency != null)
-            {
-                lvEmergency.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            emergencyList.add(new Emergency("Campus Security", "(269) 337-7321"));
+            emergencyList.add(new Emergency("City of Kalamazoo Police", "(517) 763-1377"));
+            emergencyList.add(new Emergency("Sexual Assault Dean-On-Call", "(517) 763-1377"));
+            LayoutInflater inflaterService = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View customView = inflaterService.inflate(R.layout.layout_custom_emergency_dialog, null);
+            //set up custom view
+            LinearLayout layoutContainer = (LinearLayout) customView.findViewById(R.id.container);
+            for (final Emergency emergency : emergencyList) {
+                TextView tvContact = new TextView(getActivity());
+                TextView tvPhone = new TextView(getActivity());
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(2, 5, 2, 5);
+                LinearLayout.LayoutParams layoutParamsHorizontal = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                layoutParamsHorizontal.setMargins(5, 2, 5, 2);
+                tvContact.setLayoutParams(layoutParams);
+                tvPhone.setLayoutParams(layoutParamsHorizontal);
+                tvContact.setText(emergency.getName());
+                tvContact.setTextAppearance(getActivity(), R.style.SingleLineListTextOnly);
+                //set up textView Phone
+                LinearLayout layoutSubContainer = new LinearLayout(getActivity());
+                layoutSubContainer.setOrientation(LinearLayout.HORIZONTAL);
+                layoutSubContainer.setLayoutParams(layoutParams);
+                tvPhone.setText(emergency.getPhone());
+                tvContact.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Emergency emergency = (Emergency) parent.getItemAtPosition(position);
+                    public void onClick(View v) {
                         phoneCall(emergency.getPhone());
+                        dialog.dismiss();
                     }
                 });
+                tvPhone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        phoneCall(emergency.getPhone());
+                        dialog.dismiss();
+                    }
+                });
+                ImageView imgPhone = new ImageView(getActivity());
+                imgPhone.setBackgroundResource(R.drawable.phone);
+                imgPhone.setPadding(15, 0, 15, 0);
+                imgPhone.setLayoutParams(new ViewGroup.LayoutParams(40, 40));
+
+                layoutSubContainer.addView(imgPhone);
+                layoutSubContainer.addView(tvPhone);
+
+                layoutContainer.addView(tvContact);
+                layoutContainer.addView(layoutSubContainer);
             }
+            dialog.setContentView(customView);
+            dialog.setPositiveButton("OK", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.setCanceledOnTouchOutside(true);
             dialog.show();
         }
     }
@@ -501,15 +540,13 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         startActivity(phoneIntent);
     }
 
-    class EmergencyAdapter extends BaseAdapter
-    {
+    class EmergencyAdapter extends BaseAdapter {
 
         private Context context;
         private List<Emergency> emergencyList;
 
-        public EmergencyAdapter(Context context, List<Emergency> emergencyList)
-        {
-            this.context =context;
+        public EmergencyAdapter(Context context, List<Emergency> emergencyList) {
+            this.context = context;
             this.emergencyList = emergencyList;
         }
 
@@ -531,8 +568,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder = null;
-            if (convertView == null)
-            {
+            if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.fragment_emergency, parent, false);
@@ -549,23 +585,22 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             return convertView;
         }
 
-        class ViewHolder
-        {
+        class ViewHolder {
             TextView contactName;
             TextView contactNumber;
         }
     }
 
 
-    class Emergency
-    {
+    class Emergency {
         String name;
         String phone;
-        public Emergency(String name, String phone)
-        {
+
+        public Emergency(String name, String phone) {
             this.name = name;
             this.phone = phone;
         }
+
         public String getName() {
             return name;
         }
@@ -593,7 +628,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         String[] nav_drawer_items;
 
         // Array of drawables. MUST BE IN THE SAME ORDER AS THE nav_drawer_items STRING ARRAY!
-        int[] images = { R.drawable.cog, R.drawable.help_circle };
+        int[] images = {R.drawable.cog, R.drawable.help_circle};
 
         public SettingsSupportNavAdapter(Context context) {
             this.context = context;

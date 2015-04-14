@@ -15,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.techhab.collegeapp.application.CollegeApplication;
 
 /**

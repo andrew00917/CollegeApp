@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.techhab.collegeapp.application.CollegeApplication;
 
 import org.apache.http.HttpResponse;

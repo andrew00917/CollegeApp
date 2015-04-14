@@ -39,4 +39,5 @@ dependencies {
     compile project(':kcollegecustomviews')
     compile project(':rss')
     compile project(':gradle-bintray-plugin-1.0')
+    compile 'me.drakeet.materialdialog:library:1.2.2'
 }

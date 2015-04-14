@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -45,6 +46,7 @@ public abstract class BaseObservableRecyclerActivity extends ActionBarActivity i
     private DrawerLayout mDrawerLayout;
     private int currentPosition;
     private int mBaseTranslationY;
+    private int currentHeight;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,16 @@ public abstract class BaseObservableRecyclerActivity extends ActionBarActivity i
             currentPosition = savedInstanceState.getInt("currentFragment");
             // change fragment displaying according to the saved currentPosition
             mViewPager.setCurrentItem(currentPosition);
+        }
+        ViewTreeObserver viewTreeObserver = mViewPager.getViewTreeObserver();
+        if (viewTreeObserver.isAlive()) {
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    mViewPager.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    currentHeight = mViewPager.getHeight();
+                }
+            });
         }
     }
 
@@ -150,6 +162,8 @@ public abstract class BaseObservableRecyclerActivity extends ActionBarActivity i
             ViewPropertyAnimator.animate(header).cancel();
             ViewHelper.setTranslationY(header, headerTranslationY);
             ViewHelper.setTranslationY(mViewPager, headerTranslationY);
+            ViewGroup.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, currentHeight + (-headerTranslationY));
+            mViewPager.setLayoutParams(layoutParams);
         }
     }
 
@@ -191,7 +205,7 @@ public abstract class BaseObservableRecyclerActivity extends ActionBarActivity i
             if (toolbarIsShown() || toolbarIsHidden()) {
                 // Toolbar is completely moved, so just keep its state
                 // and propagate it to other pages
-              //  propagateToolbarState(scrollView, toolbarIsShown());
+                //  propagateToolbarState(scrollView, toolbarIsShown());
             } else {
                 // Toolbar is moving but doesn't know which to move:
                 // you can change this to hideToolbar()
@@ -252,8 +266,10 @@ public abstract class BaseObservableRecyclerActivity extends ActionBarActivity i
             ViewPropertyAnimator.animate(header).cancel();
             ViewPropertyAnimator.animate(header).translationY(0).setDuration(200).start();
             ViewPropertyAnimator.animate(mViewPager).translationY(0).setDuration(200).start();
+            ViewGroup.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, currentHeight);
+            mViewPager.setLayoutParams(layoutParams);
         }
-       // propagateToolbarState(scrollView, true);
+        // propagateToolbarState(scrollView, true);
     }
 
     private void hideToolbar(ObservableScrollCardRecylerView scrollView) {
@@ -263,8 +279,11 @@ public abstract class BaseObservableRecyclerActivity extends ActionBarActivity i
             ViewPropertyAnimator.animate(header).cancel();
             ViewPropertyAnimator.animate(header).translationY(-toolbarHeight).setDuration(200).start();
             ViewPropertyAnimator.animate(mViewPager).translationY(-toolbarHeight).setDuration(200).start();
+
+            ViewGroup.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, currentHeight + toolbarHeight);
+            mViewPager.setLayoutParams(layoutParams);
         }
-      //  propagateToolbarState(scrollView, false);
+        //  propagateToolbarState(scrollView, false);
     }
 
     public class FragmentPagerAdapter extends FragmentStatePagerAdapter {

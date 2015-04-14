@@ -3,19 +3,13 @@ package com.techhab.collegeapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
-import com.github.ksoichiro.android.observablescrollview.ScrollState;
-import com.nineoldandroids.view.ViewHelper;
-import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +18,6 @@ import java.util.List;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
-import it.gmariotti.cardslib.library.recyclerview.internal.CardArrayRecyclerViewAdapter;
 
 
 public class CampusBuildingsFragment extends BaseObservableRecyclerFragment {
@@ -166,10 +159,23 @@ public class CampusBuildingsFragment extends BaseObservableRecyclerFragment {
             @Override
             public void onClick(Card card, View view) {
                 card.doToogleExpand();
+                collapseAllCards(card);
             }
+
+
         });
 
         return card;
+    }
+
+    private void collapseAllCards(Card excudeCard) {
+        for (Card card : cards) {
+            if(!card.equals(excudeCard)){
+                if(card.isExpanded()){
+                    card.doCollapse();
+                }
+            }
+        }
     }
 
     class CustomCard extends Card {
