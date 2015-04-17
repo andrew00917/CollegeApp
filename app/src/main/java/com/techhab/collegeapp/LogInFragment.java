@@ -138,7 +138,7 @@ public class LogInFragment extends Fragment {
 
     private void postLogin(String result) {
         User user = application.getCurrentUser();
-        if (result.length() > 5) {
+        if (result.split(",").length > 5) {
             user.setValid(true);
 
             // set user info here
