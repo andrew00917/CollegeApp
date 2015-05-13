@@ -1,7 +1,7 @@
 # CollegeApp
 ### Created by Jae Hyun Choe, Kevin Joh, Griffin Smalley, and Omid Tafti (TechHab).
 
-Please be advised TechHab does not own any part of the information present in this app and few images used for customized the theme in this app is under ["Kalamazoo College Policy"](https://reason.kzoo.edu/is/policies/).
+Please be advised TechHab does not own any part of the placeholder information present in this app and few images used for customized the theme in this app, which are under ["Kalamazoo College Policy"](https://reason.kzoo.edu/is/policies/).
 
 ___
 
