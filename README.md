@@ -1,7 +1,11 @@
 # CollegeApp
-### Created by Jae Hyun Choe, Kevin Joh, Griffin Smalley, and Omid Tafti.
+### Created by Jae Hyun Choe, Kevin Joh, Griffin Smalley, and Omid Tafti (TechHab).
 
-This project is protected under *Creative Commons (CC) License*. More detailed parts are described below:
+Please be advised TechHab does not own any part of the information present in this app and few images used for customized the theme in this app is under ["Kalamazoo College Policy"](https://reason.kzoo.edu/is/policies/).
+
+___
+
+The project is protected under *Creative Commons (CC) License*. More detailed parts are described below:
 
 * *Attribution*
 
@@ -18,4 +22,4 @@ The modified work cannot be distributed, otherwise one can copy and distribute t
 
 ___
 
-This project was created in wish to benefit and used by Kalamazoo College as an official mobile app. The work was geared towards for the improvement of students', faculty members', and staffs' campus life and communication. Also, to serve visiting students' and parents' navigation and visiting experience.
+This project was created in wish to benefit and used by Kalamazoo College as an official mobile app. The work was geared towards for the improvement of students', faculty members', and staffs' campus life and communication. Also, to serve visiting students' and parents' navigation through the campus and their visiting experience.
