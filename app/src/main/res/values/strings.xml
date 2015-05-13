@@ -16,7 +16,7 @@
     <string name="com_techhab_loginview_log_out_button">Log out</string>
     <string name="com_techhab_loginview_log_in_button">Log in</string>
     <string name="com_techhab_loginview_logged_in_as">Logged in as: %1$s</string>
-    <string name="com_techhab_loginview_logged_in_using_facebook">Logged in using Facebook</string>
+
     <string name="com_techhab_loginview_log_out_action">Log out</string>
     <string name="com_techhab_loginview_cancel_action">Cancel</string>
     <string name="com_techhab_logo_content_description">College Logo</string>
@@ -27,7 +27,6 @@
     <string name="com_techhab_placepicker_subtitle_catetory_only_format">%1$s</string>
     <string name="com_techhab_placepicker_subtitle_were_here_only_format">%1$,d were here</string>
     <string name="com_techhab_picker_done_button_text">Done</string>
-    <string name="com_techhab_choose_friends">Choose Friends</string>
     <string name="com_techhab_nearby">Nearby</string>
     <string name="com_techhab_loading">Loading…</string>
     <string name="com_techhab_internet_permission_error_title">AndroidManifest Error</string>
@@ -36,7 +35,6 @@
     <string name="com_techhab_requesterror_relogin">Please log into this app again to reconnect your account.</string>
     <string name="com_techhab_requesterror_password_changed">Your password has changed. Please log into this app again to reconnect your account.</string>
     <string name="com_techhab_requesterror_reconnect">Please log into this app again to reconnect your account.</string>
-    <string name="com_techhab_tooltip_default">New! You\'re in control - choose what info you want to share with apps.</string>
     <string name="error_switching_screens">Error switching screens - Please try again</string>
     <string name="error_dialog_default_text">No response from server.</string>
     <string name="error_authentication_retry">An error occurred that requires your attention. %1$s</string>
@@ -59,7 +57,7 @@
     <string name="main_menu_10">Sports</string>
     <string name="main_menu_11">Events</string>
     <string name="main_menu_12">Map</string>
-    <string name="image_description_name">Seung Yoon Hong 15\'</string>
+    <string name="image_description_name">Jane Doe 15\'</string>
     <string name="image_description_place">Venice, Italy</string>
 
     <!-- Navigation Drawer -->

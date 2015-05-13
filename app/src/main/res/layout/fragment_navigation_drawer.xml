@@ -26,7 +26,7 @@
             android:textSize="14sp"
             android:textColor="@color/theGray"
             android:textStyle="bold"
-            android:text="Griffin Smalley"/>
+            android:text="John Doe"/>
 
         <TextView
             android:id="@+id/user_email"
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/theGray"
             android:textSize="14sp"
-            android:text="k13gs03@kzoo.edu" />
+            android:text="k11jd01@kzoo.edu" />
 
     </LinearLayout>
 
