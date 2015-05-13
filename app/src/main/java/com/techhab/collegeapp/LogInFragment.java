@@ -75,11 +75,11 @@ public class LogInFragment extends Fragment {
         logInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (kEmail.getText().toString().length() < 7 || password.getText().toString().length() < 3) {
+                //if (kEmail.getText().toString().length() < 7 || password.getText().toString().length() < 3) {
                     showLoginError();
-                } else {
-                    loginSubmit();
-                }
+                //} else {
+                //    loginSubmit();
+                //}
             }
         });
 
