@@ -22,6 +22,14 @@ The modified work cannot be distributed, otherwise one can copy and distribute t
 
 ___
 
+![alt tag](https://cloud.githubusercontent.com/assets/8836645/7637563/d587ec66-fa3c-11e4-8059-eff79691adfc.png)
+![alt tag](https://cloud.githubusercontent.com/assets/8836645/7637565/d5894110-fa3c-11e4-8d68-831a08d93426.png)
+![alt tag](https://cloud.githubusercontent.com/assets/8836645/7637566/d589e70a-fa3c-11e4-85c9-57b4d196af7f.png)
+![alt tag](https://cloud.githubusercontent.com/assets/8836645/7637561/d586e334-fa3c-11e4-8aa0-93e7464f6249.png)
+![alt tag](https://cloud.githubusercontent.com/assets/8836645/7637564/d5894a48-fa3c-11e4-852f-5b99f446df00.png)
+![alt tag](https://cloud.githubusercontent.com/assets/8836645/7637562/d5874f5e-fa3c-11e4-9fb9-d9fde5bcd34c.png)
+![alt tag](https://cloud.githubusercontent.com/assets/8836645/7637567/d5913852-fa3c-11e4-8948-95f9571f8216.png)
+
 This project was created in wish to benefit and used by Kalamazoo College as an official mobile app. The work was geared towards for the improvement of students', faculties', and staffs' campus life and communication. Also, to serve visiting students' and parents' navigation through the campus and their visiting experience. Unfortunately, because of school's current licensing with the third vendor, this project did not get to shine as we hoped.
 
 Considering the overall size of this project, the timeline was rushed to finish this prototype, which implies that the code in this repo is functional but very rough and documentation is incomplete. However, despite the incompleteness, TechHab has agreed to make this a public repo in sole purpose of the education benefits for students who will be enrolled in mobile-related courses at, but not limited to, Kalamazoo College.
