@@ -45,6 +45,8 @@ Some of few functional aspect of this app at this demo state that would be helpf
 * Dining hours and its availability
 * Upcoming campus events and selected event to be imported into user's device calendar
 
+To install the demo version, click [here](www.techhab.com/download/collegeapp/collegeapp-demo-release.apk).
+
 ___
 
 ####Contact
