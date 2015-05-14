@@ -37,7 +37,7 @@
         <!-- Google Maps Fragment API Key Data -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBdvZxaqcYoM-jhRO3OACQtLVBJy1-XJCc" />
+            android:value="AIzaSyDTGNW3tMfwIjp3AIC0-6baTn36VN4O_6w" />
 
         <!-- Home Activity -->
         <activity
