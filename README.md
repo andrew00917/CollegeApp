@@ -31,15 +31,17 @@ ___
 
 ___
 
-This project was created in wish to benefit and used by Kalamazoo College as an official mobile app. The work was geared towards for the improvement of students', faculties', and staffs' campus life and communication. Also, to serve visiting students' and parents' navigation through the campus and their visiting experience. Unfortunately, because of school's current licensing with the third vendor, this project did not get to shine as we hoped.
+This project was created with the intent to be used by Kalamazoo College as an official mobile app. The purpose was to improve the lives of students, faculty, and staff on campus. In addition, the mobile application would assist visiting students and parents with navigation through the campus to enhance their experience. Unfortunately, because of school's current licensing with a third party vendor, this project did not get to shine as we hoped.
 
-Considering the overall size of this project, the timeline was rushed to finish this prototype, which implies that the code in this repo is functional but very rough and documentation is incomplete. However, despite the incompleteness, TechHab has agreed to make this a public repo in sole purpose of the education benefits for students who will be enrolled in mobile-related courses at, but not limited to, Kalamazoo College.
+Considering its overall size, the project was rushed in order to finish this prototype. Consequently, the code in this repo is functional but very rough and documentation is incomplete. However, despite the incompleteness, TechHab has agreed to make this a public repo for the sole purpose of education. We hope this will be instrumental for students enrolled in mobile-related courses at, but not limited to, Kalamazoo College.
 
-As of now, due to this app not actually hooked up to any database, whoever trying to login will not succeed. For demo-purpose and for targeted users who are not on campus such as visiting students and parents, we have provided the "Guest Mode". As for the bugs that were not initially found, please use the contact provided on the bottom of this page to notify us. However, there is no guarantee in that the reported bug will be fixed in timely manner.
+Although user login is supported, you will not be able to log in as a user without first connecting the project to a database or creating hardcoded users. We have provided the "Guest Mode" login for visiting parents and students, and it serves perfectly for demos as well.
+
+For any bugs or defects that you find, please use the contact provided on the bottom of this page to notify us. However, there is no guarantee in that the reported bug will be fixed in timely manner.
 
 ___
 
-Some of few functional aspect of this app at this demo state that would be helpful for daily life of the users who are on campus of Kalamazoo College are as followed:
+This app was created to improve the daily lives of the users who are on the campus of Kalamazoo College. A few of its functions in this demo state are as followed:
 
 * Academic calendar for 2014-2017 academic years
 * Dining hours and its availability
