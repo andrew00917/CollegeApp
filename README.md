@@ -51,9 +51,4 @@ To install the demo version, click [here](http://www.techhab.com/download/colleg
 
 ___
 
-####Contact
-
-1. [Jae Hyun Choe](jaehyun00917@gmail.com)
-2. [Kevin Joh](guitarguise@gmail.com)
-3. [Griffin Smalley](griffin.smalley@gmail.com)
-4. [Omid Tafti](oat1345@gmail.com)
+####[Contact](http://www.techhab.com/meet-the-team/)
